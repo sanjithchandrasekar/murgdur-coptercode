@@ -3,10 +3,10 @@ import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowUpRight } from 'lucide-react';
 
-import cat1 from '../../assets/images/Gemini_Generated_Image_687ijq687ijq687i.png';
-import cat2 from '../../assets/images/hand bag.png'; // Corrected filename with space
-import cat3 from '../../assets/images/Gemini_Generated_Image_7cejht7cejht7cej.png';
-import cat4 from '../../assets/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png';
+const cat1 = "/images/Gemini_Generated_Image_687ijq687ijq687i.png";
+const cat2 = "/images/hand bag.png";
+const cat3 = "/images/Gemini_Generated_Image_7cejht7cejht7cej.png";
+const cat4 = "/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
 
 const CategoryGrid = () => {
     const categories = [

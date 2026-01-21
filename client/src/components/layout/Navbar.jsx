@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, User, Heart, ShoppingBag, Menu, X } from 'lucide-react';
+import { Search, User, Heart, ShoppingBag, Menu, X, ArrowLeft, Package, Star, Gift, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
-import logo from '../../assets/images/logo.jpeg';
+
+const logo = "/images/logo.jpeg";
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -13,7 +14,18 @@ const Navbar = () => {
     const [searchResults, setSearchResults] = useState([]);
     const location = useLocation();
     const navigate = useNavigate();
-    const { getCartCount } = useCart();
+    const { getCartCount, wishlistItems } = useCart();
+    const [user, setUser] = useState(null);
+
+    // Check for user login on mount and route change
+    useEffect(() => {
+        const storedUser = localStorage.getItem('userProfile');
+        if (storedUser) {
+            setUser(JSON.parse(storedUser));
+        } else {
+            setUser(null);
+        }
+    }, [location]);
 
     // Mock data for search suggestions (Shared with Shop)
     const mockSearchData = [
@@ -42,6 +54,14 @@ const Navbar = () => {
             setSearchQuery('');
             navigate(`/shop?search=${searchQuery}`);
         }
+    };
+
+    const handleLogout = () => {
+        // Clear user data
+        localStorage.removeItem('userProfile');
+        localStorage.removeItem('selectedAddress');
+        setUser(null); // Clear local state
+        navigate('/');
     };
 
     // Logic: Dark text IF NOT Home page OR IF Scrolled
@@ -81,8 +101,23 @@ const Navbar = () => {
         >
             <div className="container mx-auto px-6 h-16 flex justify-between items-center relative">
 
-                {/* LEFT: Menu & Search */}
+                {/* LEFT: Logo, Menu & Search */}
                 <div className="flex items-center gap-4 md:gap-8">
+
+
+                    {/* Back Button (Visible on non-home pages) */}
+                    {!isHome && (
+                        <button
+                            className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group mr-2"
+                            onClick={() => navigate(-1)}
+                            title="Go Back"
+                        >
+                            <ArrowLeft size={20} strokeWidth={1.5} />
+                            {/* Optional Label (Hidden on small screens) */}
+                            {/* <span className="hidden md:block text-xs uppercase tracking-widest font-medium">Back</span> */}
+                        </button>
+                    )}
+
                     {/* Menu Trigger */}
                     <button
                         className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group"
@@ -161,24 +196,42 @@ const Navbar = () => {
 
                 {/* RIGHT: User Actions */}
                 <div className="flex items-center gap-4 md:gap-8">
-                    <a href="tel:+910000000000" className="hidden md:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
-                        Call Us
-                    </a>
+                    <Link to="/contact" className="hidden md:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
+                        Contact Us
+                    </Link>
 
                     <Link to="/vault" className="text-white hover:text-royal-gold transition-colors relative group">
                         <Heart size={20} strokeWidth={1.5} />
+                        {wishlistItems && wishlistItems.length > 0 && (
+                            <span className="absolute -top-1.5 -right-1.5 bg-royal-gold text-black text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                                {wishlistItems.length}
+                            </span>
+                        )}
                     </Link>
 
-                    <div className="relative group">
-                        <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block">
+                    {user ? (
+                        <div className="relative group">
+                            <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block">
+                                <User size={20} strokeWidth={1.5} />
+                            </Link>
+                            {/* Simple Hover Menu for User */}
+                            <div className="absolute top-full right-0 mt-2 w-40 bg-royal-black border border-white/10 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                                <div className="px-4 py-3 border-b border-white/5 text-xs text-gray-400">
+                                    Hello, <br />
+                                    <span className="text-white font-bold text-sm truncate block">{user.name || 'User'}</span>
+                                </div>
+                                <Link to="/profile" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">My Profile</Link>
+                                <Link to="/orders" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">Orders</Link>
+                                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5 border-t border-white/5">
+                                    Log Out
+                                </button>
+                            </div>
+                        </div>
+                    ) : (
+                        <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block" title="Sign In">
                             <User size={20} strokeWidth={1.5} />
                         </Link>
-                        {/* Simple Hover Menu for User */}
-                        <div className="absolute top-full right-0 mt-2 w-40 bg-royal-black border border-white/10 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                            <Link to="/profile" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">My Profile</Link>
-                            <Link to="/orders" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">Orders</Link>
-                        </div>
-                    </div>
+                    )}
 
                     <Link to="/cart" className="text-white hover:text-royal-gold transition-colors relative">
                         <ShoppingBag size={20} strokeWidth={1.5} />
@@ -189,15 +242,11 @@ const Navbar = () => {
                         )}
                     </Link>
 
-                    {/* Corner Logo Emblem */}
-                    <Link to="/" className="pl-4 border-l border-white/20 h-8 flex items-center hover:opacity-80 transition-opacity">
-                        <img src={logo} alt="Murgdur Emblem" className="h-8 w-auto object-contain" />
-                    </Link>
                 </div>
             </div>
 
             {/* Universal Menu Drawer (Mobile & Desktop) */}
-            <AnimatePresence>
+            < AnimatePresence >
                 {isMobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -219,7 +268,12 @@ const Navbar = () => {
                             style={{ backgroundColor: 'black' }}
                         >
                             <div className="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
-                                <span className="text-xl font-serif text-white tracking-widest uppercase">Menu</span>
+                                <span className="text-xl font-serif text-white tracking-widest uppercase flex items-center gap-4">
+                                    <div className="relative h-20 w-16 bg-[#0F0F0F] rounded-b-md flex items-center justify-center shadow-md border-x border-b border-white/10">
+                                        <img src={logo} alt="Logo" className="h-12 w-auto object-contain opacity-100" />
+                                    </div>
+                                    Menu
+                                </span>
                                 <button onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-royal-gold transition-colors">
                                     <X size={24} strokeWidth={1} />
                                 </button>
@@ -250,8 +304,8 @@ const Navbar = () => {
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence>
-        </nav>
+            </AnimatePresence >
+        </nav >
     );
 };
 

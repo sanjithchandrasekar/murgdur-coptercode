@@ -18,7 +18,7 @@ const Cart = () => {
         setSelectedAddress(saved);
     }, []);
 
-    const { cartItems, updateQuantity, removeFromCart, getCartTotal } = useCart();
+    const { cartItems, updateQuantity, removeFromCart, getCartTotal, saveForLater } = useCart();
     // Local mock data removed, using context 'cartItems' directly
 
     // Price Calculations
@@ -123,7 +123,7 @@ const Cart = () => {
                                         </div>
 
                                         <button onClick={() => removeFromCart(item.id)} className="text-white font-medium text-sm hover:text-red-500 uppercase">Remove</button>
-                                        <button className="text-white font-medium text-sm hover:text-royal-gold uppercase">Save for Later</button>
+                                        <button onClick={() => saveForLater(item)} className="text-white font-medium text-sm hover:text-royal-gold uppercase">Save for Later</button>
                                     </div>
                                 </div>
                             </div>

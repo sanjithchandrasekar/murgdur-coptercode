@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
 import { User, Mail, Lock, Phone, MapPin, ArrowRight, Eye, EyeOff, CheckCircle } from 'lucide-react';
-import authBg from '../assets/images/Gemini_Generated_Image_o2z9xpo2z9xpo2z9.png';
+const authBg = "/images/Gemini_Generated_Image_o2z9xpo2z9xpo2z9.png";
 
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);

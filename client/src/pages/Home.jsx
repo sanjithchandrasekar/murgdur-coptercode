@@ -10,15 +10,15 @@ import { Link } from 'react-router-dom';
 import LegacySection from '../components/common/LegacySection';
 import { motion, AnimatePresence } from 'framer-motion';
 
-import spotlightImg from '../assets/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png';
-import trend1 from '../assets/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png';
-import trend2 from '../assets/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png';
-import trend3 from '../assets/images/Gemini_Generated_Image_k7b1fwk7b1fwk7b1.png';
-import trend4 from '../assets/images/Gemini_Generated_Image_kb3z30kb3z30kb3z.png';
-import imgMen from '../assets/images/boy.jpeg'; // Re-using for video
-import imgWomen from '../assets/images/girl.png'; // Re-using for video
+const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const trend1 = "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png";
+const trend2 = "/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png";
+const trend3 = "/images/Gemini_Generated_Image_k7b1fwk7b1fwk7b1.png";
+const trend4 = "/images/Gemini_Generated_Image_kb3z30kb3z30kb3z.png";
+const imgMen = "/images/boy.jpeg";
+const imgWomen = "/images/girl.png";
 
-import royalBg from '../assets/images/royal_dress_bg.png';
+const royalBg = "/images/royal_dress_bg.png";
 
 const Home = () => {
     const [currentVideoSlide, setCurrentVideoSlide] = useState(0);
@@ -108,18 +108,29 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
                         {[
-                            { name: "Women's Handbags", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Women's Small Leather Goods", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Women's Shoes", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Perfumes", img: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Women's Handbags", img: "/images/women bag/woman bag white 1.jpeg", type: "image" },
+                            { name: "Women's Small Leather Goods", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop", type: "image" },
+                            { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image" },
+                            { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image" }
                         ].map((item, idx) => (
                             <Link to="/shop" key={idx} className="group block mb-8">
-                                <div className="overflow-hidden mb-4 rounded-sm border border-gray-200">
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
-                                    />
+                                <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
+                                    {item.type === 'video' ? (
+                                        <video
+                                            src={item.img}
+                                            autoPlay
+                                            loop
+                                            muted
+                                            playsInline
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                        />
+                                    ) : (
+                                        <img
+                                            src={item.img}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                        />
+                                    )}
                                 </div>
                                 <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors">
                                     {item.name}
@@ -130,7 +141,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
                         {[
-                            { name: "Men's Bags", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Men's Bags", img: "/images/travel bag/mens-bag3.png" },
                             { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
                             { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop" },
                             { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop" }
@@ -179,18 +190,19 @@ const Home = () => {
             </section>
 
             {/* 2. Welcome Note (Animated) */}
+            {/* 2. Welcome Note (Animated) */}
             <motion.section
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
                 className="py-20 px-6 text-center container mx-auto bg-inherit"
             >
-                <span className="text-royal-obsidian uppercase tracking-[0.2em] text-sm font-semibold">Welcome to MURGDUR</span>
-                <h2 className="text-3xl md:text-5xl font-serif text-black my-6 leading-tight max-w-4xl mx-auto drop-shadow-sm">
-                    "The Crown Fits Only <span className="text-transparent bg-clip-text bg-gradient-to-r from-gray-700 to-black">The Worthy</span>"
+                <span className="text-gray-400 uppercase tracking-[0.3em] text-xs font-medium block mb-6">Welcome to Murgdur</span>
+                <h2 className="text-3xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
+                    "The Crown Fits Only The Worthy"
                 </h2>
-                <div className="w-24 h-1 bg-black/10 mx-auto my-8"></div>
-                <p className="text-gray-600 max-w-2xl mx-auto font-light leading-relaxed text-lg">
+                <div className="w-24 h-0.5 bg-royal-gold mx-auto my-8 opacity-50"></div>
+                <p className="text-gray-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
                     Forged in the fires of tradition, sculpted for the modern monarch.
                     A collection that whispers power and echoes eternity.
                 </p>
@@ -204,17 +216,17 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Gold Necklace", price: "₹ 45,000", img: "https://images.unsplash.com/photo-1599643478518-17488fbbcd75?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Signature Perfume", price: "₹ 12,500", img: "https://images.unsplash.com/photo-1594035910387-fea4779426e9?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women bag/women bag brown front.jpeg" },
+                            { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png" },
+                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png" },
                             { name: "Passport Cover", price: "₹ 8,500", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop" }
                         ].map((item, idx) => (
                             <Link to="/shop" key={idx} className="group cursor-pointer">
-                                <div className="aspect-[4/5] bg-gray-50 border border-gray-100 mb-6 overflow-hidden relative rounded-sm transition-colors duration-500 group-hover:bg-gray-100">
+                                <div className="aspect-square bg-gray-50 border border-gray-100 mb-6 overflow-hidden relative rounded-sm transition-colors duration-500 group-hover:bg-gray-100">
                                     <img
                                         src={item.img}
                                         alt={item.name}
-                                        className="w-full h-full object-contain p-8 rounded-sm transition-transform duration-500 group-hover:scale-110"
+                                        className="w-full h-full object-contain p-4 rounded-sm transition-transform duration-500 group-hover:scale-110"
                                     />
                                     <div className="absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -333,13 +345,17 @@ const Home = () => {
                 </div>
             </section>
 
-            {/* Lifestyle Feature - Woman on Stairs */}
-            <section className="w-full h-[100vh] relative overflow-hidden">
-                <img
-                    src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=2400&auto=format&fit=crop"
-                    alt="Latest Collection"
-                    className="w-full h-full object-cover object-top"
+            {/* Lifestyle Feature - Video Section */}
+            <section className="w-full h-[100vh] relative overflow-hidden bg-black">
+                <video
+                    src="/videos/perfume1.mp4"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline
+                    className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 bg-black/10"></div>
             </section>
 
             {/* Murgdur Sensation (Shoes) Section */}

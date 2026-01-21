@@ -7,15 +7,15 @@ import 'swiper/css/pagination';
 import Button from './Button';
 import { Link } from 'react-router-dom';
 
-import img1 from '../../assets/images/Gemini_Generated_Image_120fuv120fuv120f.png';
-import img2 from '../../assets/images/Gemini_Generated_Image_2heebf2heebf2hee.png';
-import img3 from '../../assets/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png';
+const img1 = "/images/Gemini_Generated_Image_120fuv120fuv120f.png";
+const img2 = "/images/Gemini_Generated_Image_2heebf2heebf2hee.png";
+const img3 = "/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png";
 
 const HeroSlider = () => {
     const slides = [
         {
             id: 1,
-            image: img1,
+            video: "/videos/perfume1.mp4", // Local Video
             title: "Royal Heritage",
             subtitle: "Experience the legacy of kings.",
             link: "/shop?cat=royal"
@@ -43,7 +43,7 @@ const HeroSlider = () => {
                 effect={'fade'}
                 speed={1500}
                 autoplay={{
-                    delay: 3500,
+                    delay: 5000, // Increased delay for video visibility
                     disableOnInteraction: false,
                 }}
                 pagination={{ clickable: true }}
@@ -51,13 +51,27 @@ const HeroSlider = () => {
             >
                 {slides.map((slide) => (
                     <SwiperSlide key={slide.id} className="relative">
-                        {/* Background Image with Zoom effect manually via CSS or just static cover */}
-                        <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
-                            style={{ backgroundImage: `url(${slide.image})` }}
-                        >
-                            <div className="absolute inset-0 bg-black/40"></div>
-                        </div>
+                        {/* Background Media: Video or Image */}
+                        {slide.video ? (
+                            <div className="absolute inset-0 w-full h-full">
+                                <video
+                                    src={slide.video}
+                                    autoPlay
+                                    loop
+                                    muted
+                                    playsInline
+                                    className="w-full h-full object-cover"
+                                />
+                                <div className="absolute inset-0 bg-black/40"></div>
+                            </div>
+                        ) : (
+                            <div
+                                className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
+                                style={{ backgroundImage: `url(${slide.image})` }}
+                            >
+                                <div className="absolute inset-0 bg-black/40"></div>
+                            </div>
+                        )}
 
                         <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
                             <span className="text-royal-gold uppercase tracking-[0.5em] mb-4 animate-slide-up">

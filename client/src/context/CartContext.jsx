@@ -104,6 +104,11 @@ export const CartProvider = ({ children }) => {
         removeFromWishlist(product.id);
     };
 
+    const saveForLater = (product) => {
+        addToWishlist(product);
+        removeFromCart(product.id);
+    };
+
     return (
         <CartContext.Provider value={{
             cartItems,
@@ -115,7 +120,8 @@ export const CartProvider = ({ children }) => {
             getCartTotal,
             addToWishlist,
             removeFromWishlist,
-            moveToCart
+            moveToCart,
+            saveForLater
         }}>
             {children}
         </CartContext.Provider>

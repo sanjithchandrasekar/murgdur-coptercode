@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import occ1 from '../../assets/images/Gemini_Generated_Image_7ou9zl7ou9zl7ou9.png';
-import occ2 from '../../assets/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png';
-import occ3 from '../../assets/images/Gemini_Generated_Image_aimaqdaimaqdaima.png';
-import occ4 from '../../assets/images/Gemini_Generated_Image_b1fmq6b1fmq6b1fm.png';
+const occ1 = "/images/Gemini_Generated_Image_7ou9zl7ou9zl7ou9.png";
+const occ2 = "/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png";
+const occ3 = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
+const occ4 = "/images/Gemini_Generated_Image_b1fmq6b1fmq6b1fm.png";
 
 const ShopByOccasion = () => {
     const occasions = [

@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
-import mensImg from '../../assets/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png'; // Sherwani/Men
-import womensImg from '../../assets/images/Gemini_Generated_Image_aimaqdaimaqdaima.png'; // Assuming a rich visual, potentially female or unisex heritage
+const mensImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const womensImg = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
 
 const RoyalCollectionCategories = () => {
     return (

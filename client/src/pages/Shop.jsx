@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Filter, ChevronDown, Search } from 'lucide-react';
+import { Filter, ChevronDown, Search, Heart } from 'lucide-react';
 
 // Importing images (reusing existing assets)
 import { products as allProducts } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 const Shop = () => {
     const location = useLocation();
@@ -14,6 +15,7 @@ const Shop = () => {
 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [sortBy, setSortBy] = useState('relevance');
+    const { addToWishlist, wishlistItems } = useCart();
 
     let products = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 
@@ -56,8 +58,42 @@ const Shop = () => {
                             </h1>
                         </div>
 
-                        <div className="flex items-center gap-4">
-                            {/* Keep Search Input if needed, or rely on Navbar */}
+                        <div className="relative">
+                            <div className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full focus-within:border-royal-maroon transition-all shadow-sm">
+                                <input
+                                    type="text"
+                                    placeholder="Search our collection..."
+                                    className="bg-transparent border-none outline-none text-sm text-black placeholder:text-gray-400 w-48 md:w-64"
+                                    value={searchTerm}
+                                    onChange={(e) => setSearchTerm(e.target.value)}
+                                />
+                                <button className="text-gray-400 hover:text-royal-maroon transition-colors">
+                                    <Search size={18} />
+                                </button>
+                            </div>
+
+                            {/* Search Suggestions Dropdown */}
+                            {searchTerm.length > 0 && (
+                                <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-200 shadow-xl rounded-lg overflow-hidden z-30 max-h-60 overflow-y-auto">
+                                    {allProducts
+                                        .filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                                        .slice(0, 5)
+                                        .map(p => (
+                                            <button
+                                                key={p.id}
+                                                onClick={() => setSearchTerm(p.name)}
+                                                className="w-full text-left px-4 py-3 text-sm text-black hover:bg-gray-50 flex items-center gap-3 border-b border-gray-100 last:border-0"
+                                            >
+                                                <img src={p.image} alt="" className="w-8 h-8 object-cover rounded" />
+                                                <span className="font-serif">{p.name}</span>
+                                            </button>
+                                        ))
+                                    }
+                                    {allProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase())).length === 0 && (
+                                        <div className="px-4 py-3 text-sm text-gray-500 italic">No products found</div>
+                                    )}
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -130,6 +166,20 @@ const Shop = () => {
                                                 VIEW DETAILS
                                             </button>
                                         </div>
+
+                                        {/* Wishlist Icon */}
+                                        <button
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                addToWishlist(product);
+                                            }}
+                                            className="absolute top-3 right-3 p-2 bg-white/80 rounded-full hover:bg-white text-royal-maroon opacity-0 group-hover:opacity-100 transition-all duration-300 z-10"
+                                        >
+                                            <Heart
+                                                size={18}
+                                                className={wishlistItems.some(i => i.id === product.id) ? "fill-royal-maroon text-royal-maroon" : ""}
+                                            />
+                                        </button>
                                     </div>
                                     <h3 className="text-black font-serif text-lg tracking-wide group-hover:text-royal-maroon transition-colors">{product.name}</h3>
                                     <p className="text-gray-500 text-sm mt-1 font-sans">₹ {product.price.toLocaleString()}</p>

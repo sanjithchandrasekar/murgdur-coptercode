@@ -3,24 +3,24 @@ import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-import imgMen from '../assets/images/boy.jpeg';
-import imgWomen from '../assets/images/girl.png';
-import imgRoyalWatch from '../assets/images/royal_watch.png';
-import imgRoyalBelt from '../assets/images/royal_belt.png';
-import imgRoyalWallet from '../assets/images/royal_wallet.png';
-import imgRoyalPerfume from '../assets/images/royal_perfume.png';
-import imgRoyalSunglasses from '../assets/images/royal_sunglasses.png';
-import imgRoyalJewellery from '../assets/images/royal_jewellery.png';
-import imgRoyalSaree from '../assets/images/royal_saree.png';
-import imgRoyalSherwani from '../assets/images/royal_sherwani.png';
-import imgRoyalHeels from '../assets/images/royal_heels.png';
-import imgRoyalGown from '../assets/images/royal_gown.png';
-import imgRoyalShirt from '../assets/images/royal_shirt.png';
-import imgRoyalTShirt from '../assets/images/royal_tshirt.png';
-import imgRoyalHoodie from '../assets/images/royal_hoodie.png';
-import imgRoyalSweater from '../assets/images/royal_sweater.png';
-import imgBag from '../assets/images/hand bag.png';
-import imgLogo from '../assets/images/logo.jpeg';
+const imgMen = "/images/boy.jpeg";
+const imgWomen = "/images/girl.png";
+const imgRoyalWatch = "/images/royal_watch.png";
+const imgRoyalBelt = "/images/royal_belt.png";
+const imgRoyalWallet = "/images/royal_wallet.png";
+const imgRoyalPerfume = "/images/royal_perfume.png";
+const imgRoyalSunglasses = "/images/royal_sunglasses.png";
+const imgRoyalJewellery = "/images/royal_jewellery.png";
+const imgRoyalSaree = "/images/royal_saree.png";
+const imgRoyalSherwani = "/images/royal_sherwani.png";
+const imgRoyalHeels = "/images/royal_heels.png";
+const imgRoyalGown = "/images/royal_gown.png";
+const imgRoyalShirt = "/images/royal_shirt.png";
+const imgRoyalTShirt = "/images/royal_tshirt.png";
+const imgRoyalHoodie = "/images/royal_hoodie.png";
+const imgRoyalSweater = "/images/royal_sweater.png";
+const imgBag = "/images/hand bag.png";
+const imgLogo = "/images/logo.jpeg";
 
 const RoyalCollection = () => {
     const [activeView, setActiveView] = useState('main'); // 'main' or 'men'

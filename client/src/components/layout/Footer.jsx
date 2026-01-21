@@ -11,7 +11,7 @@ const Footer = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr] gap-8">
 
                     {/* Left: Links Columns */}
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-8">
 
                         {/* Column 1: ABOUT */}
                         <div>
@@ -23,16 +23,6 @@ const Footer = () => {
                                 <li><Link to="/stories" className="hover:text-white block transition-colors">Murgdur Stories</Link></li>
                                 <li><Link to="/press" className="hover:text-white block transition-colors">Press</Link></li>
                                 <li><Link to="/corporate" className="hover:text-white block transition-colors">Corporate Information</Link></li>
-                            </ul>
-                        </div>
-
-                        {/* Column 2: GROUP COMPANIES */}
-                        <div>
-                            <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">Group Companies</h3>
-                            <ul className="space-y-2">
-                                <li><a href="#!" className="hover:text-white block transition-colors">Myntra</a></li>
-                                <li><a href="#!" className="hover:text-white block transition-colors">Cleartrip</a></li>
-                                <li><a href="#!" className="hover:text-white block transition-colors">Shopsy</a></li>
                             </ul>
                         </div>
 

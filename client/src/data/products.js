@@ -1,21 +1,21 @@
 // Image Imports (Mapping broadly to categories)
-import imgSherwani from '../assets/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png';
-import imgLehenga from '../assets/images/Gemini_Generated_Image_aimaqdaimaqdaima.png';
-import imgBag from '../assets/images/hand bag.png';
-import imgBandhgala from '../assets/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png';
-import imgSaree from '../assets/images/Gemini_Generated_Image_120fuv120fuv120f.png';
-import imgWallet from '../assets/images/Gemini_Generated_Image_rxv1alrxv1alrxv1 (1).png'; // Using generic accessory if specific not found
-import imgAchkan from '../assets/images/boy.jpeg'; // Placeholder for Ivory Achkan
-import imgGown from '../assets/images/girl.png'; // Placeholder for Gown
-import imgClutch from '../assets/images/Gemini_Generated_Image_r281slr281slr281.png';
-import imgJacket from '../assets/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png';
-import imgSaree2 from '../assets/images/Gemini_Generated_Image_yunch4yunch4yunc.png';
-import imgAnarkali from '../assets/images/Gemini_Generated_Image_2heebf2heebf2hee.png';
-import imgTuxedo from '../assets/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png';
-import imgBandi from '../assets/images/Gemini_Generated_Image_687ijq687ijq687i.png';
-import imgRoseLehenga from '../assets/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png';
-import imgGenericMen from '../assets/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png';
-import imgGenericAcc from '../assets/images/Gemini_Generated_Image_sx86uosx86uosx86.png';
+const imgSherwani = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const imgLehenga = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
+const imgBag = "/images/hand bag.png";
+const imgBandhgala = "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png";
+const imgSaree = "/images/Gemini_Generated_Image_120fuv120fuv120f.png";
+const imgWallet = "/images/Gemini_Generated_Image_rxv1alrxv1alrxv1 (1).png";
+const imgAchkan = "/images/boy.jpeg";
+const imgGown = "/images/girl.png";
+const imgClutch = "/images/Gemini_Generated_Image_r281slr281slr281.png";
+const imgJacket = "/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png";
+const imgSaree2 = "/images/Gemini_Generated_Image_yunch4yunch4yunc.png";
+const imgAnarkali = "/images/Gemini_Generated_Image_2heebf2heebf2hee.png";
+const imgTuxedo = "/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png";
+const imgBandi = "/images/Gemini_Generated_Image_687ijq687ijq687i.png";
+const imgRoseLehenga = "/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
+const imgGenericMen = "/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png";
+const imgGenericAcc = "/images/Gemini_Generated_Image_sx86uosx86uosx86.png";
 
 
 // Exact Product List

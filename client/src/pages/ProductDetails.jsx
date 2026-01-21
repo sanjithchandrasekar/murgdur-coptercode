@@ -8,7 +8,7 @@ import { products } from '../data/products';
 const ProductDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { addToCart, addToWishlist, wishlistItems } = useCart();
+    const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } = useCart();
 
     const product = products.find(p => p.id === parseInt(id));
 
@@ -27,6 +27,24 @@ const ProductDetails = () => {
             }
         }
     }, [product]);
+
+    const handleShare = async () => {
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: product.name,
+                    text: `Check out this ${product.name} on Murgdur`,
+                    url: window.location.href,
+                });
+            } catch (error) {
+                console.log('Error sharing:', error);
+            }
+        } else {
+            // Fallback
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
+        }
+    };
 
     if (!product) {
         return (
@@ -77,12 +95,15 @@ const ProductDetails = () => {
                         <div className="flex-1 bg-gray-900 border border-white/5 relative aspect-[3/4] md:aspect-auto md:h-[600px] overflow-hidden">
                             <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
                             <button
-                                onClick={() => addToWishlist({ ...product, selectedSize, selectedColor })}
+                                onClick={() => isWishlisted ? removeFromWishlist(product.id) : addToWishlist({ ...product, selectedSize, selectedColor })}
                                 className="absolute top-4 right-4 p-3 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all"
                             >
                                 <Heart size={20} className={`${isWishlisted ? 'text-red-500 fill-red-500' : 'text-white'} hover:text-red-500 hover:fill-red-500`} />
                             </button>
-                            <button className="absolute top-16 right-4 p-3 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all">
+                            <button
+                                onClick={handleShare}
+                                className="absolute top-16 right-4 p-3 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all"
+                            >
                                 <Share2 size={20} className="text-white" />
                             </button>
                         </div>
@@ -172,7 +193,7 @@ const ProductDetails = () => {
                                 className="w-full py-4 bg-royal-gold text-black hover:bg-white font-bold tracking-widest"
                                 onClick={() => addToCart({ ...product, selectedSize, selectedColor }, quantity)}
                             >
-                                ADD TO BAG
+                                ADD TO CART
                             </Button>
                             <Button variant="outline" className="w-full py-4" onClick={() => { addToCart({ ...product, selectedSize, selectedColor }, quantity); navigate('/checkout'); }}>
                                 BUY NOW
