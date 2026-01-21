@@ -109,11 +109,18 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
                         {[
                             { name: "Women's Handbags", img: "/images/women bag/woman bag white 1.jpeg", type: "image" },
-                            { name: "Women's Small Leather Goods", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop", type: "image" },
+                            { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image" },
                             { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image" },
                             { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image" }
-                        ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block mb-8">
+                        ].map((item, idx) => {
+                            let link = "/shop";
+                            if (item.name.includes("Handbag") || item.name.includes("Leather Goods")) {
+                                link = "/shop?type=bags";
+                            } else if (item.name.includes("Perfume")) {
+                                link = "/shop?type=perfumes";
+                            }
+                            return (
+                            <Link to={link} key={idx} className="group block mb-8">
                                 <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
                                     {item.type === 'video' ? (
                                         <video
@@ -136,7 +143,8 @@ const Home = () => {
                                     {item.name}
                                 </h3>
                             </Link>
-                        ))}
+                            );
+                        })}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
@@ -219,7 +227,7 @@ const Home = () => {
                             { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women bag/women bag brown front.jpeg" },
                             { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png" },
                             { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png" },
-                            { name: "Passport Cover", price: "₹ 8,500", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Passport Cover", price: "₹ 8,500", img: "/images/passport.jpg" }
                         ].map((item, idx) => (
                             <Link to="/shop" key={idx} className="group cursor-pointer">
                                 <div className="aspect-square bg-gray-50 border border-gray-100 mb-6 overflow-hidden relative rounded-sm transition-colors duration-500 group-hover:bg-gray-100">
@@ -285,11 +293,11 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
                             { name: "Monogram Speedy", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Rose Leather", img: "https://images.unsplash.com/photo-1590874103328-327d3654d6a2?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Women's Small Leather Goods", img: "/images/womens%20small%20leather%20goods.jpg" },
                             { name: "Nano Multi-Color", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Vanity Case", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Vanity Case", img: "/images/vanitycase.jpg" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block cursor-pointer">
+                            <Link to="/shop?type=bags" key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
                                     <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
                                         <Heart size={20} />
@@ -317,10 +325,10 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { name: "Zippy Wallet", img: "https://images.unsplash.com/photo-1627123424574-181ce5171c98?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg" },
                             { name: "Passport Cover", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
                             { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Micro Vanity", img: "https://images.unsplash.com/photo-1590874103328-327d3654d6a2?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Micro Vanity", img: "/images/micro.jpg" }
                         ].map((item, idx) => (
                             <Link to="/shop" key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
@@ -368,12 +376,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { name: "Time Out Sneaker", img: "https://images.unsplash.com/photo-1560769629-975e13f0c470?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Women's Heels", img: "/images/womensslipper.jpeg" },
                             { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop" },
                             { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop" },
                             { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block cursor-pointer">
+                            <Link to="/shop?type=shoes" key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
                                     <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
                                         <Heart size={20} />
@@ -397,7 +405,7 @@ const Home = () => {
                     <div className="flex flex-col md:flex-row items-center gap-12">
                         <div className="w-full md:w-1/2 h-[600px] overflow-hidden relative group">
                             <img
-                                src="https://images.unsplash.com/photo-1594035910387-fea4779426e9?q=80&w=1200&auto=format&fit=crop"
+                                src="/images/royal_perfume.png"
                                 alt="Perfumery"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                             />
@@ -422,11 +430,11 @@ const Home = () => {
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12">Guardians of Time</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { name: "Tambour Moon", img: "https://images.unsplash.com/photo-1523170335258-f5ed11844a49?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Escale Spin Time", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Voyager Skeleton", img: "https://images.unsplash.com/photo-1522312346375-d1a52e2b99b3?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Tambour Moon", img: "/images/watch%202.png" },
+                            { name: "Escale Spin Time", img: "/images/watch1.png" },
+                            { name: "Voyager Skeleton", img: "/images/royal_watch.png" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group cursor-pointer">
+                            <Link to="/shop?type=watches" key={idx} className="group cursor-pointer">
                                 <div className="aspect-[3/4] overflow-hidden mb-6 relative">
                                     <img
                                         src={item.img}
@@ -448,9 +456,9 @@ const Home = () => {
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12 text-center">Privileges of Court</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { title: "Personalization", desc: "Make it your own with hot stamping and painting.", img: "https://images.unsplash.com/photo-1549439602-43ebca23d7e9?q=80&w=800&auto=format&fit=crop" },
-                            { title: "The Art of Gifting", desc: "The perfect gift, beautifully wrapped.", img: "https://images.unsplash.com/photo-1549439602-43ebca23d7e9?q=80&w=800&auto=format&fit=crop" },
-                            { title: "Repairs & Care", desc: "Preserve the beauty of your Murgdur creation.", img: "https://images.unsplash.com/photo-1605518216965-7bc81f4b9b08?q=80&w=800&auto=format&fit=crop" }
+                            { title: "Personalization", desc: "Make it your own with hot stamping and painting.", img: "/images/per.jpg" },
+                            { title: "The Art of Gifting", desc: "The perfect gift, beautifully wrapped.", img: "/images/gift.jpg" },
+                            { title: "Repairs & Care", desc: "Preserve the beauty of your Murgdur creation.", img: "/images/cares.jpg" }
                         ].map((item, idx) => (
                             <div key={idx} className="group cursor-pointer">
                                 <div className="aspect-video overflow-hidden mb-6 relative">
@@ -475,7 +483,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
                         {[
                             { title: "Men's Fall-Winter 2026 Show", category: "FASHION SHOWS", img: "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=800&auto=format&fit=crop" },
-                            { title: "Commitment to Sustainability", category: "SUSTAINABILITY", img: "https://images.unsplash.com/photo-1542601906990-b4d3fb7d5fa5?q=80&w=800&auto=format&fit=crop" },
+                            { title: "Commitment to Sustainability", category: "SUSTAINABILITY", img: "/images/sus.jpg" },
                             { title: "La Galerie Murgdur", category: "ARTS & CULTURE", img: "https://images.unsplash.com/photo-1460661419201-fd4cecdf8a8b?q=80&w=800&auto=format&fit=crop" }
                         ].map((item, idx) => (
                             <div key={idx} className="group cursor-pointer">
@@ -505,7 +513,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { name: "The Wedding", img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Cocktail Hour", img: "https://images.unsplash.com/photo-1598532434029-9d9e6e17d685?q=80&w=800&auto=format&fit=crop" },
+                            { name: "Cocktail Hour", img: "/images/royal_perfume.png" },
                             { name: "Festive Gala", img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop" },
                             { name: "Business Elite", img: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?q=80&w=800&auto=format&fit=crop" }
                         ].map((item, idx) => (

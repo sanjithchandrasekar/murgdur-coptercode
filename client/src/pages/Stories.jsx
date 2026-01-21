@@ -61,7 +61,7 @@ const Stories = () => {
                     <div className="group cursor-pointer">
                         <div className="overflow-hidden mb-6 aspect-video">
                             <img
-                                src="https://images.unsplash.com/photo-1627964402634-91ce35d5565f?q=80&w=2070&auto=format&fit=crop"
+                                src="/images/royal_wallet.png"
                                 alt="Craftsmanship"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                             />

@@ -11,13 +11,18 @@ const Shop = () => {
     const searchParams = new URLSearchParams(location.search);
     // Initialize state with URL param, but allow local updates
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-
+    const typeFilter = searchParams.get('type') || '';
 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [sortBy, setSortBy] = useState('relevance');
     const { addToWishlist, wishlistItems } = useCart();
 
     let products = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // Filter by type (shoes, watches, etc.)
+    if (typeFilter) {
+        products = products.filter(p => (p.type || '').toLowerCase() === typeFilter.toLowerCase());
+    }
 
     // Filter by Category
     if (selectedCategories.length > 0) {
