@@ -1,8 +1,62 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Facebook, Twitter, Youtube, Instagram, Briefcase, Star, Gift, HelpCircle } from 'lucide-react';
+import { fetchFooter } from '../../utils/sanity';
 
 const Footer = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchFooter();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
+
+    const aboutLinks = data?.aboutLinks?.length ? data.aboutLinks : [
+        { title: "Contact Us", url: "/contact" },
+        { title: "About Us", url: "/about" },
+        { title: "Careers", url: "/careers" },
+        { title: "Murgdur Stories", url: "/stories" },
+        { title: "Press", url: "/press" },
+        { title: "Corporate Information", url: "/corporate" }
+    ];
+
+    const helpLinks = data?.helpLinks?.length ? data.helpLinks : [
+        { title: "Payments", url: "/payments" },
+        { title: "Shipping", url: "/shipping" },
+        { title: "Cancellation & Returns", url: "/cancellation" },
+        { title: "FAQ", url: "/faq" },
+        { title: "Report Infringement", url: "/report" }
+    ];
+
+    const policyLinks = data?.policyLinks?.length ? data.policyLinks : [
+        { title: "Cancellation & Returns", url: "/cancellation" },
+        { title: "Terms Of Use", url: "/terms" },
+        { title: "Security", url: "/security" },
+        { title: "Privacy", url: "/privacy" },
+        { title: "Sitemap", url: "/sitemap" },
+        { title: "Grievance Redressal", url: "/grievance" },
+        { title: "EPR Compliance", url: "/epr" }
+    ];
+
+    const defaultMailAddress = `Murgdur Private Limited,
+Buildings Alyssa, Begonia &
+Clove Embassy Tech Village,
+Outer Ring Road, Devarabeesanahalli Village,
+Bengaluru, 560103,
+Karnataka, India`;
+
+    const defaultOfficeAddress = `Murgdur Private Limited,
+Buildings Alyssa, Begonia &
+Clove Embassy Tech Village,
+Outer Ring Road, Devarabeesanahalli Village,
+Bengaluru, 560103,
+Karnataka, India
+CIN : U51109KA2012PTC066107
+Telephone: 044-45614700 / 044-67415800`;
+
     return (
         <footer className="bg-royal-black text-gray-400 font-sans text-[12px] leading-relaxed border-t border-white/5">
 
@@ -17,12 +71,9 @@ const Footer = () => {
                         <div>
                             <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">About</h3>
                             <ul className="space-y-2">
-                                <li><Link to="/contact" className="hover:text-white block transition-colors">Contact Us</Link></li>
-                                <li><Link to="/about" className="hover:text-white block transition-colors">About Us</Link></li>
-                                <li><Link to="/careers" className="hover:text-white block transition-colors">Careers</Link></li>
-                                <li><Link to="/stories" className="hover:text-white block transition-colors">Murgdur Stories</Link></li>
-                                <li><Link to="/press" className="hover:text-white block transition-colors">Press</Link></li>
-                                <li><Link to="/corporate" className="hover:text-white block transition-colors">Corporate Information</Link></li>
+                                {aboutLinks.map((link, idx) => (
+                                    <li key={idx}><Link to={link.url} className="hover:text-white block transition-colors">{link.title}</Link></li>
+                                ))}
                             </ul>
                         </div>
 
@@ -30,11 +81,9 @@ const Footer = () => {
                         <div>
                             <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">Help</h3>
                             <ul className="space-y-2">
-                                <li><Link to="/payments" className="hover:text-white block transition-colors">Payments</Link></li>
-                                <li><Link to="/shipping" className="hover:text-white block transition-colors">Shipping</Link></li>
-                                <li><Link to="/cancellation" className="hover:text-white block transition-colors">Cancellation & Returns</Link></li>
-                                <li><Link to="/faq" className="hover:text-white block transition-colors">FAQ</Link></li>
-                                <li><Link to="/report" className="hover:text-white block transition-colors">Report Infringement</Link></li>
+                                {helpLinks.map((link, idx) => (
+                                    <li key={idx}><Link to={link.url} className="hover:text-white block transition-colors">{link.title}</Link></li>
+                                ))}
                             </ul>
                         </div>
 
@@ -42,13 +91,9 @@ const Footer = () => {
                         <div>
                             <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">Consumer Policy</h3>
                             <ul className="space-y-2">
-                                <li><Link to="/cancellation" className="hover:text-white block transition-colors">Cancellation & Returns</Link></li>
-                                <li><Link to="/terms" className="hover:text-white block transition-colors">Terms Of Use</Link></li>
-                                <li><Link to="/security" className="hover:text-white block transition-colors">Security</Link></li>
-                                <li><Link to="/privacy" className="hover:text-white block transition-colors">Privacy</Link></li>
-                                <li><Link to="/sitemap" className="hover:text-white block transition-colors">Sitemap</Link></li>
-                                <li><Link to="/grievance" className="hover:text-white block transition-colors">Grievance Redressal</Link></li>
-                                <li><Link to="/epr" className="hover:text-white block transition-colors">EPR Compliance</Link></li>
+                                {policyLinks.map((link, idx) => (
+                                    <li key={idx}><Link to={link.url} className="hover:text-white block transition-colors">{link.title}</Link></li>
+                                ))}
                             </ul>
                         </div>
                     </div>
@@ -62,22 +107,17 @@ const Footer = () => {
                         {/* Mail Us */}
                         <div>
                             <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">Mail Us:</h3>
-                            <div className="text-gray-400 space-y-1">
-                                <p>Murgdur Private Limited,</p>
-                                <p>Buildings Alyssa, Begonia &</p>
-                                <p>Clove Embassy Tech Village,</p>
-                                <p>Outer Ring Road, Devarabeesanahalli Village,</p>
-                                <p>Bengaluru, 560103,</p>
-                                <p>Karnataka, India</p>
+                            <div className="text-gray-400 space-y-1 whitespace-pre-line">
+                                {data?.mailAddress || defaultMailAddress}
                             </div>
 
                             <div className="mt-6">
                                 <h3 className="text-royal-gold uppercase mb-2 text-[10px] tracking-widest font-bold">Social:</h3>
                                 <div className="flex gap-4">
-                                    <a href="#!" className="hover:text-blue-500 transition-colors"><Facebook size={20} /></a>
-                                    <a href="#!" className="hover:text-blue-400 transition-colors"><Twitter size={20} /></a>
-                                    <a href="#!" className="hover:text-red-500 transition-colors"><Youtube size={20} /></a>
-                                    <a href="#!" className="hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
+                                    <a href={data?.socialLinks?.facebook || "#!"} className="hover:text-blue-500 transition-colors"><Facebook size={20} /></a>
+                                    <a href={data?.socialLinks?.twitter || "#!"} className="hover:text-blue-400 transition-colors"><Twitter size={20} /></a>
+                                    <a href={data?.socialLinks?.youtube || "#!"} className="hover:text-red-500 transition-colors"><Youtube size={20} /></a>
+                                    <a href={data?.socialLinks?.instagram || "#!"} className="hover:text-pink-500 transition-colors"><Instagram size={20} /></a>
                                 </div>
                             </div>
                         </div>
@@ -85,15 +125,8 @@ const Footer = () => {
                         {/* Registered Office Address */}
                         <div>
                             <h3 className="text-royal-gold uppercase mb-4 text-[10px] tracking-widest font-bold">Registered Office Address:</h3>
-                            <div className="text-gray-400 space-y-1">
-                                <p>Murgdur Private Limited,</p>
-                                <p>Buildings Alyssa, Begonia &</p>
-                                <p>Clove Embassy Tech Village,</p>
-                                <p>Outer Ring Road, Devarabeesanahalli Village,</p>
-                                <p>Bengaluru, 560103,</p>
-                                <p>Karnataka, India</p>
-                                <p>CIN : U51109KA2012PTC066107</p>
-                                <p>Telephone: <span className="text-royal-gold">044-45614700</span> / <span className="text-royal-gold">044-67415800</span></p>
+                            <div className="text-gray-400 space-y-1 whitespace-pre-line">
+                                {data?.officeAddress || defaultOfficeAddress}
                             </div>
                         </div>
 

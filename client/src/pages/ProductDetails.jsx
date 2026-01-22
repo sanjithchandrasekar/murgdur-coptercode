@@ -3,30 +3,52 @@ import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2, X } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
-import { products } from '../data/products';
+import { fetchProducts } from '../utils/sanity';
 
 const ProductDetails = () => {
     const { id } = useParams();
     const navigate = useNavigate();
     const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } = useCart();
 
-    const product = products.find(p => p.id === parseInt(id));
+    const [product, setProduct] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     const [selectedSize, setSelectedSize] = useState("M");
-    const [selectedColor, setSelectedColor] = useState(product && product.colors && product.colors.length > 0 ? product.colors[0] : null);
-    const [selectedImage, setSelectedImage] = useState(product ? product.images[0] : null);
+    const [selectedColor, setSelectedColor] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(null);
     // const [quantity, setQuantity] = useState(1); // Quantity controlled in cart only
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+
+    // Fetch Product
+    useEffect(() => {
+        const load = async () => {
+            setLoading(true);
+            const allProducts = await fetchProducts();
+            // Loosely compare ID to support both int (static) and string (sanity) IDs
+            const found = allProducts.find(p => p.id.toString() === id || p._id === id);
+            setProduct(found);
+            setLoading(false);
+        };
+        load();
+    }, [id]);
 
     // Update selected image and color when product changes
     useEffect(() => {
         if (product) {
-            setSelectedImage(product.images[0]);
+            setSelectedImage(product.images ? product.images[0] : product.image);
             if (product.colors && product.colors.length > 0) {
                 setSelectedColor(product.colors[0]);
             }
         }
     }, [product]);
+
+    if (loading) {
+        return (
+            <div className="bg-royal-black min-h-screen pt-32 text-white text-center flex items-center justify-center">
+                <div className="animate-pulse text-royal-gold tracking-widest uppercase">Loading Exquisite Item...</div>
+            </div>
+        );
+    }
 
     const handleShare = async () => {
         if (navigator.share) {

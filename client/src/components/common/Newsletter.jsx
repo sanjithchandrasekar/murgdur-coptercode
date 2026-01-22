@@ -1,7 +1,21 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Mail } from 'lucide-react';
+import { fetchNewsletter } from '../../utils/sanity';
 
 const Newsletter = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchNewsletter();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
+
+    const defaultFeatures = ["Early Access", "Exclusive Offers", "Style Notes"];
+    const features = data?.features || defaultFeatures;
+
     return (
         <section className="py-24 bg-royal-ivory relative overflow-hidden border-t border-gray-200">
             {/* Decorative big letter background M - positioned far right */}
@@ -13,15 +27,16 @@ const Newsletter = () => {
 
                 {/* Text Section */}
                 <div className="md:w-1/2">
-                    <h2 className="text-3xl md:text-4xl font-serif text-royal-maroon mb-4">Join The Royal Circle</h2>
+                    <h2 className="text-3xl md:text-4xl font-serif text-royal-maroon mb-4">
+                        {data?.heading || "Join The Royal Circle"}
+                    </h2>
                     <p className="text-gray-600 font-light text-sm leading-relaxed mb-6 max-w-md">
-                        Be the first to know about our exclusive launches, private sales, and prestige events.
-                        Subscribe to our newsletter and receive a complimentary style guide.
+                        {data?.subHeading || "Be the first to know about our exclusive launches, private sales, and prestige events. Subscribe to our newsletter and receive a complimentary style guide."}
                     </p>
                     <div className="flex items-center gap-3 text-[10px] text-gray-500 uppercase tracking-widest font-medium">
-                        <span>- Early Access</span>
-                        <span>- Exclusive Offers</span>
-                        <span>- Style Notes</span>
+                        {features.map((feature, idx) => (
+                            <span key={idx}>- {feature}</span>
+                        ))}
                     </div>
                 </div>
 

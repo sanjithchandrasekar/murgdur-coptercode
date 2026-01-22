@@ -1,12 +1,47 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, Link } from 'react-router-dom';
+import { fetchPolicyPage } from '../utils/sanity';
+// Note: Ideally use @portabletext/react for rich text, but doing a simple map here for text blocks
+const SimpleBlockRenderer = ({ blocks }) => {
+    if (!blocks) return null;
+    return (
+        <div className="text-left space-y-6 text-gray-300 font-light">
+            {blocks.map((block, idx) => {
+                if (block._type === 'block') {
+                    return <p key={idx}>{block.children.map(c => c.text).join('')}</p>;
+                }
+                if (block._type === 'infobox') {
+                    return (
+                        <div key={idx}>
+                            <h3 className="text-white font-serif text-xl mb-2">{block.title}</h3>
+                            <p className="whitespace-pre-line">{block.text}</p>
+                        </div>
+                    );
+                }
+                return null;
+            })}
+        </div>
+    );
+};
 
 const InfoPage = () => {
     const location = useLocation();
     const path = location.pathname;
+    const slug = path.substring(1); // e.g. 'cancellation' from '/cancellation'
+
+    const [sanityData, setSanityData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchPolicyPage(slug);
+            if (result) setSanityData(result);
+            else setSanityData(null); // Reset if not found
+        };
+        load();
+    }, [slug]);
 
     // Default title from path
-    const defaultTitle = path.substring(1).split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const defaultTitle = slug.split('-').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
 
     const pageContent = {
         '/cancellation': {
@@ -257,7 +292,10 @@ const InfoPage = () => {
         }
     };
 
-    const currentData = pageContent[path] || { title: defaultTitle, content: null };
+    // Use Sanity data if available, otherwise fallback
+    const currentData = sanityData
+        ? { title: sanityData.title, content: <SimpleBlockRenderer blocks={sanityData.content} /> }
+        : (pageContent[path] || { title: defaultTitle, content: null });
 
     return (
         <div className="min-h-screen bg-royal-black pt-32 pb-20 px-6">

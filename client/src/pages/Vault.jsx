@@ -1,15 +1,25 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import { Trash2, ShoppingBag, Star, Share2 } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
-
+import { fetchVaultPage } from '../utils/sanity';
 
 const Vault = () => {
     const navigate = useNavigate();
     const { wishlistItems, removeFromWishlist, moveToCart } = useCart();
 
+    // Connect to Sanity for page text labels
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchVaultPage();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
 
     return (
         <div className="min-h-screen bg-royal-black pt-32 pb-20 px-4 md:px-0">
@@ -23,7 +33,9 @@ const Vault = () => {
                 </div>
                 <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-white/10 pb-4">
                     <div>
-                        <h1 className="text-3xl md:text-4xl font-serif text-royal-gold mb-2">My Vault</h1>
+                        <h1 className="text-3xl md:text-4xl font-serif text-royal-gold mb-2">
+                            {data?.heading || "My Vault"}
+                        </h1>
                         <p className="text-gray-400 font-light">
                             {wishlistItems.length} exclusive items saved for later
                         </p>
@@ -139,8 +151,10 @@ const Vault = () => {
 
                 {/* Empty State Suggestion */}
                 <div className="mt-12 text-center">
-                    <p className="text-gray-500 mb-4">Looking for more?</p>
-                    <Button variant="outline" onClick={() => navigate('/shop')} className="border-white/20 text-white hover:bg-white hover:text-black">Continue Shopping</Button>
+                    <p className="text-gray-500 mb-4">{data?.emptyStateText || "Looking for more?"}</p>
+                    <Button variant="outline" onClick={() => navigate('/shop')} className="border-white/20 text-white hover:bg-white hover:text-black">
+                        {data?.emptyStateButton || "Continue Shopping"}
+                    </Button>
                 </div>
 
             </div>

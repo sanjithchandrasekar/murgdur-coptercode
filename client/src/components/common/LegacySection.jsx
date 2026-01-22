@@ -1,7 +1,18 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { fetchLegacySection } from '../../utils/sanity';
 
 const LegacySection = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchLegacySection();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
+
     return (
         <section className="py-24 bg-royal-charcoal text-center relative overflow-hidden border-t border-white/5">
             <div className="container mx-auto px-6 max-w-4xl relative z-10">
@@ -13,9 +24,15 @@ const LegacySection = () => {
                     viewport={{ once: true }}
                     className="mb-12"
                 >
-                    <h2 className="text-royal-gold text-lg tracking-[0.3em] font-medium uppercase mb-4">Our Heritage</h2>
-                    <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">A Legacy of Excellence</h1>
-                    <p className="text-white/80 font-light text-lg">Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship</p>
+                    <h2 className="text-royal-gold text-lg tracking-[0.3em] font-medium uppercase mb-4">
+                        {data?.subHeading || "Our Heritage"}
+                    </h2>
+                    <h1 className="text-4xl md:text-5xl font-serif text-white mb-6">
+                        {data?.heading || "A Legacy of Excellence"}
+                    </h1>
+                    <p className="text-white/80 font-light text-lg">
+                        {data?.body || "Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship"}
+                    </p>
                 </motion.div>
 
                 {/* Divider */}
@@ -29,14 +46,13 @@ const LegacySection = () => {
                     transition={{ delay: 0.2 }}
                     className="space-y-8"
                 >
-                    <h3 className="text-2xl font-serif text-royal-ivory">In Memory of Sri Sundershan Duraisamy</h3>
+                    <h3 className="text-2xl font-serif text-royal-ivory">
+                        {data?.memoryTitle || "In Memory of Sri Sundershan Duraisamy"}
+                    </h3>
 
                     <div className="text-white/90 font-light leading-relaxed space-y-6 text-lg">
                         <p>
-                            Murgdur was founded in 2019 by the late <span className="text-royal-gold">Sri Sundershan Duraisamy</span>, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship. His philosophy was simple yet profound: create pieces that transcend trends and become treasured heirlooms.
-                        </p>
-                        <p>
-                            Every product we create honors his legacy—a commitment to excellence, attention to detail, and an unwavering dedication to quality that defines the Murgdur name.
+                            {data?.memoryBody || "Murgdur was founded in 2019 by the late Sri Sundershan Duraisamy, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship. His philosophy was simple yet profound: create pieces that transcend trends and become treasured heirlooms."}
                         </p>
                     </div>
 

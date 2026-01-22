@@ -9,6 +9,7 @@ import Button from '../components/common/Button';
 import { Link } from 'react-router-dom';
 import LegacySection from '../components/common/LegacySection';
 import { motion, AnimatePresence } from 'framer-motion';
+import { fetchHomePage } from '../utils/sanity';
 
 const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
 const trend1 = "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png";
@@ -21,6 +22,16 @@ const imgWomen = "/images/girl.png";
 const royalBg = "/images/royal_dress_bg.png";
 
 const Home = () => {
+    const [homeData, setHomeData] = useState(null);
+
+    useEffect(() => {
+        const loadData = async () => {
+            const data = await fetchHomePage();
+            if (data) setHomeData(data);
+        };
+        loadData();
+    }, []);
+
     const [currentVideoSlide, setCurrentVideoSlide] = useState(0);
 
     // "Video" Slideshow content
@@ -48,7 +59,7 @@ const Home = () => {
     return (
         <div className="bg-royal-black overflow-x-hidden">
             {/* 1. Full Screen Hero Slider */}
-            <HeroSlider />
+            <HeroSlider slides={homeData?.heroSlides} />
 
             {/* New Promotional Banner Section (Wood Texture Style) */}
             <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
@@ -59,7 +70,7 @@ const Home = () => {
 
                 {/* Background Image - Royal Light Theme */}
                 <img
-                    src={royalBg}
+                    src={homeData?.promoSection?.backgroundImage || royalBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
                 />
@@ -69,17 +80,17 @@ const Home = () => {
                 <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full max-w-5xl mx-auto">
                     {/* Eyebrow Label */}
                     <span className="text-xs md:text-sm font-bold tracking-[0.5em] uppercase text-[#D4AF37] mb-4 animate-fade-in block drop-shadow-md">
-                        The Imperial Showcase
+                        {homeData?.promoSection?.eyebrow || "The Imperial Showcase"}
                     </span>
 
                     {/* Main Hashtag - Stencil Font */}
                     <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold text-[#D4AF37] tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight" style={{ fontFamily: '"Stardos Stencil", cursive' }}>
-                        #ROYALASCENSION
+                        {homeData?.promoSection?.hashtag || "#ROYALASCENSION"}
                     </h1>
 
                     {/* Subheading */}
                     <h2 className="text-2xl md:text-5xl font-serif text-white font-medium drop-shadow-md mb-8">
-                        The Sovereign Winter
+                        {homeData?.promoSection?.heading || "The Sovereign Winter"}
                     </h2>
 
                     {/* CTA */}
@@ -88,7 +99,7 @@ const Home = () => {
                             to="/royal-collection"
                             className="inline-block text-white border-b border-white pb-1 text-sm md:text-base font-medium tracking-wide hover:text-[#D4AF37] hover:border-[#D4AF37] transition-colors drop-shadow-md"
                         >
-                            Witness The Coronation
+                            {homeData?.promoSection?.ctaText || "Witness The Coronation"}
                         </Link>
                     </div>
                 </div>
@@ -107,41 +118,33 @@ const Home = () => {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
-                        {[
-                            { name: "Women's Handbags", img: "/images/women handbag/woman bag white 1.jpeg", type: "image" },
-                            { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image" },
-                            { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image" },
-                            { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image" }
-                        ].map((item, idx) => {
-                            let link = "/shop";
-                            if (item.name.includes("Handbag") || item.name.includes("Leather Goods")) {
-                                link = "/shop?type=bags";
-                            } else if (item.name.includes("Perfume")) {
-                                link = "/shop?type=perfumes";
+                        {(homeData?.treasures && homeData.treasures.length > 0 ? homeData.treasures : [
+                            { name: "Women's Handbags", img: "/images/women handbag/woman bag white 1.jpeg", type: "image", isStatic: true },
+                            { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image", isStatic: true },
+                            { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image", isStatic: true },
+                            { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image", isStatic: true }
+                        ]).map((item, idx) => {
+                            let link = item.isStatic ? "/shop" : `/product/${item._id}`;
+                            if (item.isStatic) {
+                                if (item.name.includes("Handbag") || item.name.includes("Leather Goods")) link = "/shop?type=bags";
+                                else if (item.name.includes("Perfume")) link = "/shop?type=perfumes";
                             }
+
                             return (
                                 <Link to={link} key={idx} className="group block mb-8">
                                     <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
-                                        {item.type === 'video' ? (
-                                            <video
-                                                src={item.img}
-                                                autoPlay
-                                                loop
-                                                muted
-                                                playsInline
-                                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
-                                            />
-                                        ) : (
-                                            <img
-                                                src={item.img}
-                                                alt={item.name}
-                                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
-                                            />
-                                        )}
+                                        <img
+                                            src={item.image || item.img}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                        />
                                     </div>
-                                    <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors">
+                                    <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors mb-1">
                                         {item.name}
                                     </h3>
+                                    {!item.isStatic && item.price && (
+                                        <p className="text-center text-[10px] text-gray-500">₹ {item.price.toLocaleString()}</p>
+                                    )}
                                 </Link>
                             );
                         })}
@@ -181,18 +184,18 @@ const Home = () => {
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
                     poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2670&auto=format&fit=crop"
                 >
-                    <source src="https://videos.pexels.com/video-files/3205903/3205903-hd_1920_1080_25fps.mp4" type="video/mp4" />
+                    <source src={homeData?.videoCampaign?.videoUrl || "https://videos.pexels.com/video-files/3205903/3205903-hd_1920_1080_25fps.mp4"} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/20">
                     <h2 className="text-4xl md:text-6xl font-serif text-white tracking-widest uppercase drop-shadow-lg mb-4">
-                        The Royal Chronicle
+                        {homeData?.videoCampaign?.heading || "The Royal Chronicle"}
                     </h2>
                     <Link
                         to="/royal-collection"
                         className="text-xs md:text-sm font-bold text-white uppercase tracking-[0.3em] border-b border-transparent hover:border-white pb-2 transition-all"
                     >
-                        View The Saga
+                        {homeData?.videoCampaign?.ctaText || "View The Saga"}
                     </Link>
                 </div>
             </section>
@@ -207,12 +210,11 @@ const Home = () => {
             >
                 <span className="text-gray-400 uppercase tracking-[0.3em] text-xs font-medium block mb-6">Welcome to Murgdur</span>
                 <h2 className="text-2xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
-                    "The Crown Fits Only The Worthy"
+                    {homeData?.welcomeSection?.title || "\"The Crown Fits Only The Worthy\""}
                 </h2>
                 <div className="w-24 h-0.5 bg-royal-gold mx-auto my-8 opacity-50"></div>
                 <p className="text-gray-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
-                    Forged in the fires of tradition, sculpted for the modern monarch.
-                    A collection that whispers power and echoes eternity.
+                    {homeData?.welcomeSection?.body || "Forged in the fires of tradition, sculpted for the modern monarch. A collection that whispers power and echoes eternity."}
                 </p>
             </motion.section>
 

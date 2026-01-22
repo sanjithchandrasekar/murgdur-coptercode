@@ -1,11 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { fetchHeritagePage } from '../utils/sanity';
 
 const Heritage = () => {
+    const [data, setData] = useState(null);
 
-    // Scroll to top on mount
+    // Scroll to top on mount and fetch data
     useEffect(() => {
         window.scrollTo(0, 0);
+        const loadData = async () => {
+            const result = await fetchHeritagePage();
+            if (result) setData(result);
+        };
+        loadData();
     }, []);
 
     return (
@@ -20,7 +27,7 @@ const Heritage = () => {
                         transition={{ duration: 0.8 }}
                         className="text-5xl md:text-7xl font-serif text-[#f2f0ea] mb-6"
                     >
-                        A Legacy of Excellence
+                        {data?.heroHeading || "A Legacy of Excellence"}
                     </motion.h1>
                     <motion.p
                         initial={{ opacity: 0 }}
@@ -28,7 +35,7 @@ const Heritage = () => {
                         transition={{ duration: 0.8, delay: 0.3 }}
                         className="text-lg md:text-xl text-[#dcd6ce] font-light"
                     >
-                        Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship
+                        {data?.heroSubheading || "Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship"}
                     </motion.p>
                 </div>
             </div>
@@ -42,7 +49,7 @@ const Heritage = () => {
                         viewport={{ once: true }}
                         className="text-4xl md:text-5xl font-serif text-[#4a4a4a] mb-12"
                     >
-                        In Memory of Sri Sundershan Duraisamy
+                        {data?.contentHeading || "In Memory of Sri Sundershan Duraisamy"}
                     </motion.h2>
 
                     <motion.div
@@ -53,10 +60,7 @@ const Heritage = () => {
                         className="space-y-8 text-lg font-light text-gray-600 leading-loose"
                     >
                         <p>
-                            Murgdur was founded in 2019 by the late Sri Sundershan Duraisamy, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship. His philosophy was simple yet profound: create pieces that transcend trends and become treasured heirlooms.
-                        </p>
-                        <p>
-                            Every product we create honors his legacy—a commitment to excellence, attention to detail, and an unwavering dedication to quality that defines the Murgdur name.
+                            {data?.contentBody || "Murgdur was founded in 2019 by the late Sri Sundershan Duraisamy, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship."}
                         </p>
                     </motion.div>
                 </div>

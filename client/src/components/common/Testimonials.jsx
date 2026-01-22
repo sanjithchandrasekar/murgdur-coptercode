@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { fetchTestimonials } from '../../utils/sanity';
 
 const Testimonials = () => {
-    const reviews = [
+    const defaultReviews = [
         {
             text: "The fabric quality is simply unmatched. I wore the Sherwani for my reception and felt absolutely royal.",
             author: "Vikram R.",
@@ -18,6 +19,16 @@ const Testimonials = () => {
             role: "DOCTOR, DELHI"
         }
     ];
+
+    const [reviews, setReviews] = useState(defaultReviews);
+
+    useEffect(() => {
+        const load = async () => {
+            const data = await fetchTestimonials();
+            if (data?.reviews) setReviews(data.reviews);
+        };
+        load();
+    }, []);
 
     return (
         <section className="py-20 bg-royal-black text-center relative z-20">

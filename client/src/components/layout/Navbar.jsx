@@ -3,8 +3,9 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, User, Heart, ShoppingBag, Menu, X, ArrowLeft, Package, Star, Gift, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
+import { fetchSiteSettings } from '../../utils/sanity';
 
-const logo = "/images/logo.jpeg";
+const defaultLogo = "/images/logo.jpeg";
 
 const Navbar = () => {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -16,6 +17,16 @@ const Navbar = () => {
     const navigate = useNavigate();
     const { getCartCount, wishlistItems } = useCart();
     const [user, setUser] = useState(null);
+    const [siteSettings, setSiteSettings] = useState(null);
+
+    // Fetch Site Settings
+    useEffect(() => {
+        const loadSettings = async () => {
+            const data = await fetchSiteSettings();
+            if (data) setSiteSettings(data);
+        };
+        loadSettings();
+    }, []);
 
     // Check for user login on mount and route change
     useEffect(() => {
@@ -183,7 +194,7 @@ const Navbar = () => {
                         {`@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');`}
                     </style>
                     <span className="text-xl md:text-3xl font-bold tracking-[0.15em] md:tracking-[0.3em] text-white uppercase group-hover:text-royal-gold transition-colors" style={{ fontFamily: '"Jost", sans-serif' }}>
-                        MURGDUR
+                        {siteSettings?.title || "MURGDUR"}
                     </span>
                 </Link>
 
@@ -273,7 +284,7 @@ const Navbar = () => {
                             <div className="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
                                 <span className="text-xl font-serif text-white tracking-widest uppercase flex items-center gap-4">
                                     <div className="relative h-20 w-16 bg-[#0F0F0F] rounded-b-md flex items-center justify-center shadow-md border-x border-b border-white/10">
-                                        <img src={logo} alt="Logo" className="h-12 w-auto object-contain opacity-100" />
+                                        <img src={siteSettings?.logo || defaultLogo} alt="Logo" className="h-12 w-auto object-contain opacity-100" />
                                     </div>
                                     Menu
                                 </span>
@@ -310,8 +321,8 @@ const Navbar = () => {
 
                             <div className="mt-auto pt-8 border-t border-white/10">
                                 <p className="text-gray-500 text-xs uppercase tracking-widest mb-4">Contact</p>
-                                <p className="text-white font-serif mb-2">care@murgdur.com</p>
-                                <p className="text-white font-serif">+91 98765 43210</p>
+                                <p className="text-white font-serif mb-2">{siteSettings?.contactEmail || "care@murgdur.com"}</p>
+                                <p className="text-white font-serif">{siteSettings?.contactPhone || "+91 98765 43210"}</p>
                             </div>
                         </motion.div>
                     </motion.div>

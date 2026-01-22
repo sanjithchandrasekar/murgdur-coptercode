@@ -11,8 +11,8 @@ const img1 = "/images/Gemini_Generated_Image_120fuv120fuv120f.png";
 const img2 = "/images/Gemini_Generated_Image_2heebf2heebf2hee.png";
 const img3 = "/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png";
 
-const HeroSlider = () => {
-    const slides = [
+const HeroSlider = ({ slides: customSlides }) => {
+    const defaultSlides = [
         {
             id: 1,
             video: "/videos/perfume1.mp4", // Local Video
@@ -36,6 +36,8 @@ const HeroSlider = () => {
         }
     ];
 
+    const slides = (customSlides && customSlides.length > 0) ? customSlides : defaultSlides;
+
     return (
         <div className="h-screen w-full relative">
             <SwiperComponent
@@ -49,46 +51,49 @@ const HeroSlider = () => {
                 pagination={{ clickable: true }}
                 className="h-full w-full"
             >
-                {slides.map((slide) => (
-                    <SwiperSlide key={slide.id} className="relative">
-                        {/* Background Media: Video or Image */}
-                        {slide.video ? (
-                            <div className="absolute inset-0 w-full h-full">
-                                <video
-                                    src={slide.video}
-                                    autoPlay
-                                    loop
-                                    muted
-                                    playsInline
-                                    className="w-full h-full object-cover"
-                                />
-                                <div className="absolute inset-0 bg-black/40"></div>
-                            </div>
-                        ) : (
-                            <div
-                                className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
-                                style={{ backgroundImage: `url(${slide.image})` }}
-                            >
-                                <div className="absolute inset-0 bg-black/40"></div>
-                            </div>
-                        )}
+                {slides.map((slide, index) => {
+                    const videoSrc = slide.video || slide.videoUrl;
+                    return (
+                        <SwiperSlide key={slide.id || index} className="relative">
+                            {/* Background Media: Video or Image */}
+                            {videoSrc ? (
+                                <div className="absolute inset-0 w-full h-full">
+                                    <video
+                                        src={videoSrc}
+                                        autoPlay
+                                        loop
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover"
+                                    />
+                                    <div className="absolute inset-0 bg-black/40"></div>
+                                </div>
+                            ) : (
+                                <div
+                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
+                                    style={{ backgroundImage: `url(${slide.image})` }}
+                                >
+                                    <div className="absolute inset-0 bg-black/40"></div>
+                                </div>
+                            )}
 
-                        <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-                            <span className="text-royal-gold uppercase tracking-[0.5em] mb-4 animate-slide-up">
-                                New Arrivals
-                            </span>
-                            <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white mb-6 animate-fade-in shadow-sm">
-                                {slide.title}
-                            </h1>
-                            <p className="text-xl text-gray-200 mb-10 max-w-2xl font-light">
-                                {slide.subtitle}
-                            </p>
-                            <Link to={slide.link}>
-                                <Button variant="primary">Discover More</Button>
-                            </Link>
-                        </div>
-                    </SwiperSlide>
-                ))}
+                            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
+                                <span className="text-royal-gold uppercase tracking-[0.5em] mb-4 animate-slide-up">
+                                    New Arrivals
+                                </span>
+                                <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white mb-6 animate-fade-in shadow-sm">
+                                    {slide.title}
+                                </h1>
+                                <p className="text-xl text-gray-200 mb-10 max-w-2xl font-light">
+                                    {slide.subtitle}
+                                </p>
+                                <Link to={slide.link}>
+                                    <Button variant="primary">Discover More</Button>
+                                </Link>
+                            </div>
+                        </SwiperSlide>
+                    );
+                })}
             </SwiperComponent>
 
             {/* Custom CSS for Swiper positioning if needed */}

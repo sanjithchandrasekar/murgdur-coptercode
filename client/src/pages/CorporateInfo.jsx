@@ -1,12 +1,27 @@
-import React from 'react';
-
+import React, { useEffect, useState } from 'react';
+import { fetchCorporatePage } from '../utils/sanity';
 
 const CorporateInfo = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchCorporatePage();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
+
+    const directors = data?.directors || [
+        { name: "Vikram Aditya Singh", title: "Chairman & CEO", bio: "Former executive at Global Lux Group with over 20 years of experience in high fashion." },
+        { name: "Elena Rosetti", title: "Chief Creative Officer", bio: "Award-winning designer known for her fusion of European silhouettes and Asian textiles." }
+    ];
+
     return (
         <div className="bg-black min-h-screen text-white">
 
             <div className="pt-32 pb-20 px-6 container mx-auto">
-                <h1 className="text-4xl md:text-6xl font-serif text-royal-gold mb-12 text-center">Corporate Information</h1>
+                <h1 className="text-4xl md:text-6xl font-serif text-royal-gold mb-12 text-center">{data?.heading || "Corporate Information"}</h1>
 
                 <div className="max-w-4xl mx-auto space-y-12">
                     {/* Section 1 */}
@@ -14,16 +29,16 @@ const CorporateInfo = () => {
                         <h2 className="text-2xl font-serif text-white border-l-4 border-royal-gold pl-4">Company Overview</h2>
                         <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-gray-300 font-light leading-relaxed">
                             <p className="mb-4">
-                                <strong>Legal Name:</strong> Murgdur Private Limited
+                                <strong>Legal Name:</strong> {data?.overview?.legalName || "Murgdur Private Limited"}
                             </p>
                             <p className="mb-4">
-                                <strong>Incorporation Date:</strong> January 15, 2012
+                                <strong>Incorporation Date:</strong> {data?.overview?.incorporationDate || "January 15, 2012"}
                             </p>
                             <p className="mb-4">
-                                <strong>Headquarters:</strong> Bengaluru, Karnataka, India
+                                <strong>Headquarters:</strong> {data?.overview?.headquarters || "Bengaluru, Karnataka, India"}
                             </p>
                             <p>
-                                Murgdur is a premier luxury fashion house dedicated to preserving traditional craftsmanship while engaging with modern aesthetics. We operate globally with flagship boutiques in major capital cities.
+                                {data?.overview?.description || "Murgdur is a premier luxury fashion house dedicated to preserving traditional craftsmanship while engaging with modern aesthetics. We operate globally with flagship boutiques in major capital cities."}
                             </p>
                         </div>
                     </div>
@@ -32,20 +47,15 @@ const CorporateInfo = () => {
                     <div className="space-y-4">
                         <h2 className="text-2xl font-serif text-white border-l-4 border-royal-gold pl-4">Board of Directors</h2>
                         <div className="bg-white/5 border border-white/10 rounded-lg p-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <h3 className="text-white font-bold text-lg">Vikram Aditya Singh</h3>
-                                <p className="text-royal-gold text-sm uppercase tracking-widest mb-2">Chairman & CEO</p>
-                                <p className="text-gray-400 text-sm font-light">
-                                    Former executive at Global Lux Group with over 20 years of experience in high fashion.
-                                </p>
-                            </div>
-                            <div>
-                                <h3 className="text-white font-bold text-lg">Elena Rosetti</h3>
-                                <p className="text-royal-gold text-sm uppercase tracking-widest mb-2">Chief Creative Officer</p>
-                                <p className="text-gray-400 text-sm font-light">
-                                    Award-winning designer known for her fusion of European silhouettes and Asian textiles.
-                                </p>
-                            </div>
+                            {directors.map((director, idx) => (
+                                <div key={idx}>
+                                    <h3 className="text-white font-bold text-lg">{director.name}</h3>
+                                    <p className="text-royal-gold text-sm uppercase tracking-widest mb-2">{director.title}</p>
+                                    <p className="text-gray-400 text-sm font-light">
+                                        {director.bio}
+                                    </p>
+                                </div>
+                            ))}
                         </div>
                     </div>
 
@@ -54,12 +64,11 @@ const CorporateInfo = () => {
                         <h2 className="text-2xl font-serif text-white border-l-4 border-royal-gold pl-4">Investor Relations</h2>
                         <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-gray-300 font-light leading-relaxed">
                             <p className="mb-6">
-                                Murgdur is committed to transparency and delivering long-term value to our shareholders.
-                                Find our annual reports and financial statements below.
+                                {data?.investorText || "Murgdur is committed to transparency and delivering long-term value to our shareholders. Find our annual reports and financial statements below."}
                             </p>
                             <div className="flex gap-4">
                                 <button className="px-6 py-2 bg-royal-gold text-black text-xs font-bold uppercase tracking-widest hover:bg-white transition-colors">
-                                    Annual Report 2024
+                                    Annual Report {new Date().getFullYear()}
                                 </button>
                                 <button className="px-6 py-2 border border-white text-white text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors">
                                     Governance Policies
@@ -71,10 +80,10 @@ const CorporateInfo = () => {
                     {/* Section 4 */}
                     <div className="space-y-4">
                         <h2 className="text-2xl font-serif text-white border-l-4 border-royal-gold pl-4">Compliance</h2>
-                        <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-gray-300 font-light text-sm">
-                            <p>CIN: U51109KA2012PTC066107</p>
-                            <p>VAT/TIN: 295489372</p>
-                            <p>GSTIN: 29AAACM3452L1Z2</p>
+                        <div className="bg-white/5 border border-white/10 rounded-lg p-6 text-gray-300 font-light text-sm whitespace-pre-line">
+                            {data?.compliance || `CIN: U51109KA2012PTC066107
+VAT/TIN: 295489372
+GSTIN: 29AAACM3452L1Z2`}
                         </div>
                     </div>
                 </div>

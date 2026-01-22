@@ -3,7 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Filter, ChevronDown, Search, Heart } from 'lucide-react';
 
 // Importing images (reusing existing assets)
-import { products as allProducts } from '../data/products';
+import { fetchProducts } from '../utils/sanity';
 import { useCart } from '../context/CartContext';
 
 const Shop = () => {
@@ -39,15 +39,25 @@ const Shop = () => {
     const [sortBy, setSortBy] = useState('relevance');
     const { addToWishlist, wishlistItems } = useCart();
 
-    // Shuffle products ONCE on mount so they don't jitter on re-renders
-    const [productsSource] = useState(() => {
-        const shuffled = [...allProducts];
-        for (let i = shuffled.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-        }
-        return shuffled;
-    });
+    const [allProducts, setAllProducts] = useState([]); // Store raw fetched data
+    const [productsSource, setProductsSource] = useState([]); // Store shuffled data
+
+    // Fetch products
+    useEffect(() => {
+        const load = async () => {
+            const data = await fetchProducts();
+            setAllProducts(data);
+
+            // Shuffle
+            const shuffled = [...data];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            setProductsSource(shuffled);
+        };
+        load();
+    }, []);
 
     let products = productsSource.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
 

@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { fetchRoyalCollectionPage } from '../../utils/sanity';
 
 const imgMen = "/images/boy.jpeg";
 const imgWomen = "/images/girl.png";
@@ -24,12 +25,21 @@ const imgLogo = "/images/logo.jpeg";
 
 const RoyalCollection = () => {
     const [activeView, setActiveView] = useState('main'); // 'main' or 'men'
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchRoyalCollectionPage();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
 
     return (
         <div className="min-h-screen bg-royal-ivory pt-32 pb-20 px-6 relative overflow-hidden">
             {/* Background Decoration */}
             <div className="absolute top-0 left-0 w-full h-[600px] opacity-[0.2] pointer-events-none">
-                <img src={imgMen} className="w-full h-full object-cover grayscale" alt="Heritage Background" />
+                <img src={data?.menSection?.image || imgMen} className="w-full h-full object-cover grayscale" alt="Heritage Background" />
                 <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-royal-ivory/80 to-royal-ivory"></div>
             </div>
 
@@ -57,7 +67,7 @@ const RoyalCollection = () => {
                     >
                         <span className="text-royal-maroon uppercase tracking-[0.3em] text-xs md:text-sm font-bold flex items-center justify-center gap-4 mb-6">
                             <span className="w-12 h-[1px] bg-royal-maroon/40 hidden md:block"></span>
-                            The Murgdur Legacy
+                            {data?.subHeading || "The Murgdur Legacy"}
                             <span className="w-12 h-[1px] bg-royal-maroon/40 hidden md:block"></span>
                         </span>
                     </motion.div>
@@ -69,7 +79,7 @@ const RoyalCollection = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="text-5xl md:text-7xl font-serif text-black mb-6 drop-shadow-sm tracking-wide"
                     >
-                        {activeView === 'men' ? 'Royal Men' : activeView === 'women' ? 'Royal Women' : 'A Legacy of Excellence'}
+                        {activeView === 'men' ? 'Royal Men' : activeView === 'women' ? 'Royal Women' : (data?.mainHeading || 'A Legacy of Excellence')}
                     </motion.h1>
 
                     <motion.p
@@ -78,7 +88,7 @@ const RoyalCollection = () => {
                         transition={{ duration: 0.8, delay: 0.4 }}
                         className="text-gray-600 text-lg md:text-xl font-light mb-12"
                     >
-                        Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship.
+                        {data?.description || "Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship."}
                     </motion.p>
 
                     {activeView === 'main' && (
@@ -88,9 +98,11 @@ const RoyalCollection = () => {
                             transition={{ duration: 1, delay: 0.6 }}
                             className="bg-white border border-gray-200 p-8 rounded-lg max-w-4xl mx-auto shadow-sm"
                         >
-                            <h2 className="text-2xl md:text-3xl font-serif text-royal-maroon mb-4">In Memory of Sri Sundershan Duraisamy</h2>
+                            <h2 className="text-2xl md:text-3xl font-serif text-royal-maroon mb-4">
+                                {data?.memorySection?.heading || "In Memory of Sri Sundershan Duraisamy"}
+                            </h2>
                             <p className="text-gray-600 font-light leading-relaxed">
-                                "Murgdur was founded in 2019 by the late <span className="text-black font-normal">Sri Sundershan Duraisamy</span>, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship. His philosophy was simple yet profound: create pieces that transcend trends and become treasured heirlooms."
+                                {data?.memorySection?.text || `"Murgdur was founded in 2019 by the late Sri Sundershan Duraisamy, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship."`}
                             </p>
                         </motion.div>
                     )}
@@ -107,7 +119,7 @@ const RoyalCollection = () => {
                         >
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
                             <img
-                                src={imgMen}
+                                src={data?.menSection?.image || imgMen}
                                 alt="Royal Men's Collection"
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                             />
@@ -117,10 +129,10 @@ const RoyalCollection = () => {
                                     whileInView={{ y: 0, opacity: 1 }}
                                     className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide drop-shadow-lg"
                                 >
-                                    Men's Collection
+                                    {data?.menSection?.title || "Men's Collection"}
                                 </motion.h2>
                                 <p className="text-gray-200 text-sm md:text-base font-light mb-8 max-w-md mx-auto drop-shadow-md">
-                                    Sherwanis, Bandhgalas, and Kurtas crafted for the modern Maharaja.
+                                    {data?.menSection?.description || "Sherwanis, Bandhgalas, and Kurtas crafted for the modern Maharaja."}
                                 </p>
                                 <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold border-b-2 border-royal-gold pb-2 hover:text-white hover:border-white transition-all duration-300 flex items-center gap-2">
                                     EXPLORE <ArrowRight size={16} />
@@ -135,7 +147,7 @@ const RoyalCollection = () => {
                         >
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
                             <img
-                                src={imgWomen}
+                                src={data?.womenSection?.image || imgWomen}
                                 alt="Royal Women's Collection"
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                             />
@@ -145,10 +157,10 @@ const RoyalCollection = () => {
                                     whileInView={{ y: 0, opacity: 1 }}
                                     className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide drop-shadow-lg"
                                 >
-                                    Women's Collection
+                                    {data?.womenSection?.title || "Women's Collection"}
                                 </motion.h2>
                                 <p className="text-gray-200 text-sm md:text-base font-light mb-8 max-w-md mx-auto drop-shadow-md">
-                                    Exquisite Lehengas, Sarees, and Gowns for the royal muse.
+                                    {data?.womenSection?.description || "Exquisite Lehengas, Sarees, and Gowns for the royal muse."}
                                 </p>
                                 <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold border-b-2 border-royal-gold pb-2 hover:text-white hover:border-white transition-all duration-300 flex items-center gap-2">
                                     EXPLORE <ArrowRight size={16} />
@@ -158,63 +170,83 @@ const RoyalCollection = () => {
 
                     </div>
                 ) : activeView === 'men' ? (
-                    /* Men's Sub-Category Layout (Clothing vs Accessories) */
-                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
-
-                        {/* Men's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
-                        <div
-                            onClick={() => setActiveView('men-clothing')}
-                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                        >
-                            <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={imgRoyalSherwani}
-                                    alt="Royal Men's Clothing"
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
+                    <div className="flex flex-col gap-12">
+                        {/* Featured Men's Products from Sanity */}
+                        {data?.menSection?.featuredProducts?.length > 0 && (
+                            <div className="container mx-auto">
+                                <h3 className="text-royal-maroon text-center font-serif text-3xl mb-8">Featured Masterpieces</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    {data.menSection.featuredProducts.map((p) => (
+                                        <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                                            <div className="aspect-[3/4] overflow-hidden">
+                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                            </div>
+                                            <div className="p-4 text-center">
+                                                <h4 className="font-serif text-lg text-black">{p.name}</h4>
+                                                <p className="text-xs text-gray-500 mt-1">₹ {p.price.toLocaleString()}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
                             </div>
-                            <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                >
-                                    CLOTHING
-                                </motion.h2>
-                                <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                    View Collection <ArrowRight size={14} />
-                                </span>
+                        )}
+
+                        {/* Men's Sub-Category Layout (Clothing vs Accessories) */}
+                        <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
+                            {/* Men's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
+                            <div
+                                onClick={() => setActiveView('men-clothing')}
+                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
+                            >
+                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                                    <img
+                                        src={imgRoyalSherwani}
+                                        alt="Royal Men's Clothing"
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
+                                    <motion.h2
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
+                                    >
+                                        CLOTHING
+                                    </motion.h2>
+                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
+                                        View Collection <ArrowRight size={14} />
+                                    </span>
+                                </div>
+                            </div>
+
+                            {/* Men's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
+                            <div
+                                onClick={() => setActiveView('men-accessories')}
+                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
+                            >
+                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                                    <img
+                                        src={imgRoyalWatch}
+                                        alt="Royal Men's Accessories"
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
+                                    <motion.h2
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
+                                    >
+                                        ACCESSORIES
+                                    </motion.h2>
+                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
+                                        View Collection <ArrowRight size={14} />
+                                    </span>
+                                </div>
                             </div>
                         </div>
-
-                        {/* Men's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
-                        <div
-                            onClick={() => setActiveView('men-accessories')}
-                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                        >
-                            <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={imgRoyalWatch}
-                                    alt="Royal Men's Accessories"
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                />
-                            </div>
-                            <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                >
-                                    ACCESSORIES
-                                </motion.h2>
-                                <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                    View Collection <ArrowRight size={14} />
-                                </span>
-                            </div>
-                        </div>
-
                     </div>
                 ) : activeView === 'men-clothing' ? (
                     /* Men's Clothing Sub-Categories (Shirt, T-Shirt, Hoodie, Sweater) */
@@ -281,63 +313,85 @@ const RoyalCollection = () => {
                         ))}
                     </div>
                 ) : activeView === 'women' ? (
-                    /* Women's Sub-Category Layout (Clothing vs Accessories) */
-                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
+                    <div className="flex flex-col gap-12">
+                        {/* Featured Women's Products from Sanity */}
+                        {data?.womenSection?.featuredProducts?.length > 0 && (
+                            <div className="container mx-auto">
+                                <h3 className="text-royal-maroon text-center font-serif text-3xl mb-8">Featured Masterpieces</h3>
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                    {data.womenSection.featuredProducts.map((p) => (
+                                        <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
+                                            <div className="aspect-[3/4] overflow-hidden">
+                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                            </div>
+                                            <div className="p-4 text-center">
+                                                <h4 className="font-serif text-lg text-black">{p.name}</h4>
+                                                <p className="text-xs text-gray-500 mt-1">₹ {p.price.toLocaleString()}</p>
+                                            </div>
+                                        </Link>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
 
-                        {/* Women's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
-                        <div
-                            onClick={() => setActiveView('women-clothing')}
-                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                        >
-                            <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={imgRoyalSaree}
-                                    alt="Royal Women's Clothing"
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                />
+                        {/* Women's Sub-Category Layout (Clothing vs Accessories) */}
+                        <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
+
+                            {/* Women's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
+                            <div
+                                onClick={() => setActiveView('women-clothing')}
+                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
+                            >
+                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                                    <img
+                                        src={imgRoyalSaree}
+                                        alt="Royal Women's Clothing"
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
+                                    <motion.h2
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
+                                    >
+                                        CLOTHING
+                                    </motion.h2>
+                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
+                                        View Collection <ArrowRight size={14} />
+                                    </span>
+                                </div>
                             </div>
-                            <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                >
-                                    CLOTHING
-                                </motion.h2>
-                                <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                    View Collection <ArrowRight size={14} />
-                                </span>
+
+                            {/* Women's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
+                            <div
+                                onClick={() => setActiveView('women-accessories')}
+                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
+                            >
+                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
+                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
+                                    <img
+                                        src={imgRoyalJewellery}
+                                        alt="Royal Women's Accessories"
+                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    />
+                                </div>
+                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
+                                    <motion.h2
+                                        initial={{ y: 20, opacity: 0 }}
+                                        whileInView={{ y: 0, opacity: 1 }}
+                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
+                                    >
+                                        ACCESSORIES
+                                    </motion.h2>
+                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
+                                        View Collection <ArrowRight size={14} />
+                                    </span>
+                                </div>
                             </div>
+
                         </div>
-
-                        {/* Women's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
-                        <div
-                            onClick={() => setActiveView('women-accessories')}
-                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                        >
-                            <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={imgRoyalJewellery}
-                                    alt="Royal Women's Accessories"
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                />
-                            </div>
-                            <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                >
-                                    ACCESSORIES
-                                </motion.h2>
-                                <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                    View Collection <ArrowRight size={14} />
-                                </span>
-                            </div>
-                        </div>
-
                     </div>
                 ) : activeView === 'women-clothing' ? (
                     /* Women's Clothing Detailed Sub-Categories */
@@ -487,16 +541,22 @@ const RoyalCollection = () => {
                     className="relative w-full h-[400px] rounded-lg overflow-hidden flex items-center justify-center border border-royal-maroon/20"
                 >
                     <div className="absolute inset-0 bg-gradient-to-r from-royal-maroon via-royal-maroon/80 to-royal-maroon z-10"></div>
-                    {/* Using imgMen again as background placeholder, but darkened */}
-                    <img src={imgMen} className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale" alt="Concierge" />
+                    {/* Concierge Image from Sanity or fallback */}
+                    <img
+                        src={data?.conciergeSection?.image || imgMen}
+                        className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
+                        alt="Concierge"
+                    />
 
                     <div className="relative z-20 text-center px-6 max-w-3xl">
-                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">The Royal Concierge</h2>
+                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">
+                            {data?.conciergeSection?.heading || "The Royal Concierge"}
+                        </h2>
                         <p className="text-gray-200 text-lg mb-8 font-light">
-                            Experience the luxury of private shopping. Book an appointment with our dedicated stylists for a personalized fitting session at your residence or our flagship boutique.
+                            {data?.conciergeSection?.description || "Experience the luxury of private shopping. Book an appointment with our dedicated stylists for a personalized fitting session at your residence or our flagship boutique."}
                         </p>
                         <button className="bg-white text-royal-maroon px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold hover:bg-black hover:text-white transition-colors duration-300">
-                            Book Private Appointment
+                            {data?.conciergeSection?.buttonText || "Book Private Appointment"}
                         </button>
                     </div>
                 </motion.div>
@@ -504,11 +564,11 @@ const RoyalCollection = () => {
 
                 {/* 2. The Art of Regality (Craftsmanship Features) */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                    {[
+                    {(data?.features || [
                         { title: "Hand-Woven Legacy", desc: "Sourced directly from the master weavers of Banaras and Kanchipuram." },
                         { title: "Bespoke Tailoring", desc: "Each garment is cut and stitched to perfection by our master craftsmen." },
                         { title: "Rare Fabrics", desc: "Utilizing the finest Ahimsa silk, Pashmina, and Egyptian cotton." }
-                    ].map((feature, idx) => (
+                    ])?.map((feature, idx) => (
                         <motion.div
                             key={idx}
                             initial={{ opacity: 0, y: 30 }}
@@ -519,8 +579,13 @@ const RoyalCollection = () => {
                             <div className="w-16 h-16 bg-royal-maroon/10 rounded-full mx-auto mb-6 flex items-center justify-center text-royal-maroon text-2xl font-serif">
                                 {idx + 1}
                             </div>
-                            <h3 className="text-xl font-serif text-black mb-4 tracking-wide">{feature.title}</h3>
-                            <p className="text-gray-600 font-light leading-relaxed">{feature.desc}</p>
+                            {/* Mapped fields: title, description (Sanity) vs desc (Local) */}
+                            <h3 className="text-xl font-serif text-black mb-4 tracking-wide">
+                                {feature.title}
+                            </h3>
+                            <p className="text-gray-600 font-light leading-relaxed">
+                                {feature.description || feature.desc}
+                            </p>
                         </motion.div>
                     ))}
                 </div>
@@ -528,8 +593,12 @@ const RoyalCollection = () => {
 
                 {/* 3. The Royal Registry (Newsletter) */}
                 <div className="border-t border-royal-maroon/20 pt-20 pb-10 text-center">
-                    <h2 className="text-2xl md:text-3xl font-serif text-black mb-4">Join The Royal Registry</h2>
-                    <p className="text-gray-600 mb-8 max-w-xl mx-auto">Be the first to receive invitations to exclusive events, private previews, and stories from the Murgdur archives.</p>
+                    <h2 className="text-2xl md:text-3xl font-serif text-black mb-4">
+                        {data?.registrySection?.heading || "Join The Royal Registry"}
+                    </h2>
+                    <p className="text-gray-600 mb-8 max-w-xl mx-auto">
+                        {data?.registrySection?.description || "Be the first to receive invitations to exclusive events, private previews, and stories from the Murgdur archives."}
+                    </p>
                     <div className="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
                         <input
                             type="email"
@@ -537,7 +606,7 @@ const RoyalCollection = () => {
                             className="bg-transparent border border-gray-300 text-black px-6 py-3 w-full focus:outline-none focus:border-royal-maroon transition-colors"
                         />
                         <button className="bg-royal-maroon text-white px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-black transition-colors">
-                            Subscribe
+                            {data?.registrySection?.buttonText || "Subscribe"}
                         </button>
                     </div>
                 </div>

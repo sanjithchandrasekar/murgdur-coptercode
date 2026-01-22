@@ -1,15 +1,26 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 import Button from '../components/common/Button';
+import { fetchContactPage } from '../utils/sanity';
 
 const ContactInfo = () => {
+    const [data, setData] = useState(null);
+
+    useEffect(() => {
+        const load = async () => {
+            const result = await fetchContactPage();
+            if (result) setData(result);
+        };
+        load();
+    }, []);
+
     return (
         <div className="min-h-screen bg-royal-black text-white pt-24 pb-12">
             <div className="container mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">
-                    <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold block mb-4">Contact Us</span>
-                    <h1 className="text-4xl md:text-6xl font-serif text-white mb-6">Get in Touch</h1>
+                    <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold block mb-4">{data?.eyebrow || "Contact Us"}</span>
+                    <h1 className="text-4xl md:text-6xl font-serif text-white mb-6">{data?.heading || "Get in Touch"}</h1>
                     <div className="w-24 h-0.5 bg-royal-gold mx-auto"></div>
                 </div>
 
@@ -20,27 +31,27 @@ const ContactInfo = () => {
                         <div>
                             <h3 className="text-2xl font-serif text-white mb-6 border-l-2 border-royal-gold pl-4">Contact Information</h3>
                             <p className="text-gray-400 font-light mb-8 leading-relaxed">
-                                We're here to help with any questions about your order, products, or our services.
+                                {data?.intro || "We're here to help with any questions about your order, products, or our services."}
                             </p>
 
                             <div className="space-y-6">
-                                <a href="tel:+910000000000" className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all">
+                                <a href={`tel:${data?.phone || "+910000000000"}`} className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all">
                                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
                                         <Phone size={20} />
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1 group-hover:text-royal-gold transition-colors">Phone</h4>
-                                        <p className="text-gray-400 font-serif">+91 000 000 0000</p>
+                                        <p className="text-gray-400 font-serif">{data?.phone || "+91 000 000 0000"}</p>
                                     </div>
                                 </a>
 
-                                <a href="mailto:support@murgdur.com" className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all">
+                                <a href={`mailto:${data?.email || "support@murgdur.com"}`} className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all">
                                     <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
                                         <Mail size={20} />
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1 group-hover:text-royal-gold transition-colors">Email</h4>
-                                        <p className="text-gray-400 font-serif">support@murgdur.com</p>
+                                        <p className="text-gray-400 font-serif">{data?.email || "support@murgdur.com"}</p>
                                     </div>
                                 </a>
 
@@ -50,7 +61,7 @@ const ContactInfo = () => {
                                     </div>
                                     <div>
                                         <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1">Working Hours</h4>
-                                        <p className="text-gray-400 font-serif">Mon - Sat: 10:00 AM - 8:00 PM</p>
+                                        <p className="text-gray-400 font-serif">{data?.hours || "Mon - Sat: 10:00 AM - 8:00 PM"}</p>
                                     </div>
                                 </div>
                             </div>
@@ -64,10 +75,10 @@ const ContactInfo = () => {
                                 </div>
                                 <div>
                                     <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1">Address</h4>
-                                    <p className="text-gray-400 font-serif leading-relaxed">
-                                        123, Heritage Boulevard,<br />
-                                        Palace Road, Bengaluru,<br />
-                                        Karnataka - 560001
+                                    <p className="text-gray-400 font-serif leading-relaxed whitespace-pre-line">
+                                        {data?.address || `123, Heritage Boulevard,
+                                        Palace Road, Bengaluru,
+                                        Karnataka - 560001`}
                                     </p>
                                 </div>
                             </div>
