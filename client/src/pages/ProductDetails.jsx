@@ -161,7 +161,7 @@ const ProductDetails = () => {
                                     ))}
                                 </div>
                                 {/* Size Guide Button - Shown for Men's Apparels and Shoes, BUT EXCLUDING Bags and Perfumes */}
-                                {(product.category === 'Men' || product.type === 'shoes' || product.type === 'watches' || product.type === 'slippers') && product.type !== 'bags' && product.type !== 'perfumes' && (
+                                {(product.category === 'Men' || product.category === 'Women' || product.type === 'shoes' || product.type === 'watches' || product.type === 'slippers' || product.type === 'dresses') && product.type !== 'bags' && product.type !== 'perfumes' && (
                                     <button
                                         onClick={() => setIsSizeGuideOpen(true)}
                                         className="text-xs text-royal-gold underline mt-2 hover:text-white transition-colors"
@@ -220,7 +220,8 @@ const ProductDetails = () => {
                             <p className="text-gray-400 mt-3 text-sm">
                                 {product.type === 'watches' ? 'Watch Dial Size Guide' :
                                     (product.type === 'shoes' || product.type === 'slippers') ? 'Standard Footwear Sizing (Men & Women)' :
-                                        "Men's Round Neck Full Sleeve (In Inches)"}
+                                        product.type === 'dresses' ? "Women's Dress Chart (Inches)" :
+                                            "Men's Round Neck Full Sleeve (In Inches)"}
                             </p>
                         </div>
 
@@ -344,6 +345,33 @@ const ProductDetails = () => {
                                                 <td className="p-2 md:p-3 border border-white/10">{row.eu}</td>
                                                 <td className="p-2 md:p-3 border border-white/10">{row.cm}</td>
                                                 <td className="p-2 md:p-3 border border-white/10">{row.usW}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : product.type === 'dresses' ? (
+                                <table className="w-full text-center border-collapse text-gray-300 text-sm">
+                                    <thead>
+                                        <tr className="bg-white/10 text-royal-gold">
+                                            <th className="p-3 border border-white/10">Size</th>
+                                            <th className="p-3 border border-white/10">Bust</th>
+                                            <th className="p-3 border border-white/10">Waist</th>
+                                            <th className="p-3 border border-white/10">Hips</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {[
+                                            { size: 'XS', bust: 32, waist: 24, hips: 34 },
+                                            { size: 'S', bust: 34, waist: 26, hips: 36 },
+                                            { size: 'M', bust: 36, waist: 28, hips: 38 },
+                                            { size: 'L', bust: 39, waist: 31, hips: 41 },
+                                            { size: 'XL', bust: 42, waist: 34, hips: 44 }
+                                        ].map((row) => (
+                                            <tr key={row.size}>
+                                                <td className="p-3 border border-white/10 font-bold bg-white/5">{row.size}</td>
+                                                <td className="p-3 border border-white/10">{row.bust}"</td>
+                                                <td className="p-3 border border-white/10">{row.waist}"</td>
+                                                <td className="p-3 border border-white/10">{row.hips}"</td>
                                             </tr>
                                         ))}
                                     </tbody>
