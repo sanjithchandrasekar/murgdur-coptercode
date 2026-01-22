@@ -11,20 +11,50 @@ const Shop = () => {
     const searchParams = new URLSearchParams(location.search);
     // Initialize state with URL param, but allow local updates
     const [searchTerm, setSearchTerm] = useState(searchParams.get('search') || '');
-    const typeFilter = searchParams.get('type') || '';
+    // Initialize state with URL param or 'all'
+    const [activeTab, setActiveTab] = useState(searchParams.get('type') || 'all');
+
+    // Category Tabs Configuration
+    const categoryTabs = [
+        { label: 'ALL', value: 'all' },
+        { label: 'SHOES', value: 'shoes' },
+        { label: 'HAND BAGS', value: 'bags' },
+        { label: 'BELTS', value: 'belts' },
+        { label: 'PERFUME', value: 'perfumes' },
+        { label: 'WATCHES', value: 'watches' },
+        { label: 'WALLETS', value: 'wallets' },
+        { label: 'T-SHIRTS', value: 't-shirts' },
+        { label: 'TROUSERS', value: 'trousers' },
+        { label: 'OVERCOATS', value: 'overcoats' },
+        { label: 'OVERSIZED', value: 'oversized' },
+        { label: 'CAPS', value: 'caps' },
+        { label: 'SWEAT SHIRTS', value: 'sweat-shirts' },
+        { label: 'SLIPPERS', value: 'slippers' },
+        { label: 'SUNGLASSES', value: 'sunglasses' }
+    ];
 
     const [selectedCategories, setSelectedCategories] = useState([]);
     const [sortBy, setSortBy] = useState('relevance');
     const { addToWishlist, wishlistItems } = useCart();
 
-    let products = allProducts.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+    // Shuffle products ONCE on mount so they don't jitter on re-renders
+    const [productsSource] = useState(() => {
+        const shuffled = [...allProducts];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    });
 
-    // Filter by type (shoes, watches, etc.)
-    if (typeFilter) {
-        products = products.filter(p => (p.type || '').toLowerCase() === typeFilter.toLowerCase());
+    let products = productsSource.filter(p => p.name.toLowerCase().includes(searchTerm.toLowerCase()));
+
+    // Filter by Active Tab (Type)
+    if (activeTab !== 'all') {
+        products = products.filter(p => (p.type || '').toLowerCase() === activeTab.toLowerCase());
     }
 
-    // Filter by Category
+    // Filter by Category (Sidebar)
     if (selectedCategories.length > 0) {
         products = products.filter(p => selectedCategories.includes(p.category));
     }
@@ -99,6 +129,24 @@ const Shop = () => {
                                     )}
                                 </div>
                             )}
+                        </div>
+                    </div>
+
+                    {/* Category Tabs (New Feature) */}
+                    <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+                        <div className="flex space-x-3 min-w-max">
+                            {categoryTabs.map((tab) => (
+                                <button
+                                    key={tab.value}
+                                    onClick={() => setActiveTab(tab.value)}
+                                    className={`px-6 py-3 text-xs md:text-sm uppercase tracking-widest transition-all duration-300 border ${activeTab === tab.value
+                                        ? 'bg-white border-black text-black font-bold shadow-sm'
+                                        : 'bg-white border-gray-200 text-gray-500 hover:border-gray-400 hover:text-gray-700'
+                                        }`}
+                                >
+                                    {tab.label}
+                                </button>
+                            ))}
                         </div>
                     </div>
 

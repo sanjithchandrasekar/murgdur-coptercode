@@ -51,7 +51,7 @@ const Home = () => {
             <HeroSlider />
 
             {/* New Promotional Banner Section (Wood Texture Style) */}
-            <div className="relative w-full h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
+            <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
                 {/* Font Import for Stencil Look */}
                 <style>
                     {`@import url('https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&display=swap');`}
@@ -108,7 +108,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
                         {[
-                            { name: "Women's Handbags", img: "/images/women bag/woman bag white 1.jpeg", type: "image" },
+                            { name: "Women's Handbags", img: "/images/women handbag/woman bag white 1.jpeg", type: "image" },
                             { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image" },
                             { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image" },
                             { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image" }
@@ -120,36 +120,36 @@ const Home = () => {
                                 link = "/shop?type=perfumes";
                             }
                             return (
-                            <Link to={link} key={idx} className="group block mb-8">
-                                <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
-                                    {item.type === 'video' ? (
-                                        <video
-                                            src={item.img}
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
-                                        />
-                                    ) : (
-                                        <img
-                                            src={item.img}
-                                            alt={item.name}
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
-                                        />
-                                    )}
-                                </div>
-                                <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors">
-                                    {item.name}
-                                </h3>
-                            </Link>
+                                <Link to={link} key={idx} className="group block mb-8">
+                                    <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
+                                        {item.type === 'video' ? (
+                                            <video
+                                                src={item.img}
+                                                autoPlay
+                                                loop
+                                                muted
+                                                playsInline
+                                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                            />
+                                        ) : (
+                                            <img
+                                                src={item.img}
+                                                alt={item.name}
+                                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                            />
+                                        )}
+                                    </div>
+                                    <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors">
+                                        {item.name}
+                                    </h3>
+                                </Link>
                             );
                         })}
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
                         {[
-                            { name: "Men's Bags", img: "/images/travel bag/mens-bag3.png" },
+                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png" },
                             { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
                             { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop" },
                             { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop" }
@@ -206,7 +206,7 @@ const Home = () => {
                 className="py-20 px-6 text-center container mx-auto bg-inherit"
             >
                 <span className="text-gray-400 uppercase tracking-[0.3em] text-xs font-medium block mb-6">Welcome to Murgdur</span>
-                <h2 className="text-3xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
+                <h2 className="text-2xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
                     "The Crown Fits Only The Worthy"
                 </h2>
                 <div className="w-24 h-0.5 bg-royal-gold mx-auto my-8 opacity-50"></div>
@@ -224,7 +224,7 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women bag/women bag brown front.jpeg" },
+                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg" },
                             { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png" },
                             { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png" },
                             { name: "Passport Cover", price: "₹ 8,500", img: "/images/passport.jpg" }
@@ -268,7 +268,7 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                    <h2 className="text-5xl md:text-8xl font-serif text-white mb-8 drop-shadow-lg tracking-wide">
+                    <h2 className="text-3xl md:text-8xl font-serif text-white mb-8 drop-shadow-lg tracking-wide">
                         The Royal Collection
                     </h2>
                     <div className="flex flex-col sm:flex-row gap-6">
@@ -403,7 +403,7 @@ const Home = () => {
             <section className="py-20 bg-royal-ivory">
                 <div className="container mx-auto px-6">
                     <div className="flex flex-col md:flex-row items-center gap-12">
-                        <div className="w-full md:w-1/2 h-[600px] overflow-hidden relative group">
+                        <div className="w-full md:w-1/2 h-[400px] md:h-[600px] overflow-hidden relative group">
                             <img
                                 src="/images/royal_perfume.png"
                                 alt="Perfumery"
@@ -517,7 +517,7 @@ const Home = () => {
                             { name: "Festive Gala", img: "https://images.unsplash.com/photo-1566737236500-c8ac43014a67?q=80&w=800&auto=format&fit=crop" },
                             { name: "Business Elite", img: "https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?q=80&w=800&auto=format&fit=crop" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group relative h-[400px] overflow-hidden rounded-sm cursor-pointer block">
+                            <Link to="/shop" key={idx} className="group relative h-[300px] md:h-[400px] overflow-hidden rounded-sm cursor-pointer block">
                                 <img
                                     src={item.img}
                                     alt={item.name}
@@ -552,11 +552,7 @@ const Home = () => {
                                     alt="Bespoke Tailoring"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
                                 />
-                                <Link to="/royal-collection" className="absolute inset-0 flex items-center justify-center">
-                                    <div className="w-20 h-20 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-md bg-black/20 group-hover:scale-110 transition-transform cursor-pointer group-hover:bg-white/10 group-hover:border-white">
-                                        <span className="text-white text-xs uppercase tracking-widest font-bold">View</span>
-                                    </div>
-                                </Link>
+
                             </div>
                         </motion.div>
 

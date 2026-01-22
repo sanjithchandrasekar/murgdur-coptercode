@@ -17,7 +17,7 @@ const RoyalCollectionCategories = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
 
                     {/* MEN'S COLLECTION */}
-                    <Link to="/shop?cat=men" className="group relative h-[600px] overflow-hidden border border-white/10 cursor-pointer">
+                    <Link to="/shop?cat=men" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer">
                         <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
                             style={{ backgroundImage: `url(${mensImg})` }}
@@ -36,7 +36,7 @@ const RoyalCollectionCategories = () => {
                     </Link>
 
                     {/* WOMEN'S COLLECTION */}
-                    <Link to="/shop?cat=women" className="group relative h-[600px] overflow-hidden border border-white/10 cursor-pointer">
+                    <Link to="/shop?cat=women" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer">
                         <div
                             className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
                             style={{ backgroundImage: `url(${womensImg})` }}

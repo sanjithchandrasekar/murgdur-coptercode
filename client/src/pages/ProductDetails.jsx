@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2 } from 'lucide-react';
+import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2, X } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { products } from '../data/products';
@@ -15,7 +15,7 @@ const ProductDetails = () => {
     const [selectedSize, setSelectedSize] = useState("M");
     const [selectedColor, setSelectedColor] = useState(product && product.colors && product.colors.length > 0 ? product.colors[0] : null);
     const [selectedImage, setSelectedImage] = useState(product ? product.images[0] : null);
-    const [quantity, setQuantity] = useState(1);
+    // const [quantity, setQuantity] = useState(1); // Quantity controlled in cart only
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
     // Update selected image and color when product changes
@@ -60,12 +60,7 @@ const ProductDetails = () => {
         <div className="bg-royal-black min-h-screen pt-32 pb-20 text-white font-sans relative">
             <div className="container mx-auto px-6 max-w-7xl">
 
-                {/* Breadcrumbs & Back */}
-                <div className="flex items-center gap-4 mb-4">
-                    <button onClick={() => navigate(-1)} className="text-gray-400 hover:text-white flex items-center gap-2 text-sm uppercase tracking-widest group">
-                        <span className="group-hover:-translate-x-1 transition-transform">←</span> Back
-                    </button>
-                </div>
+
                 <div className="text-sm text-gray-500 mb-8">
                     <Link to="/" className="hover:text-royal-gold">Home</Link> /
                     <Link to="/shop" className="hover:text-royal-gold"> Shop</Link> /
@@ -133,7 +128,7 @@ const ProductDetails = () => {
                         </p>
 
                         {/* Color Selection */}
-                        {product.colors && product.colors.length > 0 && (
+                        {product.colors && product.colors.length > 0 && product.type !== 'perfumes' && (
                             <div className="mb-8">
                                 <span className="text-sm font-bold tracking-widest uppercase text-gray-500 mb-3 block">Select Color</span>
                                 <div className="flex gap-3">
@@ -154,7 +149,7 @@ const ProductDetails = () => {
                         {product.sizes && product.sizes.length > 0 && (
                             <div className="mb-8">
                                 <span className="text-sm font-bold tracking-widest uppercase text-gray-500 mb-3 block">Select Size</span>
-                                <div className="flex gap-3">
+                                <div className="flex flex-wrap gap-3">
                                     {product.sizes.map(size => (
                                         <button
                                             key={size}
@@ -165,7 +160,8 @@ const ProductDetails = () => {
                                         </button>
                                     ))}
                                 </div>
-                                {product.category === 'Men' && (
+                                {/* Size Guide Button - Shown for Men's Apparels and Shoes, BUT EXCLUDING Bags and Perfumes */}
+                                {(product.category === 'Men' || product.type === 'shoes' || product.type === 'watches' || product.type === 'slippers') && product.type !== 'bags' && product.type !== 'perfumes' && (
                                     <button
                                         onClick={() => setIsSizeGuideOpen(true)}
                                         className="text-xs text-royal-gold underline mt-2 hover:text-white transition-colors"
@@ -176,26 +172,17 @@ const ProductDetails = () => {
                             </div>
                         )}
 
-                        <div className="mb-8">
-                            <div className="flex items-center gap-4">
-                                <span className="text-sm font-bold tracking-widest uppercase text-gray-500">Quantity</span>
-                                <div className="flex items-center gap-3 border border-gray-700 px-3 py-1 rounded-sm">
-                                    <button onClick={() => setQuantity(Math.max(1, quantity - 1))} className="text-gray-400 hover:text-white"><Minus size={16} /></button>
-                                    <span className="w-8 text-center">{quantity}</span>
-                                    <button onClick={() => setQuantity(quantity + 1)} className="text-gray-400 hover:text-white"><Plus size={16} /></button>
-                                </div>
-                            </div>
-                        </div>
+
 
                         <div className="flex flex-col gap-4 mb-8">
                             <Button
                                 variant="primary"
                                 className="w-full py-4 bg-royal-gold text-black hover:bg-white font-bold tracking-widest"
-                                onClick={() => addToCart({ ...product, selectedSize, selectedColor }, quantity)}
+                                onClick={() => addToCart({ ...product, selectedSize, selectedColor }, 1)}
                             >
                                 ADD TO CART
                             </Button>
-                            <Button variant="outline" className="w-full py-4" onClick={() => { addToCart({ ...product, selectedSize, selectedColor }, quantity); navigate('/checkout'); }}>
+                            <Button variant="outline" className="w-full py-4" onClick={() => { addToCart({ ...product, selectedSize, selectedColor }, 1); navigate('/checkout'); }}>
                                 BUY NOW
                             </Button>
                         </div>
@@ -219,72 +206,201 @@ const ProductDetails = () => {
             {isSizeGuideOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
                     <div className="absolute inset-0 bg-black/80 backdrop-blur-sm" onClick={() => setIsSizeGuideOpen(false)}></div>
-                    <div className="bg-royal-black border border-royal-gold p-8 max-w-2xl w-full relative rounded-lg shadow-2xl z-10 animate-in fade-in zoom-in duration-300">
+                    <div className={`bg-royal-black border border-royal-gold p-5 md:p-6 w-full relative rounded-lg shadow-2xl z-10 animate-in fade-in zoom-in duration-300 max-h-[85vh] overflow-y-auto custom-scrollbar ${product.type === 'shoes' ? 'max-w-md' : product.type === 'watches' ? 'max-w-lg' : 'max-w-2xl'}`}>
                         <button
                             onClick={() => setIsSizeGuideOpen(false)}
-                            className="absolute top-4 right-4 text-gray-400 hover:text-white"
+                            className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors bg-black/20 p-1 rounded-full z-50"
                         >
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 6 6 18" /><path d="m6 6 18 18" /></svg>
+                            <X size={24} />
                         </button>
 
-                        <div className="text-center mb-8">
-                            <h3 className="text-3xl font-serif text-royal-gold mb-2">Size Guide</h3>
-                            <div className="w-24 h-0.5 bg-royal-gold mx-auto"></div>
-                            <p className="text-gray-400 mt-4 text-sm">Men's Round Neck Full Sleeve (In Inches)</p>
+                        <div className="text-center mb-6">
+                            <h3 className="text-2xl md:text-3xl font-serif text-royal-gold mb-2">Size Guide</h3>
+                            <div className="w-16 h-0.5 bg-royal-gold mx-auto"></div>
+                            <p className="text-gray-400 mt-3 text-sm">
+                                {product.type === 'watches' ? 'Watch Dial Size Guide' :
+                                    (product.type === 'shoes' || product.type === 'slippers') ? 'Standard Footwear Sizing (Men & Women)' :
+                                        "Men's Round Neck Full Sleeve (In Inches)"}
+                            </p>
                         </div>
 
                         <div className="overflow-x-auto">
-                            <table className="w-full text-center border-collapse text-gray-300 text-sm">
-                                <thead>
-                                    <tr className="bg-white/10 text-royal-gold">
-                                        <th className="p-3 border border-white/10">Size</th>
-                                        <th className="p-3 border border-white/10">S</th>
-                                        <th className="p-3 border border-white/10">M</th>
-                                        <th className="p-3 border border-white/10">L</th>
-                                        <th className="p-3 border border-white/10">XL</th>
-                                        <th className="p-3 border border-white/10">XXL</th>
-                                        <th className="p-3 border border-white/10">3XL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td className="p-3 border border-white/10 font-bold bg-white/5">Length</td>
-                                        <td className="p-3 border border-white/10">26</td>
-                                        <td className="p-3 border border-white/10">27</td>
-                                        <td className="p-3 border border-white/10">28</td>
-                                        <td className="p-3 border border-white/10">29</td>
-                                        <td className="p-3 border border-white/10">30</td>
-                                        <td className="p-3 border border-white/10">31</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="p-3 border border-white/10 font-bold bg-white/5">Chest</td>
-                                        <td className="p-3 border border-white/10">38</td>
-                                        <td className="p-3 border border-white/10">40</td>
-                                        <td className="p-3 border border-white/10">42</td>
-                                        <td className="p-3 border border-white/10">44</td>
-                                        <td className="p-3 border border-white/10">46</td>
-                                        <td className="p-3 border border-white/10">48</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="p-3 border border-white/10 font-bold bg-white/5">Shoulder</td>
-                                        <td className="p-3 border border-white/10">16</td>
-                                        <td className="p-3 border border-white/10">17</td>
-                                        <td className="p-3 border border-white/10">18</td>
-                                        <td className="p-3 border border-white/10">19</td>
-                                        <td className="p-3 border border-white/10">20</td>
-                                        <td className="p-3 border border-white/10">21</td>
-                                    </tr>
-                                    <tr>
-                                        <td className="p-3 border border-white/10 font-bold bg-white/5">Sleeve</td>
-                                        <td className="p-3 border border-white/10">24</td>
-                                        <td className="p-3 border border-white/10">25</td>
-                                        <td className="p-3 border border-white/10">26</td>
-                                        <td className="p-3 border border-white/10">27</td>
-                                        <td className="p-3 border border-white/10">28</td>
-                                        <td className="p-3 border border-white/10">28.5</td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            {product.type === 'watches' ? (
+                                <div className="flex flex-col items-center justify-center">
+                                    <p className="text-gray-400 mb-8 text-center text-sm px-4">
+                                        Visual comparison of standard dial diameters. <br />
+                                        <span className="text-xs italic text-gray-500">(Rendered at relative scale)</span>
+                                    </p>
+                                    <div className="flex flex-col gap-8 pb-4">
+                                        {/* Row 1: Large / Men's */}
+                                        <div className="flex flex-col gap-4">
+                                            <p className="text-royal-gold text-xs uppercase tracking-widest text-center border-b border-white/10 pb-2">Large / Men's Standard</p>
+                                            <div className="flex flex-wrap gap-6 justify-center items-end">
+                                                {[
+                                                    { size: '46mm', scale: 1.21 },
+                                                    { size: '42mm', scale: 1.10 },
+                                                    { size: '40mm', scale: 1.05 },
+                                                    { size: '38mm', scale: 1.0 }
+                                                ].map((d) => (
+                                                    <div key={d.size} className="flex flex-col items-center gap-2 group">
+                                                        <div className="rounded-full border border-royal-gold/60 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center relative shadow-lg" style={{ width: `${80 * d.scale}px`, height: `${80 * d.scale}px` }}>
+                                                            <div className="absolute inset-1 rounded-full border border-white/5"></div>
+                                                            <div className="w-1 h-1 bg-red-500 rounded-full z-10"></div>
+                                                            <div className="w-0.5 h-3 bg-white/40 absolute top-3"></div>
+                                                            <div className="w-0.5 h-3 bg-white/20 absolute bottom-3"></div>
+                                                            <div className="w-3 h-0.5 bg-white/20 absolute left-3"></div>
+                                                            <div className="w-3 h-0.5 bg-white/20 absolute right-3"></div>
+                                                        </div>
+                                                        <span className="text-gray-300 font-bold text-xs">{d.size}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Row 2: Medium / Unisex */}
+                                        <div className="flex flex-col gap-4">
+                                            <p className="text-royal-gold text-xs uppercase tracking-widest text-center border-b border-white/10 pb-2">Medium / Unisex</p>
+                                            <div className="flex flex-wrap gap-6 justify-center items-end">
+                                                {[
+                                                    { size: '36mm', scale: 0.95 },
+                                                    { size: '34mm', scale: 0.90 },
+                                                    { size: '32mm', scale: 0.85 },
+                                                    { size: '30mm', scale: 0.80 }
+                                                ].map((d) => (
+                                                    <div key={d.size} className="flex flex-col items-center gap-2 group">
+                                                        <div className="rounded-full border border-gray-600 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center relative shadow-md" style={{ width: `${80 * d.scale}px`, height: `${80 * d.scale}px` }}>
+                                                            <div className="absolute inset-1 rounded-full border border-white/5"></div>
+                                                            <div className="w-1 h-1 bg-white/50 rounded-full z-10"></div>
+                                                            <div className="w-0.5 h-2 bg-white/30 absolute top-2"></div>
+                                                            <div className="w-0.5 h-2 bg-white/10 absolute bottom-2"></div>
+                                                            <div className="w-2 h-0.5 bg-white/10 absolute left-2"></div>
+                                                            <div className="w-2 h-0.5 bg-white/10 absolute right-2"></div>
+                                                        </div>
+                                                        <span className="text-gray-400 font-bold text-xs">{d.size}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+
+                                        {/* Row 3: Small / Women's */}
+                                        <div className="flex flex-col gap-4">
+                                            <p className="text-royal-gold text-xs uppercase tracking-widest text-center border-b border-white/10 pb-2">Small / Women's Standard</p>
+                                            <div className="flex flex-wrap gap-6 justify-center items-end">
+                                                {[
+                                                    { size: '28mm', scale: 0.74 },
+                                                    { size: '26mm', scale: 0.68 },
+                                                    { size: '24mm', scale: 0.63 },
+                                                    { size: '22mm', scale: 0.58 }
+                                                ].map((d) => (
+                                                    <div key={d.size} className="flex flex-col items-center gap-2 group">
+                                                        <div className="rounded-full border border-gray-700 bg-gradient-to-br from-white/5 to-transparent flex items-center justify-center relative shadow-sm" style={{ width: `${80 * d.scale}px`, height: `${80 * d.scale}px` }}>
+                                                            <div className="absolute inset-1 rounded-full border border-white/5"></div>
+                                                            <div className="w-1 h-1 bg-white/30 rounded-full z-10"></div>
+                                                            <div className="w-0.5 h-1.5 bg-white/20 absolute top-1.5"></div>
+                                                            <div className="w-0.5 h-1.5 bg-white/10 absolute bottom-1.5"></div>
+                                                            <div className="w-1.5 h-0.5 bg-white/10 absolute left-1.5"></div>
+                                                            <div className="w-1.5 h-0.5 bg-white/10 absolute right-1.5"></div>
+                                                        </div>
+                                                        <span className="text-gray-500 font-bold text-[10px]">{d.size}</span>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="mt-6 border-t border-white/10 pt-4 w-full text-center">
+                                        <h4 className="text-white text-xs font-bold uppercase tracking-widest mb-2">How to Measure</h4>
+                                        <p className="text-xs text-gray-500 max-w-sm mx-auto leading-relaxed">
+                                            Measure your wrist width (flat). For a balanced look, the watch case (lug-to-lug) should cover about 75-85% of your wrist width.
+                                        </p>
+                                    </div>
+                                </div>
+                            ) : (product.type === 'shoes' || product.type === 'slippers') ? (
+                                <table className="w-full text-center border-collapse text-gray-300 text-[10px] md:text-xs">
+                                    <thead>
+                                        <tr className="bg-white/10 text-royal-gold">
+                                            <th className="p-2 border border-white/10">US M</th>
+                                            <th className="p-2 border border-white/10">UK</th>
+                                            <th className="p-2 border border-white/10">EU</th>
+                                            <th className="p-2 border border-white/10">CM</th>
+                                            <th className="p-2 border border-white/10">US W</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {[
+                                            { usM: 4, uk: 3, eu: 36, cm: 21.9, usW: 5 },
+                                            { usM: 5, uk: 4, eu: 37, cm: 22.7, usW: 6 },
+                                            { usM: 6, uk: 5, eu: 38.5, cm: 23.5, usW: 7 },
+                                            { usM: 7, uk: 6, eu: 40, cm: 24.4, usW: 8 },
+                                            { usM: 8, uk: 7, eu: 41, cm: 25.2, usW: 9 },
+                                            { usM: 9, uk: 8, eu: 42.5, cm: 26, usW: 10 },
+                                            { usM: 10, uk: 9, eu: 44, cm: 27, usW: 11 },
+                                            { usM: 11, uk: 10, eu: 45, cm: 27.7, usW: 12 },
+                                            { usM: 12, uk: 11, eu: 46, cm: 28.6, usW: 13 },
+                                            { usM: 13, uk: 12, eu: 47.5, cm: 29.4, usW: 14 }
+                                        ].map((row, index) => (
+                                            <tr key={index}>
+                                                <td className="p-2 md:p-3 border border-white/10 font-bold bg-white/5">{row.usM}</td>
+                                                <td className="p-2 md:p-3 border border-white/10">{row.uk}</td>
+                                                <td className="p-2 md:p-3 border border-white/10">{row.eu}</td>
+                                                <td className="p-2 md:p-3 border border-white/10">{row.cm}</td>
+                                                <td className="p-2 md:p-3 border border-white/10">{row.usW}</td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            ) : (
+                                <table className="w-full text-center border-collapse text-gray-300 text-sm">
+                                    <thead>
+                                        <tr className="bg-white/10 text-royal-gold">
+                                            <th className="p-3 border border-white/10">Size</th>
+                                            <th className="p-3 border border-white/10">S</th>
+                                            <th className="p-3 border border-white/10">M</th>
+                                            <th className="p-3 border border-white/10">L</th>
+                                            <th className="p-3 border border-white/10">XL</th>
+                                            <th className="p-3 border border-white/10">XXL</th>
+                                            <th className="p-3 border border-white/10">3XL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td className="p-3 border border-white/10 font-bold bg-white/5">Length</td>
+                                            <td className="p-3 border border-white/10">26</td>
+                                            <td className="p-3 border border-white/10">27</td>
+                                            <td className="p-3 border border-white/10">28</td>
+                                            <td className="p-3 border border-white/10">29</td>
+                                            <td className="p-3 border border-white/10">30</td>
+                                            <td className="p-3 border border-white/10">31</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="p-3 border border-white/10 font-bold bg-white/5">Chest</td>
+                                            <td className="p-3 border border-white/10">38</td>
+                                            <td className="p-3 border border-white/10">40</td>
+                                            <td className="p-3 border border-white/10">42</td>
+                                            <td className="p-3 border border-white/10">44</td>
+                                            <td className="p-3 border border-white/10">46</td>
+                                            <td className="p-3 border border-white/10">48</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="p-3 border border-white/10 font-bold bg-white/5">Shoulder</td>
+                                            <td className="p-3 border border-white/10">16</td>
+                                            <td className="p-3 border border-white/10">17</td>
+                                            <td className="p-3 border border-white/10">18</td>
+                                            <td className="p-3 border border-white/10">19</td>
+                                            <td className="p-3 border border-white/10">20</td>
+                                            <td className="p-3 border border-white/10">21</td>
+                                        </tr>
+                                        <tr>
+                                            <td className="p-3 border border-white/10 font-bold bg-white/5">Sleeve</td>
+                                            <td className="p-3 border border-white/10">24</td>
+                                            <td className="p-3 border border-white/10">25</td>
+                                            <td className="p-3 border border-white/10">26</td>
+                                            <td className="p-3 border border-white/10">27</td>
+                                            <td className="p-3 border border-white/10">28</td>
+                                            <td className="p-3 border border-white/10">28.5</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            )}
                         </div>
                     </div>
                 </div>

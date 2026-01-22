@@ -35,6 +35,7 @@ const RoyalCollection = () => {
 
             <div className="container mx-auto relative z-10">
                 {/* Header */}
+                {/* Header */}
                 <div className="text-center mb-24 relative max-w-5xl mx-auto">
                     {activeView !== 'main' && (
                         <button
@@ -97,12 +98,12 @@ const RoyalCollection = () => {
 
                 {activeView === 'main' ? (
                     /* Main Split Layout */
-                    <div className="flex flex-col md:flex-row gap-8 h-[600px]">
+                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
 
                         {/* Men's Section (Clickable) */}
                         <div
                             onClick={() => setActiveView('men')}
-                            className="relative w-full md:w-1/2 h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
+                            className="relative w-full md:w-1/2 h-[500px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
                         >
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
                             <img
@@ -130,7 +131,7 @@ const RoyalCollection = () => {
                         {/* Women's Section */}
                         <div
                             onClick={() => setActiveView('women')}
-                            className="relative w-full md:w-1/2 h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
+                            className="relative w-full md:w-1/2 h-[500px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
                         >
                             <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
                             <img
@@ -158,12 +159,12 @@ const RoyalCollection = () => {
                     </div>
                 ) : activeView === 'men' ? (
                     /* Men's Sub-Category Layout (Clothing vs Accessories) */
-                    <div className="flex flex-col md:flex-row gap-8 h-[600px]">
+                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
 
                         {/* Men's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
                         <div
                             onClick={() => setActiveView('men-clothing')}
-                            className="group w-full md:w-1/2 h-full flex flex-col cursor-pointer"
+                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
                         >
                             <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
@@ -190,7 +191,7 @@ const RoyalCollection = () => {
                         {/* Men's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
                         <div
                             onClick={() => setActiveView('men-accessories')}
-                            className="group w-full md:w-1/2 h-full flex flex-col cursor-pointer"
+                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
                         >
                             <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
@@ -217,14 +218,14 @@ const RoyalCollection = () => {
                     </div>
                 ) : activeView === 'men-clothing' ? (
                     /* Men's Clothing Sub-Categories (Shirt, T-Shirt, Hoodie, Sweater) */
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 h-[800px] md:h-[600px]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 h-auto md:h-[600px]">
                         {[
                             { name: 'ROYAL SHIRT', img: imgRoyalShirt, link: 'Shirt' },
                             { name: 'ROYAL T-SHIRT', img: imgRoyalTShirt, link: 'T-Shirt' },
                             { name: 'ROYAL HOODIE', img: imgRoyalHoodie, link: 'Hoodie' },
                             { name: 'ROYAL SWEATER', img: imgRoyalSweater, link: 'Sweater' }
                         ].map((item) => (
-                            <Link to={`/shop?search=${item.link}`} key={item.name} className="relative w-full h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer block">
+                            <Link to={`/shop?search=${item.link}`} key={item.name} className="relative w-full h-[300px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer block">
                                 <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
                                 <img
                                     src={item.img}
@@ -281,12 +282,12 @@ const RoyalCollection = () => {
                     </div>
                 ) : activeView === 'women' ? (
                     /* Women's Sub-Category Layout (Clothing vs Accessories) */
-                    <div className="flex flex-col md:flex-row gap-8 h-[600px]">
+                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
 
                         {/* Women's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
                         <div
                             onClick={() => setActiveView('women-clothing')}
-                            className="group w-full md:w-1/2 h-full flex flex-col cursor-pointer"
+                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
                         >
                             <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
@@ -313,7 +314,7 @@ const RoyalCollection = () => {
                         {/* Women's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
                         <div
                             onClick={() => setActiveView('women-accessories')}
-                            className="group w-full md:w-1/2 h-full flex flex-col cursor-pointer"
+                            className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
                         >
                             <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
                                 <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>

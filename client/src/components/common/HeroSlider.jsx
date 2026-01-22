@@ -77,7 +77,7 @@ const HeroSlider = () => {
                             <span className="text-royal-gold uppercase tracking-[0.5em] mb-4 animate-slide-up">
                                 New Arrivals
                             </span>
-                            <h1 className="text-6xl md:text-8xl font-serif text-white mb-6 animate-fade-in shadow-sm">
+                            <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white mb-6 animate-fade-in shadow-sm">
                                 {slide.title}
                             </h1>
                             <p className="text-xl text-gray-200 mb-10 max-w-2xl font-light">

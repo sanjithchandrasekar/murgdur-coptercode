@@ -11,7 +11,7 @@ const cat4 = "/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
 const CategoryGrid = () => {
     const categories = [
         { name: "Royal Shirts", img: cat1, size: "large", link: "/shop/shirts" },
-        { name: "Signature Bags", img: cat2, size: "small", link: "/shop/bags" },
+        { name: "Signature Bags", img: cat2, size: "small", link: "/shop?type=bags" },
         { name: "Luxury Watches", img: cat3, size: "small", link: "/shop/watches" },
         { name: "Ethnic Wear", img: cat4, size: "wide", link: "/shop/ethnic" },
     ];
@@ -29,12 +29,12 @@ const CategoryGrid = () => {
                     </Link>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-2 gap-4 h-[800px] md:h-[600px]">
+                <div className="grid grid-cols-1 md:grid-cols-4 grid-rows-4 md:grid-rows-2 gap-4 h-auto md:h-[600px]">
                     {categories.map((cat, idx) => (
                         <Link
                             to={cat.link}
                             key={idx}
-                            className={`relative group overflow-hidden border border-gray-800 ${cat.size === 'large' ? 'md:col-span-2 md:row-span-2' :
+                            className={`relative group overflow-hidden border border-gray-800 h-[300px] md:h-auto ${cat.size === 'large' ? 'md:col-span-2 md:row-span-2' :
                                 cat.size === 'wide' ? 'md:col-span-2 md:row-span-1' :
                                     'md:col-span-1 md:row-span-1'
                                 }`}

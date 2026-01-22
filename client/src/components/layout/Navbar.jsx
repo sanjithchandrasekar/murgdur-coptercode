@@ -99,10 +99,10 @@ const Navbar = () => {
         <nav
             className={`fixed w-full z-50 transition-all duration-300 ${isDarkText ? 'bg-royal-black/95 backdrop-blur-md shadow-lg border-b border-white/5' : 'bg-transparent py-4'}`}
         >
-            <div className="container mx-auto px-6 h-16 flex justify-between items-center relative">
+            <div className="container mx-auto px-4 md:px-6 h-16 flex justify-between items-center relative">
 
                 {/* LEFT: Logo, Menu & Search */}
-                <div className="flex items-center gap-4 md:gap-8">
+                <div className="flex items-center gap-2 md:gap-8">
 
 
                     {/* Back Button (Visible on non-home pages) */}
@@ -118,14 +118,7 @@ const Navbar = () => {
                         </button>
                     )}
 
-                    {/* Menu Trigger */}
-                    <button
-                        className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group"
-                        onClick={() => setIsMobileMenuOpen(true)}
-                    >
-                        <Menu size={20} strokeWidth={1.5} />
-                        <span className="hidden md:block text-xs uppercase tracking-widest font-medium group-hover:underline underline-offset-4 decoration-royal-gold/50">Menu</span>
-                    </button>
+
 
                     {/* Search Section */}
                     <div className="flex items-center">
@@ -177,7 +170,7 @@ const Navbar = () => {
                                     onClick={() => setIsSearchOpen(true)}
                                 >
                                     <Search size={20} strokeWidth={1.5} />
-                                    <span className="hidden md:block text-xs uppercase tracking-widest font-medium group-hover:underline underline-offset-4 decoration-royal-gold/50">Search</span>
+                                    <span className="hidden sm:block text-xs uppercase tracking-widest font-medium group-hover:underline underline-offset-4 decoration-royal-gold/50">Search</span>
                                 </button>
                             )}
                         </AnimatePresence>
@@ -185,21 +178,22 @@ const Navbar = () => {
                 </div>
 
                 {/* CENTER: Logo */}
-                <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group" onClick={() => window.scrollTo(0, 0)}>
+                <Link to="/" className={`absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group transition-opacity duration-300 ${isSearchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} onClick={() => window.scrollTo(0, 0)}>
                     <style>
                         {`@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');`}
                     </style>
-                    <span className="text-2xl md:text-3xl font-bold tracking-[0.3em] text-white uppercase group-hover:text-royal-gold transition-colors" style={{ fontFamily: '"Jost", sans-serif' }}>
+                    <span className="text-xl md:text-3xl font-bold tracking-[0.15em] md:tracking-[0.3em] text-white uppercase group-hover:text-royal-gold transition-colors" style={{ fontFamily: '"Jost", sans-serif' }}>
                         MURGDUR
                     </span>
                 </Link>
 
                 {/* RIGHT: User Actions */}
-                <div className="flex items-center gap-4 md:gap-8">
-                    <Link to="/contact" className="hidden md:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
+                <div className="flex items-center gap-3 md:gap-8">
+                    <Link to="/contact" className="hidden sm:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
                         Contact Us
                     </Link>
 
+                    {/* Wishlist */}
                     <Link to="/vault" className="text-white hover:text-royal-gold transition-colors relative group">
                         <Heart size={20} strokeWidth={1.5} />
                         {wishlistItems && wishlistItems.length > 0 && (
@@ -209,6 +203,7 @@ const Navbar = () => {
                         )}
                     </Link>
 
+                    {/* User Profile */}
                     {user ? (
                         <div className="relative group">
                             <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block">
@@ -228,7 +223,7 @@ const Navbar = () => {
                             </div>
                         </div>
                     ) : (
-                        <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block" title="Sign In">
+                        <Link to="/profile" className="text-white hover:text-royal-gold transition-colors" title="Sign In">
                             <User size={20} strokeWidth={1.5} />
                         </Link>
                     )}
@@ -241,6 +236,14 @@ const Navbar = () => {
                             </span>
                         )}
                     </Link>
+
+                    {/* Menu Trigger */}
+                    <button
+                        className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                    >
+                        <Menu size={20} strokeWidth={1.5} />
+                    </button>
 
                 </div>
             </div>
@@ -294,6 +297,15 @@ const Navbar = () => {
                                         </Link>
                                     );
                                 })}
+                                {/* Additional Mobile Links */}
+                                <div className="border-t border-white/10 pt-4 mt-2 grid grid-cols-2 gap-4">
+                                    <Link to="/vault" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <Heart size={14} /> Wishlist
+                                    </Link>
+                                    <Link to="/profile" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <User size={14} /> {user ? 'My Profile' : 'Login'}
+                                    </Link>
+                                </div>
                             </div>
 
                             <div className="mt-auto pt-8 border-t border-white/10">

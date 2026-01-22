@@ -20,6 +20,14 @@
   .text-gold-gradient {
     @apply bg-clip-text text-transparent bg-gradient-to-r from-royal-gold to-royal-goldLight;
   }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Custom Mouse Theme - Royal Arrow (Small) */

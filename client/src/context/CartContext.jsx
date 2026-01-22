@@ -1,4 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Check, X } from 'lucide-react';
 
 const CartContext = createContext();
 
@@ -16,6 +18,12 @@ export const CartProvider = ({ children }) => {
         return savedWishlist ? JSON.parse(savedWishlist) : [];
     });
 
+    // Notification State
+    const [notification, setNotification] = useState(null);
+
+    // clear notification timer ref to handle rapid clicks
+    const timerRef = React.useRef(null);
+
     // Save to localStorage whenever items change
     useEffect(() => {
         localStorage.setItem('cartItems', JSON.stringify(cartItems));
@@ -29,34 +37,51 @@ export const CartProvider = ({ children }) => {
 
     const addToCart = (product, quantity = 1) => {
         console.log("Adding to cart:", product.name);
+
+        const alreadyInCart = cartItems.find(item => item.id === product.id);
+
+        if (alreadyInCart) {
+            // Item already exists - Show Info Notification
+            if (timerRef.current) clearTimeout(timerRef.current);
+            setNotification({
+                image: product.image || (product.images && product.images[0]),
+                name: product.name,
+                price: product.price,
+                quantity: alreadyInCart.quantity,
+                status: 'info'
+            });
+            timerRef.current = setTimeout(() => setNotification(null), 4000);
+            return; // Stop here
+        }
+
+        // Add new item
         setCartItems(prev => {
-            const existingItem = prev.find(item => item.id === product.id);
-            if (existingItem) {
-                // If item exists, update quantity
-                return prev.map(item =>
-                    item.id === product.id
-                        ? { ...item, quantity: item.quantity + quantity, image: product.image || (product.images && product.images[0]) || item.image }
-                        : item
-                );
-            } else {
-                // Add new item
-                // Ensure we have all necessary fields
-                const newItem = {
-                    id: product.id,
-                    name: product.name,
-                    price: product.price,
-                    originalPrice: product.originalPrice || product.price * 1.2, // Fallback if no original price
-                    image: product.image || (product.images && product.images[0]),
-                    quantity: quantity,
-                    size: product.selectedSize || 'Standard',
-                    seller: product.seller || 'Murgdur Heritage',
-                    stock: product.stock || 10,
-                    deliveryDate: "Fri, Jan 26", // Mock
-                    discount: product.discount || 0
-                };
-                return [...prev, newItem];
-            }
+            const newItem = {
+                id: product.id,
+                name: product.name,
+                price: product.price,
+                originalPrice: product.originalPrice || product.price * 1.2,
+                image: product.image || (product.images && product.images[0]),
+                quantity: quantity,
+                size: product.selectedSize || 'Standard',
+                seller: product.seller || 'Murgdur Heritage',
+                stock: product.stock || 10,
+                deliveryDate: "Fri, Jan 26",
+                discount: product.discount || 0
+            };
+            return [...prev, newItem];
         });
+
+        // Show Success Notification
+        if (timerRef.current) clearTimeout(timerRef.current);
+        setNotification({
+            image: product.image || (product.images && product.images[0]),
+            name: product.name,
+            price: product.price,
+            quantity: quantity,
+            status: 'success'
+        });
+        timerRef.current = setTimeout(() => setNotification(null), 4000);
     };
 
     const removeFromCart = (id) => {
@@ -67,7 +92,6 @@ export const CartProvider = ({ children }) => {
         setCartItems(prev => prev.map(item => {
             if (item.id === id) {
                 const newQty = item.quantity + change;
-                // Prevent quantity from going below 1 or above stock
                 if (newQty >= 1 && newQty <= (item.stock || 10)) {
                     return { ...item, quantity: newQty };
                 }
@@ -121,7 +145,9 @@ export const CartProvider = ({ children }) => {
             addToWishlist,
             removeFromWishlist,
             moveToCart,
-            saveForLater
+            saveForLater,
+            notification, // Expose notification state
+            dismissNotification: () => setNotification(null) // Expose dismiss function
         }}>
             {children}
         </CartContext.Provider>
