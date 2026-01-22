@@ -1,0 +1,120 @@
+export default {
+  name: 'product',
+  title: 'Product',
+  type: 'document',
+  fields: [
+    {
+      name: 'name',
+      title: 'Product Name',
+      type: 'string',
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'slug',
+      title: 'Slug',
+      type: 'slug',
+      options: {
+        source: 'name',
+        maxLength: 96,
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'price',
+      title: 'Price',
+      type: 'number',
+      validation: (Rule) => Rule.required().min(0),
+    },
+    {
+      name: 'originalPrice',
+      title: 'Original Price',
+      type: 'number',
+      validation: (Rule) => Rule.min(0),
+    },
+    {
+      name: 'images',
+      title: 'Product Images',
+      type: 'array',
+      of: [{type: 'image'}],
+      options: {
+        hotspot: true,
+      },
+      validation: (Rule) => Rule.required().min(1),
+    },
+    {
+      name: 'category',
+      title: 'Category',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Men', value: 'Men'},
+          {title: 'Women', value: 'Women'},
+          {title: 'Accessories', value: 'Accessories'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'type',
+      title: 'Product Type',
+      type: 'string',
+      options: {
+        list: [
+          {title: 'Shoes', value: 'shoes'},
+          {title: 'Bags', value: 'bags'},
+          {title: 'Belts', value: 'belts'},
+          {title: 'Wallets', value: 'wallets'},
+          {title: 'Shirt', value: 'shirt'},
+          {title: 'Trouser', value: 'trouser'},
+          {title: 'Watches', value: 'watches'},
+          {title: 'Perfume', value: 'perfume'},
+          {title: 'Sunglasses', value: 'sunglasses'},
+        ],
+      },
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'description',
+      title: 'Description',
+      type: 'text',
+      rows: 4,
+      validation: (Rule) => Rule.required(),
+    },
+    {
+      name: 'sizes',
+      title: 'Available Sizes',
+      type: 'array',
+      of: [{type: 'string'}],
+    },
+    {
+      name: 'colors',
+      title: 'Available Colors',
+      type: 'array',
+      of: [{type: 'string'}],
+    },
+    {
+      name: 'rating',
+      title: 'Rating',
+      type: 'number',
+      validation: (Rule) => Rule.min(0).max(5),
+    },
+    {
+      name: 'reviews',
+      title: 'Number of Reviews',
+      type: 'number',
+      validation: (Rule) => Rule.min(0),
+    },
+    {
+      name: 'inStock',
+      title: 'In Stock',
+      type: 'boolean',
+      initialValue: true,
+    },
+    {
+      name: 'featured',
+      title: 'Featured Product',
+      type: 'boolean',
+      initialValue: false,
+    },
+  ],
+}

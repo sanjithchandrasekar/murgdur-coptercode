@@ -1,0 +1,31 @@
+{
+  "name": "murgdur-studio",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Sanity Studio for Murgdur E-commerce",
+  "main": "package.json",
+  "author": "Murgdur Team",
+  "license": "UNLICENSED",
+  "scripts": {
+    "dev": "sanity dev",
+    "start": "sanity start",
+    "build": "sanity build",
+    "deploy": "sanity deploy",
+    "deploy-graphql": "sanity graphql deploy"
+  },
+  "keywords": [
+    "sanity"
+  ],
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "sanity": "^3.68.1",
+    "styled-components": "^6.1.16"
+  },
+  "devDependencies": {
+    "@sanity/eslint-config-studio": "^4.0.0",
+    "eslint": "^8.6.0",
+    "prettier": "^3.0.2",
+    "typescript": "^5.1.6"
+  }
+}
