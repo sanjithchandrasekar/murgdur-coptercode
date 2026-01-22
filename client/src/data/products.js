@@ -1,12 +1,12 @@
 // Image Imports (Mapping broadly to categories)
-const imgSherwani = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const imgSherwani = "/images/royal_sherwani.png";
 const imgLehenga = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
 const imgBag = "/images/hand bag.png";
 const imgBandhgala = "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png";
-const imgSaree = "/images/Gemini_Generated_Image_120fuv120fuv120f.png";
-const imgWallet = "/images/Gemini_Generated_Image_rxv1alrxv1alrxv1 (1).png";
-const imgAchkan = "/images/boy.jpeg";
-const imgGown = "/images/girl.png";
+const imgSaree = "/images/royal_saree.png";
+const imgWallet = "/images/royal_wallet.png";
+const imgAchkan = "/images/royal_sherwani.png";
+const imgGown = "/images/royal_gown.png";
 const imgClutch = "/images/Gemini_Generated_Image_r281slr281slr281.png";
 const imgJacket = "/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png";
 const imgSaree2 = "/images/Gemini_Generated_Image_yunch4yunch4yunc.png";
@@ -22,7 +22,7 @@ const imgGenericAcc = "/images/Gemini_Generated_Image_sx86uosx86uosx86.png";
 export const products = [
     {
         id: 1,
-        name: "Royal Navy Sherwani",
+        name: "Navy Sherwani",
         price: 24999,
         originalPrice: 29999,
         image: imgSherwani,
@@ -36,7 +36,7 @@ export const products = [
     },
     {
         id: 2,
-        name: "Crimson Bridal Lehenga",
+        name: "Bridal Lehenga",
         price: 45100,
         originalPrice: 55000,
         image: imgLehenga,
@@ -50,7 +50,7 @@ export const products = [
     },
     {
         id: 3,
-        name: "Signature 'M' Leather Bag",
+        name: "Leather Bag",
         price: 8700,
         originalPrice: 10500,
         image: imgBag,
@@ -64,7 +64,7 @@ export const products = [
     },
     {
         id: 4,
-        name: "Midnight Velvet Bandhgala",
+        name: "Velvet Bandhgala",
         price: 18000,
         originalPrice: 22000,
         image: imgBandhgala,
@@ -78,7 +78,7 @@ export const products = [
     },
     {
         id: 5,
-        name: "Gold Zari Silk Saree",
+        name: "Zari Silk Saree",
         price: 12199,
         originalPrice: 15000,
         image: imgSaree,
@@ -92,22 +92,22 @@ export const products = [
     },
     {
         id: 6,
-        name: "Obsidian Chain Wallet",
-        price: 5000,
-        originalPrice: 6500,
-        image: imgGenericAcc, // Placeholder for wallet
-        category: "Accessories",
-        type: "wallets",
-        description: "Sleek obsidian black wallet with a detachable chain.",
-        images: [imgGenericAcc, imgBag],
-        sizes: [],
-        colors: ["#000000", "#1c1c1c", "#333333", "#424242", "#212121"],
-        rating: 4.5,
-        reviews: 30
+        name: "Brown Oxford Shoes",
+        price: 14500,
+        originalPrice: 18000,
+        image: imgGenericAcc, // Actually an image of shoes
+        category: "Men",
+        type: "shoes",
+        description: "Classic antique brown Oxford shoes with a polished finish and elegant stitching.",
+        images: [imgGenericAcc],
+        sizes: ["7", "8", "9", "10", "11"],
+        colors: ["#8b4513", "#5d4037", "#a0522d"],
+        rating: 4.8,
+        reviews: 45
     },
     {
         id: 7,
-        name: "Ivory Wedding Achkan",
+        name: "Ivory Achkan",
         price: 32500,
         originalPrice: 40000,
         image: imgAchkan,
@@ -121,7 +121,7 @@ export const products = [
     },
     {
         id: 8,
-        name: "Ruby Velvet Gown",
+        name: "Velvet Gown",
         price: 28700,
         originalPrice: 35000,
         image: imgGown,
@@ -135,7 +135,7 @@ export const products = [
     },
     {
         id: 9,
-        name: "Classic Gold Clutch",
+        name: "Gold Clutch",
         price: 7500,
         originalPrice: 9000,
         image: imgClutch,
@@ -149,7 +149,7 @@ export const products = [
     },
     {
         id: 10,
-        name: "Heritage Brocade Jacket",
+        name: "Brocade Jacket",
         price: 15900,
         originalPrice: 19000,
         image: imgJacket,
@@ -163,7 +163,7 @@ export const products = [
     },
     {
         id: 11,
-        name: "Sapphire Silk Saree II",
+        name: "Silk Saree",
         price: 22000,
         originalPrice: 28000,
         image: imgSaree2,
@@ -177,7 +177,7 @@ export const products = [
     },
     {
         id: 12,
-        name: "Emerald Green Anarkali 12",
+        name: "Emerald Green Anarkali",
         price: 19500,
         originalPrice: 24000,
         image: imgAnarkali,
@@ -191,7 +191,7 @@ export const products = [
     },
     {
         id: 13,
-        name: "Classic Black Tuxedo 13",
+        name: "Black Tuxedo",
         price: 36200,
         originalPrice: 45000,
         image: imgTuxedo,
@@ -205,7 +205,7 @@ export const products = [
     },
     {
         id: 14,
-        name: "Ivory Raw Silk Bandi 14",
+        name: "Ivory Raw Silk Bandi",
         price: 13500,
         originalPrice: 16000,
         image: imgBandi,
@@ -219,7 +219,7 @@ export const products = [
     },
     {
         id: 15,
-        name: "Rose Gold Zardozi Lehenga 15",
+        name: "Rose Gold Zardozi Lehenga",
         price: 56400,
         originalPrice: 65000,
         image: imgRoseLehenga,
@@ -233,7 +233,7 @@ export const products = [
     },
     {
         id: 16,
-        name: "Royal Navy Sherwani 16",
+        name: "Navy Sherwani",
         price: 26499,
         originalPrice: 32000,
         image: imgSherwani,
@@ -248,14 +248,14 @@ export const products = [
     // Shoes
     {
         id: 17,
-        name: "Women's Elegant Heels",
+        name: "Elegant Heels",
         price: 12999,
         originalPrice: 16000,
-        image: "/images/womensslipper.jpeg",
+        image: "/images/royal_heels.png",
         category: "Accessories",
         type: "shoes",
         description: "Sophisticated heels perfect for evening occasions.",
-        images: ["/images/womensslipper.jpeg"],
+        images: ["/images/royal_heels.png"],
         sizes: ["5", "6", "7", "8", "9", "10"],
         colors: ["#000000", "#c71585", "#8b4513"],
         rating: 4.7,
@@ -263,7 +263,7 @@ export const products = [
     },
     {
         id: 18,
-        name: "Royal Sneaker Collection",
+        name: "Sneakers",
         price: 8999,
         originalPrice: 11000,
         image: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop",
@@ -278,7 +278,7 @@ export const products = [
     },
     {
         id: 19,
-        name: "Premium Dress Shoes",
+        name: "Dress Shoes",
         price: 15999,
         originalPrice: 19000,
         image: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
@@ -294,7 +294,7 @@ export const products = [
     // Watches
     {
         id: 20,
-        name: "Tambour Moon Luxury Watch",
+        name: "Tambour Moon Watch",
         price: 149999,
         originalPrice: 185000,
         image: "/images/watch%202.png",
@@ -309,7 +309,7 @@ export const products = [
     },
     {
         id: 21,
-        name: "Escale Spin Time Classic",
+        name: "Escale Spin Time",
         price: 125000,
         originalPrice: 155000,
         image: "/images/watch1.png",
@@ -324,7 +324,7 @@ export const products = [
     },
     {
         id: 22,
-        name: "Voyager Skeleton Premium",
+        name: "Voyager Skeleton",
         price: 135000,
         originalPrice: 165000,
         image: "/images/royal_watch.png",
@@ -340,7 +340,7 @@ export const products = [
     // Bags
     {
         id: 23,
-        name: "Monogram Speedy Bag",
+        name: "Monogram Speedy",
         price: 89999,
         originalPrice: 110000,
         image: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop",
@@ -355,14 +355,14 @@ export const products = [
     },
     {
         id: 24,
-        name: "Women's Handbag Premium",
+        name: "Handbag",
         price: 75000,
         originalPrice: 92000,
-        image: "/images/women bag/woman bag white 1.jpeg",
+        image: "/images/women handbag/woman bag white 1.jpeg",
         category: "Accessories",
         type: "bags",
         description: "Elegant leather handbag for everyday use.",
-        images: ["/images/women bag/woman bag white 1.jpeg"],
+        images: ["/images/women handbag/woman bag white 1.jpeg"],
         sizes: ["One Size"],
         colors: ["#f5f5f5", "#000000", "#8b4513"],
         rating: 4.9,
@@ -371,14 +371,14 @@ export const products = [
     // Perfume (single product)
     {
         id: 27,
-        name: "Éclat Signature Perfume",
+        name: "Signature Perfume",
         price: 12500,
         originalPrice: 15000,
-        image: "/images/women perfume/womens-perfume4.png",
+        image: "/images/royal_perfume.png",
         category: "Accessories",
         type: "perfumes",
         description: "A refined fragrance crafted to evoke royal elegance.",
-        images: ["/images/women perfume/womens-perfume4.png"],
+        images: ["/images/royal_perfume.png"],
         sizes: ["100ml"],
         colors: ["#f3d1d6", "#ffffff"],
         rating: 4.9,
@@ -401,7 +401,7 @@ export const products = [
     },
     {
         id: 26,
-        name: "Vanity Case Clutch",
+        name: "Vanity Case",
         price: 55000,
         originalPrice: 68000,
         image: "/images/vanitycase.jpg",
@@ -420,11 +420,11 @@ export const products = [
         name: "Royal Leather Loafers",
         price: 8500,
         originalPrice: 12000,
-        image: "/images/men shoe/menshoe1.png",
+        image: "/images/men shoe/men formal shoe/men casual shoe1.png",
         category: "Men",
         type: "shoes",
         description: "Handcrafted premium leather loafers in a rich mahogany finish.",
-        images: ["/images/men shoe/menshoe1.png"],
+        images: ["/images/men shoe/men formal shoe/men casual shoe1.png"],
         sizes: ["7", "8", "9", "10", "11"],
         colors: ["#8b4513", "#3e2723", "#000000"],
         rating: 4.8,
@@ -447,7 +447,7 @@ export const products = [
     },
     {
         id: 32,
-        name: "Heritage Brown Brogues",
+        name: "Brown Brogues",
         price: 12900,
         originalPrice: 15500,
         image: "/images/men shoe/menshoe3.png",
@@ -462,7 +462,7 @@ export const products = [
     },
     {
         id: 33,
-        name: "Velvet Ceremonial Mojaris",
+        name: "Velvet Mojaris",
         price: 6500,
         originalPrice: 8000,
         image: "/images/men shoe/menshoe4.png",
@@ -477,7 +477,7 @@ export const products = [
     },
     {
         id: 34,
-        name: "Modern Suede Derbies",
+        name: "Suede Derbies",
         price: 9800,
         originalPrice: 13000,
         image: "/images/men shoe/menshoe5.png",
@@ -492,7 +492,7 @@ export const products = [
     },
     {
         id: 35,
-        name: "Signature Monk Straps",
+        name: "Monk Straps",
         price: 16000,
         originalPrice: 20000,
         image: "/images/men shoe/menshoe6.jpeg",
@@ -507,7 +507,7 @@ export const products = [
     },
     {
         id: 36,
-        name: "Regal Gold Loafers",
+        name: "Gold Loafers",
         price: 11500,
         originalPrice: 14000,
         image: "/images/men shoe/menshoe7.jpeg",
@@ -522,7 +522,7 @@ export const products = [
     },
     {
         id: 37,
-        name: "Urban Chelsea Boots",
+        name: "Chelsea Boots",
         price: 10500,
         originalPrice: 13500,
         image: "/images/men shoe/menshoe8.jpeg",
@@ -537,7 +537,7 @@ export const products = [
     },
     {
         id: 38,
-        name: "Minimalist Sneakers",
+        name: "Sneakers",
         price: 7900,
         originalPrice: 9500,
         image: "/images/men shoe/menshoe9.jpeg",
@@ -568,7 +568,7 @@ export const products = [
     // Women's Handbags Collection
     {
         id: 40,
-        name: "Pearl White Elegance Tote",
+        name: "White Tote",
         price: 45000,
         originalPrice: 52000,
         image: "/images/women handbag/woman bag white 1.jpeg",
@@ -586,7 +586,7 @@ export const products = [
     },
     {
         id: 41,
-        name: "Midnight Noir Handbag",
+        name: "Black Handbag",
         price: 38500,
         originalPrice: 45000,
         image: "/images/women handbag/women bag black.jpeg",
@@ -604,7 +604,7 @@ export const products = [
     },
     {
         id: 42,
-        name: "Classic Tan Heritage Satchel",
+        name: "Tan Satchel",
         price: 42000,
         originalPrice: 49000,
         image: "/images/women handbag/women bag brown front.jpeg",
@@ -623,7 +623,7 @@ export const products = [
     },
     {
         id: 43,
-        name: "Mocha Leather Shoulder Bag",
+        name: "Leather Shoulder Bag",
         price: 39900,
         originalPrice: 46000,
         image: "/images/women handbag/women bag brown 2 front.jpeg",
@@ -642,7 +642,7 @@ export const products = [
     },
     {
         id: 44,
-        name: "Rose Blush Luxury Carrier",
+        name: "Pink Carrier",
         price: 48000,
         originalPrice: 55000,
         image: "/images/women handbag/women bag pink front.jpeg",
@@ -661,7 +661,7 @@ export const products = [
     // Women's Perfume Collection
     {
         id: 45,
-        name: "Royal Rose Elixir",
+        name: "Rose Elixir",
         price: 8500,
         originalPrice: 10000,
         image: "/images/women perfume/womens-perfume1.png",
@@ -676,7 +676,7 @@ export const products = [
     },
     {
         id: 46,
-        name: "Midnight Orchid Glaze",
+        name: "Orchid Glaze",
         price: 9200,
         originalPrice: 11000,
         image: "/images/women perfume/womens-perfume2.png",
@@ -691,7 +691,7 @@ export const products = [
     },
     {
         id: 47,
-        name: "Golden Amber Essence",
+        name: "Amber Essence",
         price: 7800,
         originalPrice: 9500,
         image: "/images/women perfume/womens-perfume3.png",
@@ -706,7 +706,7 @@ export const products = [
     },
     {
         id: 48,
-        name: "Celestial Azure Mist",
+        name: "Azure Mist",
         price: 6500,
         originalPrice: 8000,
         image: "/images/women perfume/womens-perfume4.png",
@@ -721,7 +721,7 @@ export const products = [
     },
     {
         id: 49,
-        name: "Velvet Santal Reserve",
+        name: "Santal Reserve",
         price: 10500,
         originalPrice: 12500,
         image: "/images/women perfume/womens-perfume5.png",
@@ -736,7 +736,7 @@ export const products = [
     },
     {
         id: 50,
-        name: "Enchanted Jasmine Bloom",
+        name: "Jasmine Bloom",
         price: 8900,
         originalPrice: 10200,
         image: "/images/women perfume/womens-perfume6.png",
@@ -751,7 +751,7 @@ export const products = [
     },
     {
         id: 51,
-        name: "Crystal Rain Pure",
+        name: "Crystal Rain",
         price: 7200,
         originalPrice: 8800,
         image: "/images/women perfume/womens-perfume7.png",
@@ -767,7 +767,7 @@ export const products = [
     // Men's Bags Collection
     {
         id: 52,
-        name: "The Sovereign Duffle",
+        name: "Leather Duffle",
         price: 45000,
         originalPrice: 52000,
         image: "/images/mensbags/mens-bag1.png",
@@ -782,7 +782,7 @@ export const products = [
     },
     {
         id: 53,
-        name: "Estate Leather Weekender",
+        name: "Leather Weekender",
         price: 38000,
         originalPrice: 44000,
         image: "/images/mensbags/mens-bag2.png",
@@ -797,7 +797,7 @@ export const products = [
     },
     {
         id: 54,
-        name: "Monarch Business Brief",
+        name: "Business Brief",
         price: 28000,
         originalPrice: 32000,
         image: "/images/mensbags/mens-bag3.png",
@@ -812,7 +812,7 @@ export const products = [
     },
     {
         id: 55,
-        name: "Royal Courier Messenger",
+        name: "Courier Messenger",
         price: 22000,
         originalPrice: 26000,
         image: "/images/mensbags/mens-bag4.png",
@@ -827,7 +827,7 @@ export const products = [
     },
     {
         id: 56,
-        name: "Vanguard Laptop Folio",
+        name: "Laptop Folio",
         price: 18000,
         originalPrice: 21000,
         image: "/images/mensbags/mens-bag5.png",
@@ -842,7 +842,7 @@ export const products = [
     },
     {
         id: 57,
-        name: "Imperial Travel Satchel",
+        name: "Travel Satchel",
         price: 32000,
         originalPrice: 38000,
         image: "/images/mensbags/mens-bag6.png",
@@ -857,7 +857,7 @@ export const products = [
     },
     {
         id: 58,
-        name: "Regal Document Case",
+        name: "Document Case",
         price: 15000,
         originalPrice: 18000,
         image: "/images/mensbags/mens-bag7.png",
@@ -872,7 +872,7 @@ export const products = [
     },
     {
         id: 59,
-        name: "Knight's Utility Bag",
+        name: "Utility Bag",
         price: 25000,
         originalPrice: 29000,
         image: "/images/mensbags/mens-bag8.png",
@@ -888,7 +888,7 @@ export const products = [
     // Men's Perfume Collection
     {
         id: 60,
-        name: "Royal Oudh Intense",
+        name: "Oudh Intense",
         price: 9500,
         originalPrice: 11000,
         image: "/images/men perfume/mens-perfume1.png",
@@ -933,7 +933,7 @@ export const products = [
     },
     {
         id: 63,
-        name: "Imperial Vetiver",
+        name: "Vetiver",
         price: 8200,
         originalPrice: 9800,
         image: "/images/men perfume/mens-perfume4.png",
@@ -948,7 +948,7 @@ export const products = [
     },
     {
         id: 64,
-        name: "Sovereign Gold",
+        name: "Gold Perfume",
         price: 10500,
         originalPrice: 12500,
         image: "/images/men perfume/mens-perfume5.png",
@@ -963,7 +963,7 @@ export const products = [
     },
     {
         id: 65,
-        name: "Majestic Cedar",
+        name: "Cedar Perfume",
         price: 7900,
         originalPrice: 9200,
         image: "/images/men perfume/mens-perfume6.png",
@@ -979,7 +979,7 @@ export const products = [
     // Men's Formal Shoes Collection
     {
         id: 66,
-        name: "Regal Oxford Loafer",
+        name: "Oxford Loafer",
         price: 18500,
         originalPrice: 22000,
         image: "/images/men shoe/men formal shoe/men casual shoe1.png",
@@ -994,7 +994,7 @@ export const products = [
     },
     {
         id: 67,
-        name: "Classic Derby Brogue",
+        name: "Derby Brogue",
         price: 21000,
         originalPrice: 26000,
         image: "/images/men shoe/men formal shoe/men casual shoe2.png",
@@ -1009,7 +1009,7 @@ export const products = [
     },
     {
         id: 68,
-        name: "Monarch Leather Slip-on",
+        name: "Leather Slip-on",
         price: 16500,
         originalPrice: 19500,
         image: "/images/men shoe/men formal shoe/men casual shoe3.png",
@@ -1027,7 +1027,7 @@ export const products = [
     },
     {
         id: 69,
-        name: "Sovereign Suede Moccasin",
+        name: "Suede Moccasin",
         price: 14500,
         originalPrice: 18000,
         image: "/images/men shoe/men formal shoe/men casual shoe4.png",
@@ -1045,7 +1045,7 @@ export const products = [
     },
     {
         id: 70,
-        name: "Estate Nubuck Driver",
+        name: "Nubuck Driver",
         price: 15800,
         originalPrice: 19000,
         image: "/images/men shoe/men formal shoe/men casual shoe5.png",
@@ -1064,7 +1064,7 @@ export const products = [
     // Men's Watch Collection
     {
         id: 71,
-        name: "Chrono Masterpiece",
+        name: "Chronograph",
         price: 55000,
         originalPrice: 65000,
         image: "/images/men watch/watch1.png",
@@ -1079,7 +1079,7 @@ export const products = [
     },
     {
         id: 72,
-        name: "Royal Gold Automaton",
+        name: "Gold Watch",
         price: 85000,
         originalPrice: 95000,
         image: "/images/men watch/watch 2.png",
@@ -1094,7 +1094,7 @@ export const products = [
     },
     {
         id: 73,
-        name: "Midnight Tourbillon",
+        name: "Black Watch",
         price: 48000,
         originalPrice: 58000,
         image: "/images/men watch/watch 3.png",
@@ -1109,7 +1109,7 @@ export const products = [
     },
     {
         id: 74,
-        name: "Heritage Leather Strap",
+        name: "Leather Strap Watch",
         price: 32000,
         originalPrice: 38000,
         image: "/images/men watch/watch4.png",
@@ -1125,7 +1125,7 @@ export const products = [
     // Men's Slipper Collection
     {
         id: 75,
-        name: "Royal Velvet Slide",
+        name: "Velvet Slide",
         price: 4500,
         originalPrice: 5500,
         image: "/images/men slipper/mensslipper1.png",
@@ -1143,7 +1143,7 @@ export const products = [
     },
     {
         id: 76,
-        name: "Imperial Leather Slipper",
+        name: "Leather Slipper",
         price: 6800,
         originalPrice: 7500,
         image: "/images/men slipper/mensslipper2.png",
@@ -1161,7 +1161,7 @@ export const products = [
     },
     {
         id: 77,
-        name: "Sovereign Comfort Scuff",
+        name: "Comfort Scuff",
         price: 3200,
         originalPrice: 4000,
         image: "/images/men slipper/mensslipper3.png",
@@ -1180,14 +1180,14 @@ export const products = [
     // Sunglasses Collection
     {
         id: 78,
-        name: "Aviator Gold Classic",
+        name: "Aviator Sunglasses",
         price: 15500,
         originalPrice: 18000,
-        image: "/images/sunglasses/sunglass1.png",
+        image: "/images/royal_sunglasses.png",
         category: "Accessories",
         type: "sunglasses",
         description: "Classic aviator sunglasses with a gold frame and dark polarized lenses. Timeless style for any occasion.",
-        images: ["/images/sunglasses/sunglass1.png"],
+        images: ["/images/royal_sunglasses.png"],
         sizes: ["One Size"],
         colors: ["#ffd700", "#000000"],
         rating: 4.8,
@@ -1195,7 +1195,7 @@ export const products = [
     },
     {
         id: 79,
-        name: "Midnight Wayfarer",
+        name: "Wayfarer Sunglasses",
         price: 12800,
         originalPrice: 15000,
         image: "/images/sunglasses/sunglass2.png",
@@ -1297,5 +1297,187 @@ export const products = [
         colors: ["#000000"],
         rating: 5.0,
         reviews: 15
+    },
+    // Men's Shirts Collection
+    {
+        id: 86,
+        name: "Imperial White Oxford",
+        price: 4500,
+        originalPrice: 5800,
+        image: "/images/men shirt/mrnsshirt1.png",
+        category: "Men",
+        type: "shirts",
+        description: "Crisp white Oxford shirt tailored for a sharp, professional look. Premium cotton fabric.",
+        images: ["/images/men shirt/mrnsshirt1.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#ffffff"],
+        rating: 4.8,
+        reviews: 32
+    },
+    {
+        id: 87,
+        name: "Midnight Blue Formal",
+        price: 5200,
+        originalPrice: 6500,
+        image: "/images/men shirt/mrnsshirt2.png",
+        category: "Men",
+        type: "shirts",
+        description: "Deep midnight blue formal shirt with a subtle sheen. Perfect for evening events and boardrooms.",
+        images: ["/images/men shirt/mrnsshirt2.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#191970"],
+        rating: 4.9,
+        reviews: 45
+    },
+    {
+        id: 88,
+        name: "Classic Striped Business",
+        price: 4800,
+        originalPrice: 5900,
+        image: "/images/men shirt/mrnsshirt3.png",
+        category: "Men",
+        type: "shirts",
+        description: "Vertical striped shirt in soft blue and white. Elongates the torso for a flattering fit.",
+        images: ["/images/men shirt/mrnsshirt3.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#add8e6", "#ffffff"],
+        rating: 4.7,
+        reviews: 28
+    },
+    {
+        id: 89,
+        name: "Regal Checkered Casual",
+        price: 3900,
+        originalPrice: 4800,
+        image: "/images/men shirt/mrnsshirt4.png",
+        category: "Men",
+        type: "shirts",
+        description: "Smart-casual checkered shirt. Versatile enough for office Fridays and weekend outings.",
+        images: ["/images/men shirt/mrnsshirt4.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#4682b4", "#ffffff"],
+        rating: 4.6,
+        reviews: 35
+    },
+    {
+        id: 90,
+        name: "Sovereign Black Satin",
+        price: 6500,
+        originalPrice: 8000,
+        image: "/images/men shirt/mrnsshirt5.png",
+        category: "Men",
+        type: "shirts",
+        description: "Luxurious black satin finish shirt containing a touch of silk. The ultimate statement piece.",
+        images: ["/images/men shirt/mrnsshirt5.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#000000"],
+        rating: 5.0,
+        reviews: 58
+    },
+    {
+        id: 91,
+        name: "Azure Linen Breeze",
+        price: 4200,
+        originalPrice: 5000,
+        image: "/images/men shirt/mrnsshirt6.png",
+        category: "Men",
+        type: "shirts",
+        description: "Breathable azure linen shirt, ideal for summer elegance and tropical getaways.",
+        images: ["/images/men shirt/mrnsshirt6.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#007fff"],
+        rating: 4.7,
+        reviews: 22
+    },
+    {
+        id: 92,
+        name: "Crimson Paisley Print",
+        price: 4600,
+        originalPrice: 5500,
+        image: "/images/men shirt/mrnsshirt7.png",
+        category: "Men",
+        type: "shirts",
+        description: "Bold crimson shirt with subtle paisley detailing. For the man who isn't afraid to stand out.",
+        images: ["/images/men shirt/mrnsshirt7.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#dc143c"],
+        rating: 4.8,
+        reviews: 19
+    },
+    {
+        id: 93,
+        name: "Slate Grey Minimalist",
+        price: 4100,
+        originalPrice: 4900,
+        image: "/images/men shirt/mrnsshirt8.png",
+        category: "Men",
+        type: "shirts",
+        description: "Modern slate grey shirt with concealed buttons. Sleek, minimalist, and architectural.",
+        images: ["/images/men shirt/mrnsshirt8.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#708090"],
+        rating: 4.6,
+        reviews: 25
+    },
+    {
+        id: 94,
+        name: "Heritage Cream Silk",
+        price: 7200,
+        originalPrice: 8500,
+        image: "/images/men shirt/mrnsshirt9.png",
+        category: "Men",
+        type: "shirts",
+        description: "Rich cream silk blend shirt. Exudes old-money charm and sophistication.",
+        images: ["/images/men shirt/mrnsshirt9.png"],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#fffdd0"],
+        rating: 4.9,
+        reviews: 41
+    },
+    // Men's Wallet Collection
+    {
+        id: 95,
+        name: "Classic Leather Bi-Fold",
+        price: 2500,
+        originalPrice: 3200,
+        image: "/images/mens wallet/wallet.png",
+        category: "Accessories",
+        type: "wallets",
+        description: "A timeless bi-fold wallet strictly for the gentleman who values tradition. Genuine leather with ample card slots.",
+        images: ["/images/mens wallet/wallet.png"],
+        sizes: ["One Size"],
+        colors: ["#3b2f2f"],
+        rating: 4.7,
+        reviews: 62
+    },
+    {
+        id: 96,
+        name: "Emerald Green Cardholder",
+        price: 1800,
+        originalPrice: 2400,
+        image: "/images/mens wallet/wallet green.png",
+        category: "Accessories",
+        type: "wallets",
+        description: "Sleek and slim emerald green wallet. Perfect for carrying essentials without the bulk.",
+        images: ["/images/mens wallet/wallet green.png"],
+        sizes: ["One Size"],
+        colors: ["#50c878"],
+        rating: 4.8,
+        reviews: 45
+    },
+    {
+        id: 97,
+        name: "Crimson Red Compact",
+        price: 2200,
+        originalPrice: 2900,
+        image: "/images/mens wallet/wallet red.png",
+        category: "Accessories",
+        type: "wallets",
+        description: "Bold crimson red compact wallet. Makes a striking statement every time you pay.",
+        images: ["/images/mens wallet/wallet red.png"],
+        sizes: ["One Size"],
+        colors: ["#dc143c"],
+        rating: 4.9,
+        reviews: 38
     }
 ];

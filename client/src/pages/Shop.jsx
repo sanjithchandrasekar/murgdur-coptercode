@@ -30,7 +30,8 @@ const Shop = () => {
         { label: 'CAPS', value: 'caps' },
         { label: 'SWEAT SHIRTS', value: 'sweat-shirts' },
         { label: 'SLIPPERS', value: 'slippers' },
-        { label: 'SUNGLASSES', value: 'sunglasses' }
+        { label: 'SUNGLASSES', value: 'sunglasses' },
+        { label: 'SHIRTS', value: 'shirts' }
     ];
 
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -184,15 +185,15 @@ const Shop = () => {
                     {/* Filters Sidebar */}
                     {filterOpen && (
                         <div className="col-span-1 md:block hidden">
-                            <div className="bg-white p-6 border border-gray-200 shadow-sm">
-                                <h3 className="text-royal-maroon font-serif mb-6 text-lg">Thinking of...</h3>
-                                <div className="space-y-3 text-gray-600 text-sm">
+                            <div className="bg-[#1a1a1a] p-6 border border-white/10 shadow-xl">
+                                <h3 className="text-white font-serif mb-6 text-lg tracking-widest uppercase border-b border-white/10 pb-4">Filter By</h3>
+                                <div className="space-y-4 text-gray-300 text-sm">
                                     {['Men', 'Women', 'Accessories'].map(category => (
                                         <div key={category} className="flex items-center gap-3 group cursor-pointer" onClick={() => toggleCategory(category)}>
-                                            <div className={`w-4 h-4 border border-gray-300 flex items-center justify-center transition-colors ${selectedCategories.includes(category) ? 'bg-royal-maroon border-royal-maroon' : 'group-hover:border-royal-maroon'}`}>
-                                                {selectedCategories.includes(category) && <div className="w-2 h-2 bg-white" />}
+                                            <div className={`w-5 h-5 border flex items-center justify-center transition-all duration-300 ${selectedCategories.includes(category) ? 'bg-royal-gold border-royal-gold' : 'border-gray-500 group-hover:border-royal-gold bg-transparent'}`}>
+                                                {selectedCategories.includes(category) && <div className="w-2.5 h-2.5 bg-black" />}
                                             </div>
-                                            <span className="font-serif tracking-wide">{category}</span>
+                                            <span className={`font-serif tracking-wide transition-colors ${selectedCategories.includes(category) ? 'text-royal-gold' : 'group-hover:text-white'}`}>{category}</span>
                                         </div>
                                     ))}
                                 </div>
