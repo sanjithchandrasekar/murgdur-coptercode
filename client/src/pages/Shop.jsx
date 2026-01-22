@@ -29,7 +29,8 @@ const Shop = () => {
         { label: 'CAPS', value: 'caps' },
         { label: 'SWEAT SHIRTS', value: 'sweat-shirts' },
         { label: 'SLIPPERS', value: 'slippers' },
-        { label: 'SUNGLASSES', value: 'sunglasses' }
+        { label: 'SUNGLASSES', value: 'sunglasses' },
+        { label: 'SHIRTS', value: 'shirts' }
     ];
 
     const [selectedCategories, setSelectedCategories] = useState([]);

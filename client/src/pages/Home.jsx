@@ -224,12 +224,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg" },
-                            { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png" },
-                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png" },
-                            { name: "Passport Cover", price: "₹ 8,500", img: "/images/passport.jpg" }
+                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg", link: "/product/42" },
+                            { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png", link: "/product/9" },
+                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png", link: "/product/51" },
+                            { name: "Passport Cover", price: "₹ 8,500", img: "/images/passport.jpg", link: "/shop" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group cursor-pointer">
+                            <Link to={item.link || "/shop"} key={idx} className="group cursor-pointer">
                                 <div className="aspect-square bg-gray-50 border border-gray-100 mb-6 overflow-hidden relative rounded-sm transition-colors duration-500 group-hover:bg-gray-100">
                                     <img
                                         src={item.img}
@@ -292,12 +292,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { name: "Monogram Speedy", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Accessories", img: "/images/acc.png" },
-                            { name: "Nano Multi-Color", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Vanity Case", img: "/images/vanitycase.jpg" }
+                            { name: "Monogram Speedy", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop", link: "/product/23" },
+                            { name: "Accessories", img: "/images/acc.png", link: "/shop" },
+                            { name: "Nano Multi-Color", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/25" },
+                            { name: "Vanity Case", img: "/images/vanitycase.jpg", link: "/product/26" }
                         ].map((item, idx) => (
-                            <Link to="/shop?type=bags" key={idx} className="group block cursor-pointer">
+                            <Link to={item.link || "/shop?type=bags"} key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
                                     <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
                                         <Heart size={20} />
@@ -325,12 +325,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg" },
-                            { name: "Passport Cover", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Micro Vanity", img: "/images/micro.jpg" }
+                            { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/shop" },
+                            { name: "Passport Cover", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop", link: "/shop" },
+                            { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/25" },
+                            { name: "Micro Vanity", img: "/images/micro.jpg", link: "/shop" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block cursor-pointer">
+                            <Link to={item.link || "/shop"} key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
                                     <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
                                         <Heart size={20} />
@@ -376,12 +376,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
-                            { name: "Women's Heels", img: "/images/womensslipper.jpeg" },
-                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Women's Heels", img: "/images/womensslipper.jpeg", link: "/product/17" },
+                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop", link: "/product/18" },
+                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", link: "/product/19" },
+                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" }
                         ].map((item, idx) => (
-                            <Link to="/shop?type=shoes" key={idx} className="group block cursor-pointer">
+                            <Link to={item.link || "/shop?type=shoes"} key={idx} className="group block cursor-pointer">
                                 <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
                                     <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
                                         <Heart size={20} />
@@ -430,11 +430,11 @@ const Home = () => {
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12">Guardians of Time</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
-                            { name: "Tambour Moon", img: "/images/watch%202.png" },
-                            { name: "Escale Spin Time", img: "/images/watch1.png" },
-                            { name: "Voyager Skeleton", img: "/images/royal_watch.png" }
+                            { name: "Tambour Moon", img: "/images/watch%202.png", link: "/product/20" },
+                            { name: "Escale Spin Time", img: "/images/watch1.png", link: "/product/21" },
+                            { name: "Voyager Skeleton", img: "/images/royal_watch.png", link: "/product/22" }
                         ].map((item, idx) => (
-                            <Link to="/shop?type=watches" key={idx} className="group cursor-pointer">
+                            <Link to={item.link || "/shop?type=watches"} key={idx} className="group cursor-pointer">
                                 <div className="aspect-[3/4] overflow-hidden mb-6 relative">
                                     <img
                                         src={item.img}
