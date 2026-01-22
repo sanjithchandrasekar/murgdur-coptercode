@@ -217,11 +217,10 @@ const RoyalCollection = () => {
 
                     </div>
                 ) : activeView === 'men-clothing' ? (
-                    /* Men's Clothing Sub-Categories (Shirt, T-Shirt, Hoodie, Sweater) */
+                    /* Men's Clothing Sub-Categories (Shirt, Hoodie, Sweater) */
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 h-auto md:h-[600px]">
                         {[
                             { name: 'ROYAL SHIRT', img: imgRoyalShirt, link: 'Shirt' },
-                            { name: 'ROYAL T-SHIRT', img: imgRoyalTShirt, link: 'T-Shirt' },
                             { name: 'ROYAL HOODIE', img: imgRoyalHoodie, link: 'Hoodie' },
                             { name: 'ROYAL SWEATER', img: imgRoyalSweater, link: 'Sweater' }
                         ].map((item) => (

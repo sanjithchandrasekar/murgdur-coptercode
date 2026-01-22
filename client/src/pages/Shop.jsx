@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Filter, ChevronDown, Search, Heart } from 'lucide-react';
+import { Filter, ChevronDown, Search, Heart, Check } from 'lucide-react';
 
 // Importing images (reusing existing assets)
 import { products as allProducts } from '../data/products';
@@ -19,11 +19,10 @@ const Shop = () => {
         { label: 'ALL', value: 'all' },
         { label: 'SHOES', value: 'shoes' },
         { label: 'HAND BAGS', value: 'bags' },
-        { label: 'BELTS', value: 'belts' },
+        { label: 'BELTS & WALLETS', value: 'belts-wallets' },
         { label: 'PERFUME', value: 'perfumes' },
         { label: 'WATCHES', value: 'watches' },
-        { label: 'WALLETS', value: 'wallets' },
-        { label: 'T-SHIRTS', value: 't-shirts' },
+        { label: 'SHIRT', value: 'shirt' },
         { label: 'TROUSERS', value: 'trousers' },
         { label: 'OVERCOATS', value: 'overcoats' },
         { label: 'OVERSIZED', value: 'oversized' },
@@ -51,7 +50,14 @@ const Shop = () => {
 
     // Filter by Active Tab (Type)
     if (activeTab !== 'all') {
-        products = products.filter(p => (p.type || '').toLowerCase() === activeTab.toLowerCase());
+        if (activeTab === 'belts-wallets') {
+            products = products.filter(p => {
+                const type = (p.type || '').toLowerCase();
+                return type === 'belts' || type === 'wallets';
+            });
+        } else {
+            products = products.filter(p => (p.type || '').toLowerCase() === activeTab.toLowerCase());
+        }
     }
 
     // Filter by Category (Sidebar)
@@ -83,9 +89,9 @@ const Shop = () => {
             <div className="container mx-auto">
 
                 {/* Search & Header */}
-                <div className="flex flex-col gap-8 mb-12 border-b border-royal-maroon/20 pb-6">
+                <div className="flex flex-col gap-8 mb-12">
 
-                    <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+                    <div className="flex flex-col md:flex-row justify-between items-end gap-4 border-b border-royal-maroon/20 pb-6">
                         <div>
                             <span className="text-royal-maroon text-xs font-bold uppercase tracking-[0.2em] mb-2 block">The Collection</span>
                             <h1 className="text-4xl md:text-5xl font-serif text-black">
@@ -133,7 +139,7 @@ const Shop = () => {
                     </div>
 
                     {/* Category Tabs (New Feature) */}
-                    <div className="w-full overflow-x-auto pb-2 scrollbar-hide">
+                    <div className="w-full overflow-x-auto pb-2 scrollbar-hide sticky top-20 bg-royal-ivory z-40 -mx-6 px-6 pt-4 border-b border-royal-maroon/20">
                         <div className="flex space-x-3 min-w-max">
                             {categoryTabs.map((tab) => (
                                 <button
@@ -157,12 +163,31 @@ const Shop = () => {
                         </p>
 
                         <div className="flex gap-4">
-                            <button
-                                onClick={() => setFilterOpen(!filterOpen)}
-                                className={`flex items-center gap-2 px-4 py-2 border ${filterOpen ? 'bg-royal-maroon text-white border-royal-maroon' : 'bg-transparent text-black border-gray-300'} uppercase text-xs tracking-widest transition-all hover:bg-royal-maroon hover:text-white hover:border-royal-maroon`}
-                            >
-                                <Filter size={16} /> Filters
-                            </button>
+                            <div className="relative group">
+                                <button
+                                    onClick={() => setFilterOpen(!filterOpen)}
+                                    className={`flex items-center gap-2 px-4 py-2 border ${filterOpen ? 'bg-royal-maroon text-white border-royal-maroon' : 'bg-transparent text-black border-gray-300'} uppercase text-xs tracking-widest transition-all hover:bg-white hover:text-black hover:border-gray-400`}
+                                >
+                                    <Filter size={16} /> Filters
+                                </button>
+                                
+                                {/* Hover Filter Dropdown */}
+                                <div className="absolute left-0 top-full w-48 bg-white border border-gray-200 shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-30 py-2 px-3">
+                                    <div className="space-y-1 text-gray-700 text-sm">
+                                        {['Men', 'Women'].map(category => (
+                                            <label key={category} className="flex items-center gap-3 hover:text-royal-maroon cursor-pointer transition-colors py-1">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={selectedCategories.includes(category)}
+                                                    onChange={() => toggleCategory(category)}
+                                                    className="w-4 h-4 accent-royal-maroon cursor-pointer"
+                                                />
+                                                <span className="font-serif tracking-wide">{category}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
 
                             <div className="relative group">
                                 <button className="flex items-center gap-2 px-4 py-2 bg-transparent text-black border border-gray-300 uppercase text-xs tracking-widest hover:border-royal-maroon transition-colors">
@@ -187,13 +212,16 @@ const Shop = () => {
                             <div className="bg-white p-6 border border-gray-200 shadow-sm">
                                 <h3 className="text-royal-maroon font-serif mb-6 text-lg">Thinking of...</h3>
                                 <div className="space-y-3 text-gray-600 text-sm">
-                                    {['Men', 'Women', 'Accessories'].map(category => (
-                                        <div key={category} className="flex items-center gap-3 group cursor-pointer" onClick={() => toggleCategory(category)}>
-                                            <div className={`w-4 h-4 border border-gray-300 flex items-center justify-center transition-colors ${selectedCategories.includes(category) ? 'bg-royal-maroon border-royal-maroon' : 'group-hover:border-royal-maroon'}`}>
-                                                {selectedCategories.includes(category) && <div className="w-2 h-2 bg-white" />}
-                                            </div>
+                                    {['Men', 'Women'].map(category => (
+                                        <label key={category} className="flex items-center gap-3 hover:text-royal-maroon cursor-pointer transition-colors">
+                                            <input
+                                                type="checkbox"
+                                                checked={selectedCategories.includes(category)}
+                                                onChange={() => toggleCategory(category)}
+                                                className="w-4 h-4 accent-royal-maroon cursor-pointer"
+                                            />
                                             <span className="font-serif tracking-wide">{category}</span>
-                                        </div>
+                                        </label>
                                     ))}
                                 </div>
                             </div>

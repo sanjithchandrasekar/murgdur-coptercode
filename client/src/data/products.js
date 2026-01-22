@@ -16,6 +16,27 @@ const imgBandi = "/images/Gemini_Generated_Image_687ijq687ijq687i.png";
 const imgRoseLehenga = "/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
 const imgGenericMen = "/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png";
 const imgGenericAcc = "/images/Gemini_Generated_Image_sx86uosx86uosx86.png";
+const imgShirt1 = "/images/mrnsshirt1.png";
+const imgShirt2 = "/images/mrnsshirt2.png";
+const imgShirt3 = "/images/mrnsshirt3.png";
+const imgShirt4 = "/images/mrnsshirt4.png";
+const imgShirt5 = "/images/mrnsshirt5.png";
+const imgShirt6 = "/images/mrnsshirt6.png";
+const imgShirt7 = "/images/mrnsshirt7.png";
+const imgShirt8 = "/images/mrnsshirt8.png";
+const imgShirt9 = "/images/mrnsshirt9.png";
+const imgTrouser1 = "/images/phant1.png";
+const imgTrouser2 = "/images/phant2.png";
+const imgTrouser3 = "/images/phant3.png";
+const imgTrouser4 = "/images/phant4.png";
+const imgTrouser5 = "/images/phant5.png";
+const imgTrouser6 = "/images/phant6.png";
+const imgTrouser7 = "/images/phant7.png";
+const imgWalletClassic = "/images/wallet.png";
+const imgWalletGreen = "/images/wallet%20green.png";
+const imgWalletRed = "/images/wallet%20red.png";
+const imgBelt1 = "/images/belt1.jpeg";
+const imgBelt2 = "/images/belt2.jpeg";
 
 
 // Exact Product List
@@ -90,20 +111,82 @@ export const products = [
         rating: 4.6,
         reviews: 90
     },
+    // Wallets Collection
     {
         id: 6,
-        name: "Obsidian Chain Wallet",
-        price: 5000,
-        originalPrice: 6500,
-        image: imgGenericAcc, // Placeholder for wallet
+        name: "Emerald Luxe Wallet",
+        price: 6500,
+        originalPrice: 7800,
+        image: imgWalletGreen,
         category: "Accessories",
         type: "wallets",
-        description: "Sleek obsidian black wallet with a detachable chain.",
-        images: [imgGenericAcc, imgBag],
+        description: "Pebbled leather bi-fold in deep emerald with gold-tone detailing.",
+        images: [imgWalletGreen],
         sizes: [],
-        colors: ["#000000", "#1c1c1c", "#333333", "#424242", "#212121"],
-        rating: 4.5,
-        reviews: 30
+        colors: ["#0d5c3d", "#d4af37"],
+        rating: 4.8,
+        reviews: 54
+    },
+    {
+        id: 6.1,
+        name: "Signature Monogram Wallet",
+        price: 6200,
+        originalPrice: 7600,
+        image: imgWalletClassic,
+        category: "Accessories",
+        type: "wallets",
+        description: "Classic monogram wallet with organized card slots and slim profile.",
+        images: [imgWalletClassic],
+        sizes: [],
+        colors: ["#3b3028", "#f5e9d7"],
+        rating: 4.7,
+        reviews: 48
+    },
+    {
+        id: 6.2,
+        name: "Crimson Royale Wallet",
+        price: 6700,
+        originalPrice: 8200,
+        image: imgWalletRed,
+        category: "Accessories",
+        type: "wallets",
+        description: "Rich crimson calfskin wallet with subtle sheen and contrast lining.",
+        images: [imgWalletRed],
+        sizes: [],
+        colors: ["#7a1c1c", "#f5e0e0"],
+        rating: 4.8,
+        reviews: 51
+    },
+    // Belts Collection
+    {
+        id: 6.3,
+        name: "Heritage Leather Belt",
+        price: 4500,
+        originalPrice: 5800,
+        image: imgBelt1,
+        category: "Accessories",
+        type: "belts",
+        description: "Premium full-grain leather belt with polished buckle and refined finish.",
+        images: [imgBelt1],
+        sizes: ["32", "34", "36", "38", "40"],
+        colors: ["#3e2723", "#000000"],
+        rating: 4.7,
+        reviews: 42
+    },
+    {
+        id: 6.4,
+        name: "Executive Dress Belt",
+        price: 4800,
+        originalPrice: 6200,
+        image: imgBelt2,
+        category: "Accessories",
+        type: "belts",
+        description: "Sleek executive belt in Italian leather with minimalist buckle design.",
+        images: [imgBelt2],
+        sizes: ["32", "34", "36", "38", "40"],
+        colors: ["#000000", "#2c2c2c"],
+        rating: 4.8,
+        reviews: 38
     },
     {
         id: 7,
@@ -245,6 +328,248 @@ export const products = [
         rating: 4.8,
         reviews: 80
     },
+    // Shirts Collection
+    {
+        id: 100,
+        name: "Premium Cotton Shirt - Design 1",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt1,
+        category: "Men",
+        type: "shirt",
+        description: "Premium cotton shirt with elegant design and perfect fit.",
+        images: [imgShirt1],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#ffffff", "#000000", "#1a237e"],
+        rating: 4.8,
+        reviews: 32
+    },
+    {
+        id: 101,
+        name: "Premium Cotton Shirt - Design 2",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt2,
+        category: "Men",
+        type: "shirt",
+        description: "Premium cotton shirt with sophisticated style and comfort.",
+        images: [imgShirt2],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#1a5276", "#f5f5f5", "#4a4a4a"],
+        rating: 4.7,
+        reviews: 28
+    },
+    {
+        id: 102,
+        name: "Premium Cotton Shirt - Design 3",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt3,
+        category: "Men",
+        type: "shirt",
+        description: "Elegant premium cotton shirt with smooth texture.",
+        images: [imgShirt3],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#2e5090", "#e8e8e8", "#3d3d3d"],
+        rating: 4.6,
+        reviews: 25
+    },
+    {
+        id: 103,
+        name: "Premium Cotton Shirt - Design 4",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt4,
+        category: "Men",
+        type: "shirt",
+        description: "Premium quality cotton shirt perfect for everyday wear.",
+        images: [imgShirt4],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#003d82", "#ffffff", "#2c2c2c"],
+        rating: 4.8,
+        reviews: 30
+    },
+    {
+        id: 104,
+        name: "Premium Cotton Shirt - Design 5",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt5,
+        category: "Men",
+        type: "shirt",
+        description: "Fine quality cotton shirt with excellent durability.",
+        images: [imgShirt5],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#1e3a8a", "#f8f8f8", "#5a5a5a"],
+        rating: 4.7,
+        reviews: 27
+    },
+    {
+        id: 105,
+        name: "Premium Cotton Shirt - Design 6",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt6,
+        category: "Men",
+        type: "shirt",
+        description: "Premium cotton shirt with superior finish.",
+        images: [imgShirt6],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#164863", "#f2f2f2", "#3f3f3f"],
+        rating: 4.9,
+        reviews: 35
+    },
+    {
+        id: 106,
+        name: "Premium Cotton Shirt - Design 7",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt7,
+        category: "Men",
+        type: "shirt",
+        description: "Stylish premium cotton shirt suitable for all seasons.",
+        images: [imgShirt7],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#05396b", "#ffffff", "#4d4d4d"],
+        rating: 4.6,
+        reviews: 29
+    },
+    {
+        id: 107,
+        name: "Premium Cotton Shirt - Design 8",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt8,
+        category: "Men",
+        type: "shirt",
+        description: "Premium cotton shirt with elegant design and craftsmanship.",
+        images: [imgShirt8],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#0f3460", "#efefef", "#4a4a4a"],
+        rating: 4.8,
+        reviews: 33
+    },
+    {
+        id: 108,
+        name: "Premium Cotton Shirt - Design 9",
+        price: 5999,
+        originalPrice: 7500,
+        image: imgShirt9,
+        category: "Men",
+        type: "shirt",
+        description: "Luxurious premium cotton shirt for the discerning gentleman.",
+        images: [imgShirt9],
+        sizes: ["S", "M", "L", "XL", "XXL"],
+        colors: ["#16325c", "#fafafa", "#383838"],
+        rating: 4.9,
+        reviews: 36
+    },
+    // Trousers Collection
+    {
+        id: 200,
+        name: "Regal Slim Fit Trouser",
+        price: 7499,
+        originalPrice: 9200,
+        image: imgTrouser1,
+        category: "Men",
+        type: "trousers",
+        description: "Tailored slim-fit trousers crafted in premium cotton for everyday polish.",
+        images: [imgTrouser1],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#4a2b2a", "#1f1f1f"],
+        rating: 4.7,
+        reviews: 48
+    },
+    {
+        id: 201,
+        name: "Heritage Diamond Trouser",
+        price: 7699,
+        originalPrice: 9500,
+        image: imgTrouser2,
+        category: "Men",
+        type: "trousers",
+        description: "Heritage-inspired pattern with a modern tapered leg and soft handfeel.",
+        images: [imgTrouser2],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#3d1f1a", "#2b2b2b"],
+        rating: 4.8,
+        reviews: 52
+    },
+    {
+        id: 202,
+        name: "Monarch Velvet Trouser",
+        price: 7899,
+        originalPrice: 9800,
+        image: imgTrouser3,
+        category: "Men",
+        type: "trousers",
+        description: "Plush velvet trousers with refined sheen for evening occasions.",
+        images: [imgTrouser3],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#2c1c18", "#111111"],
+        rating: 4.9,
+        reviews: 40
+    },
+    {
+        id: 203,
+        name: "Signature Grid Trouser",
+        price: 7399,
+        originalPrice: 9100,
+        image: imgTrouser4,
+        category: "Men",
+        type: "trousers",
+        description: "Signature grid motif with crisp structure and comfortable stretch.",
+        images: [imgTrouser4],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#2f2b24", "#0f0f0f"],
+        rating: 4.7,
+        reviews: 37
+    },
+    {
+        id: 204,
+        name: "Imperial Jacquard Trouser",
+        price: 7999,
+        originalPrice: 9900,
+        image: imgTrouser5,
+        category: "Men",
+        type: "trousers",
+        description: "Jacquard-woven trouser with subtle sheen and tailored taper.",
+        images: [imgTrouser5],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#3b221c", "#1a1a1a"],
+        rating: 4.8,
+        reviews: 44
+    },
+    {
+        id: 205,
+        name: "Couture Lattice Trouser",
+        price: 7699,
+        originalPrice: 9500,
+        image: imgTrouser6,
+        category: "Men",
+        type: "trousers",
+        description: "Couture lattice pattern with clean lines and a comfortable rise.",
+        images: [imgTrouser6],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#362019", "#1c1c1c"],
+        rating: 4.7,
+        reviews: 39
+    },
+    {
+        id: 206,
+        name: "Velour Royale Trouser",
+        price: 7899,
+        originalPrice: 9800,
+        image: imgTrouser7,
+        category: "Men",
+        type: "trousers",
+        description: "Velour trouser with refined drape and luxe handfeel for elevated looks.",
+        images: [imgTrouser7],
+        sizes: ["30", "32", "34", "36", "38"],
+        colors: ["#2b1a17", "#0e0e0e"],
+        rating: 4.8,
+        reviews: 41
+    },
     // Shoes
     {
         id: 17,
@@ -252,7 +577,7 @@ export const products = [
         price: 12999,
         originalPrice: 16000,
         image: "/images/womensslipper.jpeg",
-        category: "Accessories",
+        category: "Women",
         type: "shoes",
         description: "Sophisticated heels perfect for evening occasions.",
         images: ["/images/womensslipper.jpeg"],
@@ -358,11 +683,11 @@ export const products = [
         name: "Women's Handbag Premium",
         price: 75000,
         originalPrice: 92000,
-        image: "/images/women bag/woman bag white 1.jpeg",
+        image: "/images/prem.png",
         category: "Accessories",
         type: "bags",
         description: "Elegant leather handbag for everyday use.",
-        images: ["/images/women bag/woman bag white 1.jpeg"],
+        images: ["/images/prem.png"],
         sizes: ["One Size"],
         colors: ["#f5f5f5", "#000000", "#8b4513"],
         rating: 4.9,

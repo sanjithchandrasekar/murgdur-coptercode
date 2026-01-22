@@ -109,7 +109,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
                         {[
                             { name: "Women's Handbags", img: "/images/women handbag/woman bag white 1.jpeg", type: "image" },
-                            { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image" },
+                            { name: "Accessories", img: "/images/acc.png", type: "image" },
                             { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image" },
                             { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image" }
                         ].map((item, idx) => {
@@ -149,12 +149,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
                         {[
-                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png" },
-                            { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop" },
+                            { name: "Men's Small Leather Goods", img: "/images/ma.png", link: "/shop?type=belts-wallets" },
+                            { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" },
+                            { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block mb-8">
+                            <Link to={item.link} key={idx} className="group block mb-8">
                                 <div className="overflow-hidden mb-4 rounded-sm border border-white/20">
                                     <img
                                         src={item.img}
@@ -293,7 +293,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {[
                             { name: "Monogram Speedy", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Women's Small Leather Goods", img: "/images/womens%20small%20leather%20goods.jpg" },
+                            { name: "Accessories", img: "/images/acc.png" },
                             { name: "Nano Multi-Color", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop" },
                             { name: "Vanity Case", img: "/images/vanitycase.jpg" }
                         ].map((item, idx) => (
