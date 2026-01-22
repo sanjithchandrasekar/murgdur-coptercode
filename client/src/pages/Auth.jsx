@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Button from '../components/common/Button';
-import { User, Mail, Lock, Phone, MapPin, ArrowRight, Eye, EyeOff, CheckCircle } from 'lucide-react';
+import { User, Mail, Lock, Phone, MapPin, ArrowRight, Eye, EyeOff, CheckCircle, X } from 'lucide-react';
 const authBg = "/images/Gemini_Generated_Image_o2z9xpo2z9xpo2z9.png";
 
 const Auth = () => {
-    const [isLogin, setIsLogin] = useState(true);
+    const location = useLocation();
+    const [isLogin, setIsLogin] = useState(() => (location.state?.forceLogin ? true : true));
     const [otpSent, setOtpSent] = useState(false);
 
     // Toggle between Login and Signup
@@ -14,6 +15,12 @@ const Auth = () => {
         setIsLogin(!isLogin);
         setOtpSent(false);
     };
+
+    useEffect(() => {
+        if (location.state?.forceLogin) {
+            setIsLogin(true);
+        }
+    }, [location.state]);
 
     return (
         <div className="min-h-screen bg-royal-black flex items-center justify-center py-24 px-4 bg-fixed bg-cover" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.85)), url(${authBg})` }}>
@@ -84,12 +91,30 @@ const Auth = () => {
 
 const LoginForm = ({ toggleAuth }) => {
     const navigate = useNavigate();
+    const [loginNotification, setLoginNotification] = useState(null);
+    const dismissTimerRef = useRef(null);
+    const navTimerRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
+            if (navTimerRef.current) clearTimeout(navTimerRef.current);
+        };
+    }, []);
 
     const handleLogin = (e) => {
         e.preventDefault();
-        // Mock Login
-        alert("Logged in Successfully!");
-        navigate('/');
+        // Mock Login with animated notification
+        if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
+        if (navTimerRef.current) clearTimeout(navTimerRef.current);
+
+        setLoginNotification({
+            title: 'Signed in successfully',
+            message: 'You are now connected to localhost.',
+        });
+
+        dismissTimerRef.current = setTimeout(() => setLoginNotification(null), 3600);
+        navTimerRef.current = setTimeout(() => navigate('/'), 900);
     };
 
     return (
@@ -98,6 +123,10 @@ const LoginForm = ({ toggleAuth }) => {
             className="space-y-6"
             onSubmit={handleLogin}
         >
+            <AuthNotification
+                notification={loginNotification}
+                onDismiss={() => setLoginNotification(null)}
+            />
             <div className="space-y-2">
                 <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Email or Username</label>
                 <div className="relative group">
@@ -132,6 +161,16 @@ const LoginForm = ({ toggleAuth }) => {
 const SignupForm = ({ toggleAuth }) => {
     const [otpSent, setOtpSent] = useState(false);
     const navigate = useNavigate();
+    const [signupNotification, setSignupNotification] = useState(null);
+    const dismissTimerRef = useRef(null);
+    const navTimerRef = useRef(null);
+
+    useEffect(() => {
+        return () => {
+            if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
+            if (navTimerRef.current) clearTimeout(navTimerRef.current);
+        };
+    }, []);
 
     // Signup State
     const [formData, setFormData] = useState({
@@ -153,8 +192,12 @@ const SignupForm = ({ toggleAuth }) => {
     const handleSendOtp = (e) => {
         e.preventDefault();
         setOtpSent(true);
-        // Simulate API call
-        setTimeout(() => alert("OTP Sent: 1234"), 1000);
+        if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
+        setSignupNotification({
+            title: 'OTP sent',
+            message: 'Demo code from localhost: 1234',
+        });
+        dismissTimerRef.current = setTimeout(() => setSignupNotification(null), 3200);
     };
 
     const handleRegister = (e) => {
@@ -178,8 +221,16 @@ const SignupForm = ({ toggleAuth }) => {
         localStorage.setItem('selectedAddress', JSON.stringify(userAddress));
         localStorage.setItem('userProfile', JSON.stringify({ name: userAddress.name, email: formData.email, mobile: formData.mobile }));
 
-        alert("Registration Complete! Redirecting...");
-        navigate('/'); // Redirect to Home or Cart usually
+        if (dismissTimerRef.current) clearTimeout(dismissTimerRef.current);
+        if (navTimerRef.current) clearTimeout(navTimerRef.current);
+
+        setSignupNotification({
+            title: 'Account created',
+            message: 'You are set up on localhost.',
+        });
+
+        dismissTimerRef.current = setTimeout(() => setSignupNotification(null), 3600);
+        navTimerRef.current = setTimeout(() => navigate('/auth', { state: { forceLogin: true } }), 1000);
     };
 
     return (
@@ -188,6 +239,10 @@ const SignupForm = ({ toggleAuth }) => {
             className="space-y-6"
             onSubmit={handleRegister}
         >
+            <AuthNotification
+                notification={signupNotification}
+                onDismiss={() => setSignupNotification(null)}
+            />
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
                     <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">First Name</label>
@@ -270,3 +325,32 @@ const SignupForm = ({ toggleAuth }) => {
 };
 
 export default Auth;
+
+const AuthNotification = ({ notification, onDismiss }) => (
+    <AnimatePresence>
+        {notification && (
+            <motion.div
+                initial={{ opacity: 0, y: -10, scale: 0.98 }}
+                animate={{ opacity: 1, y: 0, scale: 1 }}
+                exit={{ opacity: 0, y: -12, scale: 0.96 }}
+                transition={{ type: 'spring', stiffness: 280, damping: 22 }}
+                className="fixed top-5 right-5 z-[200] w-full max-w-sm bg-[#0F0F0F]/95 border border-royal-gold/70 shadow-2xl px-5 py-4 flex items-start gap-3"
+            >
+                <div className="mt-0.5">
+                    <CheckCircle size={24} className="text-royal-gold" />
+                </div>
+                <div className="flex-1">
+                    <p className="text-white font-semibold tracking-wide text-sm">{notification.title}</p>
+                    <p className="text-gray-400 text-xs mt-1">{notification.message}</p>
+                </div>
+                <button
+                    onClick={onDismiss}
+                    className="text-gray-500 hover:text-white transition-colors"
+                    aria-label="Dismiss notification"
+                >
+                    <X size={18} />
+                </button>
+            </motion.div>
+        )}
+    </AnimatePresence>
+);
