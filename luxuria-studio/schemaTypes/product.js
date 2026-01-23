@@ -61,6 +61,10 @@ export default {
                     { title: 'Perfumes', value: 'perfumes' },
                     { title: 'Watches', value: 'watches' },
                     { title: 'Clothing', value: 'clothing' },
+                    { title: 'Belts', value: 'belts' },
+                    { title: 'Jewellery', value: 'jewellery' },
+                    { title: 'Wallets', value: 'wallets' },
+                    { title: 'Sandals', value: 'sandals' },
                 ],
             },
         },
@@ -132,5 +136,51 @@ export default {
             type: 'number',
             initialValue: 0,
         },
+        {
+            name: 'stock',
+            title: 'Stock Quantity',
+            type: 'number',
+            initialValue: 10
+        },
+        {
+            name: 'sku',
+            title: 'SKU',
+            type: 'string'
+        },
+        {
+            name: 'isNew',
+            title: 'New Arrival?',
+            type: 'boolean',
+            initialValue: false
+        },
+        {
+            name: 'onSale',
+            title: 'On Sale?',
+            type: 'boolean',
+            initialValue: false
+        },
+        {
+            name: 'fabric',
+            title: 'Fabric / Material',
+            type: 'string'
+        },
+        {
+            name: 'care',
+            title: 'Care Instructions',
+            type: 'text'
+        },
+        {
+            name: 'details',
+            title: 'Additional Details',
+            type: 'array',
+            of: [{ type: 'block' }]
+        },
+        {
+            name: 'relatedProducts',
+            title: 'Related Products / You May Also Like',
+            type: 'array',
+            of: [{ type: 'reference', to: { type: 'product' } }],
+            description: 'Manually select related products to show on the product page.'
+        }
     ],
 };

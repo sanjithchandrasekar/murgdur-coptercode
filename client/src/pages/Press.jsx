@@ -12,7 +12,7 @@ const Press = () => {
         load();
     }, []);
 
-    const releases = data?.releases || [
+    const releases = (data?.releases && data.releases.length > 0) ? data.releases : [
         { date: "October 15, 2025", title: "Murgdur Unveils ' The Sovereign Winter' Collection in Paris", summary: "The luxury house marks its debut at Paris Fashion Week with a collection inspired by the royal durbars of 19th century India." },
         { date: "August 02, 2025", title: "House of Murgdur Appoints New Creative Director", summary: "Visionary designer Aarav Mehta takes the helm, promising to blend traditional craftsmanship with futuristic silhouettes." },
         { date: "June 10, 2025", title: "Murgdur Sustainability Report 2024-25", summary: "Achieving 100% ethical sourcing for all leather goods and launching the 'Green Gold' initiative." }

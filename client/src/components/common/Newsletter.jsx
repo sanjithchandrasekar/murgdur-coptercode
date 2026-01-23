@@ -23,7 +23,7 @@ const Newsletter = () => {
                 M
             </div>
 
-            <div className="container mx-auto px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-16">
+            <div className="container mx-auto px-4 md:px-6 relative z-10 flex flex-col md:flex-row items-center justify-between gap-16">
 
                 {/* Text Section */}
                 <div className="md:w-1/2">

@@ -3,7 +3,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Search, User, Heart, ShoppingBag, Menu, X, ArrowLeft, Package, Star, Gift, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
-import { fetchSiteSettings } from '../../utils/sanity';
+import { fetchSiteSettings, fetchProducts } from '../../utils/sanity';
 
 const defaultLogo = "/images/logo.jpeg";
 
@@ -38,19 +38,20 @@ const Navbar = () => {
         }
     }, [location]);
 
-    // Mock data for search suggestions (Shared with Shop)
-    const mockSearchData = [
-        { id: 1, name: "Royal Silk Sherwani", category: "Men" },
-        { id: 2, name: "Velvet Bandhgala", category: "Men" },
-        { id: 3, name: "Crimson Bridal Lehenga", category: "Women" },
-        { id: 4, name: "Signature Leather Bag", category: "Accessories" },
-        { id: 5, name: "Midnight Blue Suit", category: "Men" },
-        { id: 6, name: "Gold Zari Saree", category: "Women" },
-    ];
+    const [allProducts, setAllProducts] = useState([]);
+
+    // Fetch Products for Search functionality
+    useEffect(() => {
+        const loadProducts = async () => {
+            const products = await fetchProducts();
+            if (products) setAllProducts(products);
+        };
+        loadProducts();
+    }, []);
 
     useEffect(() => {
         if (searchQuery.length > 0) {
-            const filtered = mockSearchData.filter(item =>
+            const filtered = allProducts.filter(item =>
                 item.name.toLowerCase().includes(searchQuery.toLowerCase())
             );
             setSearchResults(filtered);
@@ -200,12 +201,12 @@ const Navbar = () => {
 
                 {/* RIGHT: User Actions */}
                 <div className="flex items-center gap-3 md:gap-8">
-                    <Link to="/contact" className="hidden sm:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
+                    <Link to="/contact" className="hidden lg:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
                         Contact Us
                     </Link>
 
                     {/* Wishlist */}
-                    <Link to="/vault" className="text-white hover:text-royal-gold transition-colors relative group">
+                    <Link to="/vault" className="hidden md:block text-white hover:text-royal-gold transition-colors relative group">
                         <Heart size={20} strokeWidth={1.5} />
                         {wishlistItems && wishlistItems.length > 0 && (
                             <span className="absolute -top-1.5 -right-1.5 bg-royal-gold text-black text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
@@ -239,7 +240,7 @@ const Navbar = () => {
                         </Link>
                     )}
 
-                    <Link to="/cart" className="text-white hover:text-royal-gold transition-colors relative">
+                    <Link to="/cart" className="hidden md:block text-white hover:text-royal-gold transition-colors relative">
                         <ShoppingBag size={20} strokeWidth={1.5} />
                         {getCartCount() > 0 && (
                             <span className="absolute -top-1.5 -right-1.5 bg-royal-gold text-black text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
@@ -313,8 +314,14 @@ const Navbar = () => {
                                     <Link to="/vault" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
                                         <Heart size={14} /> Wishlist
                                     </Link>
-                                    <Link to="/profile" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                                    <Link to="/cart" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <ShoppingBag size={14} /> Cart {getCartCount() > 0 && `(${getCartCount()})`}
+                                    </Link>
+                                    <Link to="/profile" className="text-sm text-gray-400 hover:text-white flex items-center gap-2 col-span-2" onClick={() => setIsMobileMenuOpen(false)}>
                                         <User size={14} /> {user ? 'My Profile' : 'Login'}
+                                    </Link>
+                                    <Link to="/contact" className="text-sm text-gray-400 hover:text-white flex items-center gap-2 col-span-2 lg:hidden" onClick={() => setIsMobileMenuOpen(false)}>
+                                        Contact Us
                                     </Link>
                                 </div>
                             </div>

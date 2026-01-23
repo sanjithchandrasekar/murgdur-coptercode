@@ -15,7 +15,7 @@ const LegacySection = () => {
 
     return (
         <section className="py-24 bg-royal-charcoal text-center relative overflow-hidden border-t border-white/5">
-            <div className="container mx-auto px-6 max-w-4xl relative z-10">
+            <div className="container mx-auto px-4 md:px-6 max-w-4xl relative z-10">
 
                 {/* Main Heading */}
                 <motion.div

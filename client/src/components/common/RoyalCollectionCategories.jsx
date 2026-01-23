@@ -21,8 +21,8 @@ const RoyalCollectionCategories = () => {
     const women = data?.womenSection;
 
     return (
-        <section className="py-24 px-6 bg-royal-black">
-            <div className="container mx-auto">
+        <section className="py-24 bg-royal-black">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="text-center mb-16">
                     <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold">Discover</span>
                     <h2 className="text-4xl md:text-5xl font-serif text-white mt-4">The Royal Collection</h2>

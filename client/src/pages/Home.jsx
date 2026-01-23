@@ -110,7 +110,7 @@ const Home = () => {
 
             {/* Maison's Creations Grid */}
             <section className="py-16 relative bg-royal-ivory border-b border-gray-100">
-                <div className="container mx-auto px-4 relative z-10">
+                <div className="container mx-auto px-4 md:px-6 relative z-10">
                     <div className="text-center mb-12">
                         <h2 className="text-xl md:text-2xl font-serif text-black tracking-wide">
                             Treasures of the Dynasty
@@ -206,7 +206,7 @@ const Home = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="py-20 px-6 text-center container mx-auto bg-inherit"
+                className="py-20 px-4 md:px-6 text-center container mx-auto bg-inherit"
             >
                 <span className="text-gray-400 uppercase tracking-[0.3em] text-xs font-medium block mb-6">Welcome to Murgdur</span>
                 <h2 className="text-2xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
@@ -220,7 +220,7 @@ const Home = () => {
 
             {/* Valentine's Day Gifts Section */}
             <section className="py-20 bg-white text-center border-t border-gray-100">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <span className="text-royal-obsidian uppercase tracking-[0.2em] text-[10px] font-bold mb-4 block">Courtly Gestures</span>
                     <h2 className="text-3xl md:text-4xl font-serif text-black mb-12">Tokens of Affection</h2>
 
@@ -286,7 +286,7 @@ const Home = () => {
 
             {/* Small Leather Goods Grid (Inserted based on User Image) */}
             <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="mb-10">
                         <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">IMPERIAL WOMEN</span>
                         <h2 className="text-3xl md:text-4xl font-serif text-black">Artifacts of Power</h2>
@@ -319,7 +319,7 @@ const Home = () => {
 
             {/* Monogram Donuts Section */}
             <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="mb-10">
                         <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">THE CROWN JEWELS</span>
                         <h2 className="text-3xl md:text-4xl font-serif text-black">Monogram Legacy</h2>
@@ -370,7 +370,7 @@ const Home = () => {
 
             {/* Murgdur Sensation (Shoes) Section */}
             <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="mb-10">
                         <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">ROYAL STEPS</span>
                         <h2 className="text-3xl md:text-4xl font-serif text-black">Walk of Sovereigns</h2>
@@ -403,7 +403,7 @@ const Home = () => {
 
             {/* High Perfumery Section */}
             <section className="py-20 bg-royal-ivory">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="flex flex-col md:flex-row items-center gap-12">
                         <div className="w-full md:w-1/2 h-[400px] md:h-[600px] overflow-hidden relative group">
                             <img
@@ -428,7 +428,7 @@ const Home = () => {
 
             {/* Timepieces / Watches Section */}
             <section className="py-20 bg-white text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12">Guardians of Time</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
@@ -454,7 +454,7 @@ const Home = () => {
 
             {/* Services Section */}
             <section className="py-20 bg-royal-ivory">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12 text-center">Privileges of Court</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                         {[
@@ -480,7 +480,7 @@ const Home = () => {
 
             {/* World of Murgdur (Magazine) */}
             <section className="py-20 bg-white text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <h3 className="text-royal-obsidian text-xs font-bold uppercase tracking-[0.2em] mb-12">World of Murgdur</h3>
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-left">
                         {[
@@ -508,7 +508,7 @@ const Home = () => {
 
             {/* 3. Shop By Occasion (Replaced with Custom Section matching User Image) */}
             <section className="py-20 bg-royal-ivory text-center">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <span className="text-black uppercase tracking-[0.2em] text-[10px] font-bold mb-4 block">Ceremonies & Galas</span>
                     <h2 className="text-3xl md:text-4xl font-serif text-black mb-12">The Royal Calendar</h2>
 
@@ -540,7 +540,7 @@ const Home = () => {
 
             {/* 5. The 'Bespoke' Atelier (Interactive) */}
             <section className="py-24 relative overflow-hidden bg-royal-black border-y border-gray-900">
-                <div className="container mx-auto px-6 relative z-10">
+                <div className="container mx-auto px-4 md:px-6 relative z-10">
                     <div className="flex flex-col md:flex-row-reverse items-center gap-16">
                         <motion.div
                             initial={{ opacity: 0, x: 50 }}

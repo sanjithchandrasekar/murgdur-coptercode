@@ -10,8 +10,10 @@ const PROJECT_ID = 'qbaw2yts';
 export const client = createClient({
   projectId: PROJECT_ID,
   dataset: 'production',
-  useCdn: true,
+  useCdn: false, // Changed to false to enable write operations
   apiVersion: '2024-01-22',
+  token: import.meta.env.VITE_SANITY_TOKEN || '', // Optional token for authenticated operations
+  ignoreBrowserTokenWarning: true // Suppress token warnings in browser
 });
 
 // ------------------------------------------------------------------
@@ -322,10 +324,17 @@ export const fetchProducts = async () => {
     }
 
     // Map Sanity results to match your app's internal structure
-    return sanityProducts.map(p => ({
+    const mappedSanityProducts = sanityProducts.map(p => ({
       ...p,
       id: p._id, // Use Sanity's unique _id as the id
+      // Ensure colors are strings (hex codes) if they are objects from Sanity schema
+      colors: Array.isArray(p.colors)
+        ? p.colors.map(c => (typeof c === 'object' && c.hex ? c.hex : c))
+        : p.colors
     }));
+
+    // Return only Sanity products to verify integration
+    return mappedSanityProducts;
 
   } catch (error) {
     console.error("Failed to fetch from Sanity:", error);

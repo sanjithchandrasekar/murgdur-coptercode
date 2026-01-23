@@ -37,7 +37,7 @@ const Testimonials = () => {
                 <span className="w-1 h-1 bg-royal-gold rounded-full mx-1"></span>
             </div>
 
-            <div className="container mx-auto px-6">
+            <div className="container mx-auto px-4 md:px-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                     {reviews.map((review, idx) => (
                         <div key={idx} className="p-8 border border-white/10 bg-black hover:border-royal-gold/20 transition-colors duration-300 flex flex-col justify-between min-h-[220px]">

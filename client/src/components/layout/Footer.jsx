@@ -61,7 +61,7 @@ Telephone: 044-45614700 / 044-67415800`;
         <footer className="bg-royal-black text-gray-400 font-sans text-[12px] leading-relaxed border-t border-white/5">
 
             {/* Top Footer Section */}
-            <div className="container mx-auto px-6 py-12">
+            <div className="container mx-auto px-4 md:px-6 py-12">
                 <div className="grid grid-cols-1 lg:grid-cols-[1fr_1px_1fr] gap-8">
 
                     {/* Left: Links Columns */}
@@ -136,7 +136,7 @@ Telephone: 044-45614700 / 044-67415800`;
 
             {/* Bottom Footer Section */}
             <div className="border-t border-white/10 py-6 bg-black/20">
-                <div className="container mx-auto px-6">
+                <div className="container mx-auto px-4 md:px-6">
                     <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-[13px]">
 
                         {/* Links with Icons */}

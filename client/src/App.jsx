@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import Home from './pages/Home';
-import Auth from './pages/Auth';
+import Profile from './pages/Profile'; // Replaced Auth with Profile
 import Cart from './pages/Cart';
 import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
@@ -34,7 +34,7 @@ function App() {
           <Route path="heritage" element={<Heritage />} />
           <Route path="royal-collection" element={<RoyalCollection />} />
           <Route path="vault" element={<Vault />} />
-          <Route path="profile" element={<Auth />} />
+          <Route path="profile" element={<Profile />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
 

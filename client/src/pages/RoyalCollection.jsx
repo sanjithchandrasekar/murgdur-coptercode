@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { fetchRoyalCollectionPage } from '../../utils/sanity';
+import { fetchRoyalCollectionPage } from '../utils/sanity';
 
 const imgMen = "/images/boy.jpeg";
 const imgWomen = "/images/girl.png";
@@ -36,14 +36,14 @@ const RoyalCollection = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-royal-ivory pt-32 pb-20 px-6 relative overflow-hidden">
+        <div className="min-h-screen bg-royal-ivory pt-32 pb-20 relative overflow-hidden">
             {/* Background Decoration */}
             <div className="absolute top-0 left-0 w-full h-[600px] opacity-[0.2] pointer-events-none">
                 <img src={data?.menSection?.image || imgMen} className="w-full h-full object-cover grayscale" alt="Heritage Background" />
                 <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-royal-ivory/80 to-royal-ivory"></div>
             </div>
 
-            <div className="container mx-auto relative z-10">
+            <div className="container mx-auto px-4 md:px-6 relative z-10">
                 {/* Header */}
                 {/* Header */}
                 <div className="text-center mb-24 relative max-w-5xl mx-auto">

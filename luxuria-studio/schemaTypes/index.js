@@ -18,6 +18,8 @@ import visionPage from './visionPage'
 import vaultPage from './vaultPage'
 import policyPage from './policyPage'
 
+import customer from './customer'
+
 export const schemaTypes = [
     product,
     siteSettings,
@@ -37,5 +39,6 @@ export const schemaTypes = [
     storiesPage,
     visionPage,
     vaultPage,
-    policyPage
+    policyPage,
+    customer
 ]

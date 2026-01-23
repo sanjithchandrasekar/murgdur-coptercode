@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Filter, ChevronDown, Search, Heart } from 'lucide-react';
 
@@ -91,13 +91,13 @@ const Shop = () => {
     const [filterOpen, setFilterOpen] = useState(false);
 
     return (
-        <div className="bg-royal-ivory min-h-screen pt-28 pb-20 px-6">
-            <div className="container mx-auto">
+        <div className="bg-royal-ivory min-h-screen pt-32 pb-20">
+            <div className="container mx-auto px-4 md:px-6">
 
                 {/* Search & Header */}
                 <div className="flex flex-col gap-8 mb-12 border-b border-royal-maroon/20 pb-6">
 
-                    <div className="flex flex-col md:flex-row justify-between items-end gap-4">
+                    <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
                         <div>
                             <span className="text-royal-maroon text-xs font-bold uppercase tracking-[0.2em] mb-2 block">The Collection</span>
                             <h1 className="text-4xl md:text-5xl font-serif text-black">
@@ -105,12 +105,12 @@ const Shop = () => {
                             </h1>
                         </div>
 
-                        <div className="relative">
-                            <div className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full focus-within:border-royal-maroon transition-all shadow-sm">
+                        <div className="relative w-full md:w-auto">
+                            <div className="flex items-center gap-2 bg-white border border-gray-200 px-4 py-2 rounded-full focus-within:border-royal-maroon transition-all shadow-sm w-full md:w-auto">
                                 <input
                                     type="text"
                                     placeholder="Search our collection..."
-                                    className="bg-transparent border-none outline-none text-sm text-black placeholder:text-gray-400 w-48 md:w-64"
+                                    className="bg-transparent border-none outline-none text-sm text-black placeholder:text-gray-400 w-full md:w-64"
                                     value={searchTerm}
                                     onChange={(e) => setSearchTerm(e.target.value)}
                                 />
