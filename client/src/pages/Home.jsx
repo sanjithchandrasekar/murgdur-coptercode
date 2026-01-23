@@ -126,7 +126,9 @@ const Home = () => {
                         ]).map((item, idx) => {
                             let link = item.isStatic ? "/shop" : `/product/${item._id}`;
                             if (item.isStatic) {
-                                if (item.name.includes("Handbag") || item.name.includes("Leather Goods")) link = "/shop?type=bags";
+                                if (item.name.includes("Handbag")) link = "/shop?type=bags";
+                                else if (item.name.includes("Leather Goods")) link = "/shop?type=wallets"; // Changed to wallets for better match
+                                else if (item.name.includes("Sandals")) link = "/shop?type=shoes";
                                 else if (item.name.includes("Perfume")) link = "/shop?type=perfumes";
                             }
 
@@ -152,12 +154,12 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
                         {[
-                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png" },
-                            { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop" },
-                            { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop" }
+                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop?type=bags" },
+                            { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop", link: "/shop?type=wallets" },
+                            { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" },
+                            { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop?type=sunglasses" }
                         ].map((item, idx) => (
-                            <Link to="/shop" key={idx} className="group block mb-8">
+                            <Link to={item.link || "/shop"} key={idx} className="group block mb-8">
                                 <div className="overflow-hidden mb-4 rounded-sm border border-white/20">
                                     <img
                                         src={item.img}
