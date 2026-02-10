@@ -24,72 +24,76 @@ const SanityTest = () => {
         setLogs([]);
         addLog("Starting Connection Test...");
 
-        // 1. Check for Token Presence (Client-side check of env var injection)
-        // Note: We can't see the actual value securely if it's not prefixed with VITE_, but the client config uses import.meta.env.VITE_SANITY_TOKEN
-        // We'll check if the client config has a token set.
-        const token = client.config().token;
-        const hasToken = !!token;
-        addLog(`Token Configuration Detected: ${hasToken ? 'YES' : 'NO'}`, hasToken ? 'success' : 'warning');
-        setStatus(prev => ({ ...prev, tokenDetected: hasToken }));
-
-        // 2. Test Read Connection
         try {
-            addLog("Attempting to FETCH data from Sanity...");
-            await client.fetch('*[_type == "siteSettings"][0]');
-            addLog("Read Connection Successful!", 'success');
-            setStatus(prev => ({ ...prev, read: 'success' }));
-        } catch (error) {
-            console.error(error);
-            addLog(`Read Connection Failed: ${error.message}`, 'error');
-            setStatus(prev => ({ ...prev, read: 'error' }));
-        }
-
-        // 3. Test Write Connection (Only if token exists)
-        if (hasToken) {
+            // 1. Check for Token Presence (Client-side check)
+            let hasToken = false;
             try {
-                addLog("Attempting to WRITE data to Sanity...");
-                const doc = {
-                    _type: 'testConnection',
-                    name: 'Sanity Connection Test',
-                    testedAt: new Date().toISOString()
-                };
-                // We'll try to create a doc. If 'testConnection' schema doesn't exist, it might fail with a specific schema error, 
-                // but that still proves we hit the API with write permissions.
-                // Better to try creating a known schema or a system document if possible, but 'customer' is safe if we delete it or use a unique ID.
-                // Actually, let's just try to create a dummy 'customer' to be safe with strict schemas, then delete it.
+                if (client && typeof client.config === 'function') {
+                    const token = client.config().token;
+                    hasToken = !!token;
+                } else {
+                    addLog("Sanity Client not fully initialized.", 'error');
+                }
+            } catch (e) {
+                addLog("Error checking client config", 'error');
+            }
 
-                const testId = `test_conn_${Date.now()}`;
-                const testDoc = {
-                    _id: testId,
-                    _type: 'customer',
-                    firstName: 'Test',
-                    lastName: 'Connection',
-                    email: `test_${Date.now()}@example.com`,
-                    mobile: '0000000000',
-                    createdAt: new Date().toISOString()
-                };
+            addLog(`Token Configuration Detected: ${hasToken ? 'YES' : 'NO'}`, hasToken ? 'success' : 'warning');
+            setStatus(prev => ({ ...prev, tokenDetected: hasToken }));
 
-                await client.create(testDoc);
-                addLog("Write Connection Successful! (Document Created)", 'success');
-
-                // Cleanup
-                addLog("Cleaning up test document...");
-                await client.delete(testId);
-                addLog("Test document deleted.", 'info');
-
-                setStatus(prev => ({ ...prev, write: 'success' }));
+            // 2. Test Read Connection
+            try {
+                addLog("Attempting to FETCH data from Sanity...");
+                await client.fetch('*[_type == "siteSettings"][0]');
+                addLog("Read Connection Successful!", 'success');
+                setStatus(prev => ({ ...prev, read: 'success' }));
             } catch (error) {
                 console.error(error);
-                let msg = error.message;
-                if (error.statusCode === 401 || error.statusCode === 403) {
-                    msg = "Permission Denied. Check your VITE_SANITY_TOKEN. It needs 'Editor' or 'Write' permissions.";
-                }
-                addLog(`Write Connection Failed: ${msg}`, 'error');
-                setStatus(prev => ({ ...prev, write: 'error' }));
+                addLog(`Read Connection Failed: ${error.message}`, 'error');
+                setStatus(prev => ({ ...prev, read: 'error' }));
             }
-        } else {
-            addLog("Skipping Write Test (No Token Configured).", 'warning');
-            setStatus(prev => ({ ...prev, write: 'skipped' }));
+
+            // 3. Test Write Connection (Only if token exists)
+            if (hasToken) {
+                try {
+                    addLog("Attempting to WRITE data to Sanity...");
+                    const testId = `test_conn_${Date.now()}`;
+                    const testDoc = {
+                        _id: testId,
+                        _type: 'customer',
+                        firstName: 'Test',
+                        lastName: 'Connection',
+                        email: `test_${Date.now()}@example.com`,
+                        mobile: '0000000000',
+                        createdAt: new Date().toISOString()
+                    };
+
+                    await client.create(testDoc);
+                    addLog("Write Connection Successful! (Document Created)", 'success');
+
+                    // Cleanup
+                    addLog("Cleaning up test document...");
+                    await client.delete(testId);
+                    addLog("Test document deleted.", 'info');
+
+                    setStatus(prev => ({ ...prev, write: 'success' }));
+                } catch (error) {
+                    console.error(error);
+                    let msg = error.message;
+                    if (error && error.statusCode === 401 || error.statusCode === 403) {
+                        msg = "Permission Denied. Check your VITE_SANITY_TOKEN. It needs 'Editor' or 'Write' permissions.";
+                    }
+                    addLog(`Write Connection Failed: ${msg}`, 'error');
+                    setStatus(prev => ({ ...prev, write: 'error' }));
+                }
+            } else {
+                addLog("Skipping Write Test (No Token Configured).", 'warning');
+                setStatus(prev => ({ ...prev, write: 'skipped' }));
+            }
+
+        } catch (fatalError) {
+            console.error("Fatal Test Error", fatalError);
+            addLog(`Fatal Error: ${fatalError.message}`, 'error');
         }
     };
 
