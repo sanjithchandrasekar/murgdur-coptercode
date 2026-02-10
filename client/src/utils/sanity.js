@@ -7,18 +7,22 @@ import { products as staticProducts } from '../data/products';
 // ------------------------------------------------------------------
 const PROJECT_ID = 'qbaw2yts';
 
+// Hardcoded Token as Fallback because Environment Variable is failing
+const HARDCODED_TOKEN = "skhKjccyqXjuBAOwCUYHvUXFMKSrgbVlfIIQR0pPDsUGsyTYj3UGRlaWTsn6D8RpKcZ9N4ot6VHw82CEGClEpISRlgXsYqsdHLGue9NKmhDQ3N6DySir23xyLwa7AFLUcxX1S8cGphK03p2vEpynuI0yZhkHf98AS8E8XmUHyKI6R0d9wHNL";
+
 export const client = createClient({
   projectId: PROJECT_ID,
   dataset: 'production',
   useCdn: false, // Disabled CDN to ensure real-time data consistency (like a DB)
   apiVersion: '2024-01-22',
-  token: import.meta.env.VITE_SANITY_TOKEN || '', // Optional token for authenticated operations
+  token: HARDCODED_TOKEN || import.meta.env.VITE_SANITY_TOKEN || '', // Use Hardcoded first
   ignoreBrowserTokenWarning: true // Suppress token warnings in browser
 });
-
+/*
 if (!import.meta.env.VITE_SANITY_TOKEN) {
   console.warn("VITE_SANITY_TOKEN is not set. Sign Up and other write operations will fail/fallback to local mode.");
 }
+*/
 
 // ------------------------------------------------------------------
 // HELPERS
