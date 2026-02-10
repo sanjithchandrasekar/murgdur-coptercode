@@ -10,6 +10,9 @@ const SanityTest = () => {
         tokenDetected: false
     });
     const [logs, setLogs] = useState([]);
+    const [localUsers, setLocalUsers] = useState([]);
+    const [sanityUsers, setSanityUsers] = useState([]);
+    const [loadingUsers, setLoadingUsers] = useState(false);
 
     const addLog = (message, type = 'info') => {
         setLogs(prev => [...prev, { message, type, timestamp: new Date().toLocaleTimeString() }]);
@@ -89,8 +92,31 @@ const SanityTest = () => {
         }
     };
 
+    const checkUsers = async () => {
+        setLoadingUsers(true);
+        // 1. Get Local Users
+        const storedUsers = JSON.parse(localStorage.getItem('users') || '[]');
+        setLocalUsers(storedUsers);
+
+        // 2. Check these emails in Sanity
+        if (storedUsers.length > 0) {
+            const emails = storedUsers.map(u => u.email).filter(Boolean);
+            if (emails.length > 0) {
+                try {
+                    const query = `*[_type == "customer" && email in $emails]{_id, email, firstName}`;
+                    const remoteUsers = await client.fetch(query, { emails });
+                    setSanityUsers(remoteUsers);
+                } catch (err) {
+                    console.error("Failed to fetch users", err);
+                }
+            }
+        }
+        setLoadingUsers(false);
+    };
+
     useEffect(() => {
         checkConnection();
+        checkUsers();
     }, []);
 
     return (
@@ -140,12 +166,66 @@ const SanityTest = () => {
                     </div>
                 </div>
 
+                {/* User Sync Diagnosis */}
+                <div className="mb-8">
+                    <h2 className="text-xl font-serif text-white mb-4 border-b border-white/10 pb-2">User Synchronization Status</h2>
+                    <p className="text-gray-400 text-sm mb-4">
+                        This section compares users saved on THIS device (Local) with the Cloud Database.
+                        <br /><span className="text-royal-gold">If a user is "Local Only", they cannot log in on other devices.</span>
+                    </p>
+
+                    {loadingUsers ? <div className="text-royal-gold animate-pulse">Checking user database...</div> : (
+                        <div className="bg-white/5 rounded border border-white/10 overflow-hidden">
+                            <table className="w-full text-left text-sm">
+                                <thead className="bg-white/10 text-xs uppercase font-bold text-gray-300">
+                                    <tr>
+                                        <th className="p-3">Email / User</th>
+                                        <th className="p-3">Status</th>
+                                        <th className="p-3">Action Required</th>
+                                    </tr>
+                                </thead>
+                                <tbody className="divide-y divide-white/5">
+                                    {localUsers.length === 0 ? (
+                                        <tr><td colSpan="3" className="p-4 text-center text-gray-500">No local users found on this device.</td></tr>
+                                    ) : (
+                                        localUsers.map((localUser, idx) => {
+                                            const isSynced = sanityUsers.some(su => su.email === localUser.email);
+                                            return (
+                                                <tr key={idx} className="hover:bg-white/5">
+                                                    <td className="p-3">
+                                                        <div className="font-bold text-white">{localUser.firstName} {localUser.lastName}</div>
+                                                        <div className="text-gray-500">{localUser.email}</div>
+                                                    </td>
+                                                    <td className="p-3">
+                                                        {isSynced ? (
+                                                            <span className="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs border border-green-500/30 flex items-center gap-1 w-fit">
+                                                                <CheckCircle size={10} /> Synced (Cloud)
+                                                            </span>
+                                                        ) : (
+                                                            <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs border border-red-500/30 flex items-center gap-1 w-fit">
+                                                                <AlertTriangle size={10} /> Local Only
+                                                            </span>
+                                                        )}
+                                                    </td>
+                                                    <td className="p-3 text-gray-400">
+                                                        {isSynced ? "None. Works everywhere." : "Sign Up again to sync."}
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+
                 {/* Console Output */}
                 <div className="bg-gray-900 rounded p-4 font-mono text-sm h-96 overflow-y-auto border border-gray-800">
                     {logs.map((log, index) => (
                         <div key={index} className={`mb-2 ${log.type === 'success' ? 'text-green-400' :
-                                log.type === 'error' ? 'text-red-400' :
-                                    log.type === 'warning' ? 'text-yellow-400' : 'text-gray-300'
+                            log.type === 'error' ? 'text-red-400' :
+                                log.type === 'warning' ? 'text-yellow-400' : 'text-gray-300'
                             }`}>
                             <span className="text-gray-600 mr-2">[{log.timestamp}]</span>
                             {log.message}
