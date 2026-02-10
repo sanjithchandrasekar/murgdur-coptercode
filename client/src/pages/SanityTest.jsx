@@ -13,6 +13,7 @@ const SanityTest = () => {
     const [localUsers, setLocalUsers] = useState([]);
     const [sanityUsers, setSanityUsers] = useState([]);
     const [loadingUsers, setLoadingUsers] = useState(false);
+    const [syncing, setSyncing] = useState(null); // Track which user is syncing
 
     const addLog = (message, type = 'info') => {
         setLogs(prev => [...prev, { message, type, timestamp: new Date().toLocaleTimeString() }]);
@@ -114,6 +115,47 @@ const SanityTest = () => {
         setLoadingUsers(false);
     };
 
+    const handleSyncUser = async (userToSync) => {
+        setSyncing(userToSync.email);
+        addLog(`Attempting to Sync User: ${userToSync.firstName}...`);
+
+        try {
+            // Prepare doc (remove local ID, let Sanity generate one, or use a deterministic one)
+            const doc = {
+                _type: 'customer',
+                firstName: userToSync.firstName,
+                lastName: userToSync.lastName,
+                email: userToSync.email,
+                mobile: userToSync.mobile,
+                password: userToSync.password,
+                addressLine1: userToSync.addressLine1 || '',
+                addressLine2: userToSync.addressLine2 || '',
+                city: userToSync.city || '',
+                state: userToSync.state || '',
+                pincode: userToSync.pincode || '',
+                createdAt: userToSync.createdAt || new Date().toISOString()
+            };
+
+            await client.create(doc);
+            addLog(`Sync Successful! User ${userToSync.email} is now in the Cloud.`, 'success');
+
+            // Refresh list
+            await checkUsers();
+
+        } catch (err) {
+            console.error("Sync Failed", err);
+            let msg = err.message;
+            if (err.message.includes("Insufficient permissions")) {
+                msg = "Token missing Write permissions.";
+            } else if (err.message.includes("NetworkError") || err.name === 'TypeError') {
+                msg = "CORS Error or Network Blocked.";
+            }
+            addLog(`Sync Failed: ${msg}`, 'error');
+        } finally {
+            setSyncing(null);
+        }
+    };
+
     useEffect(() => {
         checkConnection();
         checkUsers();
@@ -202,13 +244,22 @@ const SanityTest = () => {
                                                                 <CheckCircle size={10} /> Synced (Cloud)
                                                             </span>
                                                         ) : (
-                                                            <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs border border-red-500/30 flex items-center gap-1 w-fit">
-                                                                <AlertTriangle size={10} /> Local Only
-                                                            </span>
+                                                            <div className="flex items-center gap-2">
+                                                                <span className="bg-red-500/20 text-red-400 px-2 py-1 rounded text-xs border border-red-500/30 flex items-center gap-1 w-fit">
+                                                                    <AlertTriangle size={10} /> Local Only
+                                                                </span>
+                                                                <button
+                                                                    onClick={() => handleSyncUser(localUser)}
+                                                                    disabled={syncing === localUser.email}
+                                                                    className="text-xs bg-royal-gold text-black px-2 py-1 rounded font-bold hover:bg-yellow-400 disabled:opacity-50"
+                                                                >
+                                                                    {syncing === localUser.email ? "Syncing..." : "Sync Now"}
+                                                                </button>
+                                                            </div>
                                                         )}
                                                     </td>
                                                     <td className="p-3 text-gray-400">
-                                                        {isSynced ? "None. Works everywhere." : "Sign Up again to sync."}
+                                                        {isSynced ? "None. Works everywhere." : "Click 'Sync Now' to enable mobile login."}
                                                     </td>
                                                 </tr>
                                             );
