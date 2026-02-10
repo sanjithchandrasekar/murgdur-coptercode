@@ -47,6 +47,7 @@ const ShopByOccasion = () => {
                             src={item.image}
                             alt={item.name}
                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                            loading="lazy"
                         />
                         <div className="absolute inset-x-0 bottom-0 top-1/2 bg-gradient-to-t from-black/90 to-transparent"></div>
                         <div className="absolute bottom-6 left-0 w-full text-center">

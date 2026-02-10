@@ -53,6 +53,7 @@ const Stories = () => {
                                     src={story.image}
                                     alt={story.title}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+                                    loading="lazy"
                                 />
                             </div>
                             <span className="text-xs font-bold text-royal-gold uppercase tracking-widest mb-2 block">{story.category}</span>

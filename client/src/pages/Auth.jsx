@@ -140,6 +140,7 @@ const ForgotPasswordForm = ({ switchToLogin }) => {
     const [userDocId, setUserDocId] = useState(null); // To store Sanity ID
     const [mockOtp, setMockOtp] = useState('');
     const [userEnteredOtp, setUserEnteredOtp] = useState('');
+    const [authMode, setAuthMode] = useState('cloud'); // 'cloud' or 'local'
 
     const handleVerifyUser = async (e) => {
         e.preventDefault();
@@ -317,31 +318,68 @@ const LoginForm = ({ toggleAuth, switchToForgot }) => {
     const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
         setError('');
+        setIsLoading(true);
 
+        try {
+            // 1. Try finding user in Sanity
+            const query = `*[_type == "customer" && (email == $identifier || mobile == $identifier)][0]`;
+            const sanityUser = await client.fetch(query, { identifier });
+
+            if (sanityUser) {
+                // Verify Password (Plain text check as per current implementation)
+                if (sanityUser.password === password) {
+                    // Success - Sanity
+                    localStorage.setItem('userProfile', JSON.stringify({
+                        name: `${sanityUser.firstName} ${sanityUser.lastName}`,
+                        email: sanityUser.email,
+                        mobile: sanityUser.mobile
+                    }));
+                    navigate('/');
+                    return; // Exit
+                } else {
+                    setError(
+                        <span>
+                            Incorrect password. <span onClick={switchToForgot} className="underline cursor-pointer font-bold hover:text-royal-gold">Forgot your password?</span>
+                        </span>
+                    );
+                    setIsLoading(false);
+                    return;
+                }
+            }
+        } catch (err) {
+            console.warn("Sanity Login Failed (Network or unavailability). Falling back to local.", err);
+            // Don't show critical error to user yet, try local first
+        }
+
+        // 2. Fallback to Local Storage if Sanity user not found or error
         const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const user = users.find(u => u.email === identifier || u.mobile === identifier);
+        const localUser = users.find(u => u.email === identifier || u.mobile === identifier);
 
-        if (!user) {
+        if (!localUser) {
             setError("Account does not exist. Please create an account.");
+            setIsLoading(false);
             return;
         }
 
-        if (user.password !== password) {
+        if (localUser.password !== password) {
             setError(
                 <span>
                     Incorrect password. <span onClick={switchToForgot} className="underline cursor-pointer font-bold hover:text-royal-gold">Forgot your password?</span>
                 </span>
             );
+            setIsLoading(false);
             return;
         }
 
-        // Success
-        localStorage.setItem('userProfile', JSON.stringify({ name: user.name, email: user.email, mobile: user.mobile }));
+        // Success - Local
+        localStorage.setItem('userProfile', JSON.stringify({ name: localUser.name || `${localUser.firstName} ${localUser.lastName}`, email: localUser.email, mobile: localUser.mobile }));
         navigate('/');
+        setIsLoading(false);
     };
 
     return (
@@ -394,8 +432,8 @@ const LoginForm = ({ toggleAuth, switchToForgot }) => {
                 <label htmlFor="remember" className="text-sm text-gray-400 cursor-pointer select-none">Remember me for 30 days</label>
             </div>
 
-            <Button variant="primary" className="w-full py-4 text-black font-bold tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
-                SIGN IN
+            <Button disabled={isLoading} variant="primary" className="w-full py-4 text-black font-bold tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] disabled:opacity-50">
+                {isLoading ? "VERIFYING..." : "SIGN IN"}
             </Button>
         </motion.form>
     );
@@ -421,6 +459,8 @@ const SignupForm = ({ toggleAuth }) => {
     });
 
     const [passwordError, setPasswordError] = useState('');
+    const [isCloudSynced, setIsCloudSynced] = useState(true); // Default to true, set to false on error
+    const [configError, setConfigError] = useState(false); // To detect if token is missing entirely
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -429,12 +469,12 @@ const SignupForm = ({ toggleAuth }) => {
     const handleSendOtp = (e) => {
         e.preventDefault();
         setOtpSent(true);
-        // Simulate API call
         console.log("OTP Sent: 1234");
     };
 
     const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: Password
     const [showModal, setShowModal] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleNextStep = (e) => {
         e.preventDefault();
@@ -449,7 +489,6 @@ const SignupForm = ({ toggleAuth }) => {
             setPasswordError("Please enter a valid email address.");
             return;
         }
-        // Check if Required fields are filled
         if (!formData.firstName || !formData.lastName || !formData.addressLine1 || !formData.pincode || !formData.city || !formData.state) {
             setPasswordError("Please fill in all details.");
             return;
@@ -461,42 +500,44 @@ const SignupForm = ({ toggleAuth }) => {
     const handleRegister = async (e) => {
         e.preventDefault();
         setPasswordError('');
+        setIsLoading(true);
 
-        // 2. Password Validation
         const { password, confirmPassword } = formData;
         if (password.length < 6) {
             setPasswordError("Password must be at least 6 characters long.");
-            return;
-        }
-        // Removed strict regex complexity checks for better UX as per user request
-
-        if (password !== confirmPassword) {
-            setPasswordError("Passwords do not match.");
+            setIsLoading(false);
             return;
         }
         if (password !== confirmPassword) {
             setPasswordError("Passwords do not match.");
+            setIsLoading(false);
             return;
         }
 
         try {
-            // 3. User Existence Check in Sanity
+            // 3. User Existence Check in Sanity (Read usually works without token if dataset is public)
             const existingQuery = `*[_type == "customer" && (email == $email || mobile == $mobile)][0]`;
-            const existingUser = await client.fetch(existingQuery, { email: formData.email, mobile: formData.mobile });
+            let existingUser;
+            try {
+                existingUser = await client.fetch(existingQuery, { email: formData.email, mobile: formData.mobile });
+            } catch (fetchErr) {
+                console.warn("Sanity Check Failed:", fetchErr);
+                // Proceed without checking remote existence if read fails
+            }
 
             if (existingUser) {
                 setPasswordError("User with this Email or Mobile already exists. Please Log In.");
+                setIsLoading(false);
                 return;
             }
 
-            // Create User Object for Sanity
             const newUserDoc = {
                 _type: 'customer',
                 firstName: formData.firstName,
                 lastName: formData.lastName,
                 email: formData.email,
                 mobile: formData.mobile,
-                password: formData.password, // Storing as requested
+                password: formData.password,
                 addressLine1: formData.addressLine1,
                 addressLine2: formData.addressLine2,
                 city: formData.city,
@@ -505,32 +546,38 @@ const SignupForm = ({ toggleAuth }) => {
                 createdAt: new Date().toISOString()
             };
 
-            // Try creating in Sanity, but don't block if permission fails (Dev Mode)
+            // Try creating in Sanity
+            let syncSuccess = true;
             try {
+                // Check if client is configured with a token (rudimentary check by attempting a simple write)
+                // Note: direct client.create requires a token with write permissions.
                 await client.create(newUserDoc);
             } catch (sanityErr) {
-                console.warn("Sanity Write Failed (likely missing token). Falling back to local.", sanityErr);
-                if (sanityErr.statusCode !== 401 && sanityErr.statusCode !== 403) {
-                    // If it's NOT a permission error (e.g. network), we might still want to throw
-                    // But for smoother dev experience, we'll log and proceed locally
+                console.error("Sanity Write Failed:", sanityErr);
+                syncSuccess = false;
+
+                // If the error indicates strictly a permission/token issue
+                if (sanityErr.message && (sanityErr.message.includes('Insufficcient permissions') || sanityErr.statusCode === 401 || sanityErr.statusCode === 403)) {
+                    setConfigError(true);
                 }
             }
+            setIsCloudSynced(syncSuccess);
 
             // Also save to LocalStorage for immediate session
             const userProfile = { name: `${formData.firstName} ${formData.lastName}`, email: formData.email, mobile: formData.mobile };
             localStorage.setItem('userProfile', JSON.stringify(userProfile));
 
-            // CRITICAL: Save to 'users' list for Login Form to work
             const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
             existingUsers.push({ ...newUserDoc, _id: `local_${Date.now()}` });
             localStorage.setItem('users', JSON.stringify(existingUsers));
 
-            // Show Royal Modal
             setShowModal(true);
+            setIsLoading(false);
 
         } catch (err) {
             console.error("Registration Critical Error:", err);
             setPasswordError("Unexpected error. Please try again.");
+            setIsLoading(false);
         }
     };
 
@@ -545,10 +592,14 @@ const SignupForm = ({ toggleAuth }) => {
                 {showModal && (
                     <RoyalModal
                         isOpen={showModal}
-                        title="Welcome to Royalty"
-                        message="Your account has been successfully created. You can now access the exclusive vaults."
+                        title={isCloudSynced ? "Welcome to Royalty" : "Welcome (Local Mode)"}
+                        message={isCloudSynced
+                            ? "Your account has been successfully created. You can now access the exclusive vaults from any device."
+                            : configError
+                                ? "Your account was created LOCALLY. The system detected a configuration issue (Missing API Token). Please contact support to enable Cloud Sync."
+                                : "Your account was created on THIS DEVICE only (Cloud sync unavailable). Please contact support or login from this browser locally."}
                         onClose={closeSuccessModal}
-                        actionText="ENTER VAULT"
+                        actionText={isCloudSynced ? "ENTER VAULT" : "CONTINUE LOCALLY"}
                     />
                 )}
             </AnimatePresence>

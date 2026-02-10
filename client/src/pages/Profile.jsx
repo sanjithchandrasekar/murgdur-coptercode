@@ -18,7 +18,12 @@ const Profile = () => {
         if (storedUser) {
             const parsedUser = JSON.parse(storedUser);
             setUser(parsedUser);
-            fetchSanityData(parsedUser.email, parsedUser.mobile);
+            // Only attempt to fetch additional data if we have an email/mobile
+            if (parsedUser.email || parsedUser.mobile) {
+                fetchSanityData(parsedUser.email, parsedUser.mobile);
+            } else {
+                setLoading(false);
+            }
         } else {
             setLoading(false);
         }

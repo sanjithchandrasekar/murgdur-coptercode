@@ -122,6 +122,7 @@ const RoyalCollection = () => {
                                 src={data?.menSection?.image || imgMen}
                                 alt="Royal Men's Collection"
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                loading="lazy"
                             />
                             <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 text-center p-6">
                                 <motion.h2
@@ -150,6 +151,7 @@ const RoyalCollection = () => {
                                 src={data?.womenSection?.image || imgWomen}
                                 alt="Royal Women's Collection"
                                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                loading="lazy"
                             />
                             <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 text-center p-6">
                                 <motion.h2
@@ -179,7 +181,7 @@ const RoyalCollection = () => {
                                     {data.menSection.featuredProducts.map((p) => (
                                         <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
                                             <div className="aspect-[3/4] overflow-hidden">
-                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                                             </div>
                                             <div className="p-4 text-center">
                                                 <h4 className="font-serif text-lg text-black">{p.name}</h4>
@@ -204,6 +206,7 @@ const RoyalCollection = () => {
                                         src={imgRoyalSherwani}
                                         alt="Royal Men's Clothing"
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
@@ -231,6 +234,7 @@ const RoyalCollection = () => {
                                         src={imgRoyalWatch}
                                         alt="Royal Men's Accessories"
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
@@ -263,6 +267,7 @@ const RoyalCollection = () => {
                                     src={item.img}
                                     alt={item.name}
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    loading="lazy"
                                 />
                                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6">
                                     <motion.h2
@@ -300,6 +305,7 @@ const RoyalCollection = () => {
                                     src={item.img}
                                     alt={item.name}
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                    loading="lazy"
                                 />
                                 <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4">
                                     <h3 className="text-xl md:text-2xl font-serif text-white mb-4 tracking-wider text-shadow-lg">
@@ -322,7 +328,7 @@ const RoyalCollection = () => {
                                     {data.womenSection.featuredProducts.map((p) => (
                                         <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
                                             <div className="aspect-[3/4] overflow-hidden">
-                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
                                             </div>
                                             <div className="p-4 text-center">
                                                 <h4 className="font-serif text-lg text-black">{p.name}</h4>
@@ -348,6 +354,7 @@ const RoyalCollection = () => {
                                         src={imgRoyalSaree}
                                         alt="Royal Women's Clothing"
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
@@ -375,6 +382,7 @@ const RoyalCollection = () => {
                                         src={imgRoyalJewellery}
                                         alt="Royal Women's Accessories"
                                         className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                                        loading="lazy"
                                     />
                                 </div>
                                 <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
@@ -435,6 +443,7 @@ const RoyalCollection = () => {
                                     src={category.img}
                                     alt={category.title}
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-100"
+                                    loading="lazy"
                                 />
 
                                 {/* Content Container - Centered */}
@@ -502,6 +511,7 @@ const RoyalCollection = () => {
                                     src={category.img}
                                     alt={category.title}
                                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-100"
+                                    loading="lazy"
                                 />
 
                                 {/* Content Container - Centered */}
@@ -546,6 +556,7 @@ const RoyalCollection = () => {
                         src={data?.conciergeSection?.image || imgMen}
                         className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
                         alt="Concierge"
+                        loading="lazy"
                     />
 
                     <div className="relative z-20 text-center px-6 max-w-3xl">

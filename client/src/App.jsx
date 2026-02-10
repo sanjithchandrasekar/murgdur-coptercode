@@ -19,6 +19,7 @@ import Stories from './pages/Stories';
 import Press from './pages/Press';
 import CorporateInfo from './pages/CorporateInfo';
 import Vision from './pages/Vision';
+import SanityTest from './pages/SanityTest';
 
 import ScrollToTop from './utils/ScrollToTop';
 
@@ -43,6 +44,7 @@ function App() {
           <Route path="admin" element={<InfoPage />} />
           <Route path="founder" element={<InfoPage />} />
           <Route path="vision" element={<Vision />} />
+          <Route path="sanity-test" element={<SanityTest />} />
           <Route path="innovation" element={<InfoPage />} />
           <Route path="awards" element={<InfoPage />} />
           <Route path="sustainability" element={<InfoPage />} />

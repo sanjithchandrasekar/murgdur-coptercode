@@ -10,11 +10,15 @@ const PROJECT_ID = 'qbaw2yts';
 export const client = createClient({
   projectId: PROJECT_ID,
   dataset: 'production',
-  useCdn: false, // Changed to false to enable write operations
+  useCdn: false, // Disabled CDN to ensure real-time data consistency (like a DB)
   apiVersion: '2024-01-22',
   token: import.meta.env.VITE_SANITY_TOKEN || '', // Optional token for authenticated operations
   ignoreBrowserTokenWarning: true // Suppress token warnings in browser
 });
+
+if (!import.meta.env.VITE_SANITY_TOKEN) {
+  console.warn("VITE_SANITY_TOKEN is not set. Sign Up and other write operations will fail/fallback to local mode.");
+}
 
 // ------------------------------------------------------------------
 // HELPERS
@@ -34,7 +38,7 @@ export const fetchSiteSettings = async () => {
   try {
     const query = `*[_type == "siteSettings"][0]{
         title,
-        "logo": logo.asset->url,
+        "logo": logo.asset->url + "?auto=format&q=80",
         contactEmail,
         contactPhone
       }`;
@@ -52,7 +56,7 @@ export const fetchHomePage = async () => {
                 title,
                 subtitle,
                 videoUrl,
-                "image": image.asset->url,
+                "image": image.asset->url + "?auto=format&q=80",
                 link
             },
             promoSection {
@@ -60,7 +64,7 @@ export const fetchHomePage = async () => {
                 hashtag,
                 heading,
                 ctaText,
-                "backgroundImage": backgroundImage.asset->url
+                "backgroundImage": backgroundImage.asset->url + "?auto=format&q=80"
             },
             welcomeSection,
             videoCampaign,
@@ -68,7 +72,7 @@ export const fetchHomePage = async () => {
                 _id,
                 name,
                 "slug": slug.current,
-                "image": mainImage.asset->url,
+                "image": mainImage.asset->url + "?auto=format&q=80&w=600",
                 price
             }
         }`;
@@ -95,33 +99,33 @@ export const fetchRoyalCollectionPage = async () => {
             ...,
             menSection {
                 ...,
-                "image": image.asset->url,
+                "image": image.asset->url + "?auto=format&q=80",
                 featuredProducts[]->{
                      _id,
                      name,
                      "slug": slug.current,
-                     "image": mainImage.asset->url,
+                     "image": mainImage.asset->url + "?auto=format&q=80&w=600",
                      price
                 }
             },
             womenSection {
                 ...,
-                "image": image.asset->url,
+                "image": image.asset->url + "?auto=format&q=80",
                  featuredProducts[]->{
                      _id,
                      name,
                      "slug": slug.current,
-                     "image": mainImage.asset->url,
+                     "image": mainImage.asset->url + "?auto=format&q=80&w=600",
                      price
                 }
             },
             conciergeSection {
                 ...,
-                "image": image.asset->url
+                "image": image.asset->url + "?auto=format&q=80"
             },
              occasions[]{
                 ...,
-                "image": image.asset->url
+                "image": image.asset->url + "?auto=format&q=80&w=600"
             }
         }`;
     return await client.fetch(query);
@@ -177,7 +181,7 @@ export const fetchShopByOccasion = async () => {
             ...,
             occasions[]{
                 ...,
-                "image": image.asset->url
+                "image": image.asset->url + "?auto=format&q=80&w=600"
             }
         }`;
     return await client.fetch(query);
@@ -243,7 +247,7 @@ export const fetchStoriesPage = async () => {
             ...,
             stories[]{
                 ...,
-                "image": image.asset->url
+                "image": image.asset->url + "?auto=format&q=80"
             }
         }`;
     return await client.fetch(query);
@@ -257,7 +261,7 @@ export const fetchVisionPage = async () => {
   try {
     const query = `*[_type == "visionPage"][0]{
             ...,
-            "bottomImage": bottomImage.asset->url
+            "bottomImage": bottomImage.asset->url + "?auto=format&q=80"
         }`;
     return await client.fetch(query);
   } catch (error) {
@@ -308,7 +312,7 @@ export const fetchProducts = async () => {
       description,
       category,
       type,
-      "image": mainImage.asset->url,
+      "image": mainImage.asset->url + "?auto=format&q=80&w=800",
       "images": images[].asset->url,
       sizes,
       colors,

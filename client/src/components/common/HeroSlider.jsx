@@ -64,15 +64,20 @@ const HeroSlider = ({ slides: customSlides }) => {
                                         loop
                                         muted
                                         playsInline
+                                        preload="auto"
                                         className="w-full h-full object-cover"
                                     />
                                     <div className="absolute inset-0 bg-black/40"></div>
                                 </div>
                             ) : (
-                                <div
-                                    className="absolute inset-0 bg-cover bg-center transition-transform duration-[10s] hover:scale-105"
-                                    style={{ backgroundImage: `url(${slide.image})` }}
-                                >
+                                <div className="absolute inset-0 w-full h-full">
+                                    <img
+                                        src={slide.image}
+                                        alt={slide.title}
+                                        className="w-full h-full object-cover transition-transform duration-[10s] hover:scale-105"
+                                        loading={index === 0 ? "eager" : "lazy"}
+                                        decoding={index === 0 ? "sync" : "async"}
+                                    />
                                     <div className="absolute inset-0 bg-black/40"></div>
                                 </div>
                             )}

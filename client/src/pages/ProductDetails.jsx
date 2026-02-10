@@ -4,6 +4,9 @@ import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2, X } from 'lucide-
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { fetchProducts } from '../utils/sanity';
+import RoyalZoomGallery from '../components/common/RoyalZoomGallery';
+
+const imgLogo = "/images/logo.jpeg";
 
 const ProductDetails = () => {
     const { id } = useParams();
@@ -11,11 +14,11 @@ const ProductDetails = () => {
     const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } = useCart();
 
     const [product, setProduct] = useState(null);
+    const [relatedProducts, setRelatedProducts] = useState([]);
     const [loading, setLoading] = useState(true);
 
     const [selectedSize, setSelectedSize] = useState("M");
     const [selectedColor, setSelectedColor] = useState(null);
-    const [selectedImage, setSelectedImage] = useState(null);
     // const [quantity, setQuantity] = useState(1); // Quantity controlled in cart only
     const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
 
@@ -27,15 +30,23 @@ const ProductDetails = () => {
             // Loosely compare ID to support both int (static) and string (sanity) IDs
             const found = allProducts.find(p => p.id.toString() === id || p._id === id);
             setProduct(found);
+
+            if (found) {
+                // Filter for similar items (same category, different ID)
+                const related = allProducts
+                    .filter(p => (p.category === found.category || p.type === found.type) && p.id !== found.id)
+                    .slice(0, 4);
+                setRelatedProducts(related);
+            }
+
             setLoading(false);
         };
         load();
     }, [id]);
 
-    // Update selected image and color when product changes
+    // Update selected color when product changes
     useEffect(() => {
         if (product) {
-            setSelectedImage(product.images ? product.images[0] : product.image);
             if (product.colors && product.colors.length > 0) {
                 setSelectedColor(product.colors[0]);
             }
@@ -91,39 +102,13 @@ const ProductDetails = () => {
 
                 <div className="flex flex-col lg:flex-row gap-12">
 
-                    {/* LEFT: Image Gallery */}
-                    <div className="lg:w-3/5 flex gap-4">
-                        {/* Thumbnails */}
-                        {product.images.length > 1 && (
-                            <div className="hidden md:flex flex-col gap-4">
-                                {product.images.map((img, idx) => (
-                                    <div
-                                        key={idx}
-                                        onClick={() => setSelectedImage(img)}
-                                        className={`w-20 h-24 border ${selectedImage === img ? 'border-royal-gold' : 'border-transparent'} cursor-pointer overflow-hidden opacity-70 hover:opacity-100 transition-all`}
-                                    >
-                                        <img src={img} alt="" className="w-full h-full object-cover" />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Main Image */}
-                        <div className="flex-1 bg-gray-900 border border-white/5 relative aspect-[3/4] md:aspect-auto md:h-[600px] overflow-hidden">
-                            <img src={selectedImage} alt={product.name} className="w-full h-full object-cover" />
-                            <button
-                                onClick={() => isWishlisted ? removeFromWishlist(product.id) : addToWishlist({ ...product, selectedSize, selectedColor })}
-                                className="absolute top-4 right-4 p-3 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all"
-                            >
-                                <Heart size={20} className={`${isWishlisted ? 'text-red-500 fill-red-500' : 'text-white'} hover:text-red-500 hover:fill-red-500`} />
-                            </button>
-                            <button
-                                onClick={handleShare}
-                                className="absolute top-16 right-4 p-3 bg-white/10 rounded-full hover:bg-white/20 backdrop-blur-sm transition-all"
-                            >
-                                <Share2 size={20} className="text-white" />
-                            </button>
-                        </div>
+                    {/* LEFT: Royal Zoom Gallery */}
+                    <div className="lg:w-3/5 relative">
+                        <RoyalZoomGallery
+                            images={product.images && product.images.length > 0 ? product.images : [imgLogo]} /* imgLogo might need import or fallback */
+                            productName={product.name}
+                            product={product}
+                        />
                     </div>
 
                     {/* RIGHT: Product Info */}
@@ -209,14 +194,50 @@ const ProductDetails = () => {
                             </Button>
                         </div>
 
-                        <div className="border-t border-white/10 pt-6 space-y-4">
-                            <div className="flex items-center gap-3 text-sm text-gray-400">
-                                <Truck size={20} className="text-royal-gold" />
-                                <span>Free Delivery by <span className="text-white font-bold">Fri, Jan 26</span></span>
+                        <div className="border-t border-white/10 pt-6 space-y-6">
+                            {/* Royal Assurance */}
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="flex flex-col gap-1 p-3 border border-white/5 bg-white/5 rounded">
+                                    <ShieldCheck size={20} className="text-royal-gold mb-1" />
+                                    <span className="text-white text-xs font-bold uppercase tracking-wider">100% Authentic</span>
+                                    <span className="text-gray-500 text-[10px]">Certified by Murgdur Vault</span>
+                                </div>
+                                <div className="flex flex-col gap-1 p-3 border border-white/5 bg-white/5 rounded">
+                                    <Truck size={20} className="text-royal-gold mb-1" />
+                                    <span className="text-white text-xs font-bold uppercase tracking-wider">Royal Logistics</span>
+                                    <span className="text-gray-500 text-[10px]">Insured & Tracked Delivery</span>
+                                </div>
                             </div>
-                            <div className="flex items-center gap-3 text-sm text-gray-400">
-                                <ShieldCheck size={20} className="text-royal-gold" />
-                                <span>1 Year Warranty on Fabric & Stitching</span>
+
+                            {/* Delivery Check */}
+                            <div className="space-y-2">
+                                <span className="text-xs text-gray-400 font-bold uppercase tracking-widest">Delivery Options</span>
+                                <div className="flex gap-2">
+                                    <input
+                                        type="text"
+                                        placeholder="Enter Pincode"
+                                        className="bg-transparent border border-white/20 px-4 py-2 text-sm focus:border-royal-gold outline-none w-40 text-white placeholder:text-gray-600"
+                                    />
+                                    <button className="text-royal-gold text-xs font-bold uppercase hover:text-white transition-colors">Check</button>
+                                </div>
+                                <p className="text-[10px] text-gray-500 flex items-center gap-1">
+                                    <span className="h-1.5 w-1.5 rounded-full bg-green-500"></span>
+                                    Estimated Delivery: <span className="text-gray-300">3-5 Business Days</span>
+                                </p>
+                            </div>
+
+                            {/* Seller Info */}
+                            <div className="flex items-center justify-between text-xs border border-white/10 p-4 rounded bg-white/5">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-8 rounded-full bg-royal-gold flex items-center justify-center text-black font-serif font-bold">M</div>
+                                    <div>
+                                        <p className="text-white font-bold">Sold by Murgdur Heritage</p>
+                                        <p className="text-gray-500 text-[10px]">Premium Seller (4.9 ★)</p>
+                                    </div>
+                                </div>
+                                <button className="text-royal-gold border border-royal-gold/50 px-3 py-1 rounded hover:bg-royal-gold hover:text-black transition-all">
+                                    View Profile
+                                </button>
                             </div>
                         </div>
 
@@ -452,6 +473,29 @@ const ProductDetails = () => {
                                 </table>
                             )}
                         </div>
+                    </div>
+                </div>
+            )}
+
+            {/* Similar Products Section */}
+            {relatedProducts.length > 0 && (
+                <div className="container mx-auto px-6 max-w-7xl mt-20">
+                    <h3 className="text-2xl font-serif text-white mb-8 border-b border-white/10 pb-4">Similar Masterpieces</h3>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+                        {relatedProducts.map(p => (
+                            <Link to={`/product/${p.id}`} key={p.id} className="group block bg-white/5 border border-white/10 rounded overflow-hidden hover:bg-white/10 transition-all">
+                                <div className="aspect-[3/4] overflow-hidden relative">
+                                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" loading="lazy" />
+                                    {p.isNew && (
+                                        <span className="absolute top-2 left-2 bg-royal-gold text-black text-[10px] font-bold px-2 py-1 uppercase tracking-wider">New</span>
+                                    )}
+                                </div>
+                                <div className="p-4 text-center">
+                                    <h4 className="font-serif text-white text-sm truncate mb-1 group-hover:text-royal-gold transition-colors">{p.name}</h4>
+                                    <p className="text-gray-400 text-xs">₹{p.price.toLocaleString()}</p>
+                                </div>
+                            </Link>
+                        ))}
                     </div>
                 </div>
             )}

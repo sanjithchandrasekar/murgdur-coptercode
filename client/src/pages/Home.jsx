@@ -12,12 +12,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { fetchHomePage } from '../utils/sanity';
 
 const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
-const trend1 = "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png";
-const trend2 = "/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png";
-const trend3 = "/images/Gemini_Generated_Image_k7b1fwk7b1fwk7b1.png";
-const trend4 = "/images/Gemini_Generated_Image_kb3z30kb3z30kb3z.png";
-const imgMen = "/images/boy.jpeg";
-const imgWomen = "/images/girl.png";
+
 
 const royalBg = "/images/royal_dress_bg.png";
 
@@ -32,29 +27,7 @@ const Home = () => {
         loadData();
     }, []);
 
-    const [currentVideoSlide, setCurrentVideoSlide] = useState(0);
 
-    // "Video" Slideshow content
-    const videoSlides = [
-        { img: imgMen, title: "Heritage", subtitle: "Defining Class" },
-        { img: imgWomen, title: "Elegance", subtitle: "Grace in Every Thread" },
-        { img: trend1, title: "Craftsmanship", subtitle: "Handwoven Perfection" },
-        { img: trend3, title: "Royalty", subtitle: "Live the Legacy" }
-    ];
-
-    useEffect(() => {
-        const timer = setInterval(() => {
-            setCurrentVideoSlide((prev) => (prev + 1) % videoSlides.length);
-        }, 5000);
-        return () => clearInterval(timer);
-    }, []);
-
-    const trending = [
-        { img: trend1, name: "Royal Silk Sherwani", price: "₹ 24,999" },
-        { img: trend2, name: "Velvet Bandhgala", price: "₹ 18,500" },
-        { img: trend3, name: "Embroidered Kurta", price: "₹ 12,999" },
-        { img: trend4, name: "Regal Pashmina Shawl", price: "₹ 8,999" }
-    ];
 
     return (
         <div className="bg-royal-black overflow-x-hidden">
@@ -73,6 +46,8 @@ const Home = () => {
                     src={homeData?.promoSection?.backgroundImage || royalBg}
                     alt=""
                     className="absolute inset-0 w-full h-full object-cover"
+                    loading="lazy"
+
                 />
                 <div className="absolute inset-0 bg-black/40"></div>
 
@@ -139,6 +114,8 @@ const Home = () => {
                                             src={item.image || item.img}
                                             alt={item.name}
                                             className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                            loading="lazy"
+
                                         />
                                     </div>
                                     <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors mb-1">
@@ -155,7 +132,7 @@ const Home = () => {
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
                         {[
                             { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop?type=bags" },
-                            { name: "Men's Small Leather Goods", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop", link: "/shop?type=wallets" },
+                            { name: "Men's Wallet", img: "/images/mens_royal_wallet_section.png", link: "/shop?type=wallets" },
                             { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" },
                             { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop?type=sunglasses" }
                         ].map((item, idx) => (
@@ -165,6 +142,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                                        loading="lazy"
+
                                     />
                                 </div>
                                 <h3 className="text-center text-[10px] md:text-xs text-white font-medium group-hover:text-royal-platinum hover:underline underline-offset-4 decoration-royal-platinum uppercase tracking-widest transition-colors">
@@ -184,7 +163,8 @@ const Home = () => {
                     muted
                     playsInline
                     className="absolute inset-0 w-full h-full object-cover opacity-80"
-                    poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=2670&auto=format&fit=crop"
+                    poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1600&auto=format&fit=crop"
+
                 >
                     <source src={homeData?.videoCampaign?.videoUrl || "https://videos.pexels.com/video-files/3205903/3205903-hd_1920_1080_25fps.mp4"} type="video/mp4" />
                     Your browser does not support the video tag.
@@ -239,6 +219,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full h-full object-contain p-4 rounded-sm transition-transform duration-500 group-hover:scale-110"
+                                        loading="lazy"
+
                                     />
                                     <div className="absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
@@ -266,9 +248,12 @@ const Home = () => {
             {/* Gender Discovery Full Banner */}
             <section className="w-full h-[85vh] relative group overflow-hidden">
                 <img
-                    src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=2400&auto=format&fit=crop"
+                    src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600&auto=format&fit=crop"
+
                     alt="Latest Collection"
                     className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+                    loading="lazy"
+
                 />
                 <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
                 <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
@@ -310,9 +295,45 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                                        loading="lazy"
+
                                     />
                                 </div>
                                 <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            </section>
+
+            {/* Men's Accessories Section - Dark Theme (User Requested) */}
+            <section className="py-16 bg-royal-black text-center border-t border-gray-900">
+                <div className="container mx-auto px-4 md:px-6">
+                    <div className="mb-10">
+                        <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">IMPERIAL MEN</span>
+                        <h2 className="text-3xl md:text-4xl font-serif text-white">Essentials of Command</h2>
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                        {[
+                            { name: "The Royal Set", img: "/images/mens_accessories_section.png", link: "/shop?gender=Men&category=Accessories" },
+                            { name: "Signature Wallets", img: "/images/royal_wallet.png", link: "/shop?type=wallets" },
+                            { name: "Timepieces", img: "/images/royal_watch.png", link: "/shop?type=watches" },
+                            { name: "Classic Belts", img: "/images/leather_belt.png", link: "/shop?type=belts" }
+                        ].map((item, idx) => (
+                            <Link to={item.link || "/shop?gender=men"} key={idx} className="group block cursor-pointer">
+                                <div className="aspect-square bg-white/5 border border-white/10 mb-4 overflow-hidden flex items-center justify-center p-0 relative rounded-sm">
+                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white transition-colors">
+                                        <Heart size={20} />
+                                    </button>
+                                    <img
+                                        src={item.img}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100"
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <h4 className="text-xs font-serif text-gray-300 group-hover:text-white transition-colors">{item.name}</h4>
                             </Link>
                         ))}
                     </div>
@@ -343,6 +364,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                                        loading="lazy"
+
                                     />
                                 </div>
                                 <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
@@ -394,6 +417,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                                        loading="lazy"
+
                                     />
                                 </div>
                                 <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
@@ -412,6 +437,8 @@ const Home = () => {
                                 src="/images/royal_perfume.png"
                                 alt="Perfumery"
                                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                loading="lazy"
+
                             />
                         </div>
                         <div className="w-full md:w-1/2 text-center md:text-left">
@@ -444,6 +471,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.name}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                                        loading="lazy"
+
                                     />
                                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/10 transition-colors"></div>
                                 </div>
@@ -470,6 +499,8 @@ const Home = () => {
                                         src={item.img}
                                         alt={item.title}
                                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                        loading="lazy"
+
                                     />
                                 </div>
                                 <h4 className="text-lg font-serif text-black mb-2">{item.title}</h4>
@@ -497,6 +528,8 @@ const Home = () => {
                                             src={item.img}
                                             alt={item.title}
                                             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                                            loading="lazy"
+
                                         />
                                     </div>
                                     <span className="text-[10px] font-bold text-royal-obsidian uppercase tracking-widest mb-2 block">{item.category}</span>
@@ -526,6 +559,8 @@ const Home = () => {
                                     src={item.img}
                                     alt={item.name}
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-70 group-hover:opacity-100"
+                                    loading="lazy"
+
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-transparent to-transparent opacity-90"></div>
                                 <div className="absolute bottom-6 left-0 w-full text-center">
@@ -555,6 +590,8 @@ const Home = () => {
                                     src={spotlightImg}
                                     alt="Bespoke Tailoring"
                                     className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105 opacity-90 group-hover:opacity-100"
+                                    loading="lazy"
+
                                 />
 
                             </div>

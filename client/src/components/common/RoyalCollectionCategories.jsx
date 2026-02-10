@@ -32,11 +32,13 @@ const RoyalCollectionCategories = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
 
                     {/* MEN'S COLLECTION */}
-                    <Link to="/shop?cat=men" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer">
-                        <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
-                            style={{ backgroundImage: `url(${men?.image || mensImg})` }}
-                        ></div>
+                    <Link to="/shop?cat=men" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer text-decoration-none">
+                        <img
+                            src={men?.image || mensImg}
+                            alt={men?.title || "Men's Collection"}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            loading="lazy"
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-80"></div>
 
                         <div className="absolute bottom-0 left-0 w-full p-10 flex flex-col items-center text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
@@ -51,11 +53,13 @@ const RoyalCollectionCategories = () => {
                     </Link>
 
                     {/* WOMEN'S COLLECTION */}
-                    <Link to="/shop?cat=women" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer">
-                        <div
-                            className="absolute inset-0 bg-cover bg-center transition-transform duration-1000 group-hover:scale-110"
-                            style={{ backgroundImage: `url(${women?.image || womensImg})` }}
-                        ></div>
+                    <Link to="/shop?cat=women" className="group relative h-[450px] md:h-[600px] overflow-hidden border border-white/10 cursor-pointer text-decoration-none">
+                        <img
+                            src={women?.image || womensImg}
+                            alt={women?.title || "Women's Collection"}
+                            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                            loading="lazy"
+                        />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent transition-opacity duration-300 group-hover:opacity-80"></div>
 
                         <div className="absolute bottom-0 left-0 w-full p-10 flex flex-col items-center text-center translate-y-4 group-hover:translate-y-0 transition-transform duration-500">

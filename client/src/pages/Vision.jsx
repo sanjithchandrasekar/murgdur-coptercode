@@ -62,6 +62,7 @@ const Vision = () => {
                             src={data?.bottomImage || "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop"}
                             alt={data?.bottomCaption || "Future of Fashion"}
                             className="w-full h-full object-cover opacity-60 hover:scale-105 transition-transform duration-[10s]"
+                            loading="lazy"
                         />
                         <div className="absolute inset-0 flex items-center justify-center">
                             <h2 className="text-3xl font-serif text-white text-center px-4">
