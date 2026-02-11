@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const connectDB = require('./config/db');
 
 // Load env vars
@@ -14,6 +15,20 @@ const app = express();
 // Middleware
 app.use(express.json());
 app.use(cors());
+
+// Middleware to ensure Database Connection for every request (Critical for Vercel/Serverless)
+app.use(async (req, res, next) => {
+    if (mongoose.connection.readyState === 1) {
+        return next();
+    }
+    try {
+        await connectDB();
+        next();
+    } catch (error) {
+        console.error("MongoDB Connection Error:", error);
+        res.status(500).json({ error: "Database Request Failed: Connection Error" });
+    }
+});
 
 // Routes
 app.get('/', (req, res) => {

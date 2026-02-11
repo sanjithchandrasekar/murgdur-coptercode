@@ -208,51 +208,34 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            // Valentine's
                             { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg", link: "/product/42" },
-                            { name: "Sandals", price: "₹ 45,000", img: "/images/royal_heels.png", link: "/product/17" }, // Fixed: Point to Heels
+                            { name: "Sandals", price: "₹ 45,000", img: "/images/royal_heels.png", link: "/product/17" },
                             { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png", link: "/product/51" },
-                            { name: "Passport Cover", price: "₹ 22,000", img: "/images/passport.jpg", link: "/product/110" } // Fixed: Point to new Passport Cover
+                            { name: "Passport Cover", price: "₹ 22,000", img: "/images/passport.jpg", link: "/product/110" },
+                            { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/product/111" },
+                            { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/112" },
+                            { name: "Micro Vanity", img: "/images/micro.jpg", link: "/product/113" },
+                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop", link: "/product/18" },
+                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", link: "/product/38" },
+                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" }
                         ].map((item, idx) => (
-
-                            // ...
-
-                            // Monogram Donuts
-                            {
-                                [
-                                { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/product/111" }, // Fixed: New ID
-                                { name: "Passport Cover", img: "/images/passport.jpg", link: "/product/110" }, // Fixed: New ID
-                                { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/112" }, // Fixed: New ID
-                                { name: "Micro Vanity", img: "/images/micro.jpg", link: "/product/113" } // Fixed: New ID
-                                ].map((item, idx) => (
-
-                                    // ...
-
-                                    // Murgdur Sensation (Shoes)
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                                        {[
-                                            { name: "Women's Heels", img: "/images/womensslipper.jpeg", link: "/product/17" },
-                                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop", link: "/product/18" },
-                                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", link: "/product/38" }, // Fixed: Point to Sneakers (ID 38)
-                                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" }
-                                        ].map((item, idx) => (
-                                            <Link to={item.link || "/shop?type=shoes"} key={idx} className="group block cursor-pointer">
-                                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
-                                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
-                                                        <Heart size={20} />
-                                                    </button>
-                                                    <img
-                                                        src={item.img}
-                                                        alt={item.name}
-                                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
-                                                        loading="lazy"
-
-                                                    />
-                                                </div>
-                                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
-                                            </Link>
-                                        ))}
-                                    </div>
+                            <Link to={item.link || "/shop"} key={idx} className="group block cursor-pointer">
+                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
+                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
+                                        <Heart size={20} />
+                                    </button>
+                                    <img
+                                        src={item.img}
+                                        alt={item.name}
+                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
+                                {item.price && <p className="text-xs text-gray-500 mt-1">{item.price}</p>}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
 
