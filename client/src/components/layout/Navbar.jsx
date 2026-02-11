@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Search, User, Heart, ShoppingBag, Menu, X, ArrowLeft, Package, Star, Gift, HelpCircle } from 'lucide-react';
+import { Search, User, Heart, ShoppingBag, Menu, X, ArrowLeft } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import { fetchSiteSettings, fetchProducts } from '../../utils/sanity';

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Auth from './Auth';
 import { client } from '../utils/sanity';
 import Button from '../components/common/Button';
-import { User, Package, MapPin, LogOut, Heart, Shield, Crown, Settings, ChevronRight } from 'lucide-react';
+import { User, Package, MapPin, LogOut, Heart, Shield, Crown, ChevronRight } from 'lucide-react';
 
 const Profile = () => {
     const navigate = useNavigate();

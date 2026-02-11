@@ -21,7 +21,7 @@ const imgRoyalTShirt = "/images/royal_tshirt.png";
 const imgRoyalHoodie = "/images/royal_hoodie.png";
 const imgRoyalSweater = "/images/royal_sweater.png";
 const imgBag = "/images/hand bag.png";
-const imgLogo = "/images/logo.jpeg";
+
 
 const RoyalCollection = () => {
     const [activeView, setActiveView] = useState('main'); // 'main' or 'men'

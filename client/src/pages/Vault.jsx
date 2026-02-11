@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
-import { Trash2, ShoppingBag, Star, Share2 } from 'lucide-react';
+import { Trash2, ShoppingBag, Star } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { fetchVaultPage } from '../utils/sanity';

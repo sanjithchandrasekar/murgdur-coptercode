@@ -37,9 +37,7 @@ const Home = () => {
             {/* New Promotional Banner Section (Wood Texture Style) */}
             <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
                 {/* Font Import for Stencil Look */}
-                <style>
-                    {`@import url('https://fonts.googleapis.com/css2?family=Stardos+Stencil:wght@400;700&display=swap');`}
-                </style>
+
 
                 {/* Background Image - Royal Light Theme */}
                 <img
@@ -94,10 +92,10 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
                         {(homeData?.treasures && homeData.treasures.length > 0 ? homeData.treasures : [
-                            { name: "Women's Handbags", img: "/images/women handbag/woman bag white 1.jpeg", type: "image", isStatic: true },
+                            { name: "Women's Handbags", img: "/images/women%20handbag/woman%20bag%20white%201.jpeg", type: "image", isStatic: true },
                             { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image", isStatic: true },
                             { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image", isStatic: true },
-                            { name: "Perfumes", img: "/images/women perfume/womens-perfume4.png", type: "image", isStatic: true }
+                            { name: "Perfumes", img: "/images/women%20perfume/womens-perfume4.png", type: "image", isStatic: true }
                         ]).map((item, idx) => {
                             let link = item.isStatic ? "/shop" : `/product/${item._id}`;
                             if (item.isStatic) {
@@ -208,10 +206,11 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg", link: "/product/42" },
+                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women%20handbag/women%20bag%20brown%20front.jpeg", link: "/product/42" },
                             { name: "Sandals", price: "₹ 45,000", img: "/images/royal_heels.png", link: "/product/17" },
-                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png", link: "/product/51" },
+                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women%20perfume/womens-perfume7.png", link: "/product/51" },
                             { name: "Passport Cover", price: "₹ 22,000", img: "/images/passport.jpg", link: "/product/110" },
+
                             { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/product/111" },
                             { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/112" },
                             { name: "Micro Vanity", img: "/images/micro.jpg", link: "/product/113" },
