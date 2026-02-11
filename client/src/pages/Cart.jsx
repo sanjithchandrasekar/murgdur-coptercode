@@ -26,7 +26,8 @@ const Cart = () => {
     const totalDiscount = cartItems.reduce((acc, item) => acc + ((item.originalPrice - item.price) * item.quantity), 0);
     const platformFee = 20; // Nominal fee like Flipkart
     const deliveryCharges = totalMRP > 5000 ? 0 : 500;
-    const totalAmount = totalMRP - totalDiscount + platformFee + deliveryCharges;
+    const totalGiftWrapFee = cartItems.reduce((acc, item) => acc + (item.giftWrapFee || 0), 0);
+    const totalAmount = totalMRP - totalDiscount + platformFee + deliveryCharges + totalGiftWrapFee;
     const totalSavings = totalDiscount;
 
     if (cartItems.length === 0) {
@@ -96,6 +97,11 @@ const Cart = () => {
                                                 <span className="text-xl font-bold text-white">₹{item.price.toLocaleString()}</span>
                                                 <span className="text-sm text-green-400 font-bold">{item.discount}% Off</span>
                                             </div>
+                                            {item.isGiftWrapped && (
+                                                <div className="flex items-center gap-2 text-royal-gold text-xs font-bold uppercase tracking-wider mb-2 bg-royal-gold/10 px-2 py-1 w-fit rounded border border-royal-gold/20">
+                                                    <Gift size={12} /> Royal Gift Packaging Included
+                                                </div>
+                                            )}
                                         </div>
                                         <div className="text-sm text-white hidden md:block">
                                             Delivery by {item.deliveryDate} | <span className="text-green-400">Free</span>
@@ -152,6 +158,12 @@ const Cart = () => {
                                     <span>Discount</span>
                                     <span>− ₹{totalDiscount.toLocaleString()}</span>
                                 </div>
+                                {totalGiftWrapFee > 0 && (
+                                    <div className="flex justify-between text-royal-gold">
+                                        <span>Gift Wrapping</span>
+                                        <span>₹{totalGiftWrapFee.toLocaleString()}</span>
+                                    </div>
+                                )}
                                 <div className="flex justify-between text-white">
                                     <span>Platform Fee</span>
                                     <span>₹{platformFee}</span>

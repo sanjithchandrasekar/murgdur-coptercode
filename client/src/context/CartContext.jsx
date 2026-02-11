@@ -66,8 +66,10 @@ export const CartProvider = ({ children }) => {
                 size: product.selectedSize || 'Standard',
                 seller: product.seller || 'Murgdur Heritage',
                 stock: product.stock || 10,
-                deliveryDate: "Fri, Jan 26",
-                discount: product.discount || 0
+                deliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' }),
+                discount: product.discount || 0,
+                isGiftWrapped: product.isGiftWrapped || false,
+                giftWrapFee: product.isGiftWrapped ? 500 : 0
             };
             return [...prev, newItem];
         });
@@ -105,7 +107,7 @@ export const CartProvider = ({ children }) => {
     };
 
     const getCartTotal = () => {
-        return cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+        return cartItems.reduce((total, item) => total + (item.price * item.quantity) + (item.giftWrapFee || 0), 0);
     };
 
     // --- Wishlist Functions ---

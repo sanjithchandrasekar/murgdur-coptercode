@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2, X } from 'lucide-react';
+import { Star, Truck, ShieldCheck, Heart, Minus, Plus, Share2, X, ShoppingBag, Check, History } from 'lucide-react';
 import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { fetchProducts } from '../utils/sanity';
@@ -44,12 +44,27 @@ const ProductDetails = () => {
         load();
     }, [id]);
 
+    const [viewerCount, setViewerCount] = useState(0);
+    const [isGiftWrapped, setIsGiftWrapped] = useState(false);
+    const [recentlyViewed, setRecentlyViewed] = useState([]);
+
     // Update selected color when product changes
     useEffect(() => {
         if (product) {
             if (product.colors && product.colors.length > 0) {
                 setSelectedColor(product.colors[0]);
             }
+            // Scarcity logic
+            setViewerCount(Math.floor(Math.random() * 8) + 2);
+
+            // Recently Viewed Logic
+            const viewed = JSON.parse(localStorage.getItem('recentlyViewed') || '[]');
+            const updated = [
+                { id: product.id, name: product.name, image: product.image, price: product.price },
+                ...viewed.filter(p => p.id !== product.id)
+            ].slice(0, 6);
+            localStorage.setItem('recentlyViewed', JSON.stringify(updated));
+            setRecentlyViewed(updated.filter(p => p.id !== product.id)); // Don't show current product in list
         }
     }, [product]);
 
@@ -195,14 +210,47 @@ const ProductDetails = () => {
 
 
                         <div className="flex flex-col gap-4 mb-8">
+                            {/* Scarcity / Urgency */}
+                            {product.stock < 5 && (
+                                <div className="text-red-500 text-xs font-bold uppercase tracking-widest animate-pulse mb-2">
+                                    Only {product.stock} Left in Royal Archives
+                                </div>
+                            )}
+                            <div className="text-royal-gold text-xs font-medium mb-4 flex items-center gap-2">
+                                <span className="relative flex h-2 w-2">
+                                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-royal-gold opacity-75"></span>
+                                    <span className="relative inline-flex rounded-full h-2 w-2 bg-royal-gold"></span>
+                                </span>
+                                {viewerCount} People are viewing this masterpiece right now.
+                            </div>
+
+                            {/* Gift Wrapping Option */}
+                            <label className="flex items-center gap-3 p-4 border border-white/10 rounded cursor-pointer hover:bg-white/5 transition-colors group">
+                                <div className={`w-5 h-5 border flex items-center justify-center transition-all ${isGiftWrapped ? 'bg-royal-gold border-royal-gold' : 'border-gray-500'}`}>
+                                    {isGiftWrapped && <Check size={14} className="text-black" />}
+                                </div>
+                                <input
+                                    type="checkbox"
+                                    className="hidden"
+                                    checked={isGiftWrapped}
+                                    onChange={() => setIsGiftWrapped(!isGiftWrapped)}
+                                />
+                                <div className="flex-1">
+                                    <span className="text-white font-serif text-sm block group-hover:text-royal-gold transition-colors">Royal Gift Packaging</span>
+                                    <span className="text-gray-500 text-xs">Hand-wrapped in signature Murgdur velvet & gold box.</span>
+                                </div>
+                                <span className="text-royal-gold font-bold text-sm">+₹500</span>
+                            </label>
+
                             <Button
                                 variant="primary"
-                                className="w-full py-4 bg-royal-gold text-black hover:bg-white font-bold tracking-widest"
-                                onClick={() => addToCart({ ...product, selectedSize, selectedColor }, 1)}
+                                className="w-full py-4 bg-royal-gold text-black hover:bg-white font-bold tracking-widest flex justify-center items-center gap-2"
+                                onClick={() => addToCart({ ...product, selectedSize, selectedColor, isGiftWrapped }, 1)}
                             >
+                                <ShoppingBag size={18} />
                                 ADD TO CART
                             </Button>
-                            <Button variant="outline" className="w-full py-4" onClick={() => { addToCart({ ...product, selectedSize, selectedColor }, 1); navigate('/checkout'); }}>
+                            <Button variant="outline" className="w-full py-4" onClick={() => { addToCart({ ...product, selectedSize, selectedColor, isGiftWrapped }, 1); navigate('/checkout'); }}>
                                 BUY NOW
                             </Button>
                         </div>
@@ -506,6 +554,29 @@ const ProductDetails = () => {
                                 <div className="p-4 text-center">
                                     <h4 className="font-serif text-white text-sm truncate mb-1 group-hover:text-royal-gold transition-colors">{p.name}</h4>
                                     <p className="text-gray-400 text-xs">₹{p.price.toLocaleString()}</p>
+                                </div>
+                            </Link>
+                        ))}
+                    </div>
+                </div>
+            )}
+
+            {/* Recently Viewed Section */}
+            {recentlyViewed.length > 0 && (
+                <div className="container mx-auto px-6 max-w-7xl mt-20 border-t border-white/5 pt-12">
+                    <div className="flex items-center gap-2 mb-8">
+                        <History size={20} className="text-royal-gold" />
+                        <h3 className="text-lg font-serif text-white tracking-widest uppercase">From Your Royal Vault</h3>
+                    </div>
+                    <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-royal-gold/20 scrollbar-track-transparent">
+                        {recentlyViewed.map(p => (
+                            <Link to={`/product/${p.id}`} key={p.id} className="min-w-[160px] w-[160px] group block bg-white/5 border border-white/10 rounded overflow-hidden hover:bg-white/10 transition-all flex-shrink-0">
+                                <div className="aspect-square overflow-hidden relative">
+                                    <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 opacity-80 group-hover:opacity-100" loading="lazy" />
+                                </div>
+                                <div className="p-3 text-center">
+                                    <h4 className="font-serif text-gray-300 text-xs truncate mb-1 group-hover:text-royal-gold transition-colors">{p.name}</h4>
+                                    <p className="text-gray-500 text-[10px]">₹{p.price.toLocaleString()}</p>
                                 </div>
                             </Link>
                         ))}
