@@ -13,7 +13,7 @@ const HARDCODED_TOKEN = "skhKjccyqXjuBAOwCUYHvUXFMKSrgbVlfIIQR0pPDsUGsyTYj3UGRla
 export const client = createClient({
   projectId: PROJECT_ID,
   dataset: 'production',
-  useCdn: false, // Disabled CDN to ensure real-time data consistency (like a DB)
+  useCdn: true, // Enable CDN for faster response times
   apiVersion: '2024-01-22',
   token: HARDCODED_TOKEN || import.meta.env.VITE_SANITY_TOKEN || '', // Use Hardcoded first
   ignoreBrowserTokenWarning: true // Suppress token warnings in browser

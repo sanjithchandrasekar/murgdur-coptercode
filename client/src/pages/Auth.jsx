@@ -326,22 +326,30 @@ const LoginForm = ({ toggleAuth, switchToForgot }) => {
         setIsLoading(true);
 
         try {
-            // 1. Try finding user in Sanity
-            const query = `*[_type == "customer" && (email == $identifier || mobile == $identifier)][0]`;
-            const sanityUser = await client.fetch(query, { identifier });
+            // 1. Attempt Login via Backend
+            // Use relative path for Vercel deployment (handled by rewrites) or absolute for local
+            const apiUrl = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${apiUrl}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: identifier, password }),
+            });
 
-            if (sanityUser) {
-                // Verify Password (Plain text check as per current implementation)
-                if (sanityUser.password === password) {
-                    // Success - Sanity
-                    localStorage.setItem('userProfile', JSON.stringify({
-                        name: `${sanityUser.firstName} ${sanityUser.lastName}`,
-                        email: sanityUser.email,
-                        mobile: sanityUser.mobile
-                    }));
-                    navigate('/');
-                    return; // Exit
-                } else {
+            const data = await response.json();
+
+            if (response.ok) {
+                // Success - MongoDB
+                localStorage.setItem('userProfile', JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    token: data.token
+                }));
+                navigate('/');
+                return;
+            } else {
+                // If backend fail, maybe try Sanity or just show error
+                // For now, let's show the backend error
+                if (data.message === 'Invalid credentials') {
                     setError(
                         <span>
                             Incorrect password. <span onClick={switchToForgot} className="underline cursor-pointer font-bold hover:text-royal-gold">Forgot your password?</span>
@@ -352,11 +360,10 @@ const LoginForm = ({ toggleAuth, switchToForgot }) => {
                 }
             }
         } catch (err) {
-            console.warn("Sanity Login Failed (Network or unavailability). Falling back to local.", err);
-            // Don't show critical error to user yet, try local first
+            console.warn("Backend Login Failed. Falling back to legacy methods...", err);
         }
 
-        // 2. Fallback to Local Storage if Sanity user not found or error
+        // 2. Fallback to Local Storage (Legacy)
         const users = JSON.parse(localStorage.getItem('users') || '[]');
         const localUser = users.find(u => u.email === identifier || u.mobile === identifier);
 
@@ -515,22 +522,49 @@ const SignupForm = ({ toggleAuth }) => {
         }
 
         try {
-            // 3. User Existence Check in Sanity (Read usually works without token if dataset is public)
-            const existingQuery = `*[_type == "customer" && (email == $email || mobile == $mobile)][0]`;
-            let existingUser;
-            try {
-                existingUser = await client.fetch(existingQuery, { email: formData.email, mobile: formData.mobile });
-            } catch (fetchErr) {
-                console.warn("Sanity Check Failed:", fetchErr);
-                // Proceed without checking remote existence if read fails
-            }
+            // Attempt Registration via Backend
+            const apiUrl = import.meta.env.VITE_API_URL || '/api';
+            const response = await fetch(`${apiUrl}/auth/register`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    name: `${formData.firstName} ${formData.lastName}`,
+                    email: formData.email,
+                    password: formData.password,
+                    mobile: formData.mobile
+                }),
+            });
 
-            if (existingUser) {
-                setPasswordError("User with this Email or Mobile already exists. Please Log In.");
+            const data = await response.json();
+
+            if (response.ok) {
+                setIsCloudSynced(true);
+                // Save to LocalStorage for session
+                localStorage.setItem('userProfile', JSON.stringify({
+                    name: data.name,
+                    email: data.email,
+                    token: data.token
+                }));
+                setShowModal(true);
                 setIsLoading(false);
                 return;
+            } else {
+                if (data.message === 'User already exists') {
+                    setPasswordError("User with this Email or Mobile already exists. Please Log In.");
+                    setIsLoading(false);
+                    return;
+                }
+                // If other error, fall through to legacy/local or show error
+                console.warn("Backend Registration Failed:", data.message);
             }
 
+        } catch (err) {
+            console.error("Registration Critical Error:", err);
+            // Fallback continues below if needed, or just show error
+        }
+
+        // Legacy Fallback (LocalStorage) - keeping for safety if backend fails entirely
+        try {
             const newUserDoc = {
                 _type: 'customer',
                 firstName: formData.firstName,
@@ -538,32 +572,10 @@ const SignupForm = ({ toggleAuth }) => {
                 email: formData.email,
                 mobile: formData.mobile,
                 password: formData.password,
-                addressLine1: formData.addressLine1,
-                addressLine2: formData.addressLine2,
-                city: formData.city,
-                state: formData.state,
-                pincode: formData.pincode,
                 createdAt: new Date().toISOString()
             };
 
-            // Try creating in Sanity
-            let syncSuccess = true;
-            try {
-                // Check if client is configured with a token (rudimentary check by attempting a simple write)
-                // Note: direct client.create requires a token with write permissions.
-                await client.create(newUserDoc);
-            } catch (sanityErr) {
-                console.error("Sanity Write Failed:", sanityErr);
-                syncSuccess = false;
-
-                // If the error indicates strictly a permission/token issue
-                if (sanityErr.message && (sanityErr.message.includes('Insufficcient permissions') || sanityErr.statusCode === 401 || sanityErr.statusCode === 403)) {
-                    setConfigError(true);
-                }
-            }
-            setIsCloudSynced(syncSuccess);
-
-            // Also save to LocalStorage for immediate session
+            // Save to LocalStorage
             const userProfile = { name: `${formData.firstName} ${formData.lastName}`, email: formData.email, mobile: formData.mobile };
             localStorage.setItem('userProfile', JSON.stringify(userProfile));
 
@@ -575,7 +587,6 @@ const SignupForm = ({ toggleAuth }) => {
             setIsLoading(false);
 
         } catch (err) {
-            console.error("Registration Critical Error:", err);
             setPasswordError("Unexpected error. Please try again.");
             setIsLoading(false);
         }

@@ -81,9 +81,22 @@ const ProductDetails = () => {
 
     if (!product) {
         return (
-            <div className="bg-royal-black min-h-screen pt-32 text-white text-center">
-                <h2 className="text-2xl font-serif mb-4">Product Not Found</h2>
-                <Link to="/shop" className="text-royal-gold underline">Return to Shop</Link>
+            <div className="bg-royal-black min-h-screen pt-32 text-white flex flex-col items-center justify-center">
+                <Minus size={48} className="text-royal-gold mb-4 opacity-50" />
+                <h2 className="text-3xl font-serif mb-2">Product Not Found</h2>
+                <p className="text-gray-500 mb-8 max-w-md text-center">
+                    The item you are looking for may have been removed or is temporarily unavailable in our archives.
+                </p>
+                <div className="flex gap-4">
+                    <Button variant="outline" onClick={() => navigate(-1)} className="border-gray-600 text-gray-300 hover:border-white hover:text-white">
+                        Go Back
+                    </Button>
+                    <Link to="/shop">
+                        <Button variant="primary" className="bg-royal-gold text-black hover:bg-white">
+                            Return to Shop
+                        </Button>
+                    </Link>
+                </div>
             </div>
         );
     }

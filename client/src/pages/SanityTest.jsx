@@ -1,140 +1,109 @@
 import React, { useState, useEffect } from 'react';
-import { client } from '../utils/sanity';
+import { Database, CheckCircle, XCircle, AlertTriangle, RefreshCw } from 'lucide-react';
 
-const SanityTest = () => {
-    const [status, setStatus] = useState("Initializing...");
-    const [tokenPreview, setTokenPreview] = useState("Checking...");
-    const [logs, setLogs] = useState([]);
-    const [users, setUsers] = useState([]);
+const MongoTest = () => {
+    const [status, setStatus] = useState('loading'); // loading, success, error
+    const [message, setMessage] = useState('Initializing connection test...');
+    const [dbData, setDbData] = useState(null);
 
-    const log = (msg) => setLogs(prev => [...prev, `${new Date().toLocaleTimeString()}: ${msg}`]);
+    const testConnection = async () => {
+        setStatus('loading');
+        setMessage('Pinging Backend API...');
 
-    useEffect(() => {
-        const runTest = async () => {
-            try {
-                // 1. Check Client Config
-                log("Checking Client Config...");
-                let currentToken = "";
-                try {
-                    if (client && client.config) {
-                        const cfg = client.config();
-                        currentToken = cfg.token;
-                        setTokenPreview(currentToken ? `Present (${currentToken.slice(0, 5)}...)` : "MISSING");
-                    } else {
-                        setTokenPreview("Client Config Error");
-                        log("Client config method missing");
-                    }
-                } catch (e) {
-                    log("Error reading config: " + e.message);
-                }
-
-                // 2. Read Test
-                log("Attempting Read...");
-                try {
-                    await client.fetch('*[_type == "siteSettings"][0]');
-                    log("Read Success!");
-                } catch (e) {
-                    log("Read Failed: " + e.message);
-                }
-
-                // 3. User Sync Check
-                log("Checking Users...");
-                const local = JSON.parse(localStorage.getItem('users') || '[]');
-                if (local.length > 0) {
-                    const emails = local.map(u => u.email).filter(Boolean);
-                    const cloudUsers = await client.fetch(`*[_type == "customer" && email in $emails]{email}`);
-
-                    const mapped = local.map(u => {
-                        const isSynced = cloudUsers.some(c => c.email === u.email);
-                        return { ...u, isSynced };
-                    });
-                    setUsers(mapped);
-                } else {
-                    log("No local users found.");
-                }
-
-                setStatus("Complete");
-
-            } catch (err) {
-                setStatus("Crashed: " + err.message);
-                console.error(err);
-            }
-        };
-
-        runTest();
-    }, []);
-
-    const handleSync = async (user) => {
-        log(`Syncing ${user.firstName}...`);
         try {
-            const doc = {
-                _type: 'customer',
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                mobile: user.mobile,
-                password: user.password,
-                createdAt: new Date().toISOString()
-            };
-            await client.create(doc);
-            log("Sync Success!");
-            // Refresh
-            window.location.reload();
-        } catch (e) {
-            log("Sync Failed: " + e.message);
+            const apiUrl = import.meta.env.VITE_API_URL || '/api';
+            console.log("Testing API URL:", apiUrl);
+
+            const res = await fetch(`${apiUrl}/test-db`);
+
+            let data;
+            try {
+                data = await res.json();
+            } catch (e) {
+                throw new Error(`Server returned invalid JSON (${res.status} ${res.statusText}). Check server logs.`);
+            }
+
+            setDbData(data); // Save data to show technical details
+
+            if (!res.ok) {
+                // Use the error message from the backend if available
+                const backendError = data.error || data.message || res.statusText;
+                throw new Error(`Server Error: ${backendError}`);
+            }
+
+            if (data.success) {
+                setStatus('success');
+                setMessage('Successfully connected to MongoDB Atlas!');
+            } else {
+                setStatus('error');
+                setMessage(`Database Error: ${data.error || 'Unknown error'}`);
+            }
+
+        } catch (err) {
+            console.error(err);
+            setStatus('error');
+            setMessage(err.message);
         }
     };
 
+    useEffect(() => {
+        testConnection();
+    }, []);
+
     return (
-        <div style={{ padding: '50px', backgroundColor: '#111', color: '#fff', minHeight: '100vh', fontFamily: 'monospace' }}>
-            <h1 style={{ color: 'gold' }}>Sanity Connection Diagnostic (Simple Mode)</h1>
-            <div style={{ marginBottom: '20px', padding: '10px', border: '1px solid #333' }}>
-                <strong>Status:</strong> {status} <br />
-                <strong>Token:</strong> {tokenPreview}
-            </div>
+        <div className="min-h-screen bg-black text-white p-8 pt-32 flex flex-col items-center">
+            <div className="max-w-2xl w-full bg-gray-900 border border-white/10 rounded-lg p-8">
+                <div className="flex items-center gap-4 mb-6 border-b border-white/10 pb-6">
+                    <div className="p-3 bg-green-500/20 rounded-full">
+                        <Database className="text-green-500" size={32} />
+                    </div>
+                    <div>
+                        <h1 className="text-2xl font-serif text-royal-gold">System Diagnostics</h1>
+                        <p className="text-gray-400 text-sm">MongoDB Database Connectivity Check</p>
+                    </div>
+                </div>
 
-            <div style={{ marginBottom: '20px' }}>
-                <h3>Local Users Check</h3>
-                {users.length === 0 ? "No users found in localStorage." : (
-                    <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead>
-                            <tr style={{ textAlign: 'left', borderBottom: '1px solid #555' }}>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {users.map((u, i) => (
-                                <tr key={i} style={{ borderBottom: '1px solid #333' }}>
-                                    <td style={{ padding: '10px' }}>{u.firstName}</td>
-                                    <td style={{ padding: '10px' }}>{u.email}</td>
-                                    <td style={{ padding: '10px', color: u.isSynced ? '#4f4' : '#f44' }}>
-                                        {u.isSynced ? "Synced" : "Local Only"}
-                                    </td>
-                                    <td style={{ padding: '10px' }}>
-                                        {!u.isSynced && (
-                                            <button
-                                                onClick={() => handleSync(u)}
-                                                style={{ padding: '5px 10px', background: 'gold', border: 'none', cursor: 'pointer', fontWeight: 'bold' }}
-                                            >
-                                                SYNC NOW
-                                            </button>
-                                        )}
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                {/* Status Display */}
+                <div className={`p-4 rounded border mb-6 flex items-start gap-4 ${status === 'loading' ? 'bg-blue-500/10 border-blue-500/30' :
+                        status === 'success' ? 'bg-green-500/10 border-green-500/30' :
+                            'bg-red-500/10 border-red-500/30'
+                    }`}>
+                    {status === 'loading' && <RefreshCw className="text-blue-500 animate-spin mt-1" />}
+                    {status === 'success' && <CheckCircle className="text-green-500 mt-1" />}
+                    {status === 'error' && <XCircle className="text-red-500 mt-1" />}
+
+                    <div>
+                        <h3 className={`font-bold ${status === 'loading' ? 'text-blue-400' :
+                                status === 'success' ? 'text-green-400' :
+                                    'text-red-400'
+                            }`}>
+                            {status === 'loading' ? 'Testing Connection...' :
+                                status === 'success' ? 'Connection Successful' :
+                                    'Connection Failed'}
+                        </h3>
+                        <p className="text-sm text-gray-300 mt-1 font-mono">{message}</p>
+                    </div>
+                </div>
+
+                {/* Technical Details */}
+                {dbData && (
+                    <div className="bg-black p-4 rounded border border-white/10 font-mono text-xs text-gray-400 overflow-auto">
+                        <p className="text-royal-gold mb-2 font-bold">Server Response Payload:</p>
+                        <pre>{JSON.stringify(dbData, null, 2)}</pre>
+                    </div>
                 )}
-            </div>
 
-            <div style={{ background: '#000', padding: '10px', border: '1px solid #333', height: '300px', overflow: 'auto' }}>
-                {logs.map((l, i) => <div key={i}>{l}</div>)}
+                <div className="mt-8 flex justify-end">
+                    <button
+                        onClick={testConnection}
+                        className="flex items-center gap-2 px-6 py-3 bg-white/10 hover:bg-white/20 rounded transition-colors"
+                    >
+                        <RefreshCw size={18} /> Retry Connection
+                    </button>
+                </div>
             </div>
         </div>
     );
 };
 
-export default SanityTest;
+export default MongoTest;

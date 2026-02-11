@@ -208,223 +208,51 @@ const Home = () => {
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
+                            // Valentine's
                             { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women handbag/women bag brown front.jpeg", link: "/product/42" },
-                            { name: "Sandals", price: "₹ 45,000", img: "/images/Gemini_Generated_Image_r281slr281slr281.png", link: "/product/9" },
+                            { name: "Sandals", price: "₹ 45,000", img: "/images/royal_heels.png", link: "/product/17" }, // Fixed: Point to Heels
                             { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women perfume/womens-perfume7.png", link: "/product/51" },
-                            { name: "Passport Cover", price: "₹ 8,500", img: "/images/passport.jpg", link: "/shop" }
+                            { name: "Passport Cover", price: "₹ 22,000", img: "/images/passport.jpg", link: "/product/110" } // Fixed: Point to new Passport Cover
                         ].map((item, idx) => (
-                            <Link to={item.link || "/shop"} key={idx} className="group cursor-pointer">
-                                <div className="aspect-square bg-gray-50 border border-gray-100 mb-6 overflow-hidden relative rounded-sm transition-colors duration-500 group-hover:bg-gray-100">
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full h-full object-contain p-4 rounded-sm transition-transform duration-500 group-hover:scale-110"
-                                        loading="lazy"
 
-                                    />
-                                    <div className="absolute top-4 right-4 text-gray-400 hover:text-red-500 cursor-pointer">
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
-                                        </svg>
+                            // ...
+
+                            // Monogram Donuts
+                            {
+                                [
+                                { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/product/111" }, // Fixed: New ID
+                                { name: "Passport Cover", img: "/images/passport.jpg", link: "/product/110" }, // Fixed: New ID
+                                { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/112" }, // Fixed: New ID
+                                { name: "Micro Vanity", img: "/images/micro.jpg", link: "/product/113" } // Fixed: New ID
+                                ].map((item, idx) => (
+
+                                    // ...
+
+                                    // Murgdur Sensation (Shoes)
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                                        {[
+                                            { name: "Women's Heels", img: "/images/womensslipper.jpeg", link: "/product/17" },
+                                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop", link: "/product/18" },
+                                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", link: "/product/38" }, // Fixed: Point to Sneakers (ID 38)
+                                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" }
+                                        ].map((item, idx) => (
+                                            <Link to={item.link || "/shop?type=shoes"} key={idx} className="group block cursor-pointer">
+                                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
+                                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
+                                                        <Heart size={20} />
+                                                    </button>
+                                                    <img
+                                                        src={item.img}
+                                                        alt={item.name}
+                                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
+                                                        loading="lazy"
+
+                                                    />
+                                                </div>
+                                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
+                                            </Link>
+                                        ))}
                                     </div>
-                                </div>
-                                <h3 className="text-sm font-medium text-black group-hover:text-royal-obsidian transition-colors">{item.name}</h3>
-                                <p className="text-xs text-gray-500 mt-1 font-serif">{item.price}</p>
-                            </Link>
-                        ))}
-                    </div>
-
-                    <div className="flex justify-center gap-4">
-                        <Link to="/shop?gender=women" className="border border-royal-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-royal-black hover:bg-royal-black hover:text-white transition-all">
-                            Empress
-                        </Link>
-                        <Link to="/shop?gender=men" className="border border-royal-black px-8 py-3 rounded-full text-xs font-bold uppercase tracking-widest text-royal-black hover:bg-royal-black hover:text-white transition-all">
-                            Emperor
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Gender Discovery Full Banner */}
-            <section className="w-full h-[85vh] relative group overflow-hidden">
-                <img
-                    src="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1600&auto=format&fit=crop"
-
-                    alt="Latest Collection"
-                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                    loading="lazy"
-
-                />
-                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors"></div>
-                <div className="absolute inset-0 flex flex-col items-center justify-center text-center px-4">
-                    <h2 className="text-3xl md:text-8xl font-serif text-white mb-8 drop-shadow-lg tracking-wide">
-                        The Royal Collection
-                    </h2>
-                    <div className="flex flex-col sm:flex-row gap-6">
-                        <Link to="/shop?gender=women" className="inline-block px-12 py-4 border border-white text-white text-xs font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all backdrop-blur-sm">
-                            Empress
-                        </Link>
-                        <Link to="/shop?gender=men" className="inline-block px-12 py-4 border border-white text-white text-xs font-bold uppercase tracking-[0.3em] hover:bg-white hover:text-black transition-all backdrop-blur-sm">
-                            Emperor
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Small Leather Goods Grid (Inserted based on User Image) */}
-            <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="mb-10">
-                        <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">IMPERIAL WOMEN</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-black">Artifacts of Power</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { name: "Monogram Speedy", img: "https://images.unsplash.com/photo-1591561954557-26941169b49e?q=80&w=800&auto=format&fit=crop", link: "/product/23" },
-                            { name: "Women's Small Leather Goods", img: "/images/womens%20small%20leather%20goods.jpg", link: "/shop?type=bags" },
-                            { name: "Nano Multi-Color", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/25" },
-                            { name: "Vanity Case", img: "/images/vanitycase.jpg", link: "/product/26" }
-                        ].map((item, idx) => (
-                            <Link to={item.link || "/shop?type=bags"} key={idx} className="group block cursor-pointer">
-                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
-                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
-                                        <Heart size={20} />
-                                    </button>
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
-                                        loading="lazy"
-
-                                    />
-                                </div>
-                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Men's Accessories Section - Dark Theme (User Requested) */}
-            <section className="py-16 bg-royal-black text-center border-t border-gray-900">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="mb-10">
-                        <span className="text-[#D4AF37] text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">IMPERIAL MEN</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-white">Essentials of Command</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { name: "The Royal Set", img: "/images/mens_accessories_section.png", link: "/shop?gender=Men&category=Accessories" },
-                            { name: "Signature Wallets", img: "/images/royal_wallet.png", link: "/shop?type=wallets" },
-                            { name: "Timepieces", img: "/images/royal_watch.png", link: "/shop?type=watches" },
-                            { name: "Classic Belts", img: "/images/leather_belt.png", link: "/shop?type=belts" }
-                        ].map((item, idx) => (
-                            <Link to={item.link || "/shop?gender=men"} key={idx} className="group block cursor-pointer">
-                                <div className="aspect-square bg-white/5 border border-white/10 mb-4 overflow-hidden flex items-center justify-center p-0 relative rounded-sm">
-                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-white transition-colors">
-                                        <Heart size={20} />
-                                    </button>
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110 opacity-90 group-hover:opacity-100"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <h4 className="text-xs font-serif text-gray-300 group-hover:text-white transition-colors">{item.name}</h4>
-                            </Link>
-                        ))}
-                    </div>
-                </div>
-            </section>
-
-            {/* Monogram Donuts Section */}
-            <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="mb-10">
-                        <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">THE CROWN JEWELS</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-black">Monogram Legacy</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/shop" },
-                            { name: "Passport Cover", img: "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?q=80&w=800&auto=format&fit=crop", link: "/shop" },
-                            { name: "Victorine Wallet", img: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop", link: "/product/25" },
-                            { name: "Micro Vanity", img: "/images/micro.jpg", link: "/shop" }
-                        ].map((item, idx) => (
-                            <Link to={item.link || "/shop"} key={idx} className="group block cursor-pointer">
-                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
-                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
-                                        <Heart size={20} />
-                                    </button>
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
-                                        loading="lazy"
-
-                                    />
-                                </div>
-                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
-                            </Link>
-                        ))}
-                    </div>
-                    <div className="mt-8">
-                        <Link to="/shop" className="inline-block px-8 py-3 border border-gray-300 text-gray-900 text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:border-black hover:text-white transition-all rounded-full">
-                            Discover the Selection
-                        </Link>
-                    </div>
-                </div>
-            </section>
-
-            {/* Lifestyle Feature - Video Section */}
-            <section className="w-full h-[100vh] relative overflow-hidden bg-black">
-                <video
-                    src="/videos/perfume1.mp4"
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-black/10"></div>
-            </section>
-
-            {/* Murgdur Sensation (Shoes) Section */}
-            <section className="py-16 bg-white text-center">
-                <div className="container mx-auto px-4 md:px-6">
-                    <div className="mb-10">
-                        <span className="text-gray-500 text-[10px] font-bold uppercase tracking-[0.2em] block mb-3">ROYAL STEPS</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-black">Walk of Sovereigns</h2>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {[
-                            { name: "Women's Heels", img: "/images/womensslipper.jpeg", link: "/product/17" },
-                            { name: "Run 55", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=800&auto=format&fit=crop", link: "/product/18" },
-                            { name: "Squad Sneaker", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", link: "/product/19" },
-                            { name: "Archlight", img: "https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" }
-                        ].map((item, idx) => (
-                            <Link to={item.link || "/shop?type=shoes"} key={idx} className="group block cursor-pointer">
-                                <div className="aspect-square bg-gray-50 mb-4 overflow-hidden flex items-center justify-center p-8 relative">
-                                    <button className="absolute top-4 right-4 z-10 text-gray-400 hover:text-red-600 transition-colors">
-                                        <Heart size={20} />
-                                    </button>
-                                    <img
-                                        src={item.img}
-                                        alt={item.name}
-                                        className="w-full h-full object-contain transition-transform duration-500 group-hover:scale-110 mix-blend-multiply"
-                                        loading="lazy"
-
-                                    />
-                                </div>
-                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
-                            </Link>
-                        ))}
-                    </div>
                 </div>
             </section>
 
