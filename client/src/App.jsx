@@ -20,6 +20,7 @@ import Press from './pages/Press';
 import CorporateInfo from './pages/CorporateInfo';
 import Vision from './pages/Vision';
 import SanityTest from './pages/SanityTest';
+import StudioPage from './pages/StudioPage';
 
 import ScrollToTop from './utils/ScrollToTop';
 
@@ -75,6 +76,8 @@ function App() {
           <Route path="giftcards" element={<InfoPage />} />
           <Route path="help" element={<InfoPage />} />
         </Route>
+        {/* Studio Route - Outside Layout */}
+        <Route path="/sanity-studio/*" element={<StudioPage />} />
       </Routes>
     </BrowserRouter>
   );
