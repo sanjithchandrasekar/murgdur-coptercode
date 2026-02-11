@@ -9,6 +9,10 @@
             "destination": "/api/index.js"
         },
         {
+            "source": "/sanity-studio/(.*)",
+            "destination": "/index.html"
+        },
+        {
             "source": "/(.*)",
             "destination": "/index.html"
         }
