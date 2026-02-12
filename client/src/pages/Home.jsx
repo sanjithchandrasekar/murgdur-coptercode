@@ -53,31 +53,30 @@ const Home = () => {
             <HeroSlider slides={homeData?.heroSlides} />
 
             {/* New Promotional Banner Section (Wood Texture Style) */}
-            <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
+            <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-royal-black">
                 {/* Background Image - Royal Light Theme */}
                 <img
                     src={homeData?.promoSection?.backgroundImage || royalBg}
                     alt=""
-                    className="absolute inset-0 w-full h-full object-cover"
+                    className="absolute inset-0 w-full h-full object-cover opacity-90"
                     loading="lazy"
-
                 />
-                <div className="absolute inset-0 bg-black/40"></div>
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30"></div>
 
                 {/* Content Overlay */}
                 <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full max-w-5xl mx-auto">
                     {/* Eyebrow Label */}
-                    <span className="text-xs md:text-sm font-bold tracking-[0.5em] uppercase text-[#D4AF37] mb-4 animate-fade-in block drop-shadow-md">
+                    <span className="text-sm md:text-base font-bold tracking-[0.3em] uppercase text-royal-gold mb-4 animate-fade-in block drop-shadow-md">
                         {homeData?.promoSection?.eyebrow || "The Imperial Showcase"}
                     </span>
 
                     {/* Main Hashtag - Stencil Font */}
-                    <h1 className="text-4xl md:text-7xl lg:text-8xl font-bold text-[#D4AF37] tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight" style={{ fontFamily: '"Stardos Stencil", cursive' }}>
+                    <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight" style={{ fontFamily: '"Stardos Stencil", cursive', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                         {homeData?.promoSection?.hashtag || "#ROYALASCENSION"}
                     </h1>
 
                     {/* Subheading */}
-                    <h2 className="text-2xl md:text-5xl font-serif text-white font-medium drop-shadow-md mb-8">
+                    <h2 className="text-2xl md:text-5xl font-serif text-white font-medium drop-shadow-lg mb-8 tracking-wide">
                         {homeData?.promoSection?.heading || "The Sovereign Winter"}
                     </h2>
 
@@ -85,7 +84,7 @@ const Home = () => {
                     <div>
                         <Link
                             to="/royal-collection"
-                            className="inline-block text-white border-b border-white pb-1 text-sm md:text-base font-medium tracking-wide hover:text-[#D4AF37] hover:border-[#D4AF37] transition-colors drop-shadow-md"
+                            className="inline-block text-white border-b-2 border-royal-gold pb-1 text-base md:text-lg font-bold tracking-widest hover:text-royal-gold transition-colors drop-shadow-md uppercase"
                         >
                             {homeData?.promoSection?.ctaText || "Witness The Coronation"}
                         </Link>
@@ -93,19 +92,17 @@ const Home = () => {
                 </div>
             </div>
 
-
-
-
             {/* Maison's Creations Grid */}
-            <section className="py-16 relative bg-royal-ivory border-b border-gray-100">
+            <section className="py-16 relative bg-[#FAFAFA] border-b border-gray-100">
                 <div className="container mx-auto px-4 md:px-6 relative z-10">
-                    <div className="text-center mb-12">
-                        <h2 className="text-xl md:text-2xl font-serif text-black tracking-wide">
+                    <div className="text-center mb-16">
+                        <span className="text-royal-gold uppercase tracking-[0.2em] text-xs font-bold mb-3 block">From the Atelier</span>
+                        <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide font-medium">
                             Treasures of the Dynasty
                         </h2>
                     </div>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-2">
                         {(homeData?.treasures && homeData.treasures.length > 0 ? homeData.treasures : [
                             { name: "Women's Handbags", img: "/images/women%20handbag/woman%20bag%20white%201.jpeg", type: "image", isStatic: true },
                             { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image", isStatic: true },
@@ -115,34 +112,40 @@ const Home = () => {
                             let link = item.isStatic ? "/shop" : `/product/${item._id}`;
                             if (item.isStatic) {
                                 if (item.name.includes("Handbag")) link = "/shop?type=bags";
-                                else if (item.name.includes("Leather Goods")) link = "/shop?type=wallets"; // Changed to wallets for better match
+                                else if (item.name.includes("Leather Goods")) link = "/shop?type=wallets";
                                 else if (item.name.includes("Sandals")) link = "/shop?type=shoes";
                                 else if (item.name.includes("Perfume")) link = "/shop?type=perfumes";
                             }
 
                             return (
-                                <Link to={link} key={idx} className="group block mb-8">
-                                    <div className="overflow-hidden mb-4 rounded-sm border border-gray-200 aspect-square relative">
+                                <Link to={link || '#'} key={idx} className="group block mb-8 relative">
+                                    <div className="overflow-hidden mb-5 rounded-sm border border-gray-100 aspect-[4/5] relative shadow-sm hover:shadow-xl transition-shadow duration-300 bg-white">
                                         <img
                                             src={item.image || item.img}
                                             alt={item.name}
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-500 group-hover:opacity-90"
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
                                             loading="lazy"
-
                                         />
+                                        {/* Hover Overlay */}
+                                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     </div>
-                                    <h3 className="text-center text-[10px] md:text-xs text-black font-medium group-hover:text-royal-obsidian hover:underline underline-offset-4 decoration-royal-obsidian uppercase tracking-widest transition-colors mb-1">
+                                    <h3 className="text-center text-sm md:text-base text-black font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors mb-2">
                                         {item.name}
                                     </h3>
                                     {!item.isStatic && item.price && (
-                                        <p className="text-center text-[10px] text-gray-500">₹ {item.price.toLocaleString()}</p>
+                                        <p className="text-center text-xs font-medium text-gray-600">₹ {item.price.toLocaleString()}</p>
                                     )}
                                 </Link>
                             );
                         })}
                     </div>
+                </div>
+            </section>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-1 bg-royal-black p-4 -mx-4 md:-mx-0">
+            {/* Black Section Grid */}
+            <section className="bg-royal-black py-16">
+                <div className="container mx-auto px-4 md:px-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
                         {[
                             { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop?type=bags" },
                             { name: "Men's Wallet", img: "/images/mens_royal_wallet_section.png", link: "/shop?type=wallets" },
@@ -150,16 +153,15 @@ const Home = () => {
                             { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop?type=sunglasses" }
                         ].map((item, idx) => (
                             <Link to={item.link || "/shop"} key={idx} className="group block mb-8">
-                                <div className="overflow-hidden mb-4 rounded-sm border border-white/20">
+                                <div className="overflow-hidden mb-4 rounded-sm border border-white/10 shadow-lg relative aspect-square">
                                     <img
                                         src={item.img}
                                         alt={item.name}
-                                        className="w-full aspect-square object-cover hover:scale-105 transition-transform duration-500 opacity-80 group-hover:opacity-100"
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
                                         loading="lazy"
-
                                     />
                                 </div>
-                                <h3 className="text-center text-[10px] md:text-xs text-white font-medium group-hover:text-royal-platinum hover:underline underline-offset-4 decoration-royal-platinum uppercase tracking-widest transition-colors">
+                                <h3 className="text-center text-sm md:text-base text-white font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors border-b border-transparent group-hover:border-royal-gold inline-block pb-1">
                                     {item.name}
                                 </h3>
                             </Link>
@@ -169,26 +171,27 @@ const Home = () => {
             </section>
 
             {/* Video Campaign Section */}
-            <section className="relative w-full h-[70vh] overflow-hidden bg-black">
+            <section className="relative w-full h-[80vh] overflow-hidden bg-black">
                 <video
                     autoPlay
                     loop
                     muted
                     playsInline
-                    className="absolute inset-0 w-full h-full object-cover opacity-80"
+                    className="absolute inset-0 w-full h-full object-cover opacity-70"
                     poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1600&auto=format&fit=crop"
-
                 >
                     <source src={homeData?.videoCampaign?.videoUrl || "https://videos.pexels.com/video-files/3205903/3205903-hd_1920_1080_25fps.mp4"} type="video/mp4" />
                     Your browser does not support the video tag.
                 </video>
-                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 bg-black/20">
-                    <h2 className="text-4xl md:text-6xl font-serif text-white tracking-widest uppercase drop-shadow-lg mb-4">
+                <div className="absolute inset-0 bg-black/40"></div>
+
+                <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
+                    <h2 className="text-5xl md:text-7xl font-serif text-white tracking-widest uppercase drop-shadow-xl mb-6 font-bold" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.6)' }}>
                         {homeData?.videoCampaign?.heading || "The Royal Chronicle"}
                     </h2>
                     <Link
                         to="/royal-collection"
-                        className="text-xs md:text-sm font-bold text-white uppercase tracking-[0.3em] border-b border-transparent hover:border-white pb-2 transition-all"
+                        className="text-sm md:text-base font-bold text-royal-gold uppercase tracking-[0.4em] border-b-2 border-royal-gold hover:text-white hover:border-white pb-2 transition-all drop-shadow-md"
                     >
                         {homeData?.videoCampaign?.ctaText || "View The Saga"}
                     </Link>
@@ -196,19 +199,18 @@ const Home = () => {
             </section>
 
             {/* 2. Welcome Note (Animated) */}
-            {/* 2. Welcome Note (Animated) */}
             <motion.section
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="py-20 px-4 md:px-6 text-center container mx-auto bg-inherit"
+                className="py-24 px-4 md:px-6 text-center container mx-auto"
             >
-                <span className="text-gray-400 uppercase tracking-[0.3em] text-xs font-medium block mb-6">Welcome to Murgdur</span>
-                <h2 className="text-2xl md:text-5xl font-serif text-white my-6 leading-tight max-w-4xl mx-auto">
+                <span className="text-royal-muted uppercase tracking-[0.3em] text-sm font-semibold block mb-6">Welcome to Murgdur</span>
+                <h2 className="text-3xl md:text-5xl font-serif text-white my-8 leading-tight max-w-4xl mx-auto font-medium drop-shadow-sm">
                     {homeData?.welcomeSection?.title || "\"The Crown Fits Only The Worthy\""}
                 </h2>
-                <div className="w-24 h-0.5 bg-royal-gold mx-auto my-8 opacity-50"></div>
-                <p className="text-gray-400 max-w-2xl mx-auto font-light leading-relaxed text-lg">
+                <div className="w-24 h-0.5 bg-royal-gold mx-auto my-10 opacity-80"></div>
+                <p className="text-gray-300 max-w-3xl mx-auto font-normal leading-loose text-xl tracking-wide">
                     {homeData?.welcomeSection?.body || "Forged in the fires of tradition, sculpted for the modern monarch. A collection that whispers power and echoes eternity."}
                 </p>
             </motion.section>

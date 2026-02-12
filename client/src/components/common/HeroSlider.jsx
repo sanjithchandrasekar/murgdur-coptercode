@@ -78,23 +78,34 @@ const HeroSlider = ({ slides: customSlides }) => {
                                         loading={index === 0 ? "eager" : "lazy"}
                                         decoding={index === 0 ? "sync" : "async"}
                                     />
-                                    <div className="absolute inset-0 bg-black/40"></div>
+                                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/20" />
                                 </div>
                             )}
 
-                            <div className="relative z-10 h-full flex flex-col items-center justify-center text-center px-4">
-                                <span className="text-royal-gold uppercase tracking-[0.5em] mb-4 animate-slide-up">
-                                    New Arrivals
-                                </span>
-                                <h1 className="text-4xl md:text-6xl lg:text-8xl font-serif text-white mb-6 animate-fade-in shadow-sm">
+                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
+                                <h2
+                                    className="text-4xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl font-bold animate-fade-in"
+                                    style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+                                >
                                     {slide.title}
-                                </h1>
-                                <p className="text-xl text-gray-200 mb-10 max-w-2xl font-light">
+                                </h2>
+
+                                <p
+                                    className="text-lg md:text-2xl font-normal tracking-wide mb-10 text-gray-100 max-w-3xl drop-shadow-lg animate-slide-up"
+                                >
                                     {slide.subtitle}
                                 </p>
-                                <Link to={slide.link}>
-                                    <Button variant="primary">Discover More</Button>
-                                </Link>
+
+                                {slide.link && (
+                                    <div className="animate-fade-in">
+                                        <Link
+                                            to={slide.link}
+                                            className="inline-block border-2 border-royal-gold px-12 py-4 text-sm md:text-base font-bold uppercase tracking-[0.25em] hover:bg-royal-gold hover:text-black transition-all duration-300 shadow-xl backdrop-blur-sm"
+                                        >
+                                            {slide.ctaText || "Explore Collection"}
+                                        </Link>
+                                    </div>
+                                )}
                             </div>
                         </SwiperSlide>
                     );

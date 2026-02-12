@@ -13,9 +13,10 @@ export default {
           obsidian: '#141414', // Slightly lighter black for headers
           platinum: '#E5E4E2', // Platinum (Luxury White) for Accents/Buttons
           silver: '#C0C0C0',   // Metallic Silver
-          gold: '#FFFFFF',     // White (Mapped to Gold for compatibility)
+          gold: '#D4AF37',     // Royal Gold (Metallic)
           ivory: '#FAFAFA',    // Crisp White text
-          gray: '#1A1A1A',     // Dark Gray separation
+          muted: '#9CA3AF',    // Muted Silver/Gray for secondary text
+          white: '#FFFFFF',    // Pure White
         }
       },
       fontFamily: {
