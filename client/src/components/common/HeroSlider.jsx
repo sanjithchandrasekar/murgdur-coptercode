@@ -82,7 +82,7 @@ const HeroSlider = ({ slides: customSlides }) => {
                                 </div>
                             )}
 
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
+                            <div className="absolute inset-0 flex flex-col items-center justify-end text-center text-white px-4 pb-32 z-20">
                                 <h2
                                     className="text-4xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl font-bold animate-fade-in"
                                     style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
