@@ -21,6 +21,7 @@ import CorporateInfo from './pages/CorporateInfo';
 import Vision from './pages/Vision';
 import SanityTest from './pages/SanityTest';
 import StudioPage from './pages/StudioPage';
+import GenericPage from './pages/GenericPage';
 
 import ScrollToTop from './utils/ScrollToTop';
 
@@ -40,6 +41,7 @@ function App() {
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
 
+          <Route path="page/:slug" element={<GenericPage />} />
           {/* Footer & Info Routes */}
           <Route path="about" element={<AboutUs />} />
           <Route path="admin" element={<InfoPage />} />

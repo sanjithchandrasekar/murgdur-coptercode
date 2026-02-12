@@ -4,8 +4,21 @@ export default {
     type: 'document',
     fields: [
         {
+            name: 'pageBuilder',
+            title: 'Page Builder (New Layout Engine)',
+            type: 'array',
+            of: [
+                { type: 'section.hero' },
+                { type: 'section.textWithImage' },
+                { type: 'section.productGrid' },
+                { type: 'section.video' }
+            ],
+            description: 'Add and reorder sections to build your page dynamically.'
+        },
+        // Legacy Fields (For backward compatibility, will be removed later)
+        {
             name: 'heroSlides',
-            title: 'Hero Slider',
+            title: 'Hero Slider (Legacy)',
             type: 'array',
             of: [
                 {
@@ -19,12 +32,14 @@ export default {
                         { name: 'link', type: 'string', title: 'Button Link (e.g. /shop)' }
                     ]
                 }
-            ]
+            ],
+            hidden: ({ document }) => document?.pageBuilder?.length > 0
         },
         {
             name: 'promoSection',
-            title: 'Promotional Section (Stencil)',
+            title: 'Promotional Section (Legacy)',
             type: 'object',
+            hidden: ({ document }) => document?.pageBuilder?.length > 0,
             fields: [
                 { name: 'eyebrow', type: 'string', title: 'Eyebrow Text (Small Top Label)' },
                 { name: 'hashtag', type: 'string', title: 'Hashtag (Big Text)' },
@@ -35,8 +50,9 @@ export default {
         },
         {
             name: 'welcomeSection',
-            title: 'Welcome Note',
+            title: 'Welcome Note (Legacy)',
             type: 'object',
+            hidden: ({ document }) => document?.pageBuilder?.length > 0,
             fields: [
                 { name: 'title', type: 'string', title: 'Title' },
                 { name: 'body', type: 'text', title: 'Body Text' }
@@ -44,8 +60,9 @@ export default {
         },
         {
             name: 'videoCampaign',
-            title: 'Video Campaign',
+            title: 'Video Campaign (Legacy)',
             type: 'object',
+            hidden: ({ document }) => document?.pageBuilder?.length > 0,
             fields: [
                 { name: 'videoUrl', type: 'url', title: 'Video URL' },
                 { name: 'heading', type: 'string', title: 'Heading' },
@@ -54,8 +71,9 @@ export default {
         },
         {
             name: 'treasures',
-            title: 'Treasures of the Dynasty (Featured Products)',
+            title: 'Treasures of the Dynasty (Legacy)',
             type: 'array',
+            hidden: ({ document }) => document?.pageBuilder?.length > 0,
             of: [
                 {
                     type: 'reference',

@@ -10,10 +10,9 @@ import { Link } from 'react-router-dom';
 import LegacySection from '../components/common/LegacySection';
 import { motion, AnimatePresence } from 'framer-motion';
 import { fetchHomePage } from '../utils/sanity';
+import PageSections from '../components/sections/PageSections';
 
 const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
-
-
 const royalBg = "/images/royal_dress_bg.png";
 
 const Home = () => {
@@ -27,8 +26,27 @@ const Home = () => {
         loadData();
     }, []);
 
+    // ---------------------------------------------------------
+    // DYNAMIC PAGE BUILDER MODE
+    // ---------------------------------------------------------
+    if (homeData?.pageBuilder && homeData.pageBuilder.length > 0) {
+        return (
+            <div className="bg-royal-black overflow-x-hidden">
+                <PageSections sections={homeData.pageBuilder} />
 
+                {/* Keep Footer-like sections if they aren't part of pageBuilder yet, 
+                    or assume user will add them via builder. 
+                    For now, let's keep the globally used Newsletter if it's not in builder.
+                    But typically Page Builder takes over full content.
+                */}
+                <Newsletter />
+            </div>
+        );
+    }
 
+    // ---------------------------------------------------------
+    // LEGACY / HARDCODED FALLBACK MODE
+    // ---------------------------------------------------------
     return (
         <div className="bg-royal-black overflow-x-hidden">
             {/* 1. Full Screen Hero Slider */}
@@ -36,9 +54,6 @@ const Home = () => {
 
             {/* New Promotional Banner Section (Wood Texture Style) */}
             <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-[#000000]">
-                {/* Font Import for Stencil Look */}
-
-
                 {/* Background Image - Royal Light Theme */}
                 <img
                     src={homeData?.promoSection?.backgroundImage || royalBg}

@@ -2,6 +2,61 @@ import { createClient } from '@sanity/client';
 import imageUrlBuilder from '@sanity/image-url';
 import { products as staticProducts } from '../data/products';
 
+export const fetchPage = async (slug) => {
+  try {
+    const query = `*[_type == "page" && slug.current == $slug][0]{
+      title,
+      pageBuilder[]{
+            _type,
+            _key,
+            _type == 'section.hero' => {
+              slides[]{
+                title,
+                subtitle,
+                videoUrl,
+                "image": image.asset->url + "?auto=format&q=80",
+                link,
+                ctaText
+              }
+            },
+            _type == 'section.textWithImage' => {
+              eyebrow,
+              heading,
+              hashtag,
+              body,
+              "image": image.asset->url + "?auto=format&q=80",
+              ctaText,
+              ctaLink,
+              layout
+            },
+            _type == 'section.productGrid' => {
+              eyebrow,
+              heading,
+              layout,
+              products[]->{
+                _id,
+                name,
+                "slug": slug.current,
+                "image": mainImage.asset->url + "?auto=format&q=80&w=600",
+                price,
+                "category": category
+              }
+            },
+            _type == 'section.video' => {
+              heading,
+              videoUrl,
+              ctaText,
+              ctaLink
+            }
+      }
+    }`;
+    return await client.fetch(query, { slug });
+  } catch (error) {
+    console.error("Failed to fetch page data:", error);
+    return null;
+  }
+};
+
 // ------------------------------------------------------------------
 // CONFIGURATION
 // ------------------------------------------------------------------
@@ -56,30 +111,74 @@ export const fetchSiteSettings = async () => {
 export const fetchHomePage = async () => {
   try {
     const query = `*[_type == "homePage"][0]{
-            heroSlides[]{
+        pageBuilder[]{
+            _type,
+            _key,
+            _type == 'section.hero' => {
+              slides[]{
                 title,
                 subtitle,
                 videoUrl,
                 "image": image.asset->url + "?auto=format&q=80",
-                link
+                link,
+                ctaText
+              }
             },
-            promoSection {
-                eyebrow,
-                hashtag,
-                heading,
-                ctaText,
-                "backgroundImage": backgroundImage.asset->url + "?auto=format&q=80"
+            _type == 'section.textWithImage' => {
+              eyebrow,
+              heading,
+              hashtag,
+              body,
+              "image": image.asset->url + "?auto=format&q=80",
+              ctaText,
+              ctaLink,
+              layout
             },
-            welcomeSection,
-            videoCampaign,
-            treasures[]->{
+            _type == 'section.productGrid' => {
+              eyebrow,
+              heading,
+              layout,
+              products[]->{
                 _id,
                 name,
                 "slug": slug.current,
                 "image": mainImage.asset->url + "?auto=format&q=80&w=600",
-                price
+                price,
+                "category": category
+              }
+            },
+            _type == 'section.video' => {
+              heading,
+              videoUrl,
+              ctaText,
+              ctaLink
             }
-        }`;
+        },
+        // Legacy Fields
+        heroSlides[]{
+            title,
+            subtitle,
+            videoUrl,
+            "image": image.asset->url + "?auto=format&q=80",
+            link
+        },
+        promoSection {
+            eyebrow,
+            hashtag,
+            heading,
+            ctaText,
+            "backgroundImage": backgroundImage.asset->url + "?auto=format&q=80"
+        },
+        welcomeSection,
+        videoCampaign,
+        treasures[]->{
+            _id,
+            name,
+            "slug": slug.current,
+            "image": mainImage.asset->url + "?auto=format&q=80&w=600",
+            price
+        }
+    }`;
     return await client.fetch(query);
   } catch (error) {
     console.error("Failed to fetch home page data:", error);

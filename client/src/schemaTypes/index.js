@@ -19,8 +19,21 @@ import vaultPage from './vaultPage'
 import policyPage from './policyPage'
 
 import customer from './customer'
+import heroSection from './objects/heroSection'
+import textWithImage from './objects/textWithImage'
+import productGrid from './objects/productGrid'
+import videoSection from './objects/videoSection'
+import page from './page'
 
 export const schemaTypes = [
+    // Objects (Sections)
+    heroSection,
+    textWithImage,
+    productGrid,
+    videoSection,
+
+    // Documents
+    page,
     product,
     siteSettings,
     homePage,
