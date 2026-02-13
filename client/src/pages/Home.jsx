@@ -53,7 +53,7 @@ const Home = () => {
             <HeroSlider slides={homeData?.heroSlides} />
 
             {/* New Promotional Banner Section (Wood Texture Style) */}
-            <div className="relative w-full h-screen overflow-hidden flex items-end justify-center bg-royal-black">
+            <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-royal-black">
                 {/* Background Image - Royal Light Theme */}
                 <img
                     src={homeData?.promoSection?.backgroundImage || royalBg}
@@ -63,102 +63,115 @@ const Home = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30"></div>
 
-                {/* Content Overlay - Bottom Aligned */}
-                <div className="relative z-10 text-center px-4 pb-24 flex flex-col items-center justify-end h-full w-full max-w-7xl mx-auto">
+                {/* Content Overlay */}
+                <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full max-w-5xl mx-auto">
                     {/* Eyebrow Label */}
-                    <span className="text-sm md:text-base font-bold tracking-[0.3em] uppercase text-white mb-6 animate-fade-in block drop-shadow-md">
+                    <span className="text-sm md:text-base font-bold tracking-[0.3em] uppercase text-royal-gold mb-4 animate-fade-in block drop-shadow-md">
                         {homeData?.promoSection?.eyebrow || "The Imperial Showcase"}
                     </span>
 
-                    {/* Main Hashtag */}
-                    <h1 className="text-5xl md:text-8xl lg:text-9xl font-bold text-white tracking-widest uppercase mb-4 drop-shadow-2xl w-full leading-none scale-y-110" style={{ fontFamily: '"Stardos Stencil", cursive', textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}>
+                    {/* Main Hashtag - Stencil Font */}
+                    <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight" style={{ fontFamily: '"Stardos Stencil", cursive', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
                         {homeData?.promoSection?.hashtag || "#ROYALASCENSION"}
                     </h1>
 
                     {/* Subheading */}
-                    <h2 className="text-xl md:text-3xl font-serif text-white font-medium drop-shadow-lg mb-10 tracking-[0.2em] uppercase">
-                        {homeData?.promoSection?.heading || "The Sovereign Winter Collection"}
+                    <h2 className="text-2xl md:text-5xl font-serif text-white font-medium drop-shadow-lg mb-8 tracking-wide">
+                        {homeData?.promoSection?.heading || "The Sovereign Winter"}
                     </h2>
 
-                    {/* CTA - Minimal Underline */}
+                    {/* CTA */}
                     <div>
                         <Link
                             to="/royal-collection"
-                            className="inline-block text-white border-b border-white pb-2 text-sm md:text-base font-bold tracking-[0.2em] hover:text-royal-gold hover:border-royal-gold transition-all uppercase"
+                            className="inline-block text-white border-b-2 border-royal-gold pb-1 text-base md:text-lg font-bold tracking-widest hover:text-royal-gold transition-colors drop-shadow-md uppercase"
                         >
-                            {homeData?.promoSection?.ctaText || "Discover The Campaign"}
+                            {homeData?.promoSection?.ctaText || "Witness The Coronation"}
                         </Link>
                     </div>
                 </div>
             </div>
 
-            {/* Maison's Creations Grid - Full Width Mosaic */}
-            <section className="w-full bg-white relative">
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                    {(homeData?.treasures && homeData.treasures.length > 0 ? homeData.treasures : [
-                        { name: "Women's Handbags", img: "/images/women%20handbag/woman%20bag%20white%201.jpeg", type: "image", isStatic: true },
-                        { name: "Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image", isStatic: true },
-                        { name: "Royal Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image", isStatic: true },
-                        { name: "Fragrances", img: "/images/women%20perfume/womens-perfume4.png", type: "image", isStatic: true }
-                    ]).map((item, idx) => {
-                        let link = item.isStatic ? "/shop" : `/product/${item._id}`;
-                        if (item.isStatic) {
-                            if (item.name.includes("Handbag")) link = "/shop?type=bags";
-                            else if (item.name.includes("Leather Goods")) link = "/shop?type=wallets";
-                            else if (item.name.includes("Sandals")) link = "/shop?type=shoes";
-                            else if (item.name.includes("Fragrances")) link = "/shop?type=perfumes";
-                        }
+            {/* Maison's Creations Grid */}
+            <section className="py-16 relative bg-[#FAFAFA] border-b border-gray-100">
+                <div className="container mx-auto px-4 md:px-6 relative z-10">
+                    <div className="text-center mb-16">
+                        <span className="text-royal-gold uppercase tracking-[0.2em] text-xs font-bold mb-3 block">From the Atelier</span>
+                        <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide font-medium">
+                            Treasures of the Dynasty
+                        </h2>
+                    </div>
 
-                        return (
-                            <Link to={link || '#'} key={idx} className="group block relative h-[60vh] md:h-[80vh] overflow-hidden">
-                                <img
-                                    src={item.image || item.img}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transition-transform duration-[1500ms] ease-in-out group-hover:scale-110"
-                                    loading="lazy"
-                                />
-                                <div className="absolute inset-x-0 bottom-0 p-8 pb-12 bg-gradient-to-t from-black/60 to-transparent flex flex-col items-center justify-end h-1/2 opacity-100 group-hover:opacity-100 transition-opacity">
-                                    <h3 className="text-white text-lg md:text-xl font-medium uppercase tracking-[0.2em] mb-3 text-center drop-shadow-md">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 px-2">
+                        {(homeData?.treasures && homeData.treasures.length > 0 ? homeData.treasures : [
+                            { name: "Women's Handbags", img: "/images/women%20handbag/woman%20bag%20white%201.jpeg", type: "image", isStatic: true },
+                            { name: "Women's Small Leather Goods", img: "/images/woens%20small%20bag.jpg", type: "image", isStatic: true },
+                            { name: "Women's Sandals", img: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop", type: "image", isStatic: true },
+                            { name: "Perfumes", img: "/images/women%20perfume/womens-perfume4.png", type: "image", isStatic: true }
+                        ]).map((item, idx) => {
+                            let link = item.isStatic ? "/shop" : `/product/${item._id}`;
+                            if (item.isStatic) {
+                                if (item.name.includes("Handbag")) link = "/shop?type=bags";
+                                else if (item.name.includes("Leather Goods")) link = "/shop?type=wallets";
+                                else if (item.name.includes("Sandals")) link = "/shop?type=shoes";
+                                else if (item.name.includes("Perfume")) link = "/shop?type=perfumes";
+                            }
+
+                            return (
+                                <Link to={link || '#'} key={idx} className="group block mb-8 relative">
+                                    <div className="overflow-hidden mb-5 rounded-sm border border-gray-100 aspect-[4/5] relative shadow-sm hover:shadow-xl transition-shadow duration-300 bg-white">
+                                        <img
+                                            src={item.image || item.img}
+                                            alt={item.name}
+                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                                            loading="lazy"
+                                        />
+                                        {/* Hover Overlay */}
+                                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                                    </div>
+                                    <h3 className="text-center text-sm md:text-base text-black font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors mb-2">
                                         {item.name}
                                     </h3>
-                                    <span className="text-xs text-white/90 uppercase tracking-widest border-b border-transparent group-hover:border-white transition-all duration-300 pb-1">
-                                        Discover
-                                    </span>
-                                </div>
-                            </Link>
-                        );
-                    })}
+                                    {!item.isStatic && item.price && (
+                                        <p className="text-center text-xs font-medium text-gray-600">₹ {item.price.toLocaleString()}</p>
+                                    )}
+                                </Link>
+                            );
+                        })}
+                    </div>
                 </div>
             </section>
 
-            {/* Black Section Grid - Full Width Mosaic */}
-            <section className="w-full bg-black relative border-t border-white/10">
-                <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
-                    {[
-                        { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop?type=bags" },
-                        { name: "Men's Wallet", img: "/images/mens_royal_wallet_section.png", link: "/shop?type=wallets" },
-                        { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" },
-                        { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop?type=sunglasses" }
-                    ].map((item, idx) => (
-                        <Link to={item.link || "/shop"} key={idx} className="group block relative h-[50vh] md:h-[70vh] overflow-hidden border-r border-white/5 last:border-r-0 border-b border-white/5 md:border-b-0">
-                            <img
-                                src={item.img}
-                                alt={item.name}
-                                className="w-full h-full object-cover transition-transform duration-[1500ms] ease-in-out group-hover:scale-105 opacity-80 group-hover:opacity-100"
-                                loading="lazy"
-                            />
-                            <div className="absolute inset-0 flex items-center justify-center bg-black/20 group-hover:bg-transparent transition-all duration-500">
-                                <h3 className="text-white text-lg md:text-xl font-bold uppercase tracking-[0.2em] border border-white/50 px-8 py-3 group-hover:bg-white group-hover:text-black group-hover:border-white transition-all duration-300">
+            {/* Black Section Grid */}
+            <section className="bg-royal-black py-16">
+                <div className="container mx-auto px-4 md:px-6">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+                        {[
+                            { name: "Men's Bags", img: "/images/mensbags/mens-bag3.png", link: "/shop?type=bags" },
+                            { name: "Men's Wallet", img: "/images/mens_royal_wallet_section.png", link: "/shop?type=wallets" },
+                            { name: "Men's Shoes", img: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop", link: "/shop?type=shoes" },
+                            { name: "Sunglasses", img: "https://images.unsplash.com/photo-1572635196237-14b3f281503f?q=80&w=800&auto=format&fit=crop", link: "/shop?type=sunglasses" }
+                        ].map((item, idx) => (
+                            <Link to={item.link || "/shop"} key={idx} className="group block mb-8">
+                                <div className="overflow-hidden mb-4 rounded-sm border border-white/10 shadow-lg relative aspect-square">
+                                    <img
+                                        src={item.img}
+                                        alt={item.name}
+                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 opacity-90 group-hover:opacity-100"
+                                        loading="lazy"
+                                    />
+                                </div>
+                                <h3 className="text-center text-sm md:text-base text-white font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors border-b border-transparent group-hover:border-royal-gold inline-block pb-1">
                                     {item.name}
                                 </h3>
-                            </div>
-                        </Link>
-                    ))}
+                            </Link>
+                        ))}
+                    </div>
                 </div>
             </section>
 
             {/* Video Campaign Section */}
-            <section className="relative w-full h-screen overflow-hidden bg-black">
+            <section className="relative w-full h-[80vh] overflow-hidden bg-black">
                 <video
                     autoPlay
                     loop
@@ -190,7 +203,7 @@ const Home = () => {
                 initial={{ opacity: 0, y: 50 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8 }}
-                className="py-36 px-4 md:px-6 text-center container mx-auto"
+                className="py-24 px-4 md:px-6 text-center container mx-auto"
             >
                 <span className="text-royal-muted uppercase tracking-[0.3em] text-sm font-semibold block mb-6">Welcome to Murgdur</span>
                 <h2 className="text-3xl md:text-5xl font-serif text-white my-8 leading-tight max-w-4xl mx-auto font-medium drop-shadow-sm">
