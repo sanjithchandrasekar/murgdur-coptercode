@@ -58,7 +58,7 @@ CIN : U51109KA2012PTC066107
 Telephone: 044-45614700 / 044-67415800`;
 
     return (
-        <footer className="bg-white text-black font-sans text-[13px] leading-relaxed border-t border-gray-200">
+        <footer className="bg-royal-black text-white font-sans text-[13px] leading-relaxed border-t border-white/10">
 
             {/* Top Footer Section */}
             <div className="container mx-auto px-6 py-16">
@@ -66,57 +66,57 @@ Telephone: 044-45614700 / 044-67415800`;
 
                     {/* Column 1: HELP */}
                     <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium">Help</h3>
+                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Help</h3>
                         <div className="flex flex-col space-y-3">
-                            <p className="mb-2 text-gray-600">
-                                A Client Advisor is available at <a href="tel:18001039988" className="underline hover:text-royal-gold decoration-1 underline-offset-4">1800 103 9988</a>. You can also <Link to="/contact" className="underline hover:text-royal-gold decoration-1 underline-offset-4">chat</Link> or <a href="mailto:support@murugdur.com" className="underline hover:text-royal-gold decoration-1 underline-offset-4">email us</a>.
+                            <p className="mb-2 text-gray-400">
+                                A Client Advisor is available at <a href="tel:18001039988" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">1800 103 9988</a>. You can also <Link to="/contact" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">chat</Link> or <a href="mailto:support@murugdur.com" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">email us</a>.
                             </p>
                             {helpLinks.map((link, idx) => (
-                                <Link key={idx} to={link.url} className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
+                                <Link key={idx} to={link.url} className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
                                     {link.title}
                                 </Link>
                             ))}
-                            <Link to="/stores" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Stores</Link>
+                            <Link to="/stores" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Stores</Link>
                         </div>
                     </div>
 
                     {/* Column 2: SERVICES */}
                     <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium">Services</h3>
+                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Services</h3>
                         <div className="flex flex-col space-y-3">
-                            <Link to="/repairs" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Repairs</Link>
-                            <Link to="/personalisation" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Personalisation</Link>
-                            <Link to="/gifting" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Art of Gifting</Link>
-                            <Link to="/apps" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Download our Apps</Link>
+                            <Link to="/repairs" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Repairs</Link>
+                            <Link to="/personalisation" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Personalisation</Link>
+                            <Link to="/gifting" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Art of Gifting</Link>
+                            <Link to="/apps" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Download our Apps</Link>
                         </div>
                     </div>
 
                     {/* Column 3: ABOUT MURUGDUR */}
                     <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium">About Murugdur</h3>
+                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">About Murugdur</h3>
                         <div className="flex flex-col space-y-3">
                             {aboutLinks.map((link, idx) => (
-                                <Link key={idx} to={link.url} className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
+                                <Link key={idx} to={link.url} className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
                                     {link.title}
                                 </Link>
                             ))}
-                            <Link to="/sustainability" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Sustainability</Link>
-                            <Link to="/news" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Latest News</Link>
-                            <Link to="/foundation" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Foundation Murugdur</Link>
+                            <Link to="/sustainability" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Sustainability</Link>
+                            <Link to="/news" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Latest News</Link>
+                            <Link to="/foundation" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Foundation Murugdur</Link>
                         </div>
                     </div>
 
                     {/* Column 4: CONNECT */}
                     <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium">Connect</h3>
+                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Connect</h3>
                         <div className="flex flex-col space-y-6">
-                            <p className="text-gray-600 leading-relaxed">
-                                <Link to="/signup" className="underline hover:text-royal-gold decoration-1 underline-offset-4">Sign up</Link> for Murugdur emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections.
+                            <p className="text-gray-400 leading-relaxed">
+                                <Link to="/signup" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">Sign up</Link> for Murugdur emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections.
                             </p>
 
                             <div className="space-y-3">
-                                <h4 className="text-[13px] mb-2">Follow Us</h4>
-                                <div className="flex gap-5 text-black">
+                                <h4 className="text-[13px] mb-2 text-white">Follow Us</h4>
+                                <div className="flex gap-5 text-white">
                                     <a href={data?.socialLinks?.facebook || "#!"} className="hover:text-royal-gold transition-colors"><Facebook strokeWidth={1.5} size={20} /></a>
                                     <a href={data?.socialLinks?.twitter || "#!"} className="hover:text-royal-gold transition-colors"><Twitter strokeWidth={1.5} size={20} /></a>
                                     <a href={data?.socialLinks?.youtube || "#!"} className="hover:text-royal-gold transition-colors"><Youtube strokeWidth={1.5} size={20} /></a>
@@ -129,12 +129,12 @@ Telephone: 044-45614700 / 044-67415800`;
             </div>
 
             {/* Bottom Footer Section */}
-            <div className="border-t border-gray-200 py-12">
+            <div className="border-t border-white/10 py-12">
                 <div className="container mx-auto px-6">
 
                     {/* Top Row: Country & Navigation */}
                     <div className="mb-12">
-                        <div className="flex items-center gap-2 mb-8">
+                        <div className="flex items-center gap-2 mb-8 text-white">
                             {/* India Flag Placeholder or SVG */}
                             <span className="text-lg">🇮🇳</span>
                             <span className="underline decoration-1 underline-offset-4 text-xs uppercase tracking-wider font-medium">India</span>
@@ -146,8 +146,8 @@ Telephone: 044-45614700 / 044-67415800`;
 
                         {/* Manufacturer */}
                         <div>
-                            <h4 className="mb-3 text-black">Full Name and Address of the Manufacturer</h4>
-                            <div className="whitespace-pre-line">
+                            <h4 className="mb-3 text-white font-medium">Full Name and Address of the Manufacturer</h4>
+                            <div className="whitespace-pre-line text-gray-400">
                                 {data?.mailAddress || defaultMailAddress}
                             </div>
                             <div className="mt-4">
@@ -157,8 +157,8 @@ Telephone: 044-45614700 / 044-67415800`;
 
                         {/* Importer */}
                         <div>
-                            <h4 className="mb-3 text-black">Full Name and Address of the Importer</h4>
-                            <div className="whitespace-pre-line">
+                            <h4 className="mb-3 text-white font-medium">Full Name and Address of the Importer</h4>
+                            <div className="whitespace-pre-line text-gray-400">
                                 {data?.officeAddress || defaultOfficeAddress}
                             </div>
                             <div className="mt-4 lowercase normal-case tracking-normal">
@@ -168,7 +168,7 @@ Telephone: 044-45614700 / 044-67415800`;
                     </div>
 
                     {/* Bottom Row: Links */}
-                    <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-black">
+                    <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-gray-300">
                         <Link to="/sitemap" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Sitemap</Link>
                         <Link to="/legal-privacy" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Legal & Privacy</Link>
                         <Link to="/cookies" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Cookies</Link>

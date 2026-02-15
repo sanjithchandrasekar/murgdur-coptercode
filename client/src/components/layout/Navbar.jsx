@@ -109,159 +109,88 @@ const Navbar = () => {
 
     return (
         <nav
-            className={`fixed w-full z-50 transition-all duration-300 ${isDarkText ? 'bg-royal-black/95 backdrop-blur-md shadow-lg border-b border-white/5' : 'bg-transparent py-4'}`}
+            className={`fixed w-full z-50 transition-all duration-300 ${isDarkText ? 'bg-white shadow-md py-2 border-b border-gray-100' : 'bg-transparent py-4 text-white'}`}
         >
-            <div className="container mx-auto px-4 md:px-6 h-16 flex justify-between items-center relative">
+            <div className={`container mx-auto px-8 md:px-12 h-14 flex justify-between items-center relative ${isDarkText ? 'text-black' : 'text-white'}`}>
 
-                {/* LEFT: Logo, Menu & Search */}
-                <div className="flex items-center gap-2 md:gap-8">
+                {/* LEFT: Menu & Search */}
+                <div className="flex items-center gap-6 md:gap-8">
+                    {/* Menu Trigger */}
+                    <button
+                        className="flex items-center gap-3 hover:opacity-70 transition-opacity group"
+                        onClick={() => setIsMobileMenuOpen(true)}
+                    >
+                        <Menu size={16} strokeWidth={1.5} />
+                        <span className="text-[11px] uppercase tracking-[0.2em] font-medium hidden sm:block">Menu</span>
+                    </button>
 
+                    {/* Search Trigger */}
+                    <button
+                        className="flex items-center gap-3 hover:opacity-70 transition-opacity group"
+                        onClick={() => setIsSearchOpen(true)}
+                    >
+                        <Search size={16} strokeWidth={1.5} />
+                        <span className="text-[11px] uppercase tracking-[0.2em] font-medium hidden sm:block">Search</span>
+                    </button>
 
-                    {/* Back Button (Visible on non-home pages) */}
-                    {!isHome && (
-                        <button
-                            className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group mr-2"
-                            onClick={() => navigate(-1)}
-                            title="Go Back"
-                        >
-                            <ArrowLeft size={20} strokeWidth={1.5} />
-                            {/* Optional Label (Hidden on small screens) */}
-                            {/* <span className="hidden md:block text-xs uppercase tracking-widest font-medium">Back</span> */}
-                        </button>
-                    )}
-
-
-
-                    {/* Search Section */}
-                    <div className="flex items-center">
-                        <AnimatePresence mode="wait">
-                            {isSearchOpen ? (
-                                <motion.div
-                                    initial={{ width: 0, opacity: 0 }}
-                                    animate={{ width: 220, opacity: 1 }}
-                                    exit={{ width: 0, opacity: 0 }}
-                                    className="flex items-center bg-white/10 rounded-full px-3 py-1.5 border border-white/20 relative"
-                                >
-                                    <input
-                                        type="text"
-                                        placeholder="Search..."
-                                        className="bg-transparent border-none outline-none text-white text-xs w-full placeholder:text-gray-400 font-sans tracking-wide"
-                                        value={searchQuery}
-                                        onChange={(e) => setSearchQuery(e.target.value)}
-                                        onKeyDown={handleSearch}
-                                        autoFocus
-                                    />
-                                    <X size={14} className="text-gray-400 cursor-pointer hover:text-white shrink-0 ml-2" onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} />
-
-                                    {/* Inline Results Dropdown */}
-                                    {searchQuery.length > 0 && (
-                                        <div className="absolute top-full left-0 mt-4 w-64 bg-royal-black border border-white/10 rounded shadow-xl overflow-hidden z-[60]">
-                                            {searchResults.length > 0 ? (
-                                                searchResults.map(result => (
-                                                    <div
-                                                        key={result.id}
-                                                        onClick={() => {
-                                                            navigate(`/shop?search=${result.name}`);
-                                                            setIsSearchOpen(false);
-                                                            setSearchQuery('');
-                                                        }}
-                                                        className="px-4 py-3 hover:bg-white/10 cursor-pointer border-b border-white/5 last:border-0"
-                                                    >
-                                                        <span className="text-white text-xs font-medium block">{result.name}</span>
-                                                    </div>
-                                                ))
-                                            ) : (
-                                                <div className="px-4 py-3 text-gray-500 text-xs italic">No results found</div>
-                                            )}
-                                        </div>
-                                    )}
-                                </motion.div>
-                            ) : (
-                                <button
-                                    className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group"
-                                    onClick={() => setIsSearchOpen(true)}
-                                >
-                                    <Search size={20} strokeWidth={1.5} />
-                                    <span className="hidden sm:block text-xs uppercase tracking-widest font-medium group-hover:underline underline-offset-4 decoration-royal-gold/50">Search</span>
-                                </button>
-                            )}
-                        </AnimatePresence>
-                    </div>
+                    {/* Search Overlay */}
+                    <AnimatePresence>
+                        {isSearchOpen && (
+                            <motion.div
+                                initial={{ width: 0, opacity: 0 }}
+                                animate={{ width: 240, opacity: 1 }}
+                                exit={{ width: 0, opacity: 0 }}
+                                className={`absolute left-32 md:left-48 top-1/2 -translate-y-1/2 bg-transparent border-b flex items-center pb-1 ${isDarkText ? 'border-black' : 'border-white'}`}
+                            >
+                                <input
+                                    type="text"
+                                    placeholder="Search..."
+                                    className={`bg-transparent border-none outline-none text-sm w-full font-sans tracking-wide ${isDarkText ? 'text-black placeholder-gray-600' : 'text-white placeholder-gray-400'}`}
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    onKeyDown={handleSearch}
+                                    autoFocus
+                                />
+                                <X size={14} className={`cursor-pointer hover:opacity-70 ml-2 ${isDarkText ? 'text-black' : 'text-white'}`} onClick={() => { setIsSearchOpen(false); setSearchQuery(''); }} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
                 </div>
 
                 {/* CENTER: Logo */}
-                <Link to="/" className={`absolute left-1/2 -translate-x-1/2 flex items-center gap-2 group transition-opacity duration-300 ${isSearchOpen ? 'opacity-0 pointer-events-none' : 'opacity-100'}`} onClick={() => window.scrollTo(0, 0)}>
-                    <style>
-                        {`@import url('https://fonts.googleapis.com/css2?family=Jost:wght@400;500;700&display=swap');`}
-                    </style>
-                    <span className="text-xl md:text-3xl font-bold tracking-[0.15em] md:tracking-[0.3em] text-white uppercase group-hover:text-royal-gold transition-colors" style={{ fontFamily: '"Jost", sans-serif' }}>
+                <Link to="/" className="absolute left-1/2 -translate-x-1/2 flex items-center group" onClick={() => window.scrollTo(0, 0)}>
+                    {/* Using text logo to match LV style text */}
+                    <span className="text-xl md:text-2xl font-bold tracking-[0.25em] uppercase hover:opacity-80 transition-opacity font-sans">
                         {siteSettings?.title || "MURGDUR"}
                     </span>
                 </Link>
 
                 {/* RIGHT: User Actions */}
-                <div className="flex items-center gap-3 md:gap-8">
-                    <Link to="/contact" className="hidden lg:block text-xs uppercase tracking-widest font-medium text-white hover:text-royal-gold transition-colors">
-                        Contact Us
+                <div className="flex items-center gap-6 md:gap-8">
+                    <Link to="/contact" className="hidden lg:block text-[11px] uppercase tracking-[0.2em] font-medium hover:opacity-70 transition-opacity">
+                        Call Us
                     </Link>
 
                     {/* Wishlist */}
-                    <Link to="/vault" className="hidden md:block text-white hover:text-royal-gold transition-colors relative group">
-                        <Heart size={20} strokeWidth={1.5} />
+                    <Link to="/vault" className="hover:opacity-70 transition-opacity relative">
+                        <Heart size={16} strokeWidth={1.5} />
                         {wishlistItems && wishlistItems.length > 0 && (
-                            <span className="absolute -top-1.5 -right-1.5 bg-royal-gold text-black text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
+                            <span className={`absolute -top-1.5 -right-1.5 text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ${isDarkText ? 'bg-black text-white' : 'bg-white text-black'}`}>
                                 {wishlistItems.length}
                             </span>
                         )}
                     </Link>
 
                     {/* User Profile */}
-                    {user ? (
-                        <div className="relative group">
-                            <Link to="/profile" className="text-white hover:text-royal-gold transition-colors block">
-                                <User size={20} strokeWidth={1.5} />
-                            </Link>
-                            {/* Simple Hover Menu for User */}
-                            <div className="absolute top-full right-0 mt-2 w-40 bg-royal-black border border-white/10 rounded shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                                <div className="px-4 py-3 border-b border-white/5 text-xs text-gray-400">
-                                    Hello, <br />
-                                    <span className="text-white font-bold text-sm truncate block">{user.name || 'User'}</span>
-                                </div>
-                                <Link to="/profile" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">My Profile</Link>
-                                <Link to="/orders" className="block px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5">Orders</Link>
-                                <button onClick={handleLogout} className="block w-full text-left px-4 py-2 text-xs text-gray-400 hover:text-white hover:bg-white/5 border-t border-white/5">
-                                    Log Out
-                                </button>
-                            </div>
-                        </div>
-                    ) : (
-                        <Link to="/profile" className="text-white hover:text-royal-gold transition-colors" title="Sign In">
-                            <User size={20} strokeWidth={1.5} />
-                        </Link>
-                    )}
-
-                    <Link to="/cart" className="hidden md:block text-white hover:text-royal-gold transition-colors relative">
-                        <ShoppingBag size={20} strokeWidth={1.5} />
-                        {getCartCount() > 0 && (
-                            <span className="absolute -top-1.5 -right-1.5 bg-royal-gold text-black text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center">
-                                {getCartCount()}
-                            </span>
-                        )}
+                    <Link to={user ? "/profile" : "/login"} className="hover:opacity-70 transition-opacity">
+                        <User size={16} strokeWidth={1.5} />
                     </Link>
-
-                    {/* Menu Trigger */}
-                    <button
-                        className="flex items-center gap-2 text-white hover:text-royal-gold transition-colors group"
-                        onClick={() => setIsMobileMenuOpen(true)}
-                    >
-                        <Menu size={20} strokeWidth={1.5} />
-                    </button>
-
                 </div>
+
             </div>
 
             {/* Universal Menu Drawer (Mobile & Desktop) */}
-            < AnimatePresence >
+            <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -271,71 +200,87 @@ const Navbar = () => {
                         className="fixed inset-0 z-[100] flex"
                     >
                         {/* Backdrop */}
-                        <div className="absolute inset-0 bg-black/80 backdrop-blur-md" onClick={() => setIsMobileMenuOpen(false)}></div>
+                        <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setIsMobileMenuOpen(false)}></div>
 
-                        {/* Drawer Content */}
+                        {/* Drawer Content - LV Style (Dark Theme) */}
                         <motion.div
                             initial={{ x: '-100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '-100%' }}
-                            transition={{ type: 'tween', duration: 0.4 }}
-                            className="relative w-full max-w-sm bg-black h-screen border-r border-white/10 shadow-2xl p-8 flex flex-col z-[101]"
-                            style={{ backgroundColor: 'black' }}
+                            transition={{ type: 'tween', duration: 0.4, ease: "easeOut" }}
+                            className="relative w-full max-w-sm bg-royal-black h-screen shadow-2xl flex flex-col z-[101] overflow-y-auto"
                         >
-                            <div className="flex justify-between items-center mb-12 border-b border-white/10 pb-6">
-                                <span className="text-xl font-serif text-white tracking-widest uppercase flex items-center gap-4">
-                                    <div className="relative h-20 w-16 bg-[#0F0F0F] rounded-b-md flex items-center justify-center shadow-md border-x border-b border-white/10">
-                                        <img src={siteSettings?.logo || defaultLogo} alt="Logo" className="h-12 w-auto object-contain opacity-100" />
-                                    </div>
-                                    Menu
-                                </span>
-                                <button onClick={() => setIsMobileMenuOpen(false)} className="text-white/60 hover:text-royal-gold transition-colors">
-                                    <X size={24} strokeWidth={1} />
+                            {/* 1. Header: Close Button */}
+                            <div className="flex items-center justify-between p-6 px-8 mb-4">
+                                <button
+                                    onClick={() => setIsMobileMenuOpen(false)}
+                                    className="flex items-center gap-3 text-white hover:text-royal-gold transition-colors group"
+                                >
+                                    <X size={20} strokeWidth={1} />
+                                    <span className="text-xs uppercase tracking-widest font-medium">Close</span>
                                 </button>
                             </div>
 
-                            <div className="flex flex-col space-y-6">
-                                {navLinks.map((link) => {
-                                    const isActive = location.pathname === link.path;
-                                    return (
-                                        <Link
-                                            key={link.name}
-                                            to={link.path}
-                                            className={`text-2xl font-serif flex items-center justify-between group ${isActive ? 'text-royal-gold' : 'text-white hover:text-royal-gold'} transition-colors py-2`}
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                        >
-                                            {link.name}
-                                            <span className={`transition-opacity text-base ${isActive ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}>→</span>
-                                        </Link>
-                                    );
-                                })}
-                                {/* Additional Mobile Links */}
-                                <div className="border-t border-white/10 pt-4 mt-2 grid grid-cols-2 gap-4">
-                                    <Link to="/vault" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                                        <Heart size={14} /> Wishlist
+                            {/* 2. Main Navigation List */}
+                            <div className="flex-1 px-8 pb-12 flex flex-col gap-6">
+                                {[
+                                    { name: "New", path: "/shop?sort=newest" },
+                                    { name: "Men", path: "/shop?cat=men" },
+                                    { name: "Women", path: "/shop?cat=women" },
+                                    { name: "Bags and Wallets", path: "/shop?type=bags" },
+                                    { name: "Perfumes", path: "/shop?type=perfumes" },
+                                    { name: "Jewellery", path: "/shop?type=accessories" },
+                                    { name: "Royal Collection", path: "/royal-collection" },
+                                    { name: "Services", path: "/services" },
+                                    { name: "The Maison Murugdur", path: "/about" },
+                                ].map((link) => (
+                                    <Link
+                                        key={link.name}
+                                        to={link.path}
+                                        className="text-lg text-white font-sans font-medium tracking-wide hover:text-royal-gold transition-colors block"
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                    >
+                                        {link.name}
                                     </Link>
-                                    <Link to="/cart" className="text-sm text-gray-400 hover:text-white flex items-center gap-2" onClick={() => setIsMobileMenuOpen(false)}>
-                                        <ShoppingBag size={14} /> Cart {getCartCount() > 0 && `(${getCartCount()})`}
+                                ))}
+
+                                <div className="pt-4 mt-2 border-t border-white/10">
+                                    <Link to="/profile" className="text-sm text-gray-300 font-sans tracking-wide hover:text-white transition-colors block mb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <User size={14} className="inline mr-2" /> My Profile
                                     </Link>
-                                    <Link to="/profile" className="text-sm text-gray-400 hover:text-white flex items-center gap-2 col-span-2" onClick={() => setIsMobileMenuOpen(false)}>
-                                        <User size={14} /> {user ? 'My Profile' : 'Login'}
-                                    </Link>
-                                    <Link to="/contact" className="text-sm text-gray-400 hover:text-white flex items-center gap-2 col-span-2 lg:hidden" onClick={() => setIsMobileMenuOpen(false)}>
-                                        Contact Us
+                                    <Link to="/vault" className="text-sm text-gray-300 font-sans tracking-wide hover:text-white transition-colors block" onClick={() => setIsMobileMenuOpen(false)}>
+                                        <Heart size={14} className="inline mr-2" /> Wishlist
                                     </Link>
                                 </div>
                             </div>
 
-                            <div className="mt-auto pt-8 border-t border-white/10">
-                                <p className="text-gray-500 text-xs uppercase tracking-widest mb-4">Contact</p>
-                                <p className="text-white font-serif mb-2">{siteSettings?.contactEmail || "care@murgdur.com"}</p>
-                                <p className="text-white font-serif">{siteSettings?.contactPhone || "+91 98765 43210"}</p>
+                            {/* 3. Footer Section (Help & Info) */}
+                            <div className="px-8 py-10 mt-auto border-t border-white/10 bg-white/5">
+                                <div className="mb-8">
+                                    <p className="text-xs text-white uppercase tracking-widest mb-3">Can we help you?</p>
+                                    <a href="tel:+9118001039988" className="text-lg text-white font-sans hover:text-royal-gold block mb-1">
+                                        +91 1800 103 9988
+                                    </a>
+                                </div>
+
+                                <div className="space-y-4">
+                                    <Link to="/sustainability" className="block text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                                        Sustainability
+                                    </Link>
+                                    <Link to="/stores" className="block text-sm text-gray-400 hover:text-white transition-colors" onClick={() => setIsMobileMenuOpen(false)}>
+                                        Find a Store
+                                    </Link>
+                                    <div className="pt-4 flex items-center gap-2 text-white">
+                                        <span>🇮🇳</span>
+                                        <span className="text-sm underline decoration-1 underline-offset-4 pointer-events-none">India</span>
+                                    </div>
+                                </div>
                             </div>
                         </motion.div>
                     </motion.div>
                 )}
-            </AnimatePresence >
-        </nav >
+            </AnimatePresence>
+        </nav>
     );
 };
 

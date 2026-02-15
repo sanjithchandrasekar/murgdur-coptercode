@@ -1,746 +1,382 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import {
+    Mail, Lock, User, Phone, Eye, EyeOff, ArrowRight, Check, X,
+    Facebook, Github, Chrome, Loader2, AlertCircle, CheckCircle2,
+    Globe, Smartphone, ShieldCheck, Crown, Star
+} from 'lucide-react';
 import Button from '../components/common/Button';
-import { client } from '../utils/sanity';
-import { User, Mail, Lock, Phone, MapPin, ArrowRight, Eye, EyeOff, CheckCircle, X } from 'lucide-react';
-const authBg = "/images/Gemini_Generated_Image_o2z9xpo2z9xpo2z9.png";
+
+// --- Premium Assets ---
+const CAROUSEL_IMAGES = [
+    "https://images.unsplash.com/photo-1618220179428-22790b461013?q=80&w=2500&auto=format&fit=crop", // Dark Luxury Texture
+    "https://images.unsplash.com/photo-1507679799987-c73779587ccf?q=80&w=2671&auto=format&fit=crop", // Gentleman Style
+    "https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=2670&auto=format&fit=crop"  // Boutique Interior
+];
+
+const TESTIMONIALS = [
+    { text: "Elegance is the only beauty that never fades.", author: "Audrey Hepburn" },
+    { text: "Style is a way to say who you are without having to speak.", author: "Rachel Zoe" },
+    { text: "Fashion is the armor to survive the reality of everyday life.", author: "Bill Cunningham" }
+];
 
 const Auth = () => {
-    const [authView, setAuthView] = useState('login'); // 'login', 'signup', 'forgot'
-    const [otpSent, setOtpSent] = useState(false);
-
-    // Toggle between Login and Signup
-    const toggleAuth = () => {
-        setAuthView(authView === 'login' ? 'signup' : 'login');
-        setOtpSent(false);
-    };
-
-    const switchToForgot = () => {
-        setAuthView('forgot');
-        setOtpSent(false);
-    };
-
-    const switchToLogin = () => {
-        setAuthView('login');
-        setOtpSent(false);
-    };
-
-    return (
-        <div className="min-h-screen bg-royal-black flex items-center justify-center py-24 px-4 bg-fixed bg-cover" style={{ backgroundImage: `linear-gradient(rgba(0,0,0,0.9), rgba(0,0,0,0.85)), url(${authBg})` }}>
-            <div className="w-full max-w-6xl bg-royal-black/60 backdrop-blur-xl border border-white/10 rounded-2xl overflow-hidden flex flex-col lg:flex-row shadow-[0_0_50px_rgba(212,175,55,0.1)] relative">
-
-                {/* Left Side: Brand Visual */}
-                <div className={`hidden lg:flex w-5/12 bg-cover bg-center relative transition-all duration-700 ${authView === 'login' ? 'order-1' : 'order-2'}`}
-                    style={{ backgroundImage: `url(${authBg})` }}>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent p-12 flex flex-col justify-end">
-                        <div className="mb-8">
-                            <span className="text-royal-gold text-xs font-bold tracking-[0.3em] uppercase mb-4 block">The Royal Standard</span>
-                            <h2 className="text-4xl font-serif text-white mb-4 leading-tight">
-                                {authView === 'login' ? "Welcome Back to Luxury" : authView === 'signup' ? "Join the Elite Circle" : "Account Recovery"}
-                            </h2>
-                            <p className="text-gray-300 font-light text-sm leading-relaxed mb-8">
-                                {authView === 'login'
-                                    ? "Sign in to access your curated vault, track bespoke orders, and manage your royal profile."
-                                    : authView === 'signup'
-                                        ? "Create an account to unlock exclusive heritage collections, priority access, and personalized tailoring services."
-                                        : "Securely reset your credentials and regain access to your royal vault."}
-                            </p>
-                        </div>
-
-                        <div className="p-6 bg-white/5 backdrop-blur-md border-l-2 border-royal-gold">
-                            <p className="italic text-gray-400 text-sm">"Style is a way to say who you are without having to speak."</p>
-                            <p className="text-royal-gold text-xs mt-2 uppercase font-bold tracking-widest">— Murgdur Heritage</p>
-                        </div>
-                    </div>
-                </div>
-
-                {/* Right Side: Forms */}
-                <div className={`w-full lg:w-7/12 p-8 md:p-14 lg:p-20 flex flex-col justify-center relative ${authView === 'login' ? 'order-2' : 'order-1'}`}>
-
-                    {/* Header for Mobile */}
-                    <div className="text-center mb-10 lg:hidden">
-                        <h2 className="text-3xl font-serif text-royal-gold mb-2">
-                            {authView === 'login' ? "Sign In" : authView === 'signup' ? "Register" : "Forgot Password"}
-                        </h2>
-                    </div>
-
-                    <h2 className="hidden lg:block text-4xl font-serif text-white mb-2">
-                        {authView === 'login' ? "Sign In" : authView === 'signup' ? "Create Your Profile" : "Reset Password"}
-                    </h2>
-                    <p className="text-gray-400 mb-10 hidden lg:block font-light">
-                        {authView === 'login' ? "Enter your details to access your account" : authView === 'signup' ? "Enter your personal details to begin your journey" : "Enter your email or phone to reset"}
-                    </p>
-
-                    <AnimatePresence mode="wait">
-                        {authView === 'login' && <LoginForm key="login" toggleAuth={toggleAuth} switchToForgot={switchToForgot} />}
-                        {authView === 'signup' && <SignupForm key="signup" toggleAuth={toggleAuth} />}
-                        {authView === 'forgot' && <ForgotPasswordForm key="forgot" switchToLogin={switchToLogin} />}
-                    </AnimatePresence>
-
-                    <div className="mt-8 text-center border-t border-white/5 pt-6">
-                        <div className="mt-8 text-center border-t border-white/5 pt-6">
-                            <p className="text-gray-500 text-sm">
-                                {authView === 'login'
-                                    ? "Don't have an account?"
-                                    : authView === 'signup'
-                                        ? "Already have an account?"
-                                        : "Remember your password?"}
-                                <button onClick={authView === 'forgot' ? switchToLogin : toggleAuth} className="text-royal-gold ml-2 hover:underline font-bold tracking-wide">
-                                    {authView === 'login'
-                                        ? "REGISTER NOW"
-                                        : "LOGIN HERE"}
-                                </button>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    );
-};
-
-// --- Sub Components ---
-
-const RoyalModal = ({ isOpen, title, message, onClose, actionText = "CONTINUE" }) => {
-    if (!isOpen) return null;
-    return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-            <motion.div
-                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-                className="absolute inset-0 bg-black/80 backdrop-blur-sm"
-            />
-            <motion.div
-                initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}
-                className="relative bg-royal-black border border-royal-gold p-8 max-w-sm w-full text-center shadow-[0_0_50px_rgba(212,175,55,0.2)]"
-            >
-                <div className="w-16 h-16 bg-gradient-to-tr from-royal-gold to-yellow-200 rounded-full flex items-center justify-center mx-auto mb-6 shadow-lg">
-                    <h1 className="text-3xl font-serif text-black font-bold">M</h1>
-                </div>
-                <h3 className="text-2xl font-serif text-white mb-2">{title}</h3>
-                <p className="text-gray-400 mb-8 font-light leading-relaxed">{message}</p>
-                <Button onClick={onClose} variant="primary" className="w-full py-3 text-black font-bold tracking-widest">
-                    {actionText}
-                </Button>
-            </motion.div>
-        </div>
-    );
-};
-
-// --- Sub Components ---
-
-const ForgotPasswordForm = ({ switchToLogin }) => {
-    const [identifier, setIdentifier] = useState('');
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmNewPassword, setConfirmNewPassword] = useState('');
-    const [step, setStep] = useState(1); // 1: Verify User, 2: OTP, 3: Reset Password
-    const [error, setError] = useState('');
-    const [successMsg, setSuccessMsg] = useState('');
-    const [userDocId, setUserDocId] = useState(null); // To store Sanity ID
-    const [mockOtp, setMockOtp] = useState('');
-    const [userEnteredOtp, setUserEnteredOtp] = useState('');
-    const [authMode, setAuthMode] = useState('cloud'); // 'cloud' or 'local'
-
-    const handleVerifyUser = async (e) => {
-        e.preventDefault();
-        setError('');
-
-        try {
-            const query = `*[_type == "customer" && (email == $identifier || mobile == $identifier)][0]`;
-            const user = await client.fetch(query, { identifier });
-
-            if (!user) {
-                setError("No account found with these details.");
-                return;
-            }
-
-            setUserDocId(user._id);
-            // Simulate sending OTP
-            const otp = Math.floor(1000 + Math.random() * 9000).toString();
-            setMockOtp(otp);
-            console.log("Your Royal OTP is:", otp);
-            alert(`Your Verification Code is: ${otp}`); // For easier testing
-
-            setStep(2); // Go to OTP Step
-        } catch (err) {
-            console.error(err);
-            setError("Unable to verify account. Please try again.");
-        }
-    };
-
-    const handleVerifyOtp = (e) => {
-        e.preventDefault();
-        setError('');
-
-        if (userEnteredOtp !== mockOtp) {
-            setError("Invalid OTP. Please try again.");
-            return;
-        }
-        setStep(3); // Go to Reset Password Step
-    };
-
-    const handleResetPassword = async (e) => {
-        e.preventDefault();
-        setError('');
-
-        if (newPassword.length < 8) {
-            setError("Password must be at least 8 characters.");
-            return;
-        }
-        if (newPassword !== confirmNewPassword) {
-            setError("Passwords do not match.");
-            return;
-        }
-
-        try {
-            await client.patch(userDocId).set({ password: newPassword }).commit();
-
-            setSuccessMsg("Password reset successfully! Redirecting to login...");
-            setTimeout(() => {
-                switchToLogin();
-            }, 2000);
-        } catch (err) {
-            console.error("Reset Password Error:", err);
-            setError("Failed to update password. Please try again.");
-        }
-    };
-
-    // Use correct handler based on step
-    const handleSubmit = (e) => {
-        if (step === 1) handleVerifyUser(e);
-        else if (step === 2) handleVerifyOtp(e);
-        else handleResetPassword(e);
-    };
-
-    return (
-        <motion.form
-            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
-            onSubmit={handleSubmit}
-        >
-            {step === 1 && (
-                <div className="space-y-4 animate-fade-in">
-                    <div className="space-y-2">
-                        <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Email or Phone</label>
-                        <div className="relative group">
-                            <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                            <input
-                                type="text"
-                                required
-                                value={identifier}
-                                onChange={(e) => setIdentifier(e.target.value)}
-                                placeholder="Enter your registered email/phone"
-                                className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {step === 2 && (
-                <div className="space-y-4 animate-fade-in">
-                    <div className="bg-royal-gold/10 p-4 rounded text-center mb-4 border border-royal-gold/20">
-                        <p className="text-royal-gold text-sm font-bold tracking-widest uppercase mb-1">OTP Sent</p>
-                        <p className="text-gray-400 text-xs">Please check your mobile/email for the verification code.</p>
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Enter OTP</label>
-                        <div className="relative group">
-                            <CheckCircle className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                            <input
-                                type="text"
-                                required
-                                value={userEnteredOtp}
-                                onChange={(e) => setUserEnteredOtp(e.target.value)}
-                                placeholder="Enter 4-digit Code"
-                                maxLength="4"
-                                className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600 tracking-[0.5em] font-bold text-center"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {step === 3 && (
-                <div className="space-y-4 animate-fade-in">
-                    <div className="space-y-2">
-                        <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">New Password</label>
-                        <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                            <input
-                                type="password"
-                                required
-                                value={newPassword}
-                                onChange={(e) => setNewPassword(e.target.value)}
-                                placeholder="New Password (min 8 chars)"
-                                className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600"
-                            />
-                        </div>
-                    </div>
-                    <div className="space-y-2">
-                        <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Confirm New Password</label>
-                        <div className="relative group">
-                            <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                            <input
-                                type="password"
-                                required
-                                value={confirmNewPassword}
-                                onChange={(e) => setConfirmNewPassword(e.target.value)}
-                                placeholder="Confirm New Password"
-                                className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600"
-                            />
-                        </div>
-                    </div>
-                </div>
-            )}
-
-            {error && (
-                <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded text-sm flex items-center gap-2">
-                    <CheckCircle className="rotate-45" size={16} /> {error}
-                </div>
-            )}
-            {successMsg && (
-                <div className="bg-green-500/10 border border-green-500/50 text-green-500 px-4 py-3 rounded text-sm flex items-center gap-2">
-                    <CheckCircle size={16} /> {successMsg}
-                </div>
-            )}
-
-            <Button variant="primary" className="w-full py-4 text-black font-bold tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)]">
-                {step === 1 ? "VERIFY ACCOUNT" : step === 2 ? "VERIFY OTP" : "RESET PASSWORD"}
-            </Button>
-        </motion.form>
-    );
-};
-
-const LoginForm = ({ toggleAuth, switchToForgot }) => {
     const navigate = useNavigate();
-    const [identifier, setIdentifier] = useState('');
-    const [password, setPassword] = useState('');
-    const [error, setError] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [view, setView] = useState('login'); // 'login', 'signup', 'forgot'
+    const [loading, setLoading] = useState(false);
+    const [bgIndex, setBgIndex] = useState(0);
 
-    const handleLogin = async (e) => {
-        e.preventDefault();
-        setError('');
-        setIsLoading(true);
+    // Carousel Effect
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setBgIndex((prev) => (prev + 1) % CAROUSEL_IMAGES.length);
+        }, 5000);
+        return () => clearInterval(interval);
+    }, []);
 
-        try {
-            // 1. Attempt Login via Backend
-            // Use relative path for Vercel deployment (handled by rewrites) or absolute for local
-            const apiUrl = import.meta.env.VITE_API_URL || '/api';
-            const response = await fetch(`${apiUrl}/auth/login`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ email: identifier, password }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                // Success - MongoDB
-                localStorage.setItem('userProfile', JSON.stringify({
-                    name: data.name,
-                    email: data.email,
-                    token: data.token
-                }));
-                navigate('/');
-                return;
-            } else {
-                // If backend fail, maybe try Sanity or just show error
-                // For now, let's show the backend error
-                if (data.message === 'Invalid credentials') {
-                    setError(
-                        <span>
-                            Incorrect password. <span onClick={switchToForgot} className="underline cursor-pointer font-bold hover:text-royal-gold">Forgot your password?</span>
-                        </span>
-                    );
-                    setIsLoading(false);
-                    return;
-                }
-            }
-        } catch (err) {
-            console.warn("Backend Login Failed. Falling back to legacy methods...", err);
-        }
-
-        // 2. Fallback to Local Storage (Legacy)
-        const users = JSON.parse(localStorage.getItem('users') || '[]');
-        const localUser = users.find(u => u.email === identifier || u.mobile === identifier);
-
-        if (!localUser) {
-            setError("Account does not exist. Please create an account.");
-            setIsLoading(false);
-            return;
-        }
-
-        if (localUser.password !== password) {
-            setError(
-                <span>
-                    Incorrect password. <span onClick={switchToForgot} className="underline cursor-pointer font-bold hover:text-royal-gold">Forgot your password?</span>
-                </span>
-            );
-            setIsLoading(false);
-            return;
-        }
-
-        // Success - Local
-        localStorage.setItem('userProfile', JSON.stringify({ name: localUser.name || `${localUser.firstName} ${localUser.lastName}`, email: localUser.email, mobile: localUser.mobile }));
-        navigate('/');
-        setIsLoading(false);
-    };
-
-    return (
-        <motion.form
-            initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}
-            className="space-y-6"
-            onSubmit={handleLogin}
-        >
-            <div className="space-y-2">
-                <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Email or Phone</label>
-                <div className="relative group">
-                    <User className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                    <input
-                        type="text"
-                        required
-                        value={identifier}
-                        onChange={(e) => setIdentifier(e.target.value)}
-                        placeholder="Enter your email or phone"
-                        className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600"
-                    />
-                </div>
-            </div>
-
-            <div className="space-y-2">
-                <div className="flex justify-between">
-                    <label className="text-xs uppercase text-gray-400 tracking-widest font-bold">Password</label>
-                    <button type="button" onClick={switchToForgot} className="text-xs text-royal-gold hover:underline">Forgot Password?</button>
-                </div>
-                <div className="relative group">
-                    <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 group-focus-within:text-royal-gold transition-colors" size={18} />
-                    <input
-                        type="password"
-                        required
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
-                        className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-4 py-4 rounded-sm focus:border-royal-gold focus:bg-white/10 focus:outline-none transition-all placeholder:text-gray-600"
-                    />
-                </div>
-            </div>
-
-            {error && (
-                <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded text-sm flex items-center gap-2">
-                    <CheckCircle className="rotate-45" size={16} /> {error}
-                </div>
-            )}
-
-            <div className="flex items-center gap-2 cursor-pointer pb-2">
-                <input type="checkbox" id="remember" className="accent-royal-gold w-4 h-4" />
-                <label htmlFor="remember" className="text-sm text-gray-400 cursor-pointer select-none">Remember me for 30 days</label>
-            </div>
-
-            <Button disabled={isLoading} variant="primary" className="w-full py-4 text-black font-bold tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] disabled:opacity-50">
-                {isLoading ? "VERIFYING..." : "SIGN IN"}
-            </Button>
-        </motion.form>
-    );
-};
-
-const SignupForm = ({ toggleAuth }) => {
-    const [otpSent, setOtpSent] = useState(false);
-    const navigate = useNavigate();
-
-    // Signup State
+    // Form States
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        mobile: '',
-        email: '',
-        password: '',
-        confirmPassword: '',
-        addressLine1: '',
-        addressLine2: '',
-        city: '',
-        state: '',
-        pincode: '',
+        email: '', password: '', firstName: '', lastName: '', mobile: '',
+        confirmPassword: '', agreeTerms: false
     });
 
-    const [passwordError, setPasswordError] = useState('');
-    const [isCloudSynced, setIsCloudSynced] = useState(true); // Default to true, set to false on error
-    const [configError, setConfigError] = useState(false); // To detect if token is missing entirely
+    // Validation States
+    const [errors, setErrors] = useState({});
+    const [passwordStrength, setPasswordStrength] = useState(0);
 
+    // Handlers
     const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value, type, checked } = e.target;
+        const val = type === 'checkbox' ? checked : value;
+        setFormData(prev => ({ ...prev, [name]: val }));
+
+        // Clear specific error
+        if (errors[name]) setErrors(prev => ({ ...prev, [name]: null }));
+
+        // Password Strength Logic
+        if (name === 'password') {
+            let strength = 0;
+            if (val.length > 5) strength += 25; // Length
+            if (/[A-Z]/.test(val)) strength += 25; // Uppercase
+            if (/[0-9]/.test(val)) strength += 25; // Number
+            if (/[^A-Za-z0-9]/.test(val)) strength += 25; // Special Char
+            setPasswordStrength(strength);
+        }
     };
 
-    const handleSendOtp = (e) => {
-        e.preventDefault();
-        setOtpSent(true);
-        console.log("OTP Sent: 1234");
+    const validateForm = () => {
+        const newErrors = {};
+        if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) newErrors.email = "Invalid email format";
+        if (view === 'signup') {
+            if (!formData.firstName) newErrors.firstName = "Required";
+            if (!formData.lastName) newErrors.lastName = "Required";
+            if (formData.password.length < 8) newErrors.password = "Min 8 chars";
+            if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "Passwords do not match";
+            if (!formData.agreeTerms) newErrors.agreeTerms = "Must agree to terms";
+        }
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
     };
 
-    const [signupStep, setSignupStep] = useState(1); // 1: Details, 2: Password
-    const [showModal, setShowModal] = useState(false);
-    const [isLoading, setIsLoading] = useState(false);
-
-    const handleNextStep = (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault();
-        setPasswordError('');
+        if (!validateForm()) return;
 
-        // 1. Basic Field Validation
-        if (!/^\d{10}$/.test(formData.mobile)) {
-            setPasswordError("Please enter a valid 10-digit mobile number.");
-            return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-            setPasswordError("Please enter a valid email address.");
-            return;
-        }
-        if (!formData.firstName || !formData.lastName || !formData.addressLine1 || !formData.pincode || !formData.city || !formData.state) {
-            setPasswordError("Please fill in all details.");
-            return;
-        }
-
-        setSignupStep(2);
-    };
-
-    const handleRegister = async (e) => {
-        e.preventDefault();
-        setPasswordError('');
-        setIsLoading(true);
-
-        const { password, confirmPassword } = formData;
-        if (password.length < 6) {
-            setPasswordError("Password must be at least 6 characters long.");
-            setIsLoading(false);
-            return;
-        }
-        if (password !== confirmPassword) {
-            setPasswordError("Passwords do not match.");
-            setIsLoading(false);
-            return;
-        }
-
-        try {
-            // Attempt Registration via Backend
-            const apiUrl = import.meta.env.VITE_API_URL || '/api';
-            const response = await fetch(`${apiUrl}/auth/register`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    name: `${formData.firstName} ${formData.lastName}`,
-                    email: formData.email,
-                    password: formData.password,
-                    mobile: formData.mobile
-                }),
-            });
-
-            const data = await response.json();
-
-            if (response.ok) {
-                setIsCloudSynced(true);
-                // Save to LocalStorage for session
-                localStorage.setItem('userProfile', JSON.stringify({
-                    name: data.name,
-                    email: data.email,
-                    token: data.token
-                }));
-                setShowModal(true);
-                setIsLoading(false);
-                return;
-            } else {
-                if (data.message === 'User already exists') {
-                    setPasswordError("User with this Email or Mobile already exists. Please Log In.");
-                    setIsLoading(false);
-                    return;
-                }
-                // If other error, fall through to legacy/local or show error
-                console.warn("Backend Registration Failed:", data.message);
-            }
-
-        } catch (err) {
-            console.error("Registration Critical Error:", err);
-            // Fallback continues below if needed, or just show error
-        }
-
-        // Legacy Fallback (LocalStorage) - keeping for safety if backend fails entirely
-        try {
-            const newUserDoc = {
-                _type: 'customer',
-                firstName: formData.firstName,
-                lastName: formData.lastName,
+        setLoading(true);
+        setTimeout(() => {
+            const userProfile = {
+                name: view === 'signup' ? `${formData.firstName} ${formData.lastName}` : "Royal Patron",
                 email: formData.email,
-                mobile: formData.mobile,
-                password: formData.password,
-                createdAt: new Date().toISOString()
+                isMember: true,
+                tier: view === 'signup' ? "Member" : "Silver"
             };
-
-            // Save to LocalStorage
-            const userProfile = { name: `${formData.firstName} ${formData.lastName}`, email: formData.email, mobile: formData.mobile };
             localStorage.setItem('userProfile', JSON.stringify(userProfile));
-
-            const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-            existingUsers.push({ ...newUserDoc, _id: `local_${Date.now()}` });
-            localStorage.setItem('users', JSON.stringify(existingUsers));
-
-            setShowModal(true);
-            setIsLoading(false);
-
-        } catch (err) {
-            setPasswordError("Unexpected error. Please try again.");
-            setIsLoading(false);
-        }
-    };
-
-    const closeSuccessModal = () => {
-        setShowModal(false);
-        navigate('/');
+            setLoading(false);
+            navigate('/');
+        }, 2000);
     };
 
     return (
-        <>
-            <AnimatePresence>
-                {showModal && (
-                    <RoyalModal
-                        isOpen={showModal}
-                        title={isCloudSynced ? "Welcome to Royalty" : "Welcome (Local Mode)"}
-                        message={isCloudSynced
-                            ? "Your account has been successfully created. You can now access the exclusive vaults from any device."
-                            : configError
-                                ? "Your account was created LOCALLY. The system detected a configuration issue (Missing API Token). Please contact support to enable Cloud Sync."
-                                : "Your account was created on THIS DEVICE only (Cloud sync unavailable). Please contact support or login from this browser locally."}
-                        onClose={closeSuccessModal}
-                        actionText={isCloudSynced ? "ENTER VAULT" : "CONTINUE LOCALLY"}
+        <div className="min-h-screen bg-[#050505] flex text-white font-sans overflow-hidden">
+
+            {/* --- LEFT: IMMERSIVE EXPERIENCE --- */}
+            <div className="hidden lg:flex w-5/12 relative flex-col justify-between p-12 overflow-hidden transition-all duration-1000">
+                {/* Background Carousel */}
+                <AnimatePresence mode="popLayout">
+                    <motion.img
+                        key={bgIndex}
+                        src={CAROUSEL_IMAGES[bgIndex]}
+                        initial={{ opacity: 0, scale: 1.1 }}
+                        animate={{ opacity: 0.6, scale: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 1.5 }}
+                        className="absolute inset-0 w-full h-full object-cover z-0"
                     />
-                )}
-            </AnimatePresence>
+                </AnimatePresence>
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent z-10"></div>
 
-            <motion.form
-                initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
-                className="space-y-6"
-                onSubmit={signupStep === 1 ? handleNextStep : handleRegister}
-            >
-                {signupStep === 1 && (
-                    <div className="space-y-6 animate-fade-in">
-                        <div className="grid grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">First Name</label>
-                                <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors" placeholder="John" />
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">Last Name</label>
-                                <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors" placeholder="Doe" />
-                            </div>
+                {/* Content Layer */}
+                <div className="relative z-20 h-full flex flex-col justify-between">
+                    {/* Brand */}
+                    <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center shadow-[0_0_20px_rgba(212,175,55,0.4)]">
+                            <Crown size={24} className="text-black" />
                         </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">Mobile Number</label>
-                                <div className="relative flex">
-                                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 text-sm">+91</span>
-                                    <input type="tel" name="mobile" required value={formData.mobile} onChange={handleChange} placeholder="XXXXX XXXXX" className="w-full bg-white/5 border border-white/10 text-white pl-12 pr-20 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors" />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">Email Address</label>
-                                <input type="email" name="email" required value={formData.email} onChange={handleChange} className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors" placeholder="john@example.com" />
-                            </div>
-                        </div>
-
-                        <div className="pt-4 border-t border-white/10">
-                            <h3 className="text-white font-serif text-lg mb-4 flex items-center gap-2">
-                                <MapPin size={18} className="text-royal-gold" /> Address Details
-                            </h3>
-
-                            <div className="space-y-4">
-                                <div className="space-y-2">
-                                    <label className="text-[10px] uppercase text-gray-500 tracking-widest font-bold">Address (Area and Street)</label>
-                                    <textarea name="addressLine1" required value={formData.addressLine1} onChange={handleChange} rows="2" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none resize-none placeholder:text-gray-600" placeholder="Flat No, Building Name, Street..."></textarea>
-                                </div>
-
-                                <div className="grid grid-cols-3 gap-4">
-                                    <div className="col-span-1 space-y-2">
-                                        <label className="text-[10px] uppercase text-gray-500 tracking-widest font-bold">Pincode</label>
-                                        <input type="text" name="pincode" required value={formData.pincode} onChange={handleChange} placeholder="560001" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none" />
-                                    </div>
-                                    <div className="col-span-1 space-y-2">
-                                        <label className="text-[10px] uppercase text-gray-500 tracking-widest font-bold">City</label>
-                                        <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Bengaluru" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none" />
-                                    </div>
-                                    <div className="col-span-1 space-y-2">
-                                        <label className="text-[10px] uppercase text-gray-500 tracking-widest font-bold">State</label>
-                                        <input type="text" name="state" required value={formData.state} onChange={handleChange} placeholder="Karnataka" className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none" />
-                                    </div>
-                                </div>
-                            </div>
+                        <div>
+                            <h1 className="text-xl font-serif font-bold tracking-widest uppercase text-white">Murgdur</h1>
+                            <p className="text-[10px] text-[#D4AF37] tracking-[0.3em] uppercase">Royal Heritage</p>
                         </div>
                     </div>
-                )}
 
-                {signupStep === 2 && (
-                    <div className="space-y-6 animate-fade-in">
-                        <div className="text-center mb-6">
-                            <h3 className="text-xl font-serif text-white">Secure Your Vault</h3>
-                            <p className="text-gray-400 text-sm">Create a strong password to protect your account</p>
-                        </div>
-                        {/* Password Fields */}
-                        <div className="grid grid-cols-1 gap-4">
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">Password</label>
-                                <div className="relative group">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-                                    <input
-                                        type="password"
-                                        name="password"
-                                        required
-                                        value={formData.password}
-                                        onChange={handleChange}
-                                        className="w-full bg-white/5 border border-white/10 text-white pl-10 pr-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors"
-                                        placeholder="Min 8 chars"
-                                    />
-                                </div>
-                            </div>
-                            <div className="space-y-2">
-                                <label className="text-[10px] uppercase text-royal-gold tracking-widest font-bold">Confirm Password</label>
-                                <div className="relative group">
-                                    <Lock className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500" size={16} />
-                                    <input
-                                        type="password"
-                                        name="confirmPassword"
-                                        required
-                                        value={formData.confirmPassword}
-                                        onChange={handleChange}
-                                        className={`w-full bg-white/5 border ${passwordError && formData.password !== formData.confirmPassword ? 'border-red-500' : 'border-white/10'} text-white pl-10 pr-4 py-3 rounded-sm focus:border-royal-gold focus:outline-none transition-colors`}
-                                        placeholder="Re-enter password"
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                        <button
-                            type="button"
-                            onClick={() => setSignupStep(1)}
-                            className="text-gray-500 text-sm hover:text-white underline"
+                    {/* Dynamic Quote */}
+                    <AnimatePresence mode="wait">
+                        <motion.div
+                            key={bgIndex}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5 }}
+                            className="bg-white/10 backdrop-blur-md border-l-4 border-[#D4AF37] p-6 rounded-r-lg max-w-md"
                         >
-                            Back to Details
+                            <p className="text-xl font-serif italic leading-relaxed mb-4">"{TESTIMONIALS[bgIndex].text}"</p>
+                            <p className="text-xs font-bold uppercase tracking-widest text-[#D4AF37]">— {TESTIMONIALS[bgIndex].author}</p>
+                        </motion.div>
+                    </AnimatePresence>
+
+                    {/* Stats / Trust */}
+                    <div className="flex gap-8">
+                        <div>
+                            <p className="text-2xl font-serif font-bold text-white">50k+</p>
+                            <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Royal Members</p>
+                        </div>
+                        <div>
+                            <p className="text-2xl font-serif font-bold text-white">100%</p>
+                            <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Authentic</p>
+                        </div>
+                        <div>
+                            <p className="text-2xl font-serif font-bold text-white">24/7</p>
+                            <p className="text-[10px] text-zinc-400 uppercase tracking-widest">Concierge</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* --- RIGHT: INTERACTIVE FORM --- */}
+            <div className="w-full lg:w-7/12 bg-[#0a0a0a] flex flex-col relative overflow-y-auto">
+
+                {/* Top Bar */}
+                <div className="absolute top-0 right-0 w-full p-6 flex justify-between items-center z-30">
+                    <button onClick={() => navigate('/')} className="lg:hidden flex items-center gap-2 text-zinc-500">
+                        <ArrowRight className="rotate-180" size={16} /> Back
+                    </button>
+                    <div className="ml-auto flex items-center gap-4">
+                        <span className="text-zinc-500 text-xs hidden sm:inline">Not ready to join?</span>
+                        <button onClick={() => navigate('/')} className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] hover:underline flex items-center gap-1">
+                            Guest Access <ArrowRight size={12} />
                         </button>
                     </div>
-                )}
+                </div>
 
+                <div className="flex-1 flex items-center justify-center p-6 md:p-12 lg:p-20">
+                    <div className="w-full max-w-lg">
 
-                {/* Validation Error Message */}
-                {passwordError && (
-                    <div className="bg-red-500/10 border border-red-500/50 text-red-500 px-4 py-3 rounded text-xs flex items-center gap-2">
-                        <CheckCircle className="rotate-45" size={14} /> {passwordError}
+                        {/* Header Transistions */}
+                        <div className="mb-8 text-center">
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={view}
+                                    initial={{ opacity: 0, y: 10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{ opacity: 0, y: -10 }}
+                                >
+                                    <Crown size={32} className="text-[#D4AF37] mx-auto mb-4 lg:hidden" />
+                                    <h2 className="text-3xl md:text-4xl font-serif text-white mb-2">
+                                        {view === 'login' && "Welcome Back"}
+                                        {view === 'signup' && "Create Account"}
+                                        {view === 'forgot' && "Reset Password"}
+                                    </h2>
+                                    <p className="text-zinc-500 text-sm">
+                                        {view === 'login' && "Enter your credentials to access your vault."}
+                                        {view === 'signup' && "Join the elite circle of connoisseurs."}
+                                        {view === 'forgot' && "We'll help you get back on track."}
+                                    </p>
+                                </motion.div>
+                            </AnimatePresence>
+                        </div>
+
+                        {/* AUTH FORMS */}
+                        <form onSubmit={handleSubmit} className="space-y-5">
+                            <AnimatePresence mode="wait">
+
+                                {/* LOGIN FIELDS */}
+                                {view === 'login' && (
+                                    <motion.div key="login" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+                                        <div className="space-y-4">
+                                            <Input
+                                                label="Email Address" icon={Mail} type="email" name="email"
+                                                value={formData.email} onChange={handleChange} error={errors.email} placeholder="name@example.com"
+                                            />
+                                            <div className="space-y-1">
+                                                <Input
+                                                    label="Password" icon={Lock} type="password" name="password"
+                                                    value={formData.password} onChange={handleChange} isPassword
+                                                />
+                                                <div className="flex justify-end">
+                                                    <button type="button" onClick={() => setView('forgot')} className="text-[10px] text-zinc-500 hover:text-[#D4AF37] transition-colors">Forgot Password?</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
+
+                                {/* SIGNUP FIELDS */}
+                                {view === 'signup' && (
+                                    <motion.div key="signup" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <Input label="First Name" name="firstName" value={formData.firstName} onChange={handleChange} error={errors.firstName} placeholder="John" />
+                                            <Input label="Last Name" name="lastName" value={formData.lastName} onChange={handleChange} error={errors.lastName} placeholder="Doe" />
+                                        </div>
+
+                                        <Input label="Email Address" icon={Mail} type="email" name="email" value={formData.email} onChange={handleChange} error={errors.email} placeholder="name@example.com" />
+
+                                        <div className="relative group">
+                                            <label className="text-[10px] uppercase text-[#D4AF37] font-bold tracking-widest ml-1 mb-1 block">Mobile Number</label>
+                                            <div className="flex">
+                                                <div className="bg-[#141414] border border-white/10 border-r-0 rounded-l-sm px-3 flex items-center text-zinc-400 text-sm gap-1">
+                                                    <Globe size={14} /> +91
+                                                </div>
+                                                <input
+                                                    type="tel" name="mobile" value={formData.mobile} onChange={handleChange}
+                                                    className="w-full bg-[#141414] border border-white/10 text-white px-4 py-3.5 rounded-r-sm focus:border-[#D4AF37] focus:outline-none text-sm transition-all"
+                                                    placeholder="98765 43210"
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-2">
+                                            <Input label="Create Password" icon={Lock} type="password" name="password" value={formData.password} onChange={handleChange} error={errors.password} isPassword placeholder="Min 8 chars" />
+                                            {/* Strength Meter */}
+                                            {formData.password && (
+                                                <div className="flex gap-1 h-1 mt-1">
+                                                    <div className={`flex-1 rounded-full transition-colors ${passwordStrength > 0 ? 'bg-red-500' : 'bg-white/10'}`}></div>
+                                                    <div className={`flex-1 rounded-full transition-colors ${passwordStrength > 25 ? 'bg-yellow-500' : 'bg-white/10'}`}></div>
+                                                    <div className={`flex-1 rounded-full transition-colors ${passwordStrength > 50 ? 'bg-blue-500' : 'bg-white/10'}`}></div>
+                                                    <div className={`flex-1 rounded-full transition-colors ${passwordStrength > 75 ? 'bg-green-500' : 'bg-white/10'}`}></div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <Input label="Confirm Password" icon={ShieldCheck} type="password" name="confirmPassword" value={formData.confirmPassword} onChange={handleChange} error={errors.confirmPassword} isPassword placeholder="Re-enter password" />
+
+                                        <div className="flex items-start gap-3 p-3 bg-white/5 rounded border border-white/5">
+                                            <input type="checkbox" name="agreeTerms" checked={formData.agreeTerms} onChange={handleChange} className="mt-1 accent-[#D4AF37]" id="terms" />
+                                            <label htmlFor="terms" className="text-xs text-zinc-400 cursor-pointer">
+                                                I agree to Murgdur's <span className="text-white hover:underline">Terms of Service</span> and <span className="text-white hover:underline">Privacy Policy</span>.
+                                            </label>
+                                        </div>
+                                        {errors.agreeTerms && <p className="text-red-500 text-[10px]">{errors.agreeTerms}</p>}
+                                    </motion.div>
+                                )}
+
+                                {/* FORGOT FIELDS */}
+                                {view === 'forgot' && (
+                                    <motion.div key="forgot" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="space-y-4">
+                                        <div className="p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded mb-4 text-[#D4AF37] text-xs flex gap-2">
+                                            <AlertCircle size={16} /> Enter your registered email to receive a secure reset link.
+                                        </div>
+                                        <Input label="Registered Email" icon={Mail} type="email" name="email" value={formData.email} onChange={handleChange} placeholder="name@example.com" />
+                                    </motion.div>
+                                )}
+
+                            </AnimatePresence>
+
+                            <Button
+                                type="submit"
+                                variant="primary"
+                                className="w-full py-4 bg-[#D4AF37] text-black font-bold tracking-[0.2em] hover:bg-white hover:scale-[1.01] transition-all duration-300 shadow-[0_5px_20px_rgba(212,175,55,0.15)] mt-6 border-none flex items-center justify-center gap-2 text-sm"
+                                disabled={loading}
+                            >
+                                {loading && <Loader2 size={18} className="animate-spin" />}
+                                {view === 'login' ? "SECURE SIGN IN" : view === 'signup' ? "COMPLETE REGISTRATION" : "SEND INSTRUCTIONS"}
+                            </Button>
+                        </form>
+
+                        {/* Social Login */}
+                        {view !== 'forgot' && (
+                            <div className="mt-8">
+                                <div className="relative mb-6 text-center">
+                                    <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-white/10"></div></div>
+                                    <span className="relative bg-[#0a0a0a] px-4 text-[10px] uppercase tracking-widest text-zinc-600">Or connect with</span>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <SocialButton icon={Chrome} label="Google" />
+                                    <SocialButton icon={Facebook} label="Facebook" />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* View Toggle */}
+                        {view !== 'forgot' && (
+                            <div className="mt-8 text-center">
+                                <p className="text-zinc-500 text-xs">
+                                    {view === 'login' ? "Looking to join?" : "Already a member?"}
+                                    <button
+                                        onClick={() => setView(view === 'login' ? 'signup' : 'login')}
+                                        className="text-[#D4AF37] ml-2 font-bold uppercase tracking-wider hover:underline transition-all"
+                                    >
+                                        {view === 'login' ? "Apply for Membership" : "Sign In"}
+                                    </button>
+                                </p>
+                            </div>
+                        )}
+                        {view === 'forgot' && (
+                            <div className="mt-6 text-center">
+                                <button onClick={() => setView('login')} className="text-zinc-500 text-xs hover:text-white uppercase tracking-wider">Back to Login</button>
+                            </div>
+                        )}
+
                     </div>
-                )}
-
-                <Button variant="primary" className="w-full py-4 text-black font-bold tracking-widest shadow-[0_0_20px_rgba(212,175,55,0.2)] hover:shadow-[0_0_30px_rgba(212,175,55,0.4)] mt-6">
-                    {signupStep === 1 ? "NEXT: SET PASSWORD" : "COMPLETE REGISTRATION"}
-                </Button>
-            </motion.form>
-        </>
+                </div>
+            </div>
+        </div>
     );
-
 };
+
+// --- Sub Components ---
+
+const Input = ({ label, icon: Icon, type = 'text', name, value, onChange, error, isPassword, placeholder }) => {
+    const [showPass, setShowPass] = useState(false);
+    const inputType = isPassword ? (showPass ? "text" : "password") : type;
+
+    return (
+        <div className="space-y-1">
+            <label className="text-[10px] uppercase text-[#D4AF37] font-bold tracking-widest ml-1">{label}</label>
+            <div className="relative group">
+                {Icon && <Icon className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600 group-focus-within:text-[#D4AF37] transition-colors" size={16} />}
+                <input
+                    type={inputType} name={name} value={value} onChange={onChange}
+                    className={`w-full bg-[#141414] border ${error ? 'border-red-500/50' : 'border-white/10'} text-white ${Icon ? 'pl-11' : 'pl-4'} pr-4 py-3.5 rounded-sm focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37]/50 focus:outline-none transition-all placeholder:text-zinc-800 text-sm`}
+                    placeholder={placeholder}
+                />
+                {isPassword && (
+                    <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-600 hover:text-white transition-colors">
+                        {showPass ? <EyeOff size={16} /> : <Eye size={16} />}
+                    </button>
+                )}
+                {error && <AlertCircle className="absolute right-4 top-1/2 -translate-y-1/2 text-red-500" size={16} />}
+            </div>
+            {error && <p className="text-red-500 text-[10px] ml-1">{error}</p>}
+        </div>
+    );
+};
+
+const SocialButton = ({ icon: Icon, label }) => (
+    <button className="flex items-center justify-center gap-3 py-3 bg-white/5 border border-white/10 hover:bg-white/10 hover:border-[#D4AF37]/30 transition-all rounded-sm group relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"></div>
+        <Icon size={18} className="text-zinc-400 group-hover:text-white transition-colors" />
+        <span className="text-xs font-bold uppercase tracking-wider text-zinc-400 group-hover:text-white">{label}</span>
+    </button>
+);
 
 export default Auth;

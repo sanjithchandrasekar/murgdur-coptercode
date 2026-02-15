@@ -64,19 +64,19 @@ const Home = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/30"></div>
 
                 {/* Content Overlay */}
-                <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full max-w-5xl mx-auto">
+                <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full w-full max-w-7xl mx-auto">
                     {/* Eyebrow Label */}
                     <span className="text-sm md:text-base font-bold tracking-[0.3em] uppercase text-royal-gold mb-4 animate-fade-in block drop-shadow-md">
                         {homeData?.promoSection?.eyebrow || "The Imperial Showcase"}
                     </span>
 
-                    {/* Main Hashtag - Stencil Font */}
-                    <h1 className="text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight" style={{ fontFamily: '"Stardos Stencil", cursive', textShadow: '2px 2px 4px rgba(0,0,0,0.8)' }}>
+                    {/* Main Hashtag - Minimalist Luxury */}
+                    <h1 className="text-3xl md:text-5xl lg:text-7xl font-black text-white tracking-wide uppercase mb-6 drop-shadow-2xl w-full leading-tight text-center break-words">
                         {homeData?.promoSection?.hashtag || "#ROYALASCENSION"}
                     </h1>
 
                     {/* Subheading */}
-                    <h2 className="text-2xl md:text-5xl font-serif text-white font-medium drop-shadow-lg mb-8 tracking-wide">
+                    <h2 className="text-xl md:text-2xl font-sans text-white uppercase tracking-[0.5em] font-medium drop-shadow-lg mb-8">
                         {homeData?.promoSection?.heading || "The Sovereign Winter"}
                     </h2>
 
@@ -96,8 +96,8 @@ const Home = () => {
             <section className="py-16 relative bg-[#FAFAFA] border-b border-gray-100">
                 <div className="container mx-auto px-4 md:px-6 relative z-10">
                     <div className="text-center mb-16">
-                        <span className="text-royal-gold uppercase tracking-[0.2em] text-xs font-bold mb-3 block">From the Atelier</span>
-                        <h2 className="text-3xl md:text-4xl font-serif text-black tracking-wide font-medium">
+                        <span className="text-gray-400 uppercase tracking-[0.2em] text-xs font-bold mb-3 block">From the Atelier</span>
+                        <h2 className="text-3xl md:text-4xl font-sans text-black uppercase tracking-widest font-bold">
                             Treasures of the Dynasty
                         </h2>
                     </div>
@@ -118,23 +118,25 @@ const Home = () => {
                             }
 
                             return (
-                                <Link to={link || '#'} key={idx} className="group block mb-8 relative">
-                                    <div className="overflow-hidden mb-5 rounded-sm border border-gray-100 aspect-[4/5] relative shadow-sm hover:shadow-xl transition-shadow duration-300 bg-white">
+                                <Link to={link || '#'} key={idx} className="group block mb-8 relative cursor-pointer">
+                                    <div className="relative overflow-hidden mb-3 aspect-[4/5] bg-[#f6f6f6]">
                                         <img
                                             src={item.image || item.img}
                                             alt={item.name}
-                                            className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                                            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                             loading="lazy"
                                         />
-                                        {/* Hover Overlay */}
-                                        <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                     </div>
-                                    <h3 className="text-center text-sm md:text-base text-black font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors mb-2">
-                                        {item.name}
-                                    </h3>
-                                    {!item.isStatic && item.price && (
-                                        <p className="text-center text-xs font-medium text-gray-600">₹ {item.price.toLocaleString()}</p>
-                                    )}
+                                    <div className="text-center px-2">
+                                        <h3 className="text-[#19110b] font-sans text-xs font-bold tracking-[0.1em] uppercase mb-1 leading-relaxed">
+                                            {item.name}
+                                        </h3>
+                                        {!item.isStatic && item.price && (
+                                            <p className="text-[#595959] text-[11px] font-medium tracking-wide">
+                                                ₹ {item.price.toLocaleString()}
+                                            </p>
+                                        )}
+                                    </div>
                                 </Link>
                             );
                         })}
@@ -186,7 +188,7 @@ const Home = () => {
                 <div className="absolute inset-0 bg-black/40"></div>
 
                 <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
-                    <h2 className="text-5xl md:text-7xl font-serif text-white tracking-widest uppercase drop-shadow-xl mb-6 font-bold" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.6)' }}>
+                    <h2 className="text-5xl md:text-7xl font-sans font-black text-white tracking-widest uppercase drop-shadow-xl mb-6" style={{ textShadow: '0 4px 8px rgba(0,0,0,0.6)' }}>
                         {homeData?.videoCampaign?.heading || "The Royal Chronicle"}
                     </h2>
                     <Link
@@ -205,12 +207,12 @@ const Home = () => {
                 transition={{ duration: 0.8 }}
                 className="py-24 px-4 md:px-6 text-center container mx-auto"
             >
-                <span className="text-royal-muted uppercase tracking-[0.3em] text-sm font-semibold block mb-6">Welcome to Murgdur</span>
-                <h2 className="text-3xl md:text-5xl font-serif text-white my-8 leading-tight max-w-4xl mx-auto font-medium drop-shadow-sm">
+                <span className="text-gray-500 uppercase tracking-[0.3em] text-xs font-bold block mb-6">Welcome to Murgdur</span>
+                <h2 className="text-2xl md:text-4xl font-sans text-white uppercase tracking-widest my-8 leading-tight max-w-4xl mx-auto font-bold drop-shadow-sm">
                     {homeData?.welcomeSection?.title || "\"The Crown Fits Only The Worthy\""}
                 </h2>
                 <div className="w-24 h-0.5 bg-royal-gold mx-auto my-10 opacity-80"></div>
-                <p className="text-gray-300 max-w-3xl mx-auto font-normal leading-loose text-xl tracking-wide">
+                <p className="text-gray-300 max-w-3xl mx-auto font-normal leading-loose text-xl tracking-wide font-sans">
                     {homeData?.welcomeSection?.body || "Forged in the fires of tradition, sculpted for the modern monarch. A collection that whispers power and echoes eternity."}
                 </p>
             </motion.section>
@@ -218,14 +220,14 @@ const Home = () => {
             {/* Valentine's Day Gifts Section */}
             <section className="py-20 bg-white text-center border-t border-gray-100">
                 <div className="container mx-auto px-4 md:px-6">
-                    <span className="text-royal-obsidian uppercase tracking-[0.2em] text-[10px] font-bold mb-4 block">Courtly Gestures</span>
-                    <h2 className="text-3xl md:text-4xl font-serif text-black mb-12">Tokens of Affection</h2>
+                    <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-4 block">Courtly Gestures</span>
+                    <h2 className="text-3xl md:text-4xl font-sans text-black uppercase tracking-widest font-bold mb-12">Tokens of Affection</h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
                         {[
-                            { name: "Monogram Bag", price: "₹ 1,85,000", img: "/images/women%20handbag/women%20bag%20brown%20front.jpeg", link: "/product/42" },
-                            { name: "Sandals", price: "₹ 45,000", img: "/images/royal_heels.png", link: "/product/17" },
-                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/women%20perfume/womens-perfume7.png", link: "/product/51" },
+                            { name: "Tan Leather Satchel", price: "₹ 42,000", img: "/images/women%20handbag/women%20bag%20brown%20front.jpeg", link: "/product/42" },
+                            { name: "Elegant Heels", price: "₹ 12,999", img: "/images/royal_heels.png", link: "/product/17" },
+                            { name: "Signature Perfume", price: "₹ 12,500", img: "/images/royal_perfume.png", link: "/product/27" },
                             { name: "Passport Cover", price: "₹ 22,000", img: "/images/passport.jpg", link: "/product/110" },
 
                             { name: "Zippy Wallet", img: "/images/zippy%20wallet.jpg", link: "/product/111" },
@@ -247,7 +249,7 @@ const Home = () => {
                                         loading="lazy"
                                     />
                                 </div>
-                                <h4 className="text-xs font-serif text-gray-900 group-hover:text-royal-obsidian transition-colors">{item.name}</h4>
+                                <h4 className="text-xs font-sans font-bold uppercase tracking-widest text-black group-hover:text-gray-600 transition-colors">{item.name}</h4>
                                 {item.price && <p className="text-xs text-gray-500 mt-1">{item.price}</p>}
                             </Link>
                         ))}

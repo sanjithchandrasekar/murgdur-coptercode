@@ -20,8 +20,8 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['"Playfair Display"', 'serif'],
-        sans: ['"Montserrat"', 'sans-serif'],
+        serif: ['"Futura PT"', 'Futura', 'Poppins', 'sans-serif'],
+        sans: ['"Futura PT"', 'Futura', 'Poppins', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 1s ease-in-out',

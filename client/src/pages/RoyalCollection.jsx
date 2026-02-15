@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { fetchRoyalCollectionPage } from '../utils/sanity';
+import { ArrowRight, Star } from 'lucide-react';
+import { fetchRoyalCollectionPage, fetchProducts } from '../utils/sanity';
 
+// Asset Imports (Static Fallbacks)
 const imgMen = "/images/boy.jpeg";
 const imgWomen = "/images/girl.png";
 const imgRoyalWatch = "/images/royal_watch.png";
@@ -14,616 +15,320 @@ const imgRoyalSunglasses = "/images/royal_sunglasses.png";
 const imgRoyalJewellery = "/images/royal_jewellery.png";
 const imgRoyalSaree = "/images/royal_saree.png";
 const imgRoyalSherwani = "/images/royal_sherwani.png";
-const imgRoyalHeels = "/images/royal_heels.png";
-const imgRoyalGown = "/images/royal_gown.png";
+const imgBag = "/images/hand%20bag.png"; // URL Encoded space
 const imgRoyalShirt = "/images/royal_shirt.png";
 const imgRoyalTShirt = "/images/royal_tshirt.png";
-const imgRoyalHoodie = "/images/royal_hoodie.png";
-const imgRoyalSweater = "/images/royal_sweater.png";
-const imgBag = "/images/hand bag.png";
+const imgRoyalGown = "/images/royal_gown.png";
 
+// Reusable Product Card Component
+const CollectionProductCard = ({ product, badge }) => (
+    <Link to={`/product/${product.slug || product.id}`} className="group block cursor-pointer">
+        <div className="relative aspect-[3/4] overflow-hidden mb-3 bg-[#f6f6f6]">
+            {badge && (
+                <div className="absolute top-2 left-2 z-10 bg-white/90 backdrop-blur-sm px-2 py-1">
+                    <span className="text-[10px] font-bold uppercase tracking-widest text-royal-maroon">{badge}</span>
+                </div>
+            )}
+            <img
+                src={product.image || product.img}
+                alt={product.name}
+                className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                loading="lazy"
+            />
+        </div>
+        <div className="text-left px-1">
+            <h3 className="text-[#19110b] font-sans text-xs font-bold tracking-[0.1em] uppercase mb-1 leading-relaxed">
+                {product.name}
+            </h3>
+            {product.price && (
+                <p className="text-[#595959] text-[11px] font-medium tracking-wide">
+                    ₹ {product.price.toLocaleString()}
+                </p>
+            )}
+        </div>
+    </Link>
+);
 
 const RoyalCollection = () => {
-    const [activeView, setActiveView] = useState('main'); // 'main' or 'men'
-    const [data, setData] = useState(null);
+    const [pageData, setPageData] = useState(null);
+    const [products, setProducts] = useState([]);
+    const [activeSection, setActiveSection] = useState('men');
 
     useEffect(() => {
         const load = async () => {
-            const result = await fetchRoyalCollectionPage();
-            if (result) setData(result);
+            // 1. Try to fetch specific CMS page data
+            const cmsData = await fetchRoyalCollectionPage();
+            if (cmsData) setPageData(cmsData);
+
+            // 2. Fetch ALL products for "normal product section" fallback
+            const allProducts = await fetchProducts();
+            if (allProducts) setProducts(allProducts);
         };
         load();
     }, []);
 
+    // Filter products for sections
+    const menProducts = products.filter(p =>
+        p.category?.toLowerCase() === 'men' ||
+        p.category?.toLowerCase() === 'men\'s' || // common variation
+        (p.tags && p.tags.includes('men'))
+    ).slice(0, 4);
+
+    const womenProducts = products.filter(p =>
+        p.category?.toLowerCase() === 'women' ||
+        p.category?.toLowerCase() === 'women\'s' ||
+        (p.tags && p.tags.includes('women'))
+    ).slice(0, 4);
+
+    const accessoryProducts = products.filter(p =>
+        p.type?.toLowerCase() === 'accessory' ||
+        p.category?.toLowerCase() === 'accessories' ||
+        ['watch', 'belt', 'wallet', 'sunglasses', 'jewellery'].some(t => p.name.toLowerCase().includes(t))
+    ).slice(0, 4);
+
+    // Scroll Spy (Simple version)
+    useEffect(() => {
+        const handleScroll = () => {
+            const sections = ['men', 'women', 'accessories', 'artifacts'];
+            for (const section of sections) {
+                const element = document.getElementById(section);
+                if (element) {
+                    const rect = element.getBoundingClientRect();
+                    if (rect.top >= 0 && rect.top <= 400) {
+                        setActiveSection(section);
+                        break;
+                    }
+                }
+            }
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
+    }, []);
+
+    const scrollToSection = (id) => {
+        const element = document.getElementById(id);
+        if (element) {
+            window.scrollTo({
+                top: element.offsetTop - 120,
+                behavior: 'smooth'
+            });
+            setActiveSection(id);
+        }
+    };
+
     return (
-        <div className="min-h-screen bg-royal-ivory pt-32 pb-20 relative overflow-hidden">
-            {/* Background Decoration */}
-            <div className="absolute top-0 left-0 w-full h-[600px] opacity-[0.2] pointer-events-none">
-                <img src={data?.menSection?.image || imgMen} className="w-full h-full object-cover grayscale" alt="Heritage Background" />
-                <div className="absolute inset-0 bg-gradient-to-b from-white/50 via-royal-ivory/80 to-royal-ivory"></div>
-            </div>
+        <div className="bg-white min-h-screen">
 
-            <div className="container mx-auto px-4 md:px-6 relative z-10">
-                {/* Header */}
-                {/* Header */}
-                <div className="text-center mb-24 relative max-w-5xl mx-auto">
-                    {activeView !== 'main' && (
-                        <button
-                            onClick={() => {
-                                if (activeView === 'men-clothing' || activeView === 'men-accessories') setActiveView('men');
-                                else if (activeView === 'women-clothing' || activeView === 'women-accessories') setActiveView('women');
-                                else setActiveView('main');
-                            }}
-                            className="absolute left-0 top-0 text-gray-500 hover:text-royal-maroon flex items-center gap-2 uppercase text-xs tracking-[0.2em] transition-all group"
-                        >
-                            <span className="text-lg group-hover:-translate-x-1 transition-transform">←</span> Back to Collection
-                        </button>
-                    )}
+            {/* 1. HERO / INTRO SECTION */}
+            <section className="relative h-[80vh] overflow-hidden bg-black flex items-center justify-center">
+                {/* Simplified Hero Image Background - Fixed Opacity to ensure visibility */}
+                <div className="absolute inset-0 opacity-60">
+                    <img
+                        src={pageData?.menSection?.image || imgMen}
+                        className="w-full h-full object-cover"
+                        alt="Royal Collection Hero"
+                    />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90"></div>
 
-                    <motion.div
-                        initial={{ opacity: 0, y: -20 }}
+                <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
+                    <motion.span
+                        initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
+                        className="text-white/80 uppercase tracking-[0.3em] text-xs font-bold block mb-6"
                     >
-                        <span className="text-royal-maroon uppercase tracking-[0.3em] text-xs md:text-sm font-bold flex items-center justify-center gap-4 mb-6">
-                            <span className="w-12 h-[1px] bg-royal-maroon/40 hidden md:block"></span>
-                            {data?.subHeading || "The Murgdur Legacy"}
-                            <span className="w-12 h-[1px] bg-royal-maroon/40 hidden md:block"></span>
-                        </span>
-                    </motion.div>
-
+                        The Anniversary Edition
+                    </motion.span>
                     <motion.h1
-                        key={activeView}
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
-                        className="text-5xl md:text-7xl font-serif text-black mb-6 drop-shadow-sm tracking-wide"
+                        className="text-4xl md:text-6xl lg:text-7xl font-serif text-white uppercase tracking-widest mb-8 leading-tight"
                     >
-                        {activeView === 'men' ? 'Royal Men' : activeView === 'women' ? 'Royal Women' : (data?.mainHeading || 'A Legacy of Excellence')}
+                        The Collections
                     </motion.h1>
-
-                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.8, delay: 0.4 }}
-                        className="text-gray-600 text-lg md:text-xl font-light mb-12"
-                    >
-                        {data?.description || "Founded in 2019, Murgdur represents the pinnacle of luxury craftsmanship."}
-                    </motion.p>
-
-                    {activeView === 'main' && (
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, delay: 0.6 }}
-                            className="bg-white border border-gray-200 p-8 rounded-lg max-w-4xl mx-auto shadow-sm"
-                        >
-                            <h2 className="text-2xl md:text-3xl font-serif text-royal-maroon mb-4">
-                                {data?.memorySection?.heading || "In Memory of Sri Sundershan Duraisamy"}
-                            </h2>
-                            <p className="text-gray-600 font-light leading-relaxed">
-                                {data?.memorySection?.text || `"Murgdur was founded in 2019 by the late Sri Sundershan Duraisamy, a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship."`}
-                            </p>
-                        </motion.div>
-                    )}
-                </div>
-
-                {activeView === 'main' ? (
-                    /* Main Split Layout */
-                    <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
-
-                        {/* Men's Section (Clickable) */}
-                        <div
-                            onClick={() => setActiveView('men')}
-                            className="relative w-full md:w-1/2 h-[500px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
-                        >
-                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                            <img
-                                src={data?.menSection?.image || imgMen}
-                                alt="Royal Men's Collection"
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                loading="lazy"
-                            />
-                            <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 text-center p-6">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide drop-shadow-lg"
-                                >
-                                    {data?.menSection?.title || "Men's Collection"}
-                                </motion.h2>
-                                <p className="text-gray-200 text-sm md:text-base font-light mb-8 max-w-md mx-auto drop-shadow-md">
-                                    {data?.menSection?.description || "Sherwanis, Bandhgalas, and Kurtas crafted for the modern Maharaja."}
-                                </p>
-                                <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold border-b-2 border-royal-gold pb-2 hover:text-white hover:border-white transition-all duration-300 flex items-center gap-2">
-                                    EXPLORE <ArrowRight size={16} />
-                                </span>
-                            </div>
-                        </div>
-
-                        {/* Women's Section */}
-                        <div
-                            onClick={() => setActiveView('women')}
-                            className="relative w-full md:w-1/2 h-[500px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer"
-                        >
-                            <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                            <img
-                                src={data?.womenSection?.image || imgWomen}
-                                alt="Royal Women's Collection"
-                                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                loading="lazy"
-                            />
-                            <div className="absolute inset-0 z-20 flex flex-col items-center justify-end pb-20 text-center p-6">
-                                <motion.h2
-                                    initial={{ y: 20, opacity: 0 }}
-                                    whileInView={{ y: 0, opacity: 1 }}
-                                    className="text-4xl md:text-5xl font-serif text-white mb-4 tracking-wide drop-shadow-lg"
-                                >
-                                    {data?.womenSection?.title || "Women's Collection"}
-                                </motion.h2>
-                                <p className="text-gray-200 text-sm md:text-base font-light mb-8 max-w-md mx-auto drop-shadow-md">
-                                    {data?.womenSection?.description || "Exquisite Lehengas, Sarees, and Gowns for the royal muse."}
-                                </p>
-                                <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold border-b-2 border-royal-gold pb-2 hover:text-white hover:border-white transition-all duration-300 flex items-center gap-2">
-                                    EXPLORE <ArrowRight size={16} />
-                                </span>
-                            </div>
-                        </div>
-
-                    </div>
-                ) : activeView === 'men' ? (
-                    <div className="flex flex-col gap-12">
-                        {/* Featured Men's Products from Sanity */}
-                        {data?.menSection?.featuredProducts?.length > 0 && (
-                            <div className="container mx-auto">
-                                <h3 className="text-royal-maroon text-center font-serif text-3xl mb-8">Featured Masterpieces</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                    {data.menSection.featuredProducts.map((p) => (
-                                        <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-                                            <div className="aspect-[3/4] overflow-hidden">
-                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                                            </div>
-                                            <div className="p-4 text-center">
-                                                <h4 className="font-serif text-lg text-black">{p.name}</h4>
-                                                <p className="text-xs text-gray-500 mt-1">₹ {p.price.toLocaleString()}</p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Men's Sub-Category Layout (Clothing vs Accessories) */}
-                        <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
-                            {/* Men's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
-                            <div
-                                onClick={() => setActiveView('men-clothing')}
-                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                            >
-                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                    <img
-                                        src={imgRoyalSherwani}
-                                        alt="Royal Men's Clothing"
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                    >
-                                        CLOTHING
-                                    </motion.h2>
-                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                        View Collection <ArrowRight size={14} />
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Men's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
-                            <div
-                                onClick={() => setActiveView('men-accessories')}
-                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                            >
-                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                    <img
-                                        src={imgRoyalWatch}
-                                        alt="Royal Men's Accessories"
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                    >
-                                        ACCESSORIES
-                                    </motion.h2>
-                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                        View Collection <ArrowRight size={14} />
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                ) : activeView === 'men-clothing' ? (
-                    /* Men's Clothing Sub-Categories (Shirt, T-Shirt, Hoodie, Sweater) */
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8 h-auto md:h-[600px]">
-                        {[
-                            { name: 'ROYAL SHIRT', img: imgRoyalShirt, link: 'Shirt' },
-                            { name: 'ROYAL T-SHIRT', img: imgRoyalTShirt, link: 'T-Shirt' },
-                            { name: 'ROYAL HOODIE', img: imgRoyalHoodie, link: 'Hoodie' },
-                            { name: 'ROYAL SWEATER', img: imgRoyalSweater, link: 'Sweater' }
-                        ].map((item) => (
-                            <Link to={`/shop?search=${item.link}`} key={item.name} className="relative w-full h-[300px] md:h-full group overflow-hidden rounded-lg border border-white/10 shadow-2xl cursor-pointer block">
-                                <div className="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={item.img}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    loading="lazy"
-                                />
-                                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-6">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        className="text-2xl md:text-4xl font-serif text-white mb-6 tracking-wider"
-                                    >
-                                        {item.name}
-                                    </motion.h2>
-                                    <span className="bg-white/10 backdrop-blur-sm border border-white/50 text-white px-6 py-2 uppercase tracking-[0.2em] text-xs hover:bg-white hover:text-black transition-all duration-300">
-                                        Shop Now
-                                    </span>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                ) : activeView === 'men-accessories' ? (
-                    /* Men's Accessories Sub-Categories (9 items) */
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-[300px]">
-                        {[
-                            { name: 'LUXURY WATCHES', link: 'Watch', img: imgRoyalWatch },
-                            { name: 'LEATHER BELTS', link: 'Belt', img: imgRoyalBelt },
-                            { name: 'WALLETS', link: 'Wallet', img: imgRoyalWallet },
-                            { name: 'SUNGLASSES', link: 'Sunglasses', img: imgRoyalSunglasses },
-                            { name: 'BRACELETS', link: 'Bracelet', img: imgRoyalWatch },
-                            { name: 'RINGS', link: 'Ring', img: imgRoyalWatch },
-                            { name: 'FRAGRANCE', link: 'Perfume', img: imgRoyalPerfume },
-                            { name: 'FOOTWEAR CARE', link: 'Shoe Care', img: imgRoyalBelt },
-                            { name: 'TRAVEL & UTILITY', link: 'Travel', img: imgBag },
-                        ].map((item, idx) => (
-                            <Link to={`/shop?search=${item.link}`} key={idx} className="relative group overflow-hidden rounded-lg border border-white/10 shadow-xl cursor-pointer block">
-                                <div className="absolute inset-0 bg-black/50 group-hover:bg-black/30 transition-colors duration-700 z-10"></div>
-                                {/* Reusing the generic accessories image as fallback/placeholder for now */}
-                                <img
-                                    src={item.img}
-                                    alt={item.name}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                    loading="lazy"
-                                />
-                                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-4">
-                                    <h3 className="text-xl md:text-2xl font-serif text-white mb-4 tracking-wider text-shadow-lg">
-                                        {item.name}
-                                    </h3>
-                                    <span className="text-xs text-royal-gold uppercase tracking-widest border-b border-royal-gold pb-1 opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                                        Explore Collection
-                                    </span>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                ) : activeView === 'women' ? (
-                    <div className="flex flex-col gap-12">
-                        {/* Featured Women's Products from Sanity */}
-                        {data?.womenSection?.featuredProducts?.length > 0 && (
-                            <div className="container mx-auto">
-                                <h3 className="text-royal-maroon text-center font-serif text-3xl mb-8">Featured Masterpieces</h3>
-                                <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-                                    {data.womenSection.featuredProducts.map((p) => (
-                                        <Link to={`/product/${p._id}`} key={p._id} className="group block bg-white rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all">
-                                            <div className="aspect-[3/4] overflow-hidden">
-                                                <img src={p.image} alt={p.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" />
-                                            </div>
-                                            <div className="p-4 text-center">
-                                                <h4 className="font-serif text-lg text-black">{p.name}</h4>
-                                                <p className="text-xs text-gray-500 mt-1">₹ {p.price.toLocaleString()}</p>
-                                            </div>
-                                        </Link>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {/* Women's Sub-Category Layout (Clothing vs Accessories) */}
-                        <div className="flex flex-col md:flex-row gap-8 h-auto md:h-[600px]">
-
-                            {/* Women's Clothing (Clickable -> Opens Sub-Sub-Menu) */}
-                            <div
-                                onClick={() => setActiveView('women-clothing')}
-                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                            >
-                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                    <img
-                                        src={imgRoyalSaree}
-                                        alt="Royal Women's Clothing"
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                    >
-                                        CLOTHING
-                                    </motion.h2>
-                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                        View Collection <ArrowRight size={14} />
-                                    </span>
-                                </div>
-                            </div>
-
-                            {/* Women's Accessories (Clickable -> Opens Sub-Sub-Menu) */}
-                            <div
-                                onClick={() => setActiveView('women-accessories')}
-                                className="group w-full md:w-1/2 h-[450px] md:h-full flex flex-col cursor-pointer"
-                            >
-                                <div className="relative w-full h-[85%] overflow-hidden rounded-lg border border-white/10 shadow-2xl">
-                                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-700 z-10"></div>
-                                    <img
-                                        src={imgRoyalJewellery}
-                                        alt="Royal Women's Accessories"
-                                        className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
-                                        loading="lazy"
-                                    />
-                                </div>
-                                <div className="flex-1 flex flex-col items-center justify-center pt-6 text-center">
-                                    <motion.h2
-                                        initial={{ y: 20, opacity: 0 }}
-                                        whileInView={{ y: 0, opacity: 1 }}
-                                        className="text-3xl md:text-4xl font-serif text-black mb-2 tracking-[0.2em] group-hover:text-royal-maroon transition-colors"
-                                    >
-                                        ACCESSORIES
-                                    </motion.h2>
-                                    <span className="text-xs text-gray-400 uppercase tracking-widest group-hover:text-white transition-colors flex items-center gap-2 border-b border-transparent group-hover:border-white/50 pb-0.5">
-                                        View Collection <ArrowRight size={14} />
-                                    </span>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                ) : activeView === 'women-clothing' ? (
-                    /* Women's Clothing Detailed Sub-Categories */
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "Ethnic Wear",
-                                items: ["Sarees", "Salwar Suits", "Anarkali Dresses", "Kurti Sets", "Dupattas"],
-                                img: imgRoyalSaree
-                            },
-                            {
-                                title: "Western Wear",
-                                items: ["Dresses", "Tops & Blouses", "Skirts", "Trousers", "Jumpsuits"],
-                                img: imgRoyalGown
-                            },
-                            {
-                                title: "Formal Wear",
-                                items: ["Blazers & Coats", "Formal Shirts", "Pencil Skirts", "Tailored Pants", "Co-ord Sets"],
-                                img: imgRoyalGown
-                            },
-                            {
-                                title: "Casual Wear",
-                                items: ["Tunics", "Cotton Kurtis", "Casual Dresses", "Leggings & Jeggings"],
-                                img: imgWomen
-                            },
-                            {
-                                title: "Seasonal Wear",
-                                items: ["Shawls & Stoles", "Sweaters & Cardigans", "Jackets"],
-                                img: imgRoyalSaree
-                            },
-                            {
-                                title: "Luxury & Occasion",
-                                items: ["Gowns", "Designer Lehengas", "Bridal Wear", "Embroidered Suits"],
-                                img: imgRoyalGown
-                            }
-                        ].map((category, idx) => (
-                            <Link to={`/shop?search=${category.title}`} key={idx} className="relative group overflow-hidden rounded-xl border border-white/20 shadow-2xl cursor-pointer block h-[450px]">
-                                {/* Background Image with lighter overlay for clarity */}
-                                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={category.img}
-                                    alt={category.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-100"
-                                    loading="lazy"
-                                />
-
-                                {/* Content Container - Centered */}
-                                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8">
-                                    {/* Logo/Icon placeholder or decorative element */}
-                                    <div className="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-0 group-hover:scale-100">
-                                        <span className="text-royal-gold font-serif text-2xl">M</span>
-                                    </div>
-
-                                    <h3 className="text-3xl md:text-4xl font-serif text-white mb-6 tracking-wide drop-shadow-lg relative inline-block">
-                                        {category.title}
-                                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-royal-gold"></span>
-                                    </h3>
-
-                                    <ul className="space-y-2">
-                                        {category.items.map((item, i) => (
-                                            <li key={i} className="text-gray-300 text-sm md:text-base font-light tracking-wide opacity-80 group-hover:opacity-100 transition-opacity">
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                ) : activeView === 'women-accessories' ? (
-                    /* Women's Accessories Detailed Sub-Categories */
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {[
-                            {
-                                title: "Jewellery",
-                                items: ["Necklaces", "Earrings", "Bangles & Bracelets", "Rings", "Anklets", "Nose Pins"],
-                                img: imgRoyalJewellery
-                            },
-                            {
-                                title: "Fashion Accessories",
-                                items: ["Handbags", "Wallets & Purses", "Belts", "Sunglasses", "Scarves & Stoles"],
-                                img: imgBag
-                            },
-                            {
-                                title: "Hair Accessories",
-                                items: ["Hair Clips & Pins", "Hair Bands & Scrunchies", "Decorative Combs"],
-                                img: imgRoyalJewellery
-                            },
-                            {
-                                title: "Watches",
-                                items: ["Analog Watches", "Luxury Watches", "Smart Watches"],
-                                img: imgRoyalWatch
-                            },
-                            {
-                                title: "Footwear Accessories",
-                                items: ["Socks & Stockings", "Shoe Care Kits"],
-                                img: imgRoyalHeels
-                            },
-                            {
-                                title: "Beauty & Grooming",
-                                items: ["Perfumes", "Makeup Accessories", "Skincare Tools"],
-                                img: imgRoyalPerfume
-                            }
-                        ].map((category, idx) => (
-                            <Link to={`/shop?search=${category.title}`} key={idx} className="relative group overflow-hidden rounded-xl border border-white/20 shadow-2xl cursor-pointer block h-[450px]">
-                                {/* Background Image with lighter overlay for clarity */}
-                                <div className="absolute inset-0 bg-black/30 group-hover:bg-black/40 transition-colors duration-700 z-10"></div>
-                                <img
-                                    src={category.img}
-                                    alt={category.title}
-                                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 opacity-100"
-                                    loading="lazy"
-                                />
-
-                                {/* Content Container - Centered */}
-                                <div className="absolute inset-0 z-20 flex flex-col items-center justify-center text-center p-8">
-                                    {/* Logo/Icon placeholder or decorative element */}
-                                    <div className="w-16 h-16 border border-white/30 rounded-full flex items-center justify-center mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500 scale-0 group-hover:scale-100">
-                                        <span className="text-royal-gold font-serif text-2xl">M</span>
-                                    </div>
-
-                                    <h3 className="text-3xl md:text-4xl font-serif text-white mb-6 tracking-wide drop-shadow-lg relative inline-block">
-                                        {category.title}
-                                        <span className="absolute -bottom-2 left-1/2 -translate-x-1/2 w-12 h-[1px] bg-royal-gold"></span>
-                                    </h3>
-
-                                    <ul className="space-y-2">
-                                        {category.items.map((item, i) => (
-                                            <li key={i} className="text-gray-300 text-sm md:text-base font-light tracking-wide opacity-90 group-hover:opacity-100 transition-opacity">
-                                                {item}
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            </Link>
-                        ))}
-                    </div>
-                ) : null}
-            </div>
-
-            {/* Additional Features Section (Always Visible) */}
-            <div className="container mx-auto mt-32 space-y-32">
-
-                {/* 1. The Royal Concierge */}
-                <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8 }}
-                    className="relative w-full h-[400px] rounded-lg overflow-hidden flex items-center justify-center border border-royal-maroon/20"
-                >
-                    <div className="absolute inset-0 bg-gradient-to-r from-royal-maroon via-royal-maroon/80 to-royal-maroon z-10"></div>
-                    {/* Concierge Image from Sanity or fallback */}
-                    <img
-                        src={data?.conciergeSection?.image || imgMen}
-                        className="absolute inset-0 w-full h-full object-cover opacity-30 grayscale"
-                        alt="Concierge"
-                        loading="lazy"
-                    />
-
-                    <div className="relative z-20 text-center px-6 max-w-3xl">
-                        <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">
-                            {data?.conciergeSection?.heading || "The Royal Concierge"}
-                        </h2>
-                        <p className="text-gray-200 text-lg mb-8 font-light">
-                            {data?.conciergeSection?.description || "Experience the luxury of private shopping. Book an appointment with our dedicated stylists for a personalized fitting session at your residence or our flagship boutique."}
-                        </p>
-                        <button className="bg-white text-royal-maroon px-10 py-4 uppercase tracking-[0.2em] text-sm font-bold hover:bg-black hover:text-white transition-colors duration-300">
-                            {data?.conciergeSection?.buttonText || "Book Private Appointment"}
-                        </button>
-                    </div>
-                </motion.div>
-
-
-                {/* 2. The Art of Regality (Craftsmanship Features) */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 text-center">
-                    {(data?.features || [
-                        { title: "Hand-Woven Legacy", desc: "Sourced directly from the master weavers of Banaras and Kanchipuram." },
-                        { title: "Bespoke Tailoring", desc: "Each garment is cut and stitched to perfection by our master craftsmen." },
-                        { title: "Rare Fabrics", desc: "Utilizing the finest Ahimsa silk, Pashmina, and Egyptian cotton." }
-                    ])?.map((feature, idx) => (
-                        <motion.div
-                            key={idx}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.6, delay: idx * 0.2 }}
-                            className="p-8 border border-gray-200 bg-white rounded-lg hover:bg-gray-50 transition-colors shadow-sm"
-                        >
-                            <div className="w-16 h-16 bg-royal-maroon/10 rounded-full mx-auto mb-6 flex items-center justify-center text-royal-maroon text-2xl font-serif">
-                                {idx + 1}
-                            </div>
-                            {/* Mapped fields: title, description (Sanity) vs desc (Local) */}
-                            <h3 className="text-xl font-serif text-black mb-4 tracking-wide">
-                                {feature.title}
-                            </h3>
-                            <p className="text-gray-600 font-light leading-relaxed">
-                                {feature.description || feature.desc}
-                            </p>
-                        </motion.div>
-                    ))}
-                </div>
-
-
-                {/* 3. The Royal Registry (Newsletter) */}
-                <div className="border-t border-royal-maroon/20 pt-20 pb-10 text-center">
-                    <h2 className="text-2xl md:text-3xl font-serif text-black mb-4">
-                        {data?.registrySection?.heading || "Join The Royal Registry"}
-                    </h2>
-                    <p className="text-gray-600 mb-8 max-w-xl mx-auto">
-                        {data?.registrySection?.description || "Be the first to receive invitations to exclusive events, private previews, and stories from the Murgdur archives."}
+                    <p className="text-gray-300 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
+                        Celebrating a legacy of sovereignty. From the archives of the monarchy to the forefront of modern luxury.
+                        Three exclusive capsules that honor our heritage.
                     </p>
-                    <div className="flex flex-col md:flex-row gap-4 max-w-md mx-auto">
-                        <input
-                            type="email"
-                            placeholder="Your Email Address"
-                            className="bg-transparent border border-gray-300 text-black px-6 py-3 w-full focus:outline-none focus:border-royal-maroon transition-colors"
-                        />
-                        <button className="bg-royal-maroon text-white px-8 py-3 uppercase tracking-widest text-xs font-bold hover:bg-black transition-colors">
-                            {data?.registrySection?.buttonText || "Subscribe"}
-                        </button>
+                </div>
+            </section>
+
+            {/* 2. STICKY FILTER MENU */}
+            <div className="sticky top-[70px] z-40 bg-white/95 backdrop-blur-md border-b border-gray-100 py-4 transition-all shadow-sm">
+                <div className="container mx-auto px-4 overflow-x-auto scrollbar-hide">
+                    <div className="flex justify-start md:justify-center min-w-max space-x-8 md:space-x-12">
+                        {[
+                            { id: 'men', label: 'THE ROYAL MEN' },
+                            { id: 'women', label: 'THE IMPERIAL WOMEN' },
+                            { id: 'accessories', label: 'CROWN JEWELS & OBJECTS' },
+                            { id: 'artifacts', label: 'ARTIFACTS' }
+                        ].map((item) => (
+                            <button
+                                key={item.id}
+                                onClick={() => scrollToSection(item.id)}
+                                className={`text-[10px] md:text-xs font-bold uppercase tracking-[0.2em] transition-colors relative py-2 ${activeSection === item.id ? 'text-black' : 'text-gray-400 hover:text-black'
+                                    }`}
+                            >
+                                {item.label}
+                                {activeSection === item.id && (
+                                    <motion.div layoutId="underline" className="absolute bottom-0 left-0 w-full h-[2px] bg-black" />
+                                )}
+                            </button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+
+            {/* 3. CONTENT SECTIONS */}
+            <div className="max-w-[1600px] mx-auto px-4 md:px-8 py-20 bg-white">
+
+                {/* --- SECTION 1: MEN --- */}
+                <div id="men" className="mb-32 scroll-mt-40">
+                    <div className="flex flex-col md:flex-row gap-12 mb-16 items-center">
+                        <div className="w-full md:w-1/3 text-center md:text-left">
+                            <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">Capsule I</span>
+                            <h2 className="text-4xl md:text-5xl font-serif text-black mb-6">The Sovereign</h2>
+                            <p className="text-gray-600 font-light leading-relaxed mb-6 text-sm md:text-base">
+                                Evoking the spirit of the Durban. Sharp tailoring meets heritage fabrics.
+                                Designed for the modern man who commands the room.
+                            </p>
+                            <Link to="/shop?category=men" className="inline-block text-xs font-bold uppercase tracking-[0.2em] border-b border-black pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                                View Full Collection
+                            </Link>
+                        </div>
+                        <div className="w-full md:w-2/3 h-[300px] md:h-[400px] overflow-hidden bg-gray-100">
+                            <img src={pageData?.menSection?.image || imgRoyalSherwani} className="w-full h-full object-cover" alt="Men's Capsule Story" />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+                        {/* Display Fallback Static Data OR Fetched Products */}
+                        {(menProducts.length > 0 ? menProducts : [
+                            { name: 'Royal Sherwani', price: 45000, img: imgRoyalSherwani, link: '/shop?search=Sherwani' },
+                            { name: 'Velvet Bandhgala', price: 28000, img: imgMen, link: '/shop?search=Bandhgala', badge: 'New Season' },
+                            { name: 'Classic Kurta', price: 12000, img: imgRoyalShirt, link: '/shop?search=Kurta' },
+                            { name: 'Silk Stole', price: 8500, img: imgRoyalTShirt, link: '/shop?search=Stole' }
+                        ]).map((p, i) => (
+                            <CollectionProductCard key={i} product={p} badge={p.badge} />
+                        ))}
+                        {menProducts.length === 0 && products.length > 0 && (
+                            <div className="col-span-full text-center py-10 text-gray-400 italic">
+                                Loading Men's Collection...
+                            </div>
+                        )}
                     </div>
                 </div>
 
+                {/* --- SECTION 2: WOMEN --- */}
+                <div id="women" className="mb-32 scroll-mt-40">
+                    <div className="flex flex-col md:flex-row-reverse gap-12 mb-16 items-center">
+                        <div className="w-full md:w-1/3 lg:pl-10 text-center md:text-left">
+                            <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">Capsule II</span>
+                            <h2 className="text-4xl md:text-5xl font-serif text-black mb-6">Imperial Grace</h2>
+                            <p className="text-gray-600 font-light leading-relaxed mb-6 text-sm md:text-base">
+                                Inspired by the queens of yore. Silk drapes that flow like water,
+                                embroidered with threads of real gold. A tribute to timeless femininity.
+                            </p>
+                            <Link to="/shop?category=women" className="inline-block text-xs font-bold uppercase tracking-[0.2em] border-b border-black pb-1 hover:text-gray-600 hover:border-gray-600 transition-colors">
+                                View Full Collection
+                            </Link>
+                        </div>
+                        <div className="w-full md:w-2/3 h-[300px] md:h-[400px] overflow-hidden bg-gray-100">
+                            <img src={pageData?.womenSection?.image || imgWomen} className="w-full h-full object-cover object-top" alt="Women's Capsule Story" />
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+                        {(womenProducts.length > 0 ? womenProducts : [
+                            { name: 'Bridal Lehenga', price: 125000, img: imgRoyalSaree, link: '/shop?search=Lehenga', badge: 'Exclusive' },
+                            { name: 'Banarasi Silk Saree', price: 45000, img: imgRoyalGown, link: '/shop?search=Saree' },
+                            { name: 'Embroidered Gown', price: 65000, img: imgRoyalSaree, link: '/shop?search=Gown' },
+                            { name: 'Handloom Dupatta', price: 15000, img: imgWomen, link: '/shop?search=Dupatta' }
+                        ]).map((p, i) => (
+                            <CollectionProductCard key={i} product={p} badge={p.badge} />
+                        ))}
+                    </div>
+                </div>
+
+                {/* --- SECTION 3: ACCESSORIES --- */}
+                <div id="accessories" className="mb-32 scroll-mt-40">
+                    <div className="text-center mb-16 max-w-3xl mx-auto">
+                        <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold block mb-4">Capsule III</span>
+                        <h2 className="text-4xl md:text-5xl font-serif text-black mb-6">Crown Jewels & Objects</h2>
+                        <p className="text-gray-600 font-light leading-relaxed mb-6 text-sm md:text-base">
+                            The finishing touches. From leather goods crafted by master artisans to timepieces
+                            that mark the finest hours.
+                        </p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+                        {/* Featured Large Cards */}
+                        <div className="group relative aspect-[4/5] overflow-hidden bg-gray-100">
+                            <img src={imgRoyalWatch} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Watch" />
+                            <div className="absolute bottom-6 left-6">
+                                <h3 className="text-white font-serif text-2xl">Timepieces</h3>
+                                <Link to="/shop?cat=watches" className="text-white/80 text-xs uppercase tracking-widest hover:text-white mt-2 block">Discover</Link>
+                            </div>
+                        </div>
+                        <div className="group relative aspect-[4/5] overflow-hidden bg-gray-100">
+                            <img src={imgRoyalBelt} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Leather" />
+                            <div className="absolute bottom-6 left-6">
+                                <h3 className="text-white font-serif text-2xl">Leather Goods</h3>
+                                <Link to="/shop?cat=belts" className="text-white/80 text-xs uppercase tracking-widest hover:text-white mt-2 block">Discover</Link>
+                            </div>
+                        </div>
+                        <div className="group relative aspect-[4/5] overflow-hidden bg-gray-100 hidden lg:block">
+                            <img src={imgRoyalPerfume} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" alt="Perfume" />
+                            <div className="absolute bottom-6 left-6">
+                                <h3 className="text-black font-serif text-2xl">Olfactory</h3>
+                                <Link to="/shop?cat=perfume" className="text-gray-600 text-xs uppercase tracking-widest hover:text-black mt-2 block">Discover</Link>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-x-4 gap-y-10">
+                        {(accessoryProducts.length > 0 ? accessoryProducts : [
+                            { name: 'Royal Chronograph', price: 85000, img: imgRoyalWatch, link: '/shop?type=watches', badge: 'Limited' },
+                            { name: 'Signature Belt', price: 18000, img: imgRoyalBelt, link: '/shop?type=belts' },
+                            { name: 'Voyager Wallet', price: 12500, img: imgRoyalWallet, link: '/shop?type=wallets' },
+                            { name: 'Aviator Sunglasses', price: 15000, img: imgRoyalSunglasses, link: '/shop?type=sunglasses' }
+                        ]).map((p, i) => (
+                            <CollectionProductCard key={i} product={p} badge={p.badge} />
+                        ))}
+                    </div>
+                </div>
+
+                {/* --- SECTION 4: ARTIFACTS (Story Only) --- */}
+                <div id="artifacts" className="scroll-mt-40 bg-[#f6f6f6] p-8 md:p-16">
+                    <div className="flex flex-col md:flex-row gap-12 items-center">
+                        <div className="w-full md:w-1/2">
+                            <img src={imgBag} alt="Artifacts" className="w-full h-auto object-cover grayscale hover:grayscale-0 transition-all duration-700" />
+                        </div>
+                        <div className="w-full md:w-1/2 md:pl-10 text-center md:text-left">
+                            <h2 className="text-3xl md:text-4xl font-serif text-black mb-6">Murgdur Artifacts</h2>
+                            <p className="text-gray-600 font-light leading-relaxed mb-6">
+                                Beyond fashion lies art. Explore our collection of travel trunks, bespoke furniture,
+                                and home curiosities collected from the royal palaces.
+                            </p>
+                            <Link to="/contact" className="inline-block bg-black text-white px-8 py-3 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-800 transition-colors">
+                                Inquire for Catalog
+                            </Link>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+
+            {/* Footer Note */}
+            <div className="py-20 text-center bg-white border-t border-gray-100 text-black">
+                <span className="text-royal-maroon text-2xl">❖</span>
+                <p className="mt-4 text-xs font-bold uppercase tracking-[0.25em] text-gray-400">
+                    Est. 2019 • The Kingdom of Murgdur
+                </p>
+            </div>
+
         </div>
     );
 };

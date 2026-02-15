@@ -22,23 +22,25 @@ const ProductGrid = ({ heading, eyebrow, products, layout }) => {
                     {products.map((item, idx) => {
                         const link = `/product/${item._id}`;
                         return (
-                            <Link to={link || "/shop"} key={item._id || idx} className="group block mb-10 relative">
-                                <div className="overflow-hidden mb-5 rounded-sm border border-gray-100 aspect-[4/5] relative shadow-sm hover:shadow-xl transition-all duration-300 bg-white">
+                            <Link to={link || "/shop"} key={item._id || idx} className="group block mb-10 relative cursor-pointer">
+                                <div className="relative overflow-hidden mb-3 aspect-[4/5] bg-[#f6f6f6]">
                                     <img
                                         src={item.image}
                                         alt={item.name}
-                                        className="w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-out"
+                                        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
                                         loading="lazy"
                                     />
-                                    {/* Hover Overlay */}
-                                    <div className="absolute inset-0 bg-black/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                                 </div>
-                                <h3 className="text-center text-sm md:text-base text-black font-semibold group-hover:text-royal-gold uppercase tracking-widest transition-colors mb-2">
-                                    {item.name}
-                                </h3>
-                                {item.price && (
-                                    <p className="text-center text-xs font-medium text-gray-600">₹ {item.price.toLocaleString()}</p>
-                                )}
+                                <div className="text-center px-2">
+                                    <h3 className="text-[#19110b] font-sans text-xs font-bold tracking-[0.1em] uppercase mb-1 leading-relaxed">
+                                        {item.name}
+                                    </h3>
+                                    {item.price && (
+                                        <p className="text-[#595959] text-[11px] font-medium tracking-wide">
+                                            ₹ {item.price.toLocaleString()}
+                                        </p>
+                                    )}
+                                </div>
                             </Link>
                         );
                     })}

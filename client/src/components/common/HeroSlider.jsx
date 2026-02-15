@@ -15,24 +15,33 @@ const HeroSlider = ({ slides: customSlides }) => {
     const defaultSlides = [
         {
             id: 1,
-            video: "/videos/perfume1.mp4", // Local Video
+            video: "/videos/perfume1.mp4",
             title: "Royal Heritage",
             subtitle: "Experience the legacy of kings.",
-            link: "/shop?cat=royal"
+            link: "/shop?cat=royal",
+            ctaText: "Shop the Royal Edit",
+            secondaryLink: "/heritage",
+            secondaryCtaText: "Our Legacy"
         },
         {
             id: 2,
             image: img2,
             title: "Modern Elegance",
             subtitle: "Contemporary fashion for the elite.",
-            link: "/shop?cat=contemporary"
+            link: "/shop?cat=contemporary",
+            ctaText: "View Modern Looks",
+            secondaryLink: "/shop?cat=accessories",
+            secondaryCtaText: "Shop Accessories"
         },
         {
             id: 3,
             image: img3,
             title: "Winter Collection",
             subtitle: "Warmth wrapped in luxury.",
-            link: "/shop?cat=winter"
+            link: "/shop?cat=winter",
+            ctaText: "Explore Winter",
+            secondaryLink: "/shop?cat=jackets",
+            secondaryCtaText: "View Jackets"
         }
     ];
 
@@ -45,7 +54,7 @@ const HeroSlider = ({ slides: customSlides }) => {
                 effect={'fade'}
                 speed={1500}
                 autoplay={{
-                    delay: 5000, // Increased delay for video visibility
+                    delay: 5000,
                     disableOnInteraction: false,
                 }}
                 pagination={{ clickable: true }}
@@ -82,30 +91,38 @@ const HeroSlider = ({ slides: customSlides }) => {
                                 </div>
                             )}
 
-                            <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4 z-20">
+                            <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-16 text-center text-white px-4 z-20">
+                                {/* Eyebrow / Category */}
+                                <span className="text-[10px] font-bold tracking-[0.25em] uppercase mb-4 drop-shadow-md animate-fade-in block">
+                                    {slide.subtitle ? slide.subtitle.split(' ')[0] : 'WOMEN'}
+                                </span>
+
+                                {/* Main Title */}
                                 <h2
-                                    className="text-4xl md:text-7xl lg:text-8xl font-serif mb-6 leading-tight drop-shadow-2xl font-bold animate-fade-in"
-                                    style={{ textShadow: '2px 2px 8px rgba(0,0,0,0.8)' }}
+                                    className="text-3xl md:text-5xl lg:text-7xl font-sans font-black uppercase tracking-widest mb-6 drop-shadow-lg animate-slide-up"
+                                    style={{ textShadow: '1px 1px 4px rgba(0,0,0,0.5)' }}
                                 >
                                     {slide.title}
                                 </h2>
 
-                                <p
-                                    className="text-lg md:text-2xl font-normal tracking-wide mb-10 text-gray-100 max-w-3xl drop-shadow-lg animate-slide-up"
-                                >
-                                    {slide.subtitle}
-                                </p>
+                                {/* CTA Links - Dynamic */}
+                                <div className="flex gap-12 animate-fade-in delay-200">
+                                    <Link
+                                        to={slide.link || "/shop"}
+                                        className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] border-b border-white pb-1 hover:text-gray-200 hover:border-gray-200 transition-all"
+                                    >
+                                        {slide.ctaText || "Explore Collection"}
+                                    </Link>
 
-                                {slide.link && (
-                                    <div className="animate-fade-in">
+                                    {(slide.secondaryCtaText || slide.secondaryLink) && (
                                         <Link
-                                            to={slide.link}
-                                            className="inline-block border-2 border-royal-gold px-12 py-4 text-sm md:text-base font-bold uppercase tracking-[0.25em] hover:bg-royal-gold hover:text-black transition-all duration-300 shadow-xl backdrop-blur-sm"
+                                            to={slide.secondaryLink || "/royal-collection"}
+                                            className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] border-b border-white pb-1 hover:text-gray-200 hover:border-gray-200 transition-all"
                                         >
-                                            {slide.ctaText || "Explore Collection"}
+                                            {slide.secondaryCtaText || "Discover Campaign"}
                                         </Link>
-                                    </div>
-                                )}
+                                    )}
+                                </div>
                             </div>
                         </SwiperSlide>
                     );

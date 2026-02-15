@@ -27,7 +27,7 @@ const Newsletter = () => {
 
                 {/* Text Section */}
                 <div className="md:w-1/2">
-                    <h2 className="text-3xl md:text-4xl font-serif text-royal-maroon mb-4">
+                    <h2 className="text-3xl md:text-4xl font-serif text-black mb-4">
                         {data?.heading || "Join The Royal Circle"}
                     </h2>
                     <p className="text-gray-600 font-light text-sm leading-relaxed mb-6 max-w-md">
@@ -48,10 +48,10 @@ const Newsletter = () => {
                             <input
                                 type="email"
                                 placeholder="Enter your email address"
-                                className="w-full bg-white border border-gray-200 text-black pl-12 pr-4 py-4 text-sm placeholder:text-gray-400 focus:outline-none focus:border-royal-maroon transition-colors"
+                                className="w-full bg-white border border-gray-200 text-black pl-12 pr-4 py-4 text-sm placeholder:text-gray-400 focus:outline-none focus:border-black transition-colors"
                             />
                         </div>
-                        <button className="bg-royal-maroon text-white text-xs font-bold uppercase tracking-[0.2em] py-4 px-8 hover:bg-red-900 transition-colors duration-300 w-full shadow-sm">
+                        <button className="bg-black text-white text-xs font-bold uppercase tracking-[0.2em] py-4 px-8 hover:bg-gray-900 transition-colors duration-300 w-full shadow-sm">
                             Subscribe Now
                         </button>
                     </form>

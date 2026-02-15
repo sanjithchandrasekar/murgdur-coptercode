@@ -38,6 +38,9 @@ function App() {
           <Route path="royal-collection" element={<RoyalCollection />} />
           <Route path="vault" element={<Vault />} />
           <Route path="profile" element={<Profile />} />
+          <Route path="login" element={<Profile />} />
+          <Route path="signup" element={<Profile />} />
+          <Route path="register" element={<Profile />} />
           <Route path="cart" element={<Cart />} />
           <Route path="checkout" element={<Checkout />} />
 
@@ -76,6 +79,15 @@ function App() {
           <Route path="track-order" element={<InfoPage />} />
           <Route path="advertise" element={<InfoPage />} />
           <Route path="giftcards" element={<InfoPage />} />
+          <Route path="services" element={<InfoPage />} />
+          <Route path="stores" element={<InfoPage />} />
+          <Route path="foundation" element={<InfoPage />} />
+          <Route path="repairs" element={<InfoPage />} />
+          <Route path="personalisation" element={<InfoPage />} />
+          <Route path="gifting" element={<InfoPage />} />
+          <Route path="apps" element={<InfoPage />} />
+          <Route path="legal-privacy" element={<InfoPage />} />
+          <Route path="cookies" element={<InfoPage />} />
           <Route path="help" element={<InfoPage />} />
         </Route>
         {/* Studio Route - Outside Layout */}
