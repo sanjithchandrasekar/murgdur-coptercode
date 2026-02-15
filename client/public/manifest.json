@@ -1,0 +1,20 @@
+{
+    "short_name": "Murgdur",
+    "name": "Murgdur Royal Luxury",
+    "icons": [
+        {
+            "src": "/images/logo.jpeg",
+            "type": "image/jpeg",
+            "sizes": "192x192"
+        },
+        {
+            "src": "/images/logo.jpeg",
+            "type": "image/jpeg",
+            "sizes": "512x512"
+        }
+    ],
+    "start_url": ".",
+    "display": "standalone",
+    "theme_color": "#000000",
+    "background_color": "#000000"
+}

@@ -15,6 +15,8 @@ import PageSections from '../components/sections/PageSections';
 const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
 const royalBg = "/images/royal_dress_bg.png";
 
+import SEO from '../components/common/SEO';
+
 const Home = () => {
     const [homeData, setHomeData] = useState(null);
 
@@ -32,6 +34,10 @@ const Home = () => {
     if (homeData?.pageBuilder && homeData.pageBuilder.length > 0) {
         return (
             <div className="bg-royal-black overflow-x-hidden">
+                <SEO
+                    title="Murgdur | Royal Heritage & Luxury"
+                    description="Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty."
+                />
                 <PageSections sections={homeData.pageBuilder} />
 
                 {/* Keep Footer-like sections if they aren't part of pageBuilder yet, 
@@ -49,6 +55,10 @@ const Home = () => {
     // ---------------------------------------------------------
     return (
         <div className="bg-royal-black overflow-x-hidden">
+            <SEO
+                title="Murgdur | The Kingdom of Luxury"
+                description="Experience the legacy of kings. Shop our exclusive collection of royal attire, bespoke accessories, and timeless artifacts."
+            />
             {/* 1. Full Screen Hero Slider */}
             <HeroSlider slides={homeData?.heroSlides} />
 

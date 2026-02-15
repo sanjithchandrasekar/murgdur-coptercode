@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { fetchAboutPage } from '../utils/sanity';
 
+import SEO from '../components/common/SEO';
+
 const AboutUs = () => {
     const [data, setData] = useState(null);
 
@@ -15,6 +17,11 @@ const AboutUs = () => {
 
     return (
         <div className="bg-black min-h-screen text-white">
+            <SEO
+                title={`${data?.heading || "About Murgdur"} | Our Story`}
+                description="Discover the legacy of Murgdur. Born from royal tradition, crafted for modern elegance."
+                url="https://murugdur1.vercel.app/about"
+            />
             <div className="pt-32 pb-20 px-6 container mx-auto">
                 <h1 className="text-4xl md:text-6xl font-serif text-royal-gold mb-8 text-center">{data?.heading || "About Murgdur"}</h1>
                 <div className="max-w-4xl mx-auto space-y-8 text-gray-300 font-light text-lg leading-relaxed">

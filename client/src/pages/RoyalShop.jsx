@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ChevronDown, Filter, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/common/SEO';
 
 // Asset Imports (Reusing available assets)
 const imgHero = "/images/royal_sherwani.png"; // Placeholder for Hero
@@ -48,6 +49,11 @@ const RoyalShop = () => {
 
     return (
         <div className="bg-[#fcfbf9] text-[#19110b] font-sans selection:bg-[#D4AF37] selection:text-white min-h-screen">
+            <SEO
+                title="Royal Collection | Murgdur"
+                description="A celebration of timeless elegance and superior craftsmanship. Explore the Royal Collection - the pinnacle of regal style."
+                url="https://murugdur1.vercel.app/royal-collection"
+            />
 
             {/* 1. PAGE TITLE & INTRO */}
             <section className="pt-32 pb-12 text-center px-4">

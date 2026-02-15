@@ -5,6 +5,7 @@ import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { fetchProducts } from '../utils/sanity';
 import RoyalZoomGallery from '../components/common/RoyalZoomGallery';
+import SEO from '../components/common/SEO';
 
 const imgLogo = "/images/logo.jpeg";
 
@@ -119,6 +120,13 @@ const ProductDetails = () => {
 
     return (
         <div className="bg-royal-black min-h-screen pt-32 pb-20 text-white font-sans relative">
+            <SEO
+                title={`${product.name} | Murgdur`}
+                description={product.description || `Buy ${product.name} at Murgdur. Premium quality and timeless design.`}
+                image={product.image}
+                url={`https://murugdur1.vercel.app/product/${product.id}`}
+                type="product"
+            />
             <div className="container mx-auto px-6 max-w-7xl">
 
 
