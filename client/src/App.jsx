@@ -7,7 +7,7 @@ import Cart from './pages/Cart';
 import Shop from './pages/Shop';
 import ProductDetails from './pages/ProductDetails';
 import Heritage from './pages/Heritage';
-import RoyalCollection from './pages/RoyalCollection';
+import RoyalShop from './pages/RoyalShop';
 import Vault from './pages/Vault';
 import Checkout from './pages/Checkout';
 
@@ -35,7 +35,7 @@ function App() {
           <Route path="shop" element={<Shop />} />
           <Route path="product/:id" element={<ProductDetails />} />
           <Route path="heritage" element={<Heritage />} />
-          <Route path="royal-collection" element={<RoyalCollection />} />
+          <Route path="royal-collection" element={<RoyalShop />} />
           <Route path="vault" element={<Vault />} />
           <Route path="profile" element={<Profile />} />
           <Route path="login" element={<Profile />} />
