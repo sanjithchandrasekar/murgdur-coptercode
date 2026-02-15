@@ -168,7 +168,7 @@ const Navbar = () => {
                 {/* RIGHT: User Actions */}
                 <div className="flex items-center gap-6 md:gap-8">
                     <Link to="/contact" className="hidden lg:block text-[11px] uppercase tracking-[0.2em] font-medium hover:opacity-70 transition-opacity">
-                        Call Us
+                        Concierge
                     </Link>
 
                     {/* Wishlist */}

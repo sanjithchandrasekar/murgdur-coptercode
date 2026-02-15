@@ -160,7 +160,10 @@ export const fetchHomePage = async () => {
             subtitle,
             videoUrl,
             "image": image.asset->url + "?auto=format&q=80",
-            link
+            link,
+            ctaText,
+            secondaryLink,
+            secondaryCtaText
         },
         promoSection {
             eyebrow,
