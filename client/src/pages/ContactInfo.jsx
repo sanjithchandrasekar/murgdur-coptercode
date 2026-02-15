@@ -3,6 +3,8 @@ import { Mail, Phone, MapPin, Clock, Send } from 'lucide-react';
 import Button from '../components/common/Button';
 import { fetchContactPage } from '../utils/sanity';
 
+import SEO from '../components/common/SEO';
+
 const ContactInfo = () => {
     const [data, setData] = useState(null);
 
@@ -16,6 +18,11 @@ const ContactInfo = () => {
 
     return (
         <div className="min-h-screen bg-royal-black text-white pt-24 pb-12">
+            <SEO
+                title={`${data?.heading || "Contact Us"} | Murgdur Support`}
+                description="Get in touch with Murgdur. We are here to assist you with your royal experience."
+                url="https://murugdur1.vercel.app/contact"
+            />
             <div className="container mx-auto px-6">
                 {/* Header */}
                 <div className="text-center mb-16">

@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { fetchHeritagePage } from '../utils/sanity';
 
+import SEO from '../components/common/SEO';
+
 const Heritage = () => {
     const [data, setData] = useState(null);
 
@@ -17,7 +19,11 @@ const Heritage = () => {
 
     return (
         <div className="min-h-screen bg-white">
-
+            <SEO
+                title={`${data?.heroHeading || "Our Heritage"} | Murgdur Legacy`}
+                description="Explore the rich history and legacy of Murgdur. Founded on the principles of excellence and timeless luxury."
+                url="https://murugdur1.vercel.app/heritage"
+            />
             {/* Hero Section */}
             <div className="relative h-[60vh] bg-gradient-to-b from-[#2b2520] to-[#4a3f35] flex items-center justify-center text-center px-4">
                 <div className="max-w-4xl mx-auto">

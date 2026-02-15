@@ -6,6 +6,8 @@ import Button from '../components/common/Button';
 import { useCart } from '../context/CartContext';
 import { fetchVaultPage } from '../utils/sanity';
 
+import SEO from '../components/common/SEO';
+
 const Vault = () => {
     const navigate = useNavigate();
     const { wishlistItems, removeFromWishlist, moveToCart } = useCart();
@@ -23,6 +25,11 @@ const Vault = () => {
 
     return (
         <div className="min-h-screen bg-royal-black pt-32 pb-20 px-4 md:px-0">
+            <SEO
+                title={`${data?.heading || "My Vault"} | Murgdur`}
+                description="Your personal collection of Murgdur's finest. View and manage your saved items."
+                url="https://murugdur1.vercel.app/vault"
+            />
             <div className="container mx-auto max-w-5xl">
 
                 {/* Header */}
