@@ -121,8 +121,9 @@ const Auth = () => {
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
       newErrors.email = "Invalid email format";
     if (view === "signup") {
-      if (!formData.firstName) newErrors.firstName = "Required";
-      if (!formData.lastName) newErrors.lastName = "Required";
+      if (!formData.fullName || formData.fullName.trim().split(" ").length < 2) {
+        newErrors.firstName = "Please enter your full name (First & Last)";
+      }
       if (formData.password.length < 8) newErrors.password = "Min 8 chars";
       if (formData.password !== formData.confirmPassword)
         newErrors.confirmPassword = "Passwords do not match";
@@ -180,7 +181,7 @@ const Auth = () => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: `${formData.firstName} ${formData.lastName}`,
+            name: formData.fullName,
             email: formData.email,
             password: formData.password,
             mobile: formData.mobile,
@@ -529,140 +530,125 @@ const Auth = () => {
                   </motion.div>
                 )}
 
-                {/* SIGNUP FIELDS */}
+                {/* SIGNUP FIELDS - PREMIUM & UNIQUE */}
                 {view === "signup" && (
                   <motion.div
                     key="signup"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    className="space-y-4"
+                    className="space-y-8 mt-4"
                   >
-                    <div className="grid grid-cols-2 gap-4">
-                      <Input
-                        label="First Name"
-                        name="firstName"
-                        value={formData.firstName}
-                        onChange={handleChange}
-                        error={errors.firstName}
-                        placeholder="John"
+                    {/* Full Name */}
+                    <div className="relative group">
+                      <input
+                        type="text"
+                        name="fullName"
+                        value={formData.fullName || ""}
+                        onChange={(e) => {
+                          const val = e.target.value;
+                          const parts = val.split(" ");
+                          setFormData(prev => ({
+                            ...prev,
+                            fullName: val,
+                            firstName: parts[0],
+                            lastName: parts.slice(1).join(" ")
+                          }));
+                        }}
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white placeholder-transparent focus:outline-none focus:border-[#D4AF37] transition-colors peer"
+                        placeholder="John Doe"
                       />
-                      <Input
-                        label="Last Name"
-                        name="lastName"
-                        value={formData.lastName}
-                        onChange={handleChange}
-                        error={errors.lastName}
-                        placeholder="Doe"
-                      />
+                      <label className="absolute left-0 top-3 text-zinc-500 text-xs uppercase tracking-widest transition-all duration-300 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-[#D4AF37] peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-[9px]">
+                        Full Name
+                      </label>
+                      {errors.firstName && <span className="absolute right-0 top-3 text-red-500 text-[9px]">{errors.firstName}</span>}
                     </div>
 
-                    <Input
-                      label="Email Address"
-                      icon={Mail}
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleChange}
-                      error={errors.email}
-                      placeholder="name@example.com"
-                    />
-
+                    {/* Email */}
                     <div className="relative group">
-                      <label
-                        htmlFor="mobile"
-                        className="text-[10px] uppercase text-[#D4AF37] font-bold tracking-widest ml-1 mb-1 block"
-                      >
+                      <input
+                        type="email"
+                        name="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white placeholder-transparent focus:outline-none focus:border-[#D4AF37] transition-colors peer"
+                        placeholder="email@example.com"
+                      />
+                      <label className="absolute left-0 top-3 text-zinc-500 text-xs uppercase tracking-widest transition-all duration-300 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-[#D4AF37] peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-[9px]">
+                        Email Address
+                      </label>
+                      {errors.email && <span className="absolute right-0 top-3 text-red-500 text-[9px]">{errors.email}</span>}
+                    </div>
+
+                    {/* Mobile */}
+                    <div className="relative group">
+                      <input
+                        type="tel"
+                        name="mobile"
+                        value={formData.mobile}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white placeholder-transparent focus:outline-none focus:border-[#D4AF37] transition-colors peer pl-8"
+                        placeholder="9876543210"
+                      />
+                      <span className="absolute left-0 top-3 text-zinc-500 text-xs">+91</span>
+                      <label className="absolute left-8 top-3 text-zinc-500 text-xs uppercase tracking-widest transition-all duration-300 peer-focus:-top-4 peer-focus:-left-0 peer-focus:text-[9px] peer-focus:text-[#D4AF37] peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:-left-0 peer-not-placeholder-shown:text-[9px]">
                         Mobile Number
                       </label>
-                      <div className="flex">
-                        <div className="bg-[#141414] border border-white/10 border-r-0 rounded-l-sm px-3 flex items-center text-zinc-400 text-sm gap-1">
-                          <Globe size={14} /> +91
-                        </div>
-                        <input
-                          id="mobile"
-                          type="tel"
-                          name="mobile"
-                          value={formData.mobile}
-                          onChange={handleChange}
-                          className="w-full bg-[#141414] border border-white/10 text-white px-4 py-3.5 rounded-r-sm focus:border-[#D4AF37] focus:outline-none text-sm transition-all"
-                          placeholder="98765 43210"
-                        />
-                      </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Input
-                        label="Create Password"
-                        icon={Lock}
+                    {/* Password */}
+                    <div className="relative group">
+                      <input
                         type="password"
                         name="password"
                         value={formData.password}
                         onChange={handleChange}
-                        error={errors.password}
-                        isPassword
-                        placeholder="Min 8 chars"
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white placeholder-transparent focus:outline-none focus:border-[#D4AF37] transition-colors peer"
+                        placeholder="Password"
                       />
-                      {/* Strength Meter */}
-                      {formData.password && (
-                        <div className="flex gap-1 h-1 mt-1">
-                          <div
-                            className={`flex-1 rounded-full transition-colors ${passwordStrength > 0 ? "bg-red-500" : "bg-white/10"}`}
-                          ></div>
-                          <div
-                            className={`flex-1 rounded-full transition-colors ${passwordStrength > 25 ? "bg-yellow-500" : "bg-white/10"}`}
-                          ></div>
-                          <div
-                            className={`flex-1 rounded-full transition-colors ${passwordStrength > 50 ? "bg-blue-500" : "bg-white/10"}`}
-                          ></div>
-                          <div
-                            className={`flex-1 rounded-full transition-colors ${passwordStrength > 75 ? "bg-green-500" : "bg-white/10"}`}
-                          ></div>
-                        </div>
-                      )}
-                    </div>
-
-                    <Input
-                      label="Confirm Password"
-                      icon={ShieldCheck}
-                      type="password"
-                      name="confirmPassword"
-                      value={formData.confirmPassword}
-                      onChange={handleChange}
-                      error={errors.confirmPassword}
-                      isPassword
-                      placeholder="Re-enter password"
-                    />
-
-                    <div className="flex items-start gap-3 p-3 bg-white/5 rounded border border-white/5">
-                      <input
-                        type="checkbox"
-                        name="agreeTerms"
-                        checked={formData.agreeTerms}
-                        onChange={handleChange}
-                        className="mt-1 accent-[#D4AF37]"
-                        id="terms"
-                      />
-                      <label
-                        htmlFor="terms"
-                        className="text-xs text-zinc-400 cursor-pointer"
-                      >
-                        I agree to Murgdur's{" "}
-                        <span className="text-white hover:underline">
-                          Terms of Service
-                        </span>{" "}
-                        and{" "}
-                        <span className="text-white hover:underline">
-                          Privacy Policy
-                        </span>
-                        .
+                      <label className="absolute left-0 top-3 text-zinc-500 text-xs uppercase tracking-widest transition-all duration-300 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-[#D4AF37] peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-[9px]">
+                        Create Password
                       </label>
+                      {/* Minimal Strength Indicator */}
+                      <div className="absolute bottom-0 left-0 h-[1px] bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 transition-all duration-500" style={{ width: `${passwordStrength}%`, opacity: passwordStrength > 0 ? 1 : 0 }} />
                     </div>
-                    {errors.agreeTerms && (
-                      <p className="text-red-500 text-[10px]">
-                        {errors.agreeTerms}
-                      </p>
-                    )}
+
+                    {/* Confirm Password */}
+                    <div className="relative group">
+                      <input
+                        type="password"
+                        name="confirmPassword"
+                        value={formData.confirmPassword}
+                        onChange={handleChange}
+                        className="w-full bg-transparent border-b border-white/20 py-3 text-white placeholder-transparent focus:outline-none focus:border-[#D4AF37] transition-colors peer"
+                        placeholder="Confirm Password"
+                      />
+                      <label className="absolute left-0 top-3 text-zinc-500 text-xs uppercase tracking-widest transition-all duration-300 peer-focus:-top-4 peer-focus:text-[9px] peer-focus:text-[#D4AF37] peer-not-placeholder-shown:-top-4 peer-not-placeholder-shown:text-[9px]">
+                        Confirm Password
+                      </label>
+                      {errors.confirmPassword && <span className="absolute right-0 top-3 text-red-500 text-[9px]">{errors.confirmPassword}</span>}
+                    </div>
+
+                    {/* Terms */}
+                    <div className="flex items-center gap-3 mt-6">
+                      <label className="relative flex items-center cursor-pointer">
+                        <input
+                          type="checkbox"
+                          name="agreeTerms"
+                          checked={formData.agreeTerms}
+                          onChange={handleChange}
+                          className="sr-only peer"
+                        />
+                        <div className="w-4 h-4 border border-zinc-600 rounded-sm peer-checked:bg-[#D4AF37] peer-checked:border-[#D4AF37] transition-all"></div>
+                        <Check size={10} className="absolute inset-0 m-auto text-black opacity-0 peer-checked:opacity-100" />
+                      </label>
+                      <span className="text-[10px] text-zinc-500">
+                        I agree to{" "}
+                        <span className="text-[#D4AF37] hover:underline cursor-pointer">Terms of Service</span>
+                        {" & "}
+                        <span className="text-[#D4AF37] hover:underline cursor-pointer">Privacy Policy</span>
+                      </span>
+                    </div>
                   </motion.div>
                 )}
 
