@@ -271,6 +271,7 @@ const Navbar = () => {
             to="/vault"
             className="hover:opacity-70 transition-opacity relative"
             aria-label={`Wishlist ${wishlistItems?.length > 0 ? `(${wishlistItems.length} items)` : ""}`}
+            title="Wishlist"
           >
             <Heart size={16} strokeWidth={1.5} />
             {wishlistItems && wishlistItems.length > 0 && (
@@ -278,6 +279,23 @@ const Navbar = () => {
                 className={`absolute -top-1.5 -right-1.5 text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ${isScrolled ? "bg-black text-white" : "bg-white text-black"}`}
               >
                 {wishlistItems.length}
+              </span>
+            )}
+          </Link>
+
+          {/* Cart - Added for E-commerce flow */}
+          <Link
+            to="/cart"
+            className="hover:opacity-70 transition-opacity relative"
+            aria-label={`Cart ${getCartCount() > 0 ? `(${getCartCount()} items)` : ""}`}
+            title="Shopping Bag"
+          >
+            <ShoppingBag size={16} strokeWidth={1.5} />
+            {getCartCount() > 0 && (
+              <span
+                className={`absolute -top-1.5 -right-1.5 text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ${isScrolled ? "bg-[#D4AF37] text-black" : "bg-[#D4AF37] text-black"}`}
+              >
+                {getCartCount()}
               </span>
             )}
           </Link>
