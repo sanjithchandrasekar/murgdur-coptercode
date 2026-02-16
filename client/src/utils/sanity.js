@@ -1,6 +1,6 @@
-import { createClient } from '@sanity/client';
-import imageUrlBuilder from '@sanity/image-url';
-import { products as staticProducts } from '../data/products';
+import { createClient } from "@sanity/client";
+import imageUrlBuilder from "@sanity/image-url";
+import { products as staticProducts } from "../data/products";
 
 export const fetchPage = async (slug) => {
   try {
@@ -60,18 +60,19 @@ export const fetchPage = async (slug) => {
 // ------------------------------------------------------------------
 // CONFIGURATION
 // ------------------------------------------------------------------
-const PROJECT_ID = 'qbaw2yts';
+const PROJECT_ID = "qbaw2yts";
 
 // Hardcoded Token as Fallback because Environment Variable is failing
-const HARDCODED_TOKEN = "skhKjccyqXjuBAOwCUYHvUXFMKSrgbVlfIIQR0pPDsUGsyTYj3UGRlaWTsn6D8RpKcZ9N4ot6VHw82CEGClEpISRlgXsYqsdHLGue9NKmhDQ3N6DySir23xyLwa7AFLUcxX1S8cGphK03p2vEpynuI0yZhkHf98AS8E8XmUHyKI6R0d9wHNL";
+const HARDCODED_TOKEN =
+  "skhKjccyqXjuBAOwCUYHvUXFMKSrgbVlfIIQR0pPDsUGsyTYj3UGRlaWTsn6D8RpKcZ9N4ot6VHw82CEGClEpISRlgXsYqsdHLGue9NKmhDQ3N6DySir23xyLwa7AFLUcxX1S8cGphK03p2vEpynuI0yZhkHf98AS8E8XmUHyKI6R0d9wHNL";
 
 export const client = createClient({
   projectId: PROJECT_ID,
-  dataset: 'production',
+  dataset: "production",
   useCdn: true, // Enable CDN for faster response times
-  apiVersion: '2024-01-22',
-  token: HARDCODED_TOKEN || import.meta.env.VITE_SANITY_TOKEN || '', // Use Hardcoded first
-  ignoreBrowserTokenWarning: true // Suppress token warnings in browser
+  apiVersion: "2024-01-22",
+  token: HARDCODED_TOKEN || import.meta.env.VITE_SANITY_TOKEN || "", // Use Hardcoded first
+  ignoreBrowserTokenWarning: true, // Suppress token warnings in browser
 });
 /*
 if (!import.meta.env.VITE_SANITY_TOKEN) {
@@ -403,7 +404,7 @@ export const fetchPolicyPage = async (slug) => {
  */
 export const fetchProducts = async () => {
   // If no project ID is set, or it's the default placeholder, fallback immediately
-  if (!PROJECT_ID || PROJECT_ID === 'YOUR_PROJECT_ID') {
+  if (!PROJECT_ID || PROJECT_ID === "YOUR_PROJECT_ID") {
     console.warn("Sanity Project ID not set. Using static data.");
     return Promise.resolve(staticProducts);
   }
@@ -434,21 +435,71 @@ export const fetchProducts = async () => {
     }
 
     // Map Sanity results to match your app's internal structure
-    const mappedSanityProducts = sanityProducts.map(p => ({
+    const mappedSanityProducts = sanityProducts.map((p) => ({
       ...p,
       id: p._id, // Use Sanity's unique _id as the id
       // Ensure colors are strings (hex codes) if they are objects from Sanity schema
       colors: Array.isArray(p.colors)
-        ? p.colors.map(c => (typeof c === 'object' && c.hex ? c.hex : c))
-        : p.colors
+        ? p.colors.map((c) => (typeof c === "object" && c.hex ? c.hex : c))
+        : p.colors,
     }));
 
     // Return only Sanity products to verify integration
     return mappedSanityProducts;
-
   } catch (error) {
     console.error("Failed to fetch from Sanity:", error);
     console.warn("Falling back to static data.");
     return staticProducts;
+  }
+};
+
+/**
+ * Creates a new order in Sanity
+ */
+export const createOrder = async (orderData) => {
+  try {
+    const result = await client.create({
+      _type: "order",
+      ...orderData,
+    });
+    return result;
+  } catch (error) {
+    console.error("Failed to create order in Sanity:", error);
+    return null;
+  }
+};
+
+/**
+ * Fetches order history for a specific customer
+ */
+export const fetchCustomerOrders = async (customerEmail) => {
+  try {
+    const query = `*[_type == "order" && customer->email == $email] | order(createdAt desc){
+      _id,
+      orderNumber,
+      items[],
+      totalAmount,
+      status,
+      shippingAddress,
+      paymentMethod,
+      createdAt
+    }`;
+    return await client.fetch(query, { email: customerEmail });
+  } catch (error) {
+    console.error("Failed to fetch customer orders:", error);
+    return [];
+  }
+};
+
+/**
+ * Updates customer data (addresses, cards, etc.)
+ */
+export const updateCustomerData = async (customerId, data) => {
+  try {
+    const result = await client.patch(customerId).set(data).commit();
+    return result;
+  } catch (error) {
+    console.error("Failed to update customer data:", error);
+    return null;
   }
 };

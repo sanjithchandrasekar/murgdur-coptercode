@@ -1,53 +1,111 @@
-import React from 'react';
-import { Helmet } from 'react-helmet-async';
+import React from "react";
+import { Helmet } from "react-helmet-async";
 
-const SEO = ({ title, description, image, url, type = "website" }) => {
-    const siteTitle = "Murgdur | Royal Heritage & Luxury";
-    const metaTitle = title ? `${title} | Murgdur` : siteTitle;
-    const metaDescription = description || "Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty.";
-    const metaImage = image || "https://murugdur1.vercel.app/images/logo.jpeg";
-    const metaUrl = url || "https://murugdur1.vercel.app/";
+const SEO = ({
+  title,
+  description,
+  image,
+  url,
+  type = "website",
+  keywords,
+}) => {
+  const siteTitle = "Murgdur | Royal Heritage & Luxury";
+  const siteName = "Murgdur";
+  const metaTitle = title || siteTitle;
+  const metaDescription =
+    description ||
+    "Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty. Shop premium royal attire, luxury accessories, and bespoke heritage items.";
+  const metaImage = image || "https://murugdur1.vercel.app/images/logo.jpeg";
+  const metaUrl = url || window.location.href;
+  const metaKeywords =
+    keywords ||
+    "luxury fashion, royal heritage, premium clothing, bespoke accessories, royal attire, murgdur, heritage fashion, luxury lifestyle, royal collection, premium fashion india";
 
-    const jsonLd = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Murgdur",
-        "url": "https://murugdur1.vercel.app/",
-        "logo": "https://murugdur1.vercel.app/images/logo.jpeg",
-        "sameAs": [
-            "https://www.facebook.com/murgdur",
-            "https://www.instagram.com/murgdur",
-            "https://twitter.com/murgdur"
-        ]
-    };
+  // Enhanced Schema.org data
+  const organizationSchema = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "Murgdur",
+    alternateName: "Murgdur Royal Heritage",
+    url: "https://murugdur1.vercel.app/",
+    logo: {
+      "@type": "ImageObject",
+      url: "https://murugdur1.vercel.app/images/logo.jpeg",
+    },
+    description: metaDescription,
+    sameAs: [
+      "https://www.facebook.com/murgdur",
+      "https://www.instagram.com/murgdur",
+      "https://twitter.com/murgdur",
+    ],
+  };
 
-    return (
-        <Helmet>
-            {/* Standard Metadata */}
-            <title>{metaTitle}</title>
-            <meta name="description" content={metaDescription} />
-            <link rel="canonical" href={metaUrl} />
+  const websiteSchema = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Murgdur",
+    url: "https://murugdur1.vercel.app/",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate:
+          "https://murugdur1.vercel.app/shop?search={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  };
 
-            {/* Open Graph / Facebook */}
-            <meta property="og:type" content={type} />
-            <meta property="og:url" content={metaUrl} />
-            <meta property="og:title" content={metaTitle} />
-            <meta property="og:description" content={metaDescription} />
-            <meta property="og:image" content={metaImage} />
+  return (
+    <Helmet>
+      {/* Standard Metadata */}
+      <title>{metaTitle}</title>
+      <meta name="description" content={metaDescription} />
+      <meta name="keywords" content={metaKeywords} />
+      <meta name="author" content="Murgdur" />
+      <link rel="canonical" href={metaUrl} />
 
-            {/* Twitter */}
-            <meta property="twitter:card" content="summary_large_image" />
-            <meta property="twitter:url" content={metaUrl} />
-            <meta property="twitter:title" content={metaTitle} />
-            <meta property="twitter:description" content={metaDescription} />
-            <meta property="twitter:image" content={metaImage} />
+      {/* Robots */}
+      <meta
+        name="robots"
+        content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1"
+      />
 
-            {/* Schema.org JSON-LD */}
-            <script type="application/ld+json">
-                {JSON.stringify(jsonLd)}
-            </script>
-        </Helmet>
-    );
+      {/* Open Graph / Facebook */}
+      <meta property="og:type" content={type} />
+      <meta property="og:url" content={metaUrl} />
+      <meta property="og:title" content={metaTitle} />
+      <meta property="og:description" content={metaDescription} />
+      <meta property="og:image" content={metaImage} />
+      <meta property="og:image:width" content="1200" />
+      <meta property="og:image:height" content="630" />
+      <meta property="og:site_name" content={siteName} />
+      <meta property="og:locale" content="en_US" />
+
+      {/* Twitter */}
+      <meta name="twitter:card" content="summary_large_image" />
+      <meta name="twitter:url" content={metaUrl} />
+      <meta name="twitter:title" content={metaTitle} />
+      <meta name="twitter:description" content={metaDescription} />
+      <meta name="twitter:image" content={metaImage} />
+      <meta name="twitter:site" content="@murgdur" />
+      <meta name="twitter:creator" content="@murgdur" />
+
+      {/* Additional SEO */}
+      <meta name="theme-color" content="#000000" />
+      <meta name="application-name" content="Murgdur" />
+
+      {/* Schema.org JSON-LD-Organization */}
+      <script type="application/ld+json">
+        {JSON.stringify(organizationSchema)}
+      </script>
+
+      {/* Schema.org JSON-LD-WebSite */}
+      <script type="application/ld+json">
+        {JSON.stringify(websiteSchema)}
+      </script>
+    </Helmet>
+  );
 };
 
 export default SEO;

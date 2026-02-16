@@ -19,6 +19,7 @@ import vaultPage from './vaultPage'
 import policyPage from './policyPage'
 
 import customer from './customer'
+import order from './order'
 import heroSection from './objects/heroSection'
 import textWithImage from './objects/textWithImage'
 import productGrid from './objects/productGrid'
@@ -53,5 +54,6 @@ export const schemaTypes = [
     visionPage,
     vaultPage,
     policyPage,
-    customer
+    customer,
+    order
 ]

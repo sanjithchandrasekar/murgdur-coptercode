@@ -1,64 +1,111 @@
-import React, { useEffect, useState } from 'react';
-import { fetchPressPage } from '../utils/sanity';
+import React, { useEffect, useState } from "react";
+import { fetchPressPage } from "../utils/sanity";
+
+import SEO from "../components/common/SEO";
+import BackButton from "../components/common/BackButton";
 
 const Press = () => {
-    const [data, setData] = useState(null);
+  const [data, setData] = useState(null);
 
-    useEffect(() => {
-        const load = async () => {
-            const result = await fetchPressPage();
-            if (result) setData(result);
-        };
-        load();
-    }, []);
+  useEffect(() => {
+    const load = async () => {
+      const result = await fetchPressPage();
+      if (result) setData(result);
+    };
+    load();
+  }, []);
 
-    const releases = (data?.releases && data.releases.length > 0) ? data.releases : [
-        { date: "October 15, 2025", title: "Murgdur Unveils ' The Sovereign Winter' Collection in Paris", summary: "The luxury house marks its debut at Paris Fashion Week with a collection inspired by the royal durbars of 19th century India." },
-        { date: "August 02, 2025", title: "House of Murgdur Appoints New Creative Director", summary: "Visionary designer Aarav Mehta takes the helm, promising to blend traditional craftsmanship with futuristic silhouettes." },
-        { date: "June 10, 2025", title: "Murgdur Sustainability Report 2024-25", summary: "Achieving 100% ethical sourcing for all leather goods and launching the 'Green Gold' initiative." }
-    ];
+  const releases =
+    data?.releases && data.releases.length > 0
+      ? data.releases
+      : [
+          {
+            date: "October 15, 2025",
+            title:
+              "Murgdur Unveils ' The Sovereign Winter' Collection in Paris",
+            summary:
+              "The luxury house marks its debut at Paris Fashion Week with a collection inspired by the royal durbars of 19th century India.",
+          },
+          {
+            date: "August 02, 2025",
+            title: "House of Murgdur Appoints New Creative Director",
+            summary:
+              "Visionary designer Aarav Mehta takes the helm, promising to blend traditional craftsmanship with futuristic silhouettes.",
+          },
+          {
+            date: "June 10, 2025",
+            title: "Murgdur Sustainability Report 2024-25",
+            summary:
+              "Achieving 100% ethical sourcing for all leather goods and launching the 'Green Gold' initiative.",
+          },
+        ];
 
-    return (
-        <div className="bg-black min-h-screen text-white">
+  return (
+    <div className="bg-black min-h-screen text-white">
+      <SEO
+        title={`${data?.heading || "Press & Media"} | Murgdur`}
+        description={
+          data?.intro ||
+          "Latest news, press releases, and media resources from the House of Murgdur."
+        }
+        url="https://murugdur1.vercel.app/press"
+      />
 
-            <div className="pt-32 pb-20 px-6 container mx-auto">
-                <h1 className="text-4xl md:text-6xl font-serif text-royal-gold mb-8 text-center">{data?.heading || "Press Room"}</h1>
-                <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16 text-lg font-light">
-                    {data?.intro || "Latest news, press releases, and media resources from the House of Murgdur."}
-                </p>
-
-                <div className="max-w-5xl mx-auto space-y-8">
-                    {releases.map((release, idx) => (
-                        <div key={idx} className="bg-white/5 border border-white/10 p-8 rounded-lg flex flex-col md:flex-row justify-between gap-6 hover:bg-white/10 transition-colors">
-                            <div>
-                                <span className="text-royal-gold text-xs font-bold uppercase tracking-widest mb-2 block">{release.date}</span>
-                                <h2 className="text-2xl font-serif text-white mb-3">{release.title}</h2>
-                                <p className="text-gray-400 font-light text-sm">
-                                    {release.summary}
-                                </p>
-                            </div>
-                            <div className="shrink-0">
-                                <button className="px-6 py-3 border border-gray-600 text-white text-xs uppercase tracking-widest hover:border-white hover:bg-white hover:text-black transition-all">
-                                    Download PDF
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-
-                <div className="mt-20 text-center pt-20 border-t border-white/10">
-                    <h3 className="text-xl font-serif text-white mb-4">Media Enquiries</h3>
-                    <p className="text-gray-400 font-light mb-6">
-                        For press kits, high-resolution imagery, and interview requests.
-                    </p>
-                    <a href={`mailto:${data?.mediaContactEmail || "press@murgdur.com"}`} className="text-royal-gold text-lg border-b border-royal-gold/50 hover:border-royal-gold pb-1 transition-all">
-                        {data?.mediaContactEmail || "press@murgdur.com"}
-                    </a>
-                </div>
-            </div>
-
+      <div className="pt-32 pb-20 px-6 container mx-auto relative">
+        <div className="mb-8">
+          <BackButton className="text-gray-400 hover:text-royal-gold" />
         </div>
-    );
+        <h1 className="text-4xl md:text-6xl font-serif text-royal-gold mb-8 text-center">
+          {data?.heading || "Press Room"}
+        </h1>
+        <p className="text-gray-400 text-center max-w-2xl mx-auto mb-16 text-lg font-light">
+          {data?.intro ||
+            "Latest news, press releases, and media resources from the House of Murgdur."}
+        </p>
+
+        <div className="max-w-5xl mx-auto space-y-8">
+          {releases.map((release, idx) => (
+            <div
+              key={idx}
+              className="bg-white/5 border border-white/10 p-8 rounded-lg flex flex-col md:flex-row justify-between gap-6 hover:bg-white/10 transition-colors"
+            >
+              <div>
+                <span className="text-royal-gold text-xs font-bold uppercase tracking-widest mb-2 block">
+                  {release.date}
+                </span>
+                <h2 className="text-2xl font-serif text-white mb-3">
+                  {release.title}
+                </h2>
+                <p className="text-gray-400 font-light text-sm">
+                  {release.summary}
+                </p>
+              </div>
+              <div className="shrink-0">
+                <button className="px-6 py-3 border border-gray-600 text-white text-xs uppercase tracking-widest hover:border-white hover:bg-white hover:text-black transition-all">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-20 text-center pt-20 border-t border-white/10">
+          <h3 className="text-xl font-serif text-white mb-4">
+            Media Enquiries
+          </h3>
+          <p className="text-gray-400 font-light mb-6">
+            For press kits, high-resolution imagery, and interview requests.
+          </p>
+          <a
+            href={`mailto:${data?.mediaContactEmail || "press@murgdur.com"} `}
+            className="text-royal-gold text-lg border-b border-royal-gold/50 hover:border-royal-gold pb-1 transition-all"
+          >
+            {data?.mediaContactEmail || "press@murgdur.com"}
+          </a>
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default Press;

@@ -1,49 +1,49 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const Order = require('../models/Order');
-const { protect } = require('../middleware/authMiddleware');
+const Order = require("../models/Order");
+const { protect } = require("../middleware/authMiddleware");
 
 // @desc    Create new order
 // @route   POST /api/orders
 // @access  Private
-router.post('/', protect, async (req, res) => {
-    const {
-        orderItems,
-        shippingAddress,
-        paymentMethod,
-        itemsPrice,
-        taxPrice,
-        shippingPrice,
-        totalPrice,
-    } = req.body;
+router.post("/", protect, async (req, res) => {
+  const {
+    orderItems,
+    shippingAddress,
+    paymentMethod,
+    itemsPrice,
+    taxPrice,
+    shippingPrice,
+    totalPrice,
+  } = req.body;
 
-    if (orderItems && orderItems.length === 0) {
-        res.status(400).json({ message: 'No order items' });
-        return;
-    } else {
-        const order = new Order({
-            user: req.user._id,
-            orderItems,
-            shippingAddress,
-            paymentMethod,
-            itemsPrice,
-            taxPrice,
-            shippingPrice,
-            totalPrice,
-        });
+  if (orderItems && orderItems.length === 0) {
+    res.status(400).json({ message: "No order items" });
+    return;
+  } else {
+    const order = new Order({
+      user: req.user._id,
+      orderItems,
+      shippingAddress,
+      paymentMethod,
+      itemsPrice,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+    });
 
-        const createdOrder = await order.save();
+    const createdOrder = await order.save();
 
-        res.status(201).json(createdOrder);
-    }
+    res.status(201).json(createdOrder);
+  }
 });
 
 // @desc    Get user orders
 // @route   GET /api/orders/myorders
 // @access  Private
-router.get('/myorders', protect, async (req, res) => {
-    const orders = await Order.find({ user: req.user._id });
-    res.json(orders);
+router.get("/myorders", protect, async (req, res) => {
+  const orders = await Order.find({ user: req.user._id });
+  res.json(orders);
 });
 
 module.exports = router;

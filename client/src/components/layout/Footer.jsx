@@ -1,54 +1,60 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
-import { fetchFooter } from '../../utils/sanity';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { Facebook, Twitter, Youtube, Instagram } from "lucide-react";
+import { fetchFooter } from "../../utils/sanity";
 
 const Footer = () => {
-    const [data, setData] = useState(null);
+  const [data, setData] = useState(null);
 
-    useEffect(() => {
-        const load = async () => {
-            const result = await fetchFooter();
-            if (result) setData(result);
-        };
-        load();
-    }, []);
+  useEffect(() => {
+    const load = async () => {
+      const result = await fetchFooter();
+      if (result) setData(result);
+    };
+    load();
+  }, []);
 
-    const aboutLinks = data?.aboutLinks?.length ? data.aboutLinks : [
+  const aboutLinks = data?.aboutLinks?.length
+    ? data.aboutLinks
+    : [
         { title: "Contact Us", url: "/contact" },
         { title: "About Us", url: "/about" },
         { title: "Careers", url: "/careers" },
         { title: "Murgdur Stories", url: "/stories" },
         { title: "Press", url: "/press" },
-        { title: "Corporate Information", url: "/corporate" }
-    ];
+        { title: "Corporate Information", url: "/corporate" },
+      ];
 
-    const helpLinks = data?.helpLinks?.length ? data.helpLinks : [
+  const helpLinks = data?.helpLinks?.length
+    ? data.helpLinks
+    : [
         { title: "Payments", url: "/payments" },
         { title: "Shipping", url: "/shipping" },
         { title: "Cancellation & Returns", url: "/cancellation" },
         { title: "FAQ", url: "/faq" },
-        { title: "Report Infringement", url: "/report" }
-    ];
+        { title: "Report Infringement", url: "/report" },
+      ];
 
-    const policyLinks = data?.policyLinks?.length ? data.policyLinks : [
+  const policyLinks = data?.policyLinks?.length
+    ? data.policyLinks
+    : [
         { title: "Cancellation & Returns", url: "/cancellation" },
         { title: "Terms Of Use", url: "/terms" },
         { title: "Security", url: "/security" },
         { title: "Privacy", url: "/privacy" },
         { title: "Sitemap", url: "/sitemap" },
         { title: "Grievance Redressal", url: "/grievance" },
-        { title: "EPR Compliance", url: "/epr" }
-    ];
+        { title: "EPR Compliance", url: "/epr" },
+      ];
 
-    const defaultMailAddress = `Murgdur Private Limited,
+  const defaultMailAddress = `Murgdur Private Limited,
 Buildings Alyssa, Begonia &
 Clove Embassy Tech Village,
 Outer Ring Road, Devarabeesanahalli Village,
 Bengaluru, 560103,
 Karnataka, India`;
 
-    const defaultOfficeAddress = `Murgdur Private Limited,
+  const defaultOfficeAddress = `Murgdur Private Limited,
 Buildings Alyssa, Begonia &
 Clove Embassy Tech Village,
 Outer Ring Road, Devarabeesanahalli Village,
@@ -57,127 +63,250 @@ Karnataka, India
 CIN : U51109KA2012PTC066107
 Telephone: 044-45614700 / 044-67415800`;
 
-    return (
-        <footer className="bg-royal-black text-white font-sans text-[13px] leading-relaxed border-t border-white/10">
+  return (
+    <footer className="bg-royal-black text-white font-sans text-[13px] leading-relaxed border-t border-white/10">
+      {/* Top Footer Section */}
+      <div className="container mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {/* Column 1: HELP */}
+          <div>
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+              Help
+            </h3>
+            <div className="flex flex-col space-y-3">
+              <p className="mb-2 text-gray-400">
+                A Client Advisor is available at{" "}
+                <a
+                  href="tel:+914445614700"
+                  className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
+                >
+                  +91 44 4561 4700
+                </a>
+                . You can also{" "}
+                <Link
+                  to="/contact"
+                  className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
+                >
+                  chat
+                </Link>{" "}
+                or{" "}
+                <a
+                  href="mailto:support@murugdur.com"
+                  className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
+                >
+                  email us
+                </a>
+                .
+              </p>
+              {helpLinks.map((link, idx) => (
+                <Link
+                  key={idx}
+                  to={link.url}
+                  className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                >
+                  {link.title}
+                </Link>
+              ))}
+              <Link
+                to="/stores"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Stores
+              </Link>
+            </div>
+          </div>
 
-            {/* Top Footer Section */}
-            <div className="container mx-auto px-6 py-16">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
+          {/* Column 2: SERVICES */}
+          <div>
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+              Services
+            </h3>
+            <div className="flex flex-col space-y-3">
+              <Link
+                to="/repairs"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Repairs
+              </Link>
+              <Link
+                to="/personalisation"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Personalisation
+              </Link>
+              <Link
+                to="/gifting"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Art of Gifting
+              </Link>
+              <Link
+                to="/apps"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Download our Apps
+              </Link>
+            </div>
+          </div>
 
-                    {/* Column 1: HELP */}
-                    <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Help</h3>
-                        <div className="flex flex-col space-y-3">
-                            <p className="mb-2 text-gray-400">
-                                A Client Advisor is available at <a href="tel:18001039988" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">1800 103 9988</a>. You can also <Link to="/contact" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">chat</Link> or <a href="mailto:support@murugdur.com" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">email us</a>.
-                            </p>
-                            {helpLinks.map((link, idx) => (
-                                <Link key={idx} to={link.url} className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
-                                    {link.title}
-                                </Link>
-                            ))}
-                            <Link to="/stores" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Stores</Link>
-                        </div>
-                    </div>
+          {/* Column 3: ABOUT MURUGDUR */}
+          <div>
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+              About Murugdur
+            </h3>
+            <div className="flex flex-col space-y-3">
+              {aboutLinks.map((link, idx) => (
+                <Link
+                  key={idx}
+                  to={link.url}
+                  className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                >
+                  {link.title}
+                </Link>
+              ))}
+              <Link
+                to="/sustainability"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Sustainability
+              </Link>
+              <Link
+                to="/news"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Latest News
+              </Link>
+              <Link
+                to="/foundation"
+                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+              >
+                Foundation Murugdur
+              </Link>
+            </div>
+          </div>
 
-                    {/* Column 2: SERVICES */}
-                    <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Services</h3>
-                        <div className="flex flex-col space-y-3">
-                            <Link to="/repairs" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Repairs</Link>
-                            <Link to="/personalisation" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Personalisation</Link>
-                            <Link to="/gifting" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Art of Gifting</Link>
-                            <Link to="/apps" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Download our Apps</Link>
-                        </div>
-                    </div>
+          {/* Column 4: CONNECT */}
+          <div>
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+              Connect
+            </h3>
+            <div className="flex flex-col space-y-6">
+              <p className="text-gray-400 leading-relaxed">
+                <Link
+                  to="/signup"
+                  className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
+                >
+                  Sign up
+                </Link>{" "}
+                for Murugdur emails and receive the latest news from the Maison,
+                including exclusive online pre-launches and new collections.
+              </p>
 
-                    {/* Column 3: ABOUT MURUGDUR */}
-                    <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">About Murugdur</h3>
-                        <div className="flex flex-col space-y-3">
-                            {aboutLinks.map((link, idx) => (
-                                <Link key={idx} to={link.url} className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">
-                                    {link.title}
-                                </Link>
-                            ))}
-                            <Link to="/sustainability" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Sustainability</Link>
-                            <Link to="/news" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Latest News</Link>
-                            <Link to="/foundation" className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Foundation Murugdur</Link>
-                        </div>
-                    </div>
-
-                    {/* Column 4: CONNECT */}
-                    <div>
-                        <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">Connect</h3>
-                        <div className="flex flex-col space-y-6">
-                            <p className="text-gray-400 leading-relaxed">
-                                <Link to="/signup" className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current">Sign up</Link> for Murugdur emails and receive the latest news from the Maison, including exclusive online pre-launches and new collections.
-                            </p>
-
-                            <div className="space-y-3">
-                                <h4 className="text-[13px] mb-2 text-white">Follow Us</h4>
-                                <div className="flex gap-5 text-white">
-                                    <a href={data?.socialLinks?.facebook || "#!"} className="hover:text-royal-gold transition-colors"><Facebook strokeWidth={1.5} size={20} /></a>
-                                    <a href={data?.socialLinks?.twitter || "#!"} className="hover:text-royal-gold transition-colors"><Twitter strokeWidth={1.5} size={20} /></a>
-                                    <a href={data?.socialLinks?.youtube || "#!"} className="hover:text-royal-gold transition-colors"><Youtube strokeWidth={1.5} size={20} /></a>
-                                    <a href={data?.socialLinks?.instagram || "#!"} className="hover:text-royal-gold transition-colors"><Instagram strokeWidth={1.5} size={20} /></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+              <div className="space-y-3">
+                <h4 className="text-[13px] mb-2 text-white">Follow Us</h4>
+                <div className="flex gap-5 text-white">
+                  <a
+                    href={data?.socialLinks?.facebook || "#!"}
+                    className="hover:text-royal-gold transition-colors"
+                  >
+                    <Facebook strokeWidth={1.5} size={20} />
+                  </a>
+                  <a
+                    href={data?.socialLinks?.twitter || "#!"}
+                    className="hover:text-royal-gold transition-colors"
+                  >
+                    <Twitter strokeWidth={1.5} size={20} />
+                  </a>
+                  <a
+                    href={data?.socialLinks?.youtube || "#!"}
+                    className="hover:text-royal-gold transition-colors"
+                  >
+                    <Youtube strokeWidth={1.5} size={20} />
+                  </a>
+                  <a
+                    href={data?.socialLinks?.instagram || "#!"}
+                    className="hover:text-royal-gold transition-colors"
+                  >
+                    <Instagram strokeWidth={1.5} size={20} />
+                  </a>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Bottom Footer Section */}
+      <div className="border-t border-white/10 py-12">
+        <div className="container mx-auto px-6">
+          {/* Top Row: Country & Navigation */}
+          <div className="mb-12">
+            <div className="flex items-center gap-2 mb-8 text-white">
+              {/* India Flag Placeholder or SVG */}
+              <span className="text-lg">🇮🇳</span>
+              <span className="underline decoration-1 underline-offset-4 text-xs uppercase tracking-wider font-medium">
+                India
+              </span>
+            </div>
+          </div>
+
+          {/* Middle Row: Addresses */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 text-[11px] text-gray-500 uppercase tracking-widest leading-loose">
+            {/* Manufacturer */}
+            <div>
+              <h4 className="mb-3 text-white font-medium">
+                Full Name and Address of the Manufacturer
+              </h4>
+              <div className="whitespace-pre-line text-gray-400">
+                {data?.mailAddress || defaultMailAddress}
+              </div>
+              <div className="mt-4">
+                <p>Country of Origin: India</p>
+              </div>
             </div>
 
-            {/* Bottom Footer Section */}
-            <div className="border-t border-white/10 py-12">
-                <div className="container mx-auto px-6">
-
-                    {/* Top Row: Country & Navigation */}
-                    <div className="mb-12">
-                        <div className="flex items-center gap-2 mb-8 text-white">
-                            {/* India Flag Placeholder or SVG */}
-                            <span className="text-lg">🇮🇳</span>
-                            <span className="underline decoration-1 underline-offset-4 text-xs uppercase tracking-wider font-medium">India</span>
-                        </div>
-                    </div>
-
-                    {/* Middle Row: Addresses */}
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 text-[11px] text-gray-500 uppercase tracking-widest leading-loose">
-
-                        {/* Manufacturer */}
-                        <div>
-                            <h4 className="mb-3 text-white font-medium">Full Name and Address of the Manufacturer</h4>
-                            <div className="whitespace-pre-line text-gray-400">
-                                {data?.mailAddress || defaultMailAddress}
-                            </div>
-                            <div className="mt-4">
-                                <p>Country of Origin: India</p>
-                            </div>
-                        </div>
-
-                        {/* Importer */}
-                        <div>
-                            <h4 className="mb-3 text-white font-medium">Full Name and Address of the Importer</h4>
-                            <div className="whitespace-pre-line text-gray-400">
-                                {data?.officeAddress || defaultOfficeAddress}
-                            </div>
-                            <div className="mt-4 lowercase normal-case tracking-normal">
-                                <p>Please refer to the product label for specific country of origin for each product.</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    {/* Bottom Row: Links */}
-                    <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-gray-300">
-                        <Link to="/sitemap" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Sitemap</Link>
-                        <Link to="/legal-privacy" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Legal & Privacy</Link>
-                        <Link to="/cookies" className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors">Cookies</Link>
-                    </div>
-
-                </div>
+            {/* Importer */}
+            <div>
+              <h4 className="mb-3 text-white font-medium">
+                Full Name and Address of the Importer
+              </h4>
+              <div className="whitespace-pre-line text-gray-400">
+                {data?.officeAddress || defaultOfficeAddress}
+              </div>
+              <div className="mt-4 lowercase normal-case tracking-normal">
+                <p>
+                  Please refer to the product label for specific country of
+                  origin for each product.
+                </p>
+              </div>
             </div>
-        </footer>
-    );
+          </div>
+
+          {/* Bottom Row: Links */}
+          <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-gray-300">
+            <Link
+              to="/sitemap"
+              className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+            >
+              Sitemap
+            </Link>
+            <Link
+              to="/legal-privacy"
+              className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+            >
+              Legal & Privacy
+            </Link>
+            <Link
+              to="/cookies"
+              className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+            >
+              Cookies
+            </Link>
+          </div>
+        </div>
+      </div>
+    </footer>
+  );
 };
 
 export default Footer;

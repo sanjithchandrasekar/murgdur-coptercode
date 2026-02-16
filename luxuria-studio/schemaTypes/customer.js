@@ -55,6 +55,43 @@ export default {
             type: 'string',
         },
         {
+            name: 'addresses',
+            title: 'Saved Addresses',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        { name: 'id', type: 'string' },
+                        { name: 'name', type: 'string' },
+                        { name: 'mobile', type: 'string' },
+                        { name: 'pincode', type: 'string' },
+                        { name: 'city', type: 'string' },
+                        { name: 'state', type: 'string' },
+                        { name: 'addressLine', type: 'string' },
+                        { name: 'type', type: 'string', initialValue: 'Home' }
+                    ]
+                }
+            ]
+        },
+        {
+            name: 'savedCards',
+            title: 'Saved Payment Methods',
+            type: 'array',
+            of: [
+                {
+                    type: 'object',
+                    fields: [
+                        { name: 'id', type: 'string' },
+                        { name: 'last4', type: 'string' },
+                        { name: 'name', type: 'string' },
+                        { name: 'expiry', type: 'string' },
+                        { name: 'type', type: 'string', initialValue: 'Visa' }
+                    ]
+                }
+            ]
+        },
+        {
             name: 'createdAt',
             title: 'Created At',
             type: 'datetime',
