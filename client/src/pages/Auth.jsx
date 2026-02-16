@@ -731,37 +731,29 @@ const Auth = () => {
             )}
 
             {/* View Toggle */}
-            {view === "login" && (
-              <div className="mt-10 flex flex-col items-center gap-6">
-                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-                <div className="flex flex-col items-center gap-2 cursor-pointer group" onClick={() => setView("signup")}>
-                  <p className="text-zinc-500 text-[10px] tracking-[0.2em] uppercase">
-                    Not a member?
-                  </p>
-                  <p className="font-serif text-[#D4AF37] text-lg italic hover:text-white transition-colors duration-300">
-                    Request Access to the Royal Circle
-                  </p>
+            {/* Simple & Unique View Toggle */}
+            {(view === "login" || view === "signup") && (
+              <div className="mt-12 flex flex-col items-center justify-center gap-4">
+                <div className="relative w-full text-center">
+                  <div className="absolute inset-0 flex items-center" aria-hidden="true">
+                    <div className="w-full border-t border-white/5"></div>
+                  </div>
+                  <div className="relative flex justify-center">
+                    <span className="bg-[#050505] px-2 text-[10px] text-zinc-500 uppercase tracking-widest">
+                      {view === "login" ? "New here?" : "Been here before?"}
+                    </span>
+                  </div>
                 </div>
 
-                <p className="text-zinc-700 text-[9px] uppercase tracking-[0.4em] mt-4">
-                  Restricted • Members Only
-                </p>
-              </div>
-            )}
-
-            {view === "signup" && (
-              <div className="mt-10 flex flex-col items-center gap-6">
-                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-                <div className="flex flex-col items-center gap-2 cursor-pointer group" onClick={() => setView("login")}>
-                  <p className="text-zinc-500 text-[10px] tracking-[0.2em] uppercase">
-                    Already a member?
-                  </p>
-                  <p className="font-serif text-[#D4AF37] text-lg italic hover:text-white transition-colors duration-300">
-                    Enter the Vault
-                  </p>
-                </div>
+                <button
+                  onClick={() => setView(view === "login" ? "signup" : "login")}
+                  className="group relative px-8 py-3 overflow-hidden rounded-sm border border-[#D4AF37]/30 hover:border-[#D4AF37] transition-all duration-500"
+                >
+                  <div className="absolute inset-0 w-0 bg-[#D4AF37] transition-all duration-[250ms] ease-out group-hover:w-full opacity-10"></div>
+                  <span className="relative z-10 text-xs font-bold text-[#D4AF37] tracking-[0.2em] uppercase">
+                    {view === "login" ? "Create Account" : "Sign In"}
+                  </span>
+                </button>
               </div>
             )}
             {view === "forgot" && (
