@@ -732,27 +732,36 @@ const Auth = () => {
 
             {/* View Toggle */}
             {view === "login" && (
-              <div className="mt-10 text-center space-y-4">
-                <button
-                  onClick={() => setView("signup")}
-                  className="text-white text-xs hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold border-b border-transparent hover:border-[#D4AF37] pb-1"
-                >
-                  New to Murgdur? Create Account
-                </button>
-                <p className="text-zinc-600 text-[11px] uppercase tracking-widest">
-                  Restricted Access • Sovereignty Collection
+              <div className="mt-10 flex flex-col items-center gap-6">
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+                <div className="flex flex-col items-center gap-2 cursor-pointer group" onClick={() => setView("signup")}>
+                  <p className="text-zinc-500 text-[10px] tracking-[0.2em] uppercase">
+                    Not a member?
+                  </p>
+                  <p className="font-serif text-[#D4AF37] text-lg italic hover:text-white transition-colors duration-300">
+                    Request Access to the Royal Circle
+                  </p>
+                </div>
+
+                <p className="text-zinc-700 text-[9px] uppercase tracking-[0.4em] mt-4">
+                  Restricted • Members Only
                 </p>
               </div>
             )}
 
             {view === "signup" && (
-              <div className="mt-10 text-center">
-                <button
-                  onClick={() => setView("login")}
-                  className="text-zinc-500 text-[10px] hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold"
-                >
-                  Already have an account? Sign In
-                </button>
+              <div className="mt-10 flex flex-col items-center gap-6">
+                <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+                <div className="flex flex-col items-center gap-2 cursor-pointer group" onClick={() => setView("login")}>
+                  <p className="text-zinc-500 text-[10px] tracking-[0.2em] uppercase">
+                    Already a member?
+                  </p>
+                  <p className="font-serif text-[#D4AF37] text-lg italic hover:text-white transition-colors duration-300">
+                    Enter the Vault
+                  </p>
+                </div>
               </div>
             )}
             {view === "forgot" && (
