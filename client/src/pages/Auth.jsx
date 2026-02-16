@@ -732,10 +732,27 @@ const Auth = () => {
 
             {/* View Toggle */}
             {view === "login" && (
-              <div className="mt-10 text-center">
+              <div className="mt-10 text-center space-y-4">
+                <button
+                  onClick={() => setView("signup")}
+                  className="text-white text-xs hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold border-b border-transparent hover:border-[#D4AF37] pb-1"
+                >
+                  New to Murgdur? Create Account
+                </button>
                 <p className="text-zinc-600 text-[11px] uppercase tracking-widest">
                   Restricted Access • Sovereignty Collection
                 </p>
+              </div>
+            )}
+
+            {view === "signup" && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => setView("login")}
+                  className="text-zinc-500 text-[10px] hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold"
+                >
+                  Already have an account? Sign In
+                </button>
               </div>
             )}
             {view === "forgot" && (
