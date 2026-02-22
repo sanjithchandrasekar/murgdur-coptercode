@@ -1,21 +1,173 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  Search,
-  User,
-  Heart,
-  ShoppingBag,
-  Menu,
-  X,
   ArrowLeft,
 } from "lucide-react";
+
+// --- LUXURY ICONS ---
+const XIcon = ({ className }) => (
+  <svg aria-hidden="true" className={className} viewBox="0 0 80 80" fill="none" stroke="currentColor" strokeWidth="1.5">
+    <path d="m13 13 54 54M67 13 13 67" />
+  </svg>
+);
 import { motion, AnimatePresence } from "framer-motion";
 import { useCart } from "../../context/CartContext";
 import { fetchSiteSettings, fetchProducts } from "../../utils/sanity";
 
+// --- LUXURY ICONS (THIN OUTLINE) ---
+const SearchIcon = ({ className }) => (
+  <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <circle cx="11" cy="11" r="8" />
+    <path d="m21 21-4.35-4.35" />
+  </svg>
+);
+
+const WishlistIcon = ({ className }) => (
+  <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+);
+
+const AccountIcon = ({ className }) => (
+  <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const CartIcon = ({ className }) => (
+  <svg aria-hidden="true" className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+    <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z" />
+    <path d="M3 6h18" />
+    <path d="M16 10a4 4 0 0 1-8 0" />
+  </svg>
+);
+
 const defaultLogo = "/images/logo.jpeg";
 
+const menuData = [
+  {
+    id: "new",
+    name: "New",
+    path: "/shop?sort=newest",
+    image: "/images/girl.png",
+    imageSubtitle: "Latest Arrivals",
+    subcategories: [
+      { name: "For Women", path: "/shop?cat=women&sort=newest" },
+      { name: "For Men", path: "/shop?cat=men&sort=newest" },
+    ],
+    highlights: [
+      { name: "All New In", image: "/images/girl.png", path: "/shop?sort=newest" },
+      { name: "New Bags", image: "/images/hand bag.png", path: "/shop?type=bags&sort=newest" },
+    ]
+  },
+  {
+    id: "bags",
+    name: "Bags and Wallets",
+    path: "/shop?type=bags",
+    image: "/images/hand bag.png",
+    imageSubtitle: "Signature Heritage",
+    subcategories: [
+      { name: "Women Bags", path: "/shop?cat=women&type=bags" },
+      { name: "Men Bags", path: "/shop?cat=men&type=bags" },
+      { name: "Women Small Leather Goods", path: "/shop?cat=women&type=wallets" },
+      { name: "Men Small Leather Goods", path: "/shop?cat=men&type=wallets" },
+      { name: "Personalisation", path: "/services" },
+    ],
+    highlights: [
+      { name: "All Handbags", image: "/images/hand bag.png", path: "/shop?type=bags" },
+      { name: "New In", image: "/images/girl.png", path: "/shop?type=bags&sort=newest" },
+      { name: "Heritage Icons", image: "/images/cares.jpg", path: "/shop?collection=icons" },
+      { name: "Signature Collection", image: "/images/zippy wallet.jpg", path: "/shop?collection=signature" },
+      { name: "Side Trunk", image: "/images/vanitycase.jpg", path: "/shop?collection=side-trunk" },
+      { name: "Capucines", image: "/images/woens small bag.jpg", path: "/shop?collection=capucines" },
+    ]
+  },
+  {
+    id: "women",
+    name: "Women",
+    path: "/shop?cat=women",
+    image: "/images/girl.png",
+    imageSubtitle: "Women's Collection",
+    subcategories: [
+      { name: "Bags", path: "/shop?cat=women&type=bags" },
+      { name: "Small Leather Goods", path: "/shop?cat=women&type=wallets" },
+      { name: "Accessories", path: "/shop?cat=women&type=accessories" },
+      { name: "Perfumes", path: "/shop?cat=women&type=perfumes" },
+    ],
+    highlights: [
+      { name: "All Women's Collection", image: "/images/girl.png", path: "/shop?cat=women" },
+      { name: "Women's Perfumes", image: "/images/per.jpg", path: "/shop?cat=women&type=perfumes" },
+    ]
+  },
+  {
+    id: "men",
+    name: "Men",
+    path: "/shop?cat=men",
+    image: "/images/boy.jpeg",
+    imageSubtitle: "Men's Collection",
+    subcategories: [
+      { name: "Bags", path: "/shop?cat=men&type=bags" },
+      { name: "Small Leather Goods", path: "/shop?cat=men&type=wallets" },
+      { name: "Accessories", path: "/shop?cat=men&type=accessories" },
+      { name: "Perfumes", path: "/shop?cat=men&type=perfumes" },
+    ],
+    highlights: [
+      { name: "All Men's Collection", image: "/images/boy.jpeg", path: "/shop?cat=men" },
+      { name: "Men's Wallets", image: "/images/mens_royal_wallet_section.png", path: "/shop?cat=men&type=wallets" },
+    ]
+  },
+  {
+    id: "perfumes",
+    name: "Perfumes",
+    path: "/shop?type=perfumes",
+    image: "/images/per.jpg",
+    imageSubtitle: "Fragrances",
+    subcategories: [
+      { name: "Women's Perfumes", path: "/shop?cat=women&type=perfumes" },
+      { name: "Men's Perfumes", path: "/shop?cat=men&type=perfumes" },
+    ],
+    highlights: [
+      { name: "All Perfumes", image: "/images/per.jpg", path: "/shop?type=perfumes" },
+      { name: "New Fragrances", image: "/images/royal_perfume.png", path: "/shop?type=perfumes&sort=newest" },
+    ]
+  },
+  {
+    id: "jewellery",
+    name: "Jewellery",
+    path: "/shop?type=jewellery",
+    image: "/images/royal_jewellery.png",
+    imageSubtitle: "Fine Jewellery",
+    subcategories: [
+      { name: "Rings", path: "/shop?type=jewellery&search=rings" },
+      { name: "Necklaces", path: "/shop?type=jewellery&search=necklaces" },
+      { name: "Bracelets", path: "/shop?type=jewellery&search=bracelets" },
+      { name: "Earrings", path: "/shop?type=jewellery&search=earrings" },
+    ],
+    highlights: [
+      { name: "All Jewellery", image: "/images/royal_jewellery.png", path: "/shop?type=jewellery" },
+      { name: "Royal Collection", image: "/images/royal_gown.png", path: "/royal-collection" },
+    ]
+  },
+  {
+    id: "watches",
+    name: "Watches",
+    path: "/shop?type=watches",
+    image: "/images/watch1.png",
+    imageSubtitle: "Timepieces",
+    subcategories: [
+      { name: "Women's Watches", path: "/shop?cat=women&type=watches" },
+      { name: "Men's Watches", path: "/shop?cat=men&type=watches" },
+    ],
+    highlights: [
+      { name: "All Watches", image: "/images/watch1.png", path: "/shop?type=watches" },
+      { name: "New Watches", image: "/images/watch 2.png", path: "/shop?type=watches&sort=newest" },
+    ]
+  },
+];
+
 const Navbar = () => {
+  const [activeMenuId, setActiveMenuId] = useState("bags");
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -84,18 +236,16 @@ const Navbar = () => {
     navigate("/");
   };
 
-  // Logic: Dark text IF NOT Home page OR IF Scrolled
   const isHome = location.pathname === "/";
-  const isDarkText = !isHome || isScrolled;
 
   useEffect(() => {
     if (isMobileMenuOpen) {
       document.body.style.overflow = "hidden";
     } else {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     }
     return () => {
-      document.body.style.overflow = "unset";
+      document.body.style.overflow = "";
     };
   }, [isMobileMenuOpen]);
 
@@ -110,208 +260,183 @@ const Navbar = () => {
   const navLinks = [
     { name: "Home", path: "/" },
     { name: "Heritage", path: "/heritage" },
+    { name: "Collections", path: "/collections-showcase" },
     { name: "Shop", path: "/shop" },
     { name: "Royal Collection", path: "/royal-collection" },
     { name: "Vault", path: "/vault" },
   ];
 
+  const textColor = isScrolled ? "text-black" : "text-white";
+  const iconColor = isScrolled ? "text-black" : "text-white";
+  const barColor = isScrolled ? "bg-black" : "bg-white";
+
   return (
-    <nav
-      className={`fixed w-full z-50 transition-all duration-300 ${isScrolled ? "bg-white/95 backdrop-blur-sm shadow-md py-3" : "bg-transparent py-4"} ${isScrolled ? "text-black" : "text-white"}`}
+    <header
+      className={`fixed w-full z-50 top-0 transition-all duration-500 ${isScrolled
+        ? "bg-white shadow-[inset_0_-1px_#e1e1e1]"
+        : "bg-gradient-to-b from-black/75 via-black/30 to-transparent"
+        }`}
     >
-      <div className="container mx-auto px-6 md:px-12 h-12 flex justify-between items-center relative">
-        {/* LEFT: Menu & Search */}
-        <div className="flex items-center gap-6 md:gap-8">
-          {/* Menu Trigger */}
+      <div className="flex items-center h-[3.5rem] md:h-[4.25rem] relative px-5 md:px-8 lg:px-14 xl:px-16 w-full">
+        {/* LEFT COMPARTMENT */}
+        <div className="flex-1 flex h-full items-center gap-6 lg:gap-10">
+          {/* Menu Button */}
           <button
-            className="flex items-center gap-3 hover:opacity-70 transition-opacity group"
+            className={`flex items-center gap-2.5 hover:opacity-70 transition-opacity ${textColor}`}
             onClick={() => setIsMobileMenuOpen(true)}
-            aria-label="Open Menu"
+            aria-label="Menu"
           >
-            <Menu size={16} strokeWidth={1.5} />
-            {!isSearchOpen && (
-              <span className="text-[11px] uppercase tracking-[0.2em] font-medium hidden sm:block">
-                Menu
-              </span>
-            )}
+            <div className="w-4 flex flex-col gap-[4.5px]">
+              <span className={`block w-full h-[1.2px] ${barColor}`}></span>
+              <span className={`block w-full h-[1.2px] ${barColor}`}></span>
+              <span className={`block w-full h-[1.2px] ${barColor}`}></span>
+            </div>
+            <span className="hidden md:block text-[9px] uppercase tracking-[0.25em] font-bold">MENU</span>
           </button>
 
-          {/* Search Trigger */}
+          {/* Search Button (Desktop) */}
           <button
-            className="flex items-center gap-3 hover:opacity-70 transition-opacity group"
+            className={`hidden md:flex items-center gap-2 hover:opacity-70 transition-opacity ${textColor}`}
             onClick={() => setIsSearchOpen(true)}
-            aria-label="Open Search"
+            aria-label="Search"
           >
-            <Search size={16} strokeWidth={1.5} />
-            {!isSearchOpen && (
-              <span className="text-[11px] uppercase tracking-[0.2em] font-medium hidden sm:block">
-                Search
-              </span>
-            )}
+            <SearchIcon className="w-4 h-4" />
+            <span className="text-[9px] uppercase tracking-[0.25em] font-bold">SEARCH</span>
+          </button>
+        </div>
+
+        {/* LOGO */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+          <Link
+            to="/"
+            className="flex items-center justify-center hover:opacity-80 transition-opacity"
+            onClick={() => window.scrollTo(0, 0)}
+          >
+            <span className={`text-[1.2rem] md:text-[1.35rem] tracking-[0.45em] font-sans font-bold uppercase whitespace-nowrap transition-colors duration-500 ${textColor}`}
+              style={{ marginRight: "-0.45em" }}>
+              {siteSettings?.title || "MURGDUR"}
+            </span>
+          </Link>
+        </div>
+
+        {/* RIGHT COMPARTMENT */}
+        <div className="flex-1 flex h-full items-center justify-end gap-6 lg:gap-9">
+          {/* Call Us (Desktop) */}
+          <Link
+            to="/contact"
+            className={`hidden lg:block text-[9px] uppercase tracking-[0.25em] font-bold hover:opacity-70 transition-opacity ${textColor}`}
+          >
+            CALL US
+          </Link>
+
+          {/* Search (Mobile Only) */}
+          <button
+            className={`md:hidden flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+            onClick={() => setIsSearchOpen(true)}
+            aria-label="Search"
+          >
+            <SearchIcon className="w-[18px] h-[18px]" />
           </button>
 
-          {/* Search Overlay & Results */}
-          <AnimatePresence>
-            {isSearchOpen && (
-              <div className="absolute left-28 md:left-36 top-1/2 -translate-y-1/2">
-                <motion.div
-                  initial={{ width: 0, opacity: 0 }}
-                  animate={{ width: 240, opacity: 1 }}
-                  exit={{ width: 0, opacity: 0 }}
-                  className={`bg-transparent border-b flex items-center pb-1 ${isScrolled ? "border-black" : "border-white"}`}
-                >
+          {/* Icons Group */}
+          <div className="flex items-center gap-5 lg:gap-6">
+            {/* Wishlist */}
+            <Link
+              to="/vault"
+              className={`flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+              title="Wishlist"
+            >
+              <WishlistIcon className="w-[18px] h-[18px]" />
+            </Link>
+
+            {/* Cart */}
+            <Link
+              to="/cart"
+              className={`flex items-center hover:opacity-70 transition-opacity relative ${iconColor}`}
+              title="Shopping Bag"
+            >
+              <CartIcon className="w-[18px] h-[18px]" />
+              {getCartCount() > 0 && (
+                <span className="absolute -top-1.5 -right-1.5 text-[8px] font-bold w-[13px] h-[13px] rounded-full flex items-center justify-center bg-[#c9a96e] text-black leading-none">
+                  {getCartCount()}
+                </span>
+              )}
+            </Link>
+
+            {/* User Profile */}
+            <Link
+              to={user ? "/profile" : "/login"}
+              className={`flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+              title={user ? "My Profile" : "Sign In"}
+            >
+              <AccountIcon className="w-[18px] h-[18px]" />
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* SEARCH DROPDOWN OVERLAY */}
+      <AnimatePresence>
+        {isSearchOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="absolute top-full left-0 w-full bg-white shadow-xl overflow-hidden border-t border-black/5 z-40"
+          >
+            <div className="relative flex flex-col items-center justify-center w-full px-6 md:px-12 py-6">
+              <button
+                onClick={() => setIsSearchOpen(false)}
+                className="absolute right-6 top-6 text-black hover:opacity-70 transition-opacity"
+              >
+                <XIcon className="w-6 h-6" />
+              </button>
+              <div className="w-full max-w-[45rem] mt-6 md:mt-2">
+                <div className="border-b border-black text-black flex items-center pb-2">
+                  <SearchIcon className="w-5 h-5 mr-4 opacity-50" />
                   <input
                     type="text"
                     placeholder="Search..."
-                    className={`bg-transparent border-none outline-none text-sm w-full font-sans tracking-wide placeholder-gray-400 ${isScrolled ? "text-black" : "text-white"}`}
+                    className="bg-transparent border-none outline-none text-base md:text-lg w-full font-sans tracking-wide placeholder-gray-400"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyDown={handleSearch}
                     autoFocus
                   />
-                  <X
-                    size={14}
-                    className={`cursor-pointer hover:opacity-70 ml-2 ${isScrolled ? "text-black" : "text-white"}`}
-                    onClick={() => {
-                      setIsSearchOpen(false);
-                      setSearchQuery("");
-                    }}
-                  />
-                </motion.div>
-
-                {/* Search Results Dropdown */}
-                <AnimatePresence>
-                  {searchResults.length > 0 && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 10 }}
-                      className="absolute top-full mt-4 w-72 bg-white shadow-2xl rounded-sm overflow-hidden py-2 z-[60] border border-gray-100"
-                    >
-                      <div className="max-h-80 overflow-y-auto custom-scrollbar">
-                        {searchResults.slice(0, 6).map((product) => (
-                          <Link
-                            key={product._id}
-                            to={`/product/${product.slug?.current || product._id}`}
-                            className="flex items-center gap-4 px-4 py-3 hover:bg-gray-50 transition-colors border-b border-gray-50 last:border-0"
-                            onClick={() => {
-                              setIsSearchOpen(false);
-                              setSearchQuery("");
-                            }}
-                          >
-                            <div className="w-12 h-12 bg-gray-50 rounded flex-shrink-0 overflow-hidden border border-gray-100">
-                              <img
-                                src={
-                                  product.mainImage ||
-                                  product.images?.[0] ||
-                                  "/images/placeholder.png"
-                                }
-                                alt={product.name}
-                                className="w-full h-full object-cover"
-                                onError={(e) => {
-                                  e.target.src = "/images/placeholder.png";
-                                }}
-                              />
-                            </div>
-                            <div className="flex flex-col min-w-0">
-                              <span className="text-[12px] font-medium text-black truncate lowercase first-letter:uppercase">
-                                {product.name}
-                              </span>
-                              <span className="text-[10px] text-gray-500 mt-0.5">
-                                {product.price}
-                              </span>
-                            </div>
-                          </Link>
-                        ))}
-                        {searchResults.length > 6 && (
-                          <button
-                            onClick={() => {
-                              navigate(`/shop?search=${searchQuery}`);
-                              setIsSearchOpen(false);
-                              setSearchQuery("");
-                            }}
-                            className="w-full py-3 text-[10px] text-gray-400 uppercase tracking-widest hover:text-black transition-colors bg-gray-50/50"
-                          >
-                            View all results ({searchResults.length})
-                          </button>
-                        )}
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                </div>
+                {/* Search Results Preview */}
+                {searchResults.length > 0 && (
+                  <div className="mt-6 max-h-[50vh] overflow-y-auto custom-scrollbar flex flex-col">
+                    {searchResults.slice(0, 5).map(product => (
+                      <Link
+                        key={product._id}
+                        to={`/product/${product.slug?.current || product._id}`}
+                        className="flex items-center gap-6 px-4 py-4 hover:bg-gray-50 transition-colors border-b border-gray-100 last:border-0"
+                        onClick={() => { setIsSearchOpen(false); setSearchQuery(""); }}
+                      >
+                        <div className="w-16 h-16 bg-gray-50 flex-shrink-0 flex items-center justify-center overflow-hidden">
+                          <img
+                            src={product.mainImage || product.images?.[0] || "/images/placeholder.png"}
+                            alt={product.name}
+                            className="w-full h-full object-contain mix-blend-multiply"
+                            onError={(e) => e.target.src = "/images/placeholder.png"}
+                          />
+                        </div>
+                        <div>
+                          <h4 className="text-sm tracking-widest uppercase font-medium text-black">{product.name}</h4>
+                          <p className="text-xs text-gray-500 mt-1">{product.price}</p>
+                        </div>
+                      </Link>
+                    ))}
+                  </div>
+                )}
               </div>
-            )}
-          </AnimatePresence>
-        </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
-        {/* CENTER: Logo */}
-        <Link
-          to="/"
-          className="absolute left-1/2 -translate-x-1/2 flex items-center group"
-          onClick={() => window.scrollTo(0, 0)}
-        >
-          {/* Using text logo to match LV style text */}
-          <span className="text-xl md:text-2xl font-bold tracking-[0.25em] uppercase hover:opacity-80 transition-opacity font-sans">
-            {siteSettings?.title || "MURGDUR"}
-          </span>
-        </Link>
-
-        {/* RIGHT: User Actions */}
-        <div className="flex items-center gap-6 md:gap-8">
-          <Link
-            to="/contact"
-            className="hidden lg:block text-[11px] uppercase tracking-[0.2em] font-medium hover:opacity-70 transition-opacity"
-            aria-label="Contact Us"
-          >
-            Call Us
-          </Link>
-
-          {/* Wishlist */}
-          <Link
-            to="/vault"
-            className="hover:opacity-70 transition-opacity relative"
-            aria-label={`Wishlist ${wishlistItems?.length > 0 ? `(${wishlistItems.length} items)` : ""}`}
-            title="Wishlist"
-          >
-            <Heart size={16} strokeWidth={1.5} />
-            {wishlistItems && wishlistItems.length > 0 && (
-              <span
-                className={`absolute -top-1.5 -right-1.5 text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ${isScrolled ? "bg-black text-white" : "bg-white text-black"}`}
-              >
-                {wishlistItems.length}
-              </span>
-            )}
-          </Link>
-
-          {/* Cart - Added for E-commerce flow */}
-          <Link
-            to="/cart"
-            className="hover:opacity-70 transition-opacity relative"
-            aria-label={`Cart ${getCartCount() > 0 ? `(${getCartCount()} items)` : ""}`}
-            title="Shopping Bag"
-          >
-            <ShoppingBag size={16} strokeWidth={1.5} />
-            {getCartCount() > 0 && (
-              <span
-                className={`absolute -top-1.5 -right-1.5 text-[9px] font-bold w-3.5 h-3.5 rounded-full flex items-center justify-center ${isScrolled ? "bg-[#D4AF37] text-black" : "bg-[#D4AF37] text-black"}`}
-              >
-                {getCartCount()}
-              </span>
-            )}
-          </Link>
-
-          {/* User Profile */}
-          <Link
-            to={user ? "/profile" : "/login"}
-            className="hover:opacity-70 transition-opacity"
-            aria-label="User Profile"
-          >
-            <User size={16} strokeWidth={1.5} />
-          </Link>
-        </div>
-      </div>
-
-      {/* Universal Menu Drawer (Mobile & Desktop) */}
+      {/* MEGA MENU DRAWER */}
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -327,110 +452,211 @@ const Navbar = () => {
               onClick={() => setIsMobileMenuOpen(false)}
             ></div>
 
-            {/* Drawer Content-LV Style (Dark Theme) */}
+            {/* Mega Drawer Container */}
             <motion.div
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "tween", duration: 0.4, ease: "easeOut" }}
-              className="relative w-full max-w-sm bg-royal-black h-screen shadow-2xl flex flex-col z-[101] overflow-y-auto"
+              className="relative w-full md:w-[85vw] lg:w-[75vw] xl:w-[70vw] h-[100dvh] bg-white flex flex-col md:flex-row z-[101] overflow-y-auto md:overflow-hidden text-black shadow-2xl"
             >
-              {/* 1. Header: Close Button */}
-              <div className="flex items-center justify-between p-6 px-8 mb-4">
-                <button
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="flex items-center gap-3 text-white hover:text-royal-gold transition-colors group"
-                >
-                  <X size={20} strokeWidth={1} />
-                  <span className="text-xs uppercase tracking-widest font-medium">
-                    Close
-                  </span>
-                </button>
-              </div>
-
-              {/* 2. Main Navigation List */}
-              <div className="flex-1 px-8 pb-12 flex flex-col gap-6">
-                {[
-                  { name: "New", path: "/shop?sort=newest" },
-                  { name: "Men", path: "/shop?cat=men" },
-                  { name: "Women", path: "/shop?cat=women" },
-                  { name: "Bags and Wallets", path: "/shop?type=bags" },
-                  { name: "Perfumes", path: "/shop?type=perfumes" },
-                  { name: "Jewellery", path: "/shop?type=accessories" },
-                  { name: "Royal Collection", path: "/royal-collection" },
-                  { name: "Services", path: "/services" },
-                  { name: "The Maison Murugdur", path: "/about" },
-                ].map((link) => (
-                  <Link
-                    key={link.name}
-                    to={link.path}
-                    className="text-lg text-white font-sans font-medium tracking-wide hover:text-royal-gold transition-colors block"
+              {/* --- COLUMN 1: Main Categories (Left) --- */}
+              <div className="w-full md:w-[320px] lg:w-[380px] flex-shrink-0 flex flex-col h-full md:border-r border-gray-100 bg-white z-10 relative">
+                {/* Header (Close) */}
+                <div className="flex items-center justify-between p-6 px-8 shrink-0">
+                  <button
                     onClick={() => setIsMobileMenuOpen(false)}
+                    className="flex items-center gap-3 text-black hover:opacity-70 transition-opacity group"
                   >
-                    {link.name}
-                  </Link>
-                ))}
-
-                <div className="pt-4 mt-2 border-t border-white/10">
-                  <Link
-                    to="/profile"
-                    className="text-sm text-gray-300 font-sans tracking-wide hover:text-white transition-colors block mb-4"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <User size={14} className="inline mr-2" /> My Profile
-                  </Link>
-                  <Link
-                    to="/vault"
-                    className="text-sm text-gray-300 font-sans tracking-wide hover:text-white transition-colors block"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    <Heart size={14} className="inline mr-2" /> Wishlist
-                  </Link>
-                </div>
-              </div>
-
-              {/* 3. Footer Section (Help & Info) */}
-              <div className="px-8 py-10 mt-auto border-t border-white/10 bg-white/5">
-                <div className="mb-8">
-                  <p className="text-xs text-white uppercase tracking-widest mb-3">
-                    Murgdur Client Service
-                  </p>
-                  <a
-                    href="tel:+914445614700"
-                    className="text-lg text-white font-sans hover:text-royal-gold block mb-1"
-                  >
-                    +91 44 4561 4700
-                  </a>
+                    <XIcon className="w-5 h-5" />
+                    <span className="text-[11px] uppercase tracking-[0.2em] font-medium mt-[2px]">Close</span>
+                  </button>
                 </div>
 
-                <div className="space-y-4">
-                  <Link
-                    to="/sustainability"
-                    className="block text-sm text-gray-400 hover:text-white transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Our Commitment
-                  </Link>
-                  <Link
-                    to="/stores"
-                    className="block text-sm text-gray-400 hover:text-white transition-colors"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Boutique Locator
-                  </Link>
-                  <div className="pt-4 flex items-center gap-2 text-white">
-                    <span>🇮🇳</span>
-                    <span className="text-sm border-b border-white pb-1 pointer-events-none">
-                      Murgdur India
-                    </span>
+                {/* Main Links */}
+                <div className="flex-1 overflow-y-auto custom-scrollbar px-8 py-4 flex flex-col gap-6">
+                  {menuData.map((item) => (
+                    <div key={item.id} className="group">
+                      <div
+                        className="flex items-center justify-between cursor-pointer"
+                        onMouseEnter={() => {
+                          if (window.innerWidth >= 768) {
+                            setActiveMenuId(item.id);
+                          }
+                        }}
+                        onClick={() => {
+                          if (window.innerWidth < 768) {
+                            setActiveMenuId(activeMenuId === item.id ? null : item.id);
+                          }
+                        }}
+                      >
+                        <Link
+                          to={item.path}
+                          className={`text-lg font-sans tracking-wide transition-colors ${activeMenuId === item.id ? "font-medium" : "text-gray-900 group-hover:text-gray-500"}`}
+                          onClick={(e) => {
+                            if (window.innerWidth < 768 && item.subcategories?.length) {
+                              e.preventDefault();
+                            }
+                          }}
+                        >
+                          {item.name}
+                        </Link>
+                        {/* Mobile Expand Icon */}
+                        <div className="md:hidden text-gray-400">
+                          {item.subcategories?.length > 0 && (
+                            <span className="text-xl leading-none font-light">{activeMenuId === item.id ? '-' : '+'}</span>
+                          )}
+                        </div>
+                        {/* Desktop Expand Icon */}
+                        <div className="hidden md:block text-gray-400">
+                          {item.subcategories?.length > 0 && <span className={`text-lg transition-opacity font-light leading-none opacity-0 ${activeMenuId === item.id ? "opacity-100" : "group-hover:opacity-100"} -mt-1`}>›</span>}
+                        </div>
+                      </div>
+
+                      {/* Mobile Accordion Submenu */}
+                      <AnimatePresence>
+                        {activeMenuId === item.id && item.subcategories && (
+                          <motion.div
+                            initial={{ height: 0, opacity: 0 }}
+                            animate={{ height: "auto", opacity: 1 }}
+                            exit={{ height: 0, opacity: 0 }}
+                            className="overflow-hidden md:!hidden mt-4 pl-4 flex flex-col gap-4 border-l border-gray-200"
+                          >
+                            {item.subcategories.map((sub, idx) => (
+                              <Link
+                                key={idx}
+                                to={sub.path}
+                                className="text-sm font-sans tracking-wide text-gray-500 hover:text-black transition-colors"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                {sub.name}
+                              </Link>
+                            ))}
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    </div>
+                  ))}
+
+                  <div className="border-t border-gray-100 my-2" />
+
+                  {/* Standard Links */}
+                  {["Trunks, Travel and Home", "Services", "The Maison Murgdur"].map((name) => {
+                    const linkMap = {
+                      "Trunks, Travel and Home": "/shop?type=travel",
+                      "Services": "/services",
+                      "The Maison Murgdur": "/heritage",
+                    };
+                    return (
+                    <Link
+                      key={name}
+                      to={linkMap[name]}
+                      className="text-base font-sans text-gray-600 tracking-wide hover:text-black transition-colors block"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {name}
+                    </Link>
+                    );
+                  })}
+
+                  <div className="pt-8 mt-2 md:hidden">
+                    <Link to="/profile" className="text-sm text-gray-600 font-sans tracking-wide hover:text-black transition-colors flex items-center mb-4" onClick={() => setIsMobileMenuOpen(false)}>
+                      <AccountIcon className="w-4 h-4 mr-3" /> My Profile
+                    </Link>
+                    <Link to="/vault" className="text-sm text-gray-600 font-sans tracking-wide hover:text-black transition-colors flex items-center" onClick={() => setIsMobileMenuOpen(false)}>
+                      <WishlistIcon className="w-4 h-4 mr-3" /> Wishlist
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Footer Section */}
+                <div className="px-8 py-8 mt-auto border-t border-gray-100 shrink-0 bg-gray-50/50">
+                  <div className="mb-6">
+                    <p className="text-[11px] text-gray-500 font-sans tracking-[0.1em] uppercase mb-2">Can we help you?</p>
+                    <a href="tel:+9118001039988" className="text-sm tracking-wider text-black font-sans hover:underline block">+91 1800 103 9988</a>
+                  </div>
+                  <div className="space-y-4">
+                    <Link to="/sustainability" className="block text-xs uppercase tracking-widest font-sans text-gray-600 hover:text-black transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Sustainability</Link>
+                    <Link to="/stores" className="block text-xs uppercase tracking-widest font-sans text-gray-600 hover:text-black transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Find a Store</Link>
+                    <div className="pt-2 flex items-center gap-2 text-black">
+                      <span className="text-xs uppercase tracking-widest font-medium font-sans">Country: India</span>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              {/* --- DESKTOP REMAINDER: Subcategories & Highlights --- */}
+              <div className="hidden md:flex flex-1 h-full bg-[#f8f8f8] relative">
+                <AnimatePresence mode="wait">
+                  {menuData.map((item) => (
+                    activeMenuId === item.id && (
+                      <motion.div
+                        key={item.id}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.15 }}
+                        className="absolute inset-0 flex w-full h-full"
+                      >
+                        {/* COLUMN 2: Subcategories (Middle) */}
+                        <div className="w-[35%] min-w-[280px] bg-white border-r border-gray-100 flex flex-col h-full z-0 relative">
+                          {/* Image Highlight */}
+                          <div className="w-full aspect-[4/3] relative flex items-center justify-center bg-gray-50 cursor-pointer overflow-hidden group" onClick={() => { navigate(item.path); setIsMobileMenuOpen(false); }}>
+                            <img src={item.image} alt={item.imageSubtitle} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+                            {/* Inner tint for text legibility */}
+                            <div className="absolute inset-0 bg-black/5 transition-opacity group-hover:bg-black/10" />
+                          </div>
+                          <div className="border-b border-gray-100 py-4 px-8 bg-white z-10 shrink-0">
+                            <p className="text-[11px] uppercase tracking-[0.2em] font-medium text-center text-black">{item.imageSubtitle}</p>
+                          </div>
+
+                          {/* Sub Links */}
+                          <div className="px-10 py-8 flex flex-col gap-5 overflow-y-auto custom-scrollbar">
+                            {item.subcategories?.map((sub, idx) => (
+                              <Link
+                                key={idx}
+                                to={sub.path}
+                                className="text-[13px] uppercase tracking-[0.1em] font-sans text-gray-600 hover:text-black flex justify-between items-center group/sub transition-colors"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                {sub.name}
+                                <span className="opacity-0 group-hover/sub:opacity-100 transition-opacity text-lg leading-none -mt-1 font-light">›</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+
+                        {/* COLUMN 3: Featured / Highlights (Right) */}
+                        <div className="flex-1 bg-white p-8 overflow-y-auto custom-scrollbar relative z-0">
+                          <div className="grid grid-cols-2 gap-x-6 gap-y-10 max-w-4xl mx-auto">
+                            {item.highlights?.map((hl, idx) => (
+                              <Link
+                                key={idx}
+                                to={hl.path}
+                                className="flex flex-col items-center group cursor-pointer"
+                                onClick={() => setIsMobileMenuOpen(false)}
+                              >
+                                <div className="w-full aspect-square bg-[#f0efed] mb-4 overflow-hidden relative">
+                                  <img src={hl.image} alt={hl.name} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                                    onError={(e) => { e.target.style.opacity = '0'; }}
+                                  />
+                                </div>
+                                <span className="text-xs uppercase tracking-[0.15em] font-medium text-black text-center transition-opacity group-hover:opacity-70">{hl.name}</span>
+                              </Link>
+                            ))}
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  ))}
+                </AnimatePresence>
+              </div>
+
             </motion.div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+    </header>
   );
 };
 

@@ -7,6 +7,8 @@ import { HelmetProvider } from "react-helmet-async";
 // Lazy Load Pages
 const Home = lazy(() => import("./pages/Home"));
 const Shop = lazy(() => import("./pages/Shop"));
+const ProductCollection = lazy(() => import("./pages/ProductCollection"));
+const CollectionsShowcase = lazy(() => import("./pages/CollectionsShowcase"));
 const ProductDetails = lazy(() => import("./pages/ProductDetails"));
 const Heritage = lazy(() => import("./pages/Heritage"));
 const RoyalShop = lazy(() => import("./pages/RoyalShop"));
@@ -25,6 +27,9 @@ const StudioPage = lazy(() => import("./pages/StudioPage"));
 const SanityTest = lazy(() => import("./pages/SanityTest"));
 const GenericPage = lazy(() => import("./pages/GenericPage"));
 const InfoPage = lazy(() => import("./pages/InfoPage"));
+const ConditionsOfUse = lazy(() => import("./pages/ConditionsOfUse"));
+const PrivacyNotice = lazy(() => import("./pages/PrivacyNotice"));
+const AddressInput = lazy(() => import("./pages/AddressInput"));
 
 // Simple Loading Component
 const Loading = () => (
@@ -43,6 +48,8 @@ function App() {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="shop" element={<Shop />} />
+              <Route path="collections-showcase" element={<CollectionsShowcase />} />
+              <Route path="collections" element={<ProductCollection />} />
               <Route path="product/:id" element={<ProductDetails />} />
               <Route path="heritage" element={<Heritage />} />
               <Route path="royal-collection" element={<RoyalShop />} />
@@ -53,6 +60,7 @@ function App() {
               <Route path="register" element={<Profile />} />
               <Route path="cart" element={<Cart />} />
               <Route path="checkout" element={<Checkout />} />
+              <Route path="complete-profile" element={<AddressInput />} />
 
               <Route path="page/:slug" element={<GenericPage />} />
               {/* Footer & Info Routes */}
@@ -72,8 +80,11 @@ function App() {
               <Route path="partner" element={<InfoPage />} />
               <Route path="contact" element={<ContactInfo />} />
               <Route path="internship" element={<InfoPage />} />
-              <Route path="privacy" element={<InfoPage />} />
-              <Route path="terms" element={<InfoPage />} />
+              <Route path="internship" element={<InfoPage />} />
+              <Route path="privacy-notice" element={<PrivacyNotice />} />
+              <Route path="conditions-of-use" element={<ConditionsOfUse />} />
+              <Route path="terms" element={<ConditionsOfUse />} /> {/* Alias for terms */}
+              <Route path="privacy" element={<PrivacyNotice />} /> {/* Alias for privacy */}
               <Route path="stories" element={<Stories />} />
               <Route path="corporate" element={<CorporateInfo />} />
               <Route path="payments" element={<InfoPage />} />

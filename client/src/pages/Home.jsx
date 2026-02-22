@@ -60,7 +60,7 @@ const Home = () => {
         description="Experience the legacy of kings. Shop our exclusive collection of royal attire, bespoke accessories, and timeless artifacts."
       />
 
-      {/* Louis Vuitton Style Full-Screen Hero */}
+      {/* Full-Screen Cinematic Hero */}
       <div className="relative w-full h-screen overflow-hidden bg-[#2C2C2C]">
         {/* Hero Background Image */}
         <img
@@ -72,7 +72,7 @@ const Home = () => {
         {/* Subtle Dark Overlay */}
         <div className="absolute inset-0 bg-black/20"></div>
 
-        {/* Content Overlay-Louis Vuitton Style-Positioned in Lower Third */}
+        {/* Content Overlay — Positioned in Lower Third */}
         <div className="relative z-10 h-full flex flex-col items-center text-center px-6">
           {/* Main Content-Lower Middle */}
           <div className="flex-1 flex flex-col items-center justify-end pb-20">
@@ -81,7 +81,7 @@ const Home = () => {
               {homeData?.promoSection?.eyebrow || "HERITAGE"}
             </span>
 
-            {/* Main Collection Title-LV Style */}
+            {/* Main Collection Title */}
             <h2
               className="text-white text-center max-w-5xl"
               style={{
@@ -99,7 +99,7 @@ const Home = () => {
             </h2>
           </div>
 
-          {/* CTA Links-At Bottom, LV Style */}
+          {/* CTA Links — Bottom */}
           <div className="absolute bottom-12 left-0 right-0 flex flex-col sm:flex-row gap-6 items-center justify-center">
             <Link
               to="/shop"
@@ -131,7 +131,7 @@ const Home = () => {
         </div>
       </div>
 
-      {/* LV Editorial Hub Structure */}
+      {/* Editorial Hub Structure */}
       <div
         style={{
           display: "flex",
@@ -164,12 +164,12 @@ const Home = () => {
               {[
                 {
                   name: "Handbags",
-                  img: "/images/women%20handbag/woman%20bag%20white%201.jpeg",
+                  img: "/images/women handbag/woman bag white 1.jpeg",
                   link: "/shop?type=bags",
                 },
                 {
                   name: "Small Leather Goods",
-                  img: "/images/woens%20small%20bag.jpg",
+                  img: "/images/woens small bag.jpg",
                   link: "/shop?type=wallets",
                 },
                 {
@@ -179,7 +179,7 @@ const Home = () => {
                 },
                 {
                   name: "Perfumes",
-                  img: "/images/women%20perfume/womens-perfume4.png",
+                  img: "/images/women perfume/womens-perfume4.png",
                   link: "/shop?type=perfumes",
                 },
               ].map((item, idx) => (
@@ -315,7 +315,7 @@ const Home = () => {
         <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50"></div>
       </section>
 
-      {/* Valentine's Day Gifts-Louis Vuitton Style */}
+      {/* Valentine's Day Gifts */}
       <section className="py-20 bg-white">
         <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
           {/* Section Header */}
@@ -329,7 +329,7 @@ const Home = () => {
                 lineHeight: "1.5rem",
               }}
             >
-              Valentine's Day Gifts
+              Royal Gift Selections
             </h2>
           </div>
 
@@ -339,7 +339,7 @@ const Home = () => {
               {
                 name: "Key Pouch",
                 price: "₹18,500.00",
-                img: "/images/woens%20small%20bag.jpg",
+                img: "/images/woens small bag.jpg",
                 link: "/shop?search=Key Pouch",
               },
               {
@@ -357,7 +357,7 @@ const Home = () => {
               {
                 name: "Imagination",
                 price: "₹25,900.00",
-                img: "/images/women%20perfume/womens-perfume4.png",
+                img: "/images/women perfume/womens-perfume4.png",
                 link: "/shop?search=Imagination",
               },
             ].map((item, idx) => (
@@ -410,12 +410,18 @@ const Home = () => {
 
           {/* Filter Buttons-For Her / For Him */}
           <div className="flex justify-center items-center gap-4 mt-12">
-            <button className="px-8 py-3 bg-black text-white border-2 border-black rounded-full hover:bg-white hover:text-black transition-all">
+            <Link
+              to="/shop?cat=women"
+              className="px-8 py-3 bg-[#19110b] text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-[#19110b] border border-[#19110b] transition-all duration-300"
+            >
               For Her
-            </button>
-            <button className="px-8 py-3 bg-black text-white border-2 border-black rounded-full hover:bg-white hover:text-black transition-all">
+            </Link>
+            <Link
+              to="/shop?cat=men"
+              className="px-8 py-3 bg-[#19110b] text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-[#19110b] border border-[#19110b] transition-all duration-300"
+            >
               For Him
-            </button>
+            </Link>
           </div>
         </div>
       </section>
@@ -458,7 +464,7 @@ const Home = () => {
             </h2>
             <Link
               to="/shop?category=men"
-              className="inline-block px-12 py-4 bg-white text-black text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-500 rounded-full"
+              className="inline-block px-12 py-4 bg-white text-black text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-500"
             >
               Explore the Collection
             </Link>
@@ -481,28 +487,28 @@ const Home = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
-                name: "Keepall Bandoulière 25",
+                name: "Royal Heritage Duffle",
                 price: "₹2,59,000.00",
                 img: "/images/mensbags/mens-bag1.png",
-                link: "/shop?search=Keepall Bandoulière 25",
+                link: "/shop?type=bags",
               },
               {
-                name: "Embroidered Signature T-Shirt",
+                name: "Brocade Embroidered Kurta",
                 price: "₹98,000.00",
                 img: "/images/royal_tshirt.png",
-                link: "/shop?search=Embroidered Signature T-Shirt",
+                link: "/shop?type=shirts",
               },
               {
-                name: "LV Trainer Sneaker",
+                name: "Royal Leather Sneaker",
                 price: "₹1,51,000.00",
                 img: "/images/men shoe/menshoe1.png",
-                link: "/shop?search=LV Trainer Sneaker",
+                link: "/shop?type=shoes",
               },
               {
-                name: "LV Louis Bear Cricket Bag Charm",
+                name: "Signature Bag Charm",
                 price: "₹1,18,000.00",
                 img: "/images/micro.jpg",
-                link: "/shop?search=LV Louis Bear Cricket Bag Charm",
+                link: "/shop?type=accessories",
               },
             ].map((item, idx) => (
               <Link to={item.link} key={idx} className="group block relative">
@@ -538,7 +544,7 @@ const Home = () => {
           <div className="flex justify-center mt-12 pb-12">
             <Link
               to="/shop?category=men"
-              className="px-8 py-3 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black border-2 border-black transition-all duration-300 rounded-full"
+              className="px-8 py-3 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black border border-black transition-all duration-300"
             >
               See the Collection
             </Link>
@@ -635,7 +641,7 @@ const Home = () => {
               </p>
               <Link
                 to="/shop?type=perfumes"
-                className="inline-block px-10 py-4 border border-black text-black text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300 rounded-full"
+                className="inline-block px-10 py-4 border border-black text-black text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-black hover:text-white transition-all duration-300"
               >
                 Explore Fragrances
               </Link>
@@ -663,7 +669,7 @@ const Home = () => {
             {[
               {
                 name: "Tambour Moon",
-                img: "/images/watch%202.png",
+                img: "/images/watch 2.png",
                 link: "/shop?search=Tambour Moon",
               },
               {
@@ -823,13 +829,13 @@ const Home = () => {
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {[
               {
-                name: "Capucines BB",
+                name: "Royal Structured Handbag",
                 price: "₹4,25,000.00",
                 img: "/images/hand bag.png",
                 link: "/shop?type=bags",
               },
               {
-                name: "Silky Midi Dress",
+                name: "Zari Embroidered Gown",
                 price: "₹1,85,000.00",
                 img: "/images/royal_gown.png",
                 link: "/shop?type=clothing",
@@ -880,7 +886,7 @@ const Home = () => {
           <div className="flex justify-center mt-12 pb-12">
             <Link
               to="/shop?category=women"
-              className="px-8 py-3 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black border-2 border-black transition-all duration-300 rounded-full"
+              className="px-8 py-3 bg-black text-white text-[11px] font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black border border-black transition-all duration-300"
             >
               See the Collection
             </Link>

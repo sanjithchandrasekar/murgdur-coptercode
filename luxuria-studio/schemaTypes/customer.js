@@ -69,6 +69,9 @@ export default {
                         { name: 'city', type: 'string' },
                         { name: 'state', type: 'string' },
                         { name: 'addressLine', type: 'string' },
+                        { name: 'address', type: 'string', title: 'Full Formatted Address' },
+                        { name: 'country', type: 'string', initialValue: 'India' },
+                        { name: 'isDefault', type: 'boolean', initialValue: false },
                         { name: 'type', type: 'string', initialValue: 'Home' }
                     ]
                 }

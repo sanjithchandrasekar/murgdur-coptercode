@@ -72,8 +72,10 @@ const Checkout = () => {
       // Fallback to first one
       setSelectedAddressId(storedAddresses[0].id);
       localStorage.setItem("selectedAddress", JSON.stringify(storedAddresses[0]));
+      localStorage.setItem("selectedAddress", JSON.stringify(storedAddresses[0]));
     } else {
-      setShowAddAddress(true);
+      // If no addresses, prompt to add one
+      // Optionally redirect: navigate("/complete-profile", { state: { returnUrl: "/checkout" } });
     }
   }, []);
 
@@ -247,6 +249,20 @@ const Checkout = () => {
                               <span className="text-white font-bold ml-4">
                                 {addr.mobile}
                               </span>
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  navigate("/complete-profile", {
+                                    state: {
+                                      returnUrl: "/checkout",
+                                      editAddress: addr,
+                                    },
+                                  });
+                                }}
+                                className="ml-auto text-gray-500 hover:text-royal-gold p-1 transition-colors"
+                              >
+                                <Edit2 size={16} />
+                              </button>
                             </div>
                             <p className="text-gray-400 text-sm leading-relaxed">
                               {addr.address}
@@ -270,109 +286,13 @@ const Checkout = () => {
                   </div>
 
                   {/* Add New Address Toggle */}
-                  {!showAddAddress ? (
-                    <button
-                      onClick={() => setShowAddAddress(true)}
-                      className="flex items-center gap-2 text-royal-gold font-bold uppercase tracking-widest text-sm py-4 w-full border border-dashed border-white/20 hover:border-royal-gold hover:bg-white/5 justify-center transition-all"
-                    >
-                      <Plus size={18} /> Add New Address
-                    </button>
-                  ) : (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0 }}
-                      animate={{ opacity: 1, height: "auto" }}
-                      className="bg-gray-900 border border-white/10 p-6 rounded-sm mt-4"
-                    >
-                      <h3 className="text-royal-gold font-serif mb-6 uppercase tracking-widest text-sm">
-                        Add New Address
-                      </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="name"
-                          placeholder="Name"
-                          value={newAddress.name}
-                          onChange={handleNewAddressChange}
-                          className="bg-black border border-white/20 p-3 text-white focus:border-royal-gold outline-none"
-                        />
-                        <input
-                          type="tel"
-                          name="mobile"
-                          placeholder="Mobile Number"
-                          value={newAddress.mobile}
-                          onChange={handleNewAddressChange}
-                          className="bg-black border border-white/20 p-3 text-white focus:border-royal-gold outline-none"
-                        />
-                      </div>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                        <input
-                          type="text"
-                          name="pincode"
-                          placeholder="Pincode"
-                          value={newAddress.pincode}
-                          onChange={handleNewAddressChange}
-                          className="bg-black border border-white/20 p-3 text-white focus:border-royal-gold outline-none"
-                        />
-                        <input
-                          type="text"
-                          name="city"
-                          placeholder="City"
-                          value={newAddress.city}
-                          onChange={handleNewAddressChange}
-                          className="bg-black border border-white/20 p-3 text-white focus:border-royal-gold outline-none"
-                        />
-                      </div>
-                      <div className="mb-4">
-                        <textarea
-                          name="addressLine"
-                          placeholder="Address (Area and Street)"
-                          rows="3"
-                          value={newAddress.addressLine}
-                          onChange={handleNewAddressChange}
-                          className="w-full bg-black border border-white/20 p-3 text-white focus:border-royal-gold outline-none resize-none"
-                        ></textarea>
-                      </div>
-                      <div className="flex gap-4 mb-6">
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="type"
-                            value="Home"
-                            checked={newAddress.type === "Home"}
-                            onChange={handleNewAddressChange}
-                            className="accent-royal-gold"
-                          />{" "}
-                          Home
-                        </label>
-                        <label className="flex items-center gap-2 cursor-pointer">
-                          <input
-                            type="radio"
-                            name="type"
-                            value="Work"
-                            checked={newAddress.type === "Work"}
-                            onChange={handleNewAddressChange}
-                            className="accent-royal-gold"
-                          />{" "}
-                          Work
-                        </label>
-                      </div>
-
-                      <div className="flex gap-4">
-                        <Button
-                          onClick={handleSaveAddress}
-                          className="bg-royal-gold text-black py-3 px-8 text-sm hover:bg-white"
-                        >
-                          SAVE AND DELIVER HERE
-                        </Button>
-                        <button
-                          onClick={() => setShowAddAddress(false)}
-                          className="text-gray-400 font-bold uppercase text-xs hover:text-white"
-                        >
-                          Cancel
-                        </button>
-                      </div>
-                    </motion.div>
-                  )}
+                  {/* Add New Address Button */}
+                  <button
+                    onClick={() => navigate("/complete-profile", { state: { returnUrl: "/checkout" } })}
+                    className="flex items-center gap-2 text-royal-gold font-bold uppercase tracking-widest text-sm py-4 w-full border border-dashed border-white/20 hover:border-royal-gold hover:bg-white/5 justify-center transition-all"
+                  >
+                    <Plus size={18} /> Add New Address
+                  </button>
                 </div>
               )}
 

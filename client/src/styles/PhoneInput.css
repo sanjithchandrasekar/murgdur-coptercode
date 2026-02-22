@@ -1,0 +1,119 @@
+/* Royal Phone Input Overrides */
+.react-tel-input .form-control {
+  font-family: 'Poppins', sans-serif !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  width: 100% !important;
+  height: 48px !important;
+  padding-left: 56px !important;
+  background-color: transparent !important; /* Let container handle the color */
+  border: none !important; /* Let container handle the border */
+  color: white !important;
+  border-radius: 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.react-tel-input .form-control::placeholder {
+  color: #52525b !important; /* Zinc-600 */
+}
+
+/* Base Flag Button */
+.react-tel-input .flag-dropdown {
+  background-color: #141414 !important;
+  border: 1px solid #27272a !important; /* Zinc-800 */
+  border-radius: 4px 0 0 4px !important;
+  transition: all 0.3s ease !important;
+}
+
+.react-tel-input .flag-dropdown:hover {
+  background-color: #1f1f1f !important;
+  border-color: #D4AF37 !important; /* Royal Gold */
+}
+
+.react-tel-input .flag-dropdown.open {
+  background-color: #1f1f1f !important;
+  border-color: #D4AF37 !important;
+}
+
+/* Arrow Styling */
+.react-tel-input .selected-flag .arrow {
+  border-top-color: #D4AF37 !important;
+}
+.react-tel-input .selected-flag .arrow.up {
+  border-top: none !important;
+  border-bottom-color: #D4AF37 !important;
+}
+
+/* Dropdown Content */
+.react-tel-input .country-list {
+  background-color: #0c0c0c !important; /* Nearly Black */
+  border: 1px solid #D4AF37 !important; /* Royal Gold Border */
+  border-radius: 0 0 4px 4px !important;
+  box-shadow: 0 10px 30px -5px rgba(212, 175, 55, 0.15) !important;
+  width: 300px !important;
+  margin-top: 4px !important;
+  scrollbar-width: thin;
+  scrollbar-color: #D4AF37 #141414;
+}
+
+/* Scrollbar for Dropdown */
+.react-tel-input .country-list::-webkit-scrollbar {
+  width: 6px;
+  background-color: #141414;
+}
+.react-tel-input .country-list::-webkit-scrollbar-thumb {
+  background-color: #D4AF37;
+  border-radius: 10px;
+}
+
+/* List Items */
+.react-tel-input .country-list .country {
+  padding: 12px 14px !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+  transition: all 0.2s ease !important;
+  color: #d4d4d8 !important; /* Zinc-300 */
+}
+
+/* Hover & Active States */
+.react-tel-input .country-list .country:hover,
+.react-tel-input .country-list .country.highlight {
+  background-color: rgba(212, 175, 55, 0.1) !important;
+  color: #D4AF37 !important;
+}
+
+.react-tel-input .country-list .country .dial-code {
+  color: #71717a !important; /* Zinc-500 */
+}
+
+.react-tel-input .country-list .country:hover .dial-code,
+.react-tel-input .country-list .country.highlight .dial-code {
+  color: #D4AF37 !important;
+}
+
+/* Search Box */
+.react-tel-input .search-box {
+  background-color: #141414 !important;
+  border-bottom: 1px solid #27272a !important;
+  padding: 10px 14px !important;
+  margin: 0 !important;
+  width: 100% !important;
+}
+
+.react-tel-input .search {
+  background-color: #27272a !important; /* Zinc-800 input bg */
+  border: 1px solid #3f3f46 !important;
+  color: white !important;
+  border-radius: 4px !important;
+  font-family: inherit !important;
+  font-size: 13px !important;
+  padding-left: 12px !important;
+}
+
+.react-tel-input .search::placeholder {
+  color: #71717a !important;
+}
+
+.react-tel-input .search:focus {
+  border-color: #D4AF37 !important;
+  box-shadow: 0 0 0 1px rgba(212, 175, 55, 0.2) !important;
+}

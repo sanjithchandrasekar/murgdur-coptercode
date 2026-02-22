@@ -152,8 +152,7 @@ const Profile = () => {
 
     // Handle redirected actions
     if (location.state?.action === "addAddress") {
-      setActiveTab("addresses");
-      setActiveModal("addAddress");
+      navigate("/complete-profile", { state: { returnUrl: "/profile" } });
     }
   }, [location.state]);
 
@@ -253,38 +252,7 @@ const Profile = () => {
     }
   };
 
-  const handleAddAddress = () => {
-    if (!newAddress.name || !newAddress.addressLine || !newAddress.pincode)
-      return showRoyalNotice("Incomplete", "Please provide all necessary address details.");
-    const newAddrObj = {
-      id: Date.now(),
-      ...newAddress,
-      address: `${newAddress.addressLine}, ${newAddress.city}, ${newAddress.state} - ${newAddress.pincode} `,
-    };
-    const updated = [...addresses, newAddrObj];
-    setAddresses(updated);
-    localStorage.setItem("savedAddresses", JSON.stringify(updated));
 
-    // Sync with Sanity
-    if (user?._id) {
-      updateCustomerData(user._id, { addresses: updated });
-    }
-
-    // Automatically set as selected address
-    localStorage.setItem("selectedAddress", JSON.stringify(newAddrObj));
-    setSelectedAddressId(newAddrObj.id);
-
-    setActiveModal(null);
-    setNewAddress({
-      name: "",
-      mobile: "",
-      pincode: "",
-      city: "",
-      state: "",
-      addressLine: "",
-      type: "Home",
-    });
-  };
 
   const handleSetDefaultAddress = (addr) => {
     localStorage.setItem("selectedAddress", JSON.stringify(addr));
@@ -682,7 +650,7 @@ const Profile = () => {
                             </span>
                           </button>
                           <button
-                            onClick={() => setActiveModal("addAddress")}
+                            onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile" } })}
                             className="p-4 bg-white/5 border border-white/5 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
                           >
                             <MapPin
@@ -824,6 +792,12 @@ const Profile = () => {
                                 </button>
                               )}
                               <button
+                                onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile", editAddress: addr } })}
+                                className="text-zinc-600 hover:text-[#D4AF37] transition-colors p-1"
+                              >
+                                <Edit2 size={16} />
+                              </button>
+                              <button
                                 onClick={() => handleDeleteAddress(addr.id)}
                                 className="text-zinc-600 hover:text-red-500 transition-colors p-1"
                               >
@@ -845,7 +819,7 @@ const Profile = () => {
                       ))}
 
                       <button
-                        onClick={() => setActiveModal("addAddress")}
+                        onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile" } })}
                         className="border border-dashed border-zinc-800 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-white/[0.02] transition-all min-h-[200px] group"
                       >
                         <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
@@ -1216,96 +1190,7 @@ const Profile = () => {
             </div>
           )}
 
-          {/* Add Address */}
-          {activeModal === "addAddress" && (
-            <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-              <div className="bg-[#0F0F0F] border border-white/10 p-8 rounded-lg max-w-lg w-full animate-in fade-in zoom-in duration-200">
-                <h3 className="text-xl font-serif text-white mb-6">
-                  Add New Address
-                </h3>
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <input
-                      type="text"
-                      placeholder="Name"
-                      value={newAddress.name}
-                      onChange={(e) =>
-                        setNewAddress({ ...newAddress, name: e.target.value })
-                      }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder="Mobile"
-                      value={newAddress.mobile}
-                      onChange={(e) =>
-                        setNewAddress({ ...newAddress, mobile: e.target.value })
-                      }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                    />
-                  </div>
-                  <input
-                    type="text"
-                    placeholder="Address Line"
-                    value={newAddress.addressLine}
-                    onChange={(e) =>
-                      setNewAddress({
-                        ...newAddress,
-                        addressLine: e.target.value,
-                      })
-                    }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                  />
-                  <div className="grid grid-cols-3 gap-4">
-                    <input
-                      type="text"
-                      placeholder="City"
-                      value={newAddress.city}
-                      onChange={(e) =>
-                        setNewAddress({ ...newAddress, city: e.target.value })
-                      }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder="State"
-                      value={newAddress.state}
-                      onChange={(e) =>
-                        setNewAddress({ ...newAddress, state: e.target.value })
-                      }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                    />
-                    <input
-                      type="text"
-                      placeholder="ZIP"
-                      value={newAddress.pincode}
-                      onChange={(e) =>
-                        setNewAddress({
-                          ...newAddress,
-                          pincode: e.target.value,
-                        })
-                      }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
-                    />
-                  </div>
-                  <div className="flex gap-4 pt-4">
-                    <Button
-                      onClick={handleAddAddress}
-                      className="flex-1 bg-[#D4AF37] text-black hover:bg-white border-none"
-                    >
-                      Save Address
-                    </Button>
-                    <button
-                      onClick={() => setActiveModal(null)}
-                      className="px-6 text-zinc-400 hover:text-white"
-                    >
-                      Cancel
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
+
 
           {/* Add Card */}
           {activeModal === "addCard" && (

@@ -1,264 +1,225 @@
 import React, { useState, useRef, useEffect } from "react";
-import {
-  Search,
-  X,
-  ZoomIn,
-  ZoomOut,
-  Scan,
-  Grid,
-  ChevronLeft,
-  ChevronRight,
-  Heart,
-  Share2,
-} from "lucide-react";
-import { useCart } from "../../context/CartContext"; // Assuming context usage
+import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
 
-// Flipkart-style Zoom Gallery for that "Retail Standard" feel but with Royal aesthetics
-const RoyalZoomGallery = ({
-  images,
-  productName,
-  product,
-  portalId = "zoom-portal",
-}) => {
-  const [selectedImage, setSelectedImage] = useState(images[0]);
-  const [zoomState, setZoomState] = useState({ show: false, x: 0, y: 0 }); // Mouse position relative to image %
-  const imgRef = useRef(null);
-  const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } =
-    useCart();
-
-  // Safety check for images
+/**
+ * Luxury product image gallery
+ * Desktop: vertical thumbnail strip on left + large main image
+ * Mobile: swipeable single image with dot indicators
+ */
+const RoyalZoomGallery = ({ images, productName }) => {
+  const safeImages = images && images.length > 0 ? images : ["/images/logo.jpeg"];
+  const [activeIdx, setActiveIdx] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalZoom, setModalZoom] = useState(1);
 
-  // Drag/Pan State
   const [pan, setPan] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
+  const touchStartX = useRef(null);
+  const thumbnailRefs = useRef([]);
 
-  const safeImages =
-    images && images.length > 0 ? images : ["/images/logo.jpeg"];
-
+  // Scroll active thumbnail into view
   useEffect(() => {
-    if (safeImages.length > 0) setSelectedImage(safeImages[0]);
-  }, [images]);
-
-  const handleMouseMove = (e) => {
-    if (!imgRef.current) return;
-    const { left, top, width, height } = imgRef.current.getBoundingClientRect();
-
-    const x = e.clientX-left;
-    const y = e.clientY-top;
-
-    // Check bounds
-    if (x < 0 || y < 0 || x > width || y > height) {
-      setZoomState({ ...zoomState, show: false });
-      return;
+    if (thumbnailRefs.current[activeIdx]) {
+      thumbnailRefs.current[activeIdx].scrollIntoView({ block: "nearest", behavior: "smooth" });
     }
+  }, [activeIdx]);
 
-    // Calculate percentage (0-100)
-    const xPercent = (x / width) * 100;
-    const yPercent = (y / height) * 100;
+  // Reset pan when modal closes
+  useEffect(() => {
+    if (!isModalOpen) { setModalZoom(1); setPan({ x: 0, y: 0 }); }
+  }, [isModalOpen]);
 
-    setZoomState({ show: true, x: xPercent, y: yPercent });
+  const prev = () => setActiveIdx((i) => Math.max(i - 1, 0));
+  const next = () => setActiveIdx((i) => Math.min(i + 1, safeImages.length - 1));
+
+  const onTouchStart = (e) => { touchStartX.current = e.touches[0].clientX; };
+  const onTouchEnd = (e) => {
+    if (touchStartX.current === null) return;
+    const delta = touchStartX.current - e.changedTouches[0].clientX;
+    if (Math.abs(delta) > 40) { if (delta > 0) next(); else prev(); }
+    touchStartX.current = null;
   };
 
-  // Reset pan when zoom is reset or modal closed
-  useEffect(() => {
-    if (!isModalOpen || modalZoom === 1) {
-      setPan({ x: 0, y: 0 });
-    }
-  }, [isModalOpen, modalZoom]);
-
-  // Pan Handlers
   const onMouseDown = (e) => {
-    if (modalZoom > 1) {
-      setIsDragging(true);
-      setDragStart({ x: e.clientX-pan.x, y: e.clientY-pan.y });
-    }
+    if (modalZoom > 1) { setIsDragging(true); setDragStart({ x: e.clientX - pan.x, y: e.clientY - pan.y }); }
   };
-
   const onMouseMove = (e) => {
-    if (isDragging) {
-      e.preventDefault();
-      setPan({
-        x: e.clientX-dragStart.x,
-        y: e.clientY-dragStart.y,
-      });
-    }
+    if (isDragging) { e.preventDefault(); setPan({ x: e.clientX - dragStart.x, y: e.clientY - dragStart.y }); }
   };
-
   const onMouseUp = () => setIsDragging(false);
 
-  const isWishlisted = wishlistItems.some((item) => item.id == product?.id);
-
   return (
-    <div className="flex flex-col-reverse md:flex-row gap-4 h-full relative">
-      {/* Thumbnails Strip (Vertical on Desktop) */}
-      <div className="flex md:flex-col gap-2 overflow-x-auto md:overflow-y-auto md:h-[600px] scrollbar-hide py-2 md:py-0 w-full md:w-20 shrink-0">
-        {safeImages.map((img, idx) => (
-          <button
-            key={idx}
-            onMouseEnter={() => setSelectedImage(img)}
-            onClick={() => setSelectedImage(img)}
-            className={`border-2 rounded transition-all w-16 h-20 md:w-full md:h-24 shrink-0 overflow-hidden ${selectedImage === img ? "border-royal-gold opacity-100 ring-2 ring-royal-gold/20" : "border-gray-700 opacity-60 hover:opacity-100"}`}
-          >
-            <img
-              src={img}
-              alt={`View ${idx}`}
-              className="w-full h-full object-cover"
-            />
-          </button>
-        ))}
-      </div>
+    <>
+      {/* ── DESKTOP: thumbnail strip + large main image ── */}
+      <div className="hidden md:flex gap-3 w-full">
 
-      {/* Main Stage */}
-      <div className="relative flex-1 bg-white/5 border border-white/10 rounded-lg overflow-hidden md:h-[600px] flex items-center justify-center group z-10">
-        {/* Image Container with Zoom Logic */}
+        {/* Vertical thumbnail strip */}
+        {safeImages.length > 1 && (
+          <div
+            className="flex flex-col gap-2 flex-shrink-0 overflow-y-auto"
+            style={{ width: 68, maxHeight: 720 }}
+          >
+            {safeImages.map((img, idx) => (
+              <button
+                key={idx}
+                ref={(el) => (thumbnailRefs.current[idx] = el)}
+                onClick={() => setActiveIdx(idx)}
+                className={`w-full flex-shrink-0 bg-[#F6F5F3] overflow-hidden transition-all duration-200 border-b-2 ${
+                  activeIdx === idx
+                    ? "border-b-black opacity-100"
+                    : "border-b-transparent opacity-55 hover:opacity-85"
+                }`}
+                style={{ aspectRatio: "3/4" }}
+              >
+                <img src={img} alt={`view ${idx + 1}`} className="w-full h-full object-cover" />
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Main large image */}
         <div
-          className="w-full h-full flex items-center justify-center relative bg-white cursor-zoom-in"
-          onMouseMove={handleMouseMove}
-          onMouseLeave={() => setZoomState({ ...zoomState, show: false })}
-          onClick={() => {
-            setIsModalOpen(true);
-            setModalZoom(1);
-          }}
-          ref={imgRef}
+          className="flex-1 relative bg-[#F6F5F3] overflow-hidden cursor-zoom-in group"
+          onClick={() => setIsModalOpen(true)}
         >
           <img
-            src={selectedImage}
+            key={activeIdx}
+            src={safeImages[activeIdx]}
             alt={productName}
-            className="max-w-full max-h-full object-contain mix-blend-multiply"
+            className="w-full h-auto object-cover"
           />
-        </div>
 
-        {/* Overlays / Actions */}
-        <div className="absolute top-4 right-4 flex flex-col gap-3 z-20">
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              isWishlisted
-                ? removeFromWishlist(product.id)
-                : addToWishlist(product);
-            }}
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-gray-50 text-gray-400 hover:text-red-500 transition-all transform hover:scale-110"
-            title={isWishlisted ? "Remove from Wishlist" : "Add to Wishlist"}
-          >
-            <Heart
-              size={20}
-              fill={isWishlisted ? "currentColor" : "none"}
-              className={isWishlisted ? "text-red-500" : ""}
-            />
-          </button>
-          <button
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-gray-50 text-gray-400 hover:text-blue-500 transition-all transform hover:scale-110"
-            title="Share"
-          >
-            <Share2 size={20} />
-          </button>
-          <button
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsModalOpen(true);
-              setModalZoom(1);
-            }}
-            className="p-3 bg-white rounded-full shadow-lg hover:bg-gray-50 text-gray-400 hover:text-royal-gold transition-all transform hover:scale-110 group/scan"
-            title="Inspect Masterpiece"
-          >
-            <Scan
-              size={20}
-              className="group-hover/scan:rotate-90 transition-transform"
-            />
-          </button>
+          {/* Prev / Next arrows — visible on hover */}
+          {safeImages.length > 1 && (
+            <>
+              <button
+                onClick={(e) => { e.stopPropagation(); prev(); }}
+                disabled={activeIdx === 0}
+                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"
+              >
+                <ChevronLeft size={16} strokeWidth={1.5} />
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); next(); }}
+                disabled={activeIdx === safeImages.length - 1}
+                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"
+              >
+                <ChevronRight size={16} strokeWidth={1.5} />
+              </button>
+            </>
+          )}
+
+          {/* Zoom hint */}
+          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-2.5 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <ZoomIn size={11} strokeWidth={1.5} />
+            <span className="text-[8px] uppercase tracking-[0.2em]">Zoom</span>
+          </div>
+
+          {/* Image counter */}
+          {safeImages.length > 1 && (
+            <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm px-2 py-1 text-[9px] uppercase tracking-[0.15em]">
+              {activeIdx + 1} / {safeImages.length}
+            </div>
+          )}
         </div>
       </div>
 
-      {/* THE PORTAL ZOOM PANE (Side-by-Side Hover) */}
-      {zoomState.show && !isModalOpen && (
+      {/* ── MOBILE: swipeable image + dot indicators ── */}
+      <div className="md:hidden w-full relative">
         <div
-          className="hidden lg:block absolute left-[102%] top-0 w-[800px] h-[600px] bg-white border border-gray-200 shadow-2xl z-50 rounded-lg overflow-hidden pointer-events-none"
-          style={{
-            backgroundImage: `url('${selectedImage}')`,
-            backgroundPosition: `${zoomState.x}% ${zoomState.y}%`,
-            backgroundSize: "250%", // 2.5x Zoom
-            backgroundRepeat: "no-repeat",
-          }}
+          className="w-full bg-[#F6F5F3] overflow-hidden cursor-zoom-in"
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+          onClick={() => setIsModalOpen(true)}
         >
-          <div className="absolute inset-0 border-4 border-royal-gold/20 pointer-events-none"></div>
-          <div className="absolute bottom-4 right-4 bg-royal-gold text-black text-xs font-bold px-3 py-1 uppercase tracking-widest bg-opacity-80">
-            Royal Inspection
-          </div>
+          <img key={activeIdx} src={safeImages[activeIdx]} alt={productName} className="w-full h-auto object-cover" />
         </div>
-      )}
 
-      {/* FULL SCREEN MODAL WITH MANUAL ZOOM CONTROLS */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-[100] bg-black/95 flex flex-col animate-in fade-in duration-300">
-          {/* Header */}
-          <div className="flex items-center justify-between px-6 py-4 bg-black border-b border-white/10 z-50">
-            <h3 className="text-white font-serif text-lg tracking-wide">
-              {productName}
-            </h3>
+        {safeImages.length > 1 && (
+          <>
             <button
-              onClick={() => setIsModalOpen(false)}
-              className="p-2 bg-white/10 rounded-full hover:bg-white/20 text-white transition-colors"
+              onClick={prev} disabled={activeIdx === 0}
+              className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 flex items-center justify-center disabled:opacity-0 transition-opacity"
             >
-              <X size={24} />
+              <ChevronLeft size={16} strokeWidth={1.5} />
+            </button>
+            <button
+              onClick={next} disabled={activeIdx === safeImages.length - 1}
+              className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 flex items-center justify-center disabled:opacity-0 transition-opacity"
+            >
+              <ChevronRight size={16} strokeWidth={1.5} />
+            </button>
+            <div className="flex justify-center gap-1.5 mt-4">
+              {safeImages.map((_, idx) => (
+                <button
+                  key={idx} onClick={() => setActiveIdx(idx)}
+                  className={`rounded-full transition-all duration-200 ${activeIdx === idx ? "w-5 h-1.5 bg-black" : "w-1.5 h-1.5 bg-gray-300 hover:bg-gray-400"}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* ── FULLSCREEN MODAL ── */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[200] bg-white flex flex-col">
+          {/* Header */}
+          <div className="flex items-center justify-between px-6 py-4 border-b border-gray-100 flex-shrink-0">
+            <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-medium">
+              {productName}
+            </span>
+            <button onClick={() => setIsModalOpen(false)} className="p-2 hover:bg-gray-50 transition-colors" aria-label="Close">
+              <X size={18} strokeWidth={1} />
             </button>
           </div>
 
-          {/* Canvas */}
+          {/* Zoom image area */}
           <div
-            className={`flex-1 relative flex items-center justify-center overflow-hidden select-none p-10 ${modalZoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-default"}`}
+            className={`flex-1 flex items-center justify-center bg-[#F6F5F3] overflow-hidden select-none p-8 ${modalZoom > 1 ? "cursor-grab active:cursor-grabbing" : "cursor-default"}`}
             onMouseDown={onMouseDown}
             onMouseMove={onMouseMove}
             onMouseUp={onMouseUp}
             onMouseLeave={onMouseUp}
+            onTouchStart={onTouchStart}
+            onTouchEnd={onTouchEnd}
           >
             <div
-              className="transition-transform duration-200 ease-out will-change-transform"
-              style={{
-                transform: `translate(${pan.x}px, ${pan.y}px) scale(${modalZoom})`,
-              }}
-              onWheel={(e) =>
-                setModalZoom((prev) =>
-                  Math.min(Math.max(1, prev + e.deltaY * -0.001), 4),
-                )
-              }
+              style={{ transform: `translate(${pan.x}px, ${pan.y}px) scale(${modalZoom})`, transition: isDragging ? "none" : "transform 0.15s ease-out" }}
+              onWheel={(e) => setModalZoom((p) => Math.min(Math.max(1, p + e.deltaY * -0.001), 4))}
             >
-              <img
-                src={selectedImage}
-                alt="Full View"
-                className="max-h-[85vh] max-w-[90vw] object-contain shadow-2xl"
-                draggable="false"
-              />
+              <img src={safeImages[activeIdx]} alt={productName} className="max-h-[80vh] max-w-[90vw] object-contain" draggable="false" />
             </div>
           </div>
 
-          {/* Footer / Controls */}
-          <div className="h-20 bg-black border-t border-white/10 flex items-center justify-center gap-6 z-50">
-            <button
-              onClick={() => setModalZoom((prev) => Math.max(1, prev-0.5))}
-              className="p-3 rounded-full bg-white/10 hover:bg-royal-gold hover:text-black text-white transition-all disabled:opacity-50"
-              disabled={modalZoom <= 1}
-            >
-              <ZoomOut size={24} />
+          {/* Thumbnails in modal */}
+          {safeImages.length > 1 && (
+            <div className="bg-white border-t border-gray-100 py-3 px-4 flex items-center justify-center gap-2 overflow-x-auto flex-shrink-0">
+              {safeImages.map((img, idx) => (
+                <button
+                  key={idx} onClick={() => setActiveIdx(idx)}
+                  className={`w-12 h-14 flex-shrink-0 overflow-hidden border-b-2 transition-all ${activeIdx === idx ? "border-b-black opacity-100" : "border-b-transparent opacity-50 hover:opacity-80"}`}
+                >
+                  <img src={img} alt="" className="w-full h-full object-cover" />
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Zoom controls */}
+          <div className="h-14 bg-white border-t border-gray-100 flex items-center justify-center gap-8 flex-shrink-0">
+            <button onClick={() => setModalZoom((p) => Math.max(1, p - 0.5))} disabled={modalZoom <= 1} className="p-2 hover:bg-gray-50 disabled:opacity-20 transition-colors">
+              <ZoomOut size={16} strokeWidth={1.5} />
             </button>
-
-            <span className="text-royal-gold font-mono w-16 text-center">
-              {Math.round(modalZoom * 100)}%
-            </span>
-
-            <button
-              onClick={() => setModalZoom((prev) => Math.min(4, prev + 0.5))}
-              className="p-3 rounded-full bg-white/10 hover:bg-royal-gold hover:text-black text-white transition-all disabled:opacity-50"
-              disabled={modalZoom >= 4}
-            >
-              <ZoomIn size={24} />
+            <span className="text-[11px] text-gray-400 tracking-wider w-12 text-center">{Math.round(modalZoom * 100)}%</span>
+            <button onClick={() => setModalZoom((p) => Math.min(4, p + 0.5))} disabled={modalZoom >= 4} className="p-2 hover:bg-gray-50 disabled:opacity-20 transition-colors">
+              <ZoomIn size={16} strokeWidth={1.5} />
             </button>
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

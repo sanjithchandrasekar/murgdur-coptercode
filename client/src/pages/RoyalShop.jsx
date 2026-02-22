@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, Filter, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
 import SEO from "../components/common/SEO";
@@ -103,11 +103,10 @@ const RoyalShop = () => {
               <button
                 key={filter}
                 onClick={() => handleFilter(filter)}
-                className={`text-xs font-bold uppercase tracking-[0.15em] transition-colors ${
-                  activeFilter === filter
+                className={`text-xs font-bold uppercase tracking-[0.15em] transition-colors ${activeFilter === filter
                     ? "text-black border-b border-black"
                     : "text-gray-400 hover:text-black"
-                }`}
+                  }`}
               >
                 {filter}
               </button>
@@ -201,7 +200,7 @@ const RoyalShop = () => {
                 View All Classics <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
               {royalClassic.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -227,7 +226,7 @@ const RoyalShop = () => {
                 View All Signature <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
               {royalSignature.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -259,7 +258,7 @@ const RoyalShop = () => {
                 View All Heritage <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
               {royalHeritage.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -291,7 +290,7 @@ const RoyalShop = () => {
                 View All Limited <ArrowRight size={14} />
               </Link>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-4 gap-y-10">
               {royalLimited.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
@@ -323,31 +322,60 @@ const RoyalShop = () => {
 };
 
 // Internal Product Card
-const ProductCard = ({ product }) => (
-  <Link to="#" className="group block cursor-pointer">
-    <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-gray-100">
-      {product.badge && (
-        <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1">
-          <span className="text-[10px] font-bold uppercase tracking-widest">
-            {product.badge}
+const ProductCard = ({ product }) => {
+  const navigate = useNavigate();
+  const [isHovered, setIsHovered] = useState(false);
+  const hasSecondImage = product.images && product.images.length > 1;
+
+  return (
+    <div
+      className="group relative cursor-pointer"
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => navigate(`/product/${product.id || product._id}`)}
+    >
+      <div className="relative aspect-[4/5] overflow-hidden bg-[#F6F5F3] mb-3">
+        {product.badge && (
+          <div className="absolute top-2 left-2 z-10 bg-black text-white px-2 py-1">
+            <span className="text-[10px] font-bold uppercase tracking-widest">
+              {product.badge}
+            </span>
+          </div>
+        )}
+        <img
+          src={product.image}
+          alt={product.name}
+          className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${hasSecondImage && isHovered ? "opacity-0" : "opacity-100"}`}
+          loading="lazy"
+        />
+        {hasSecondImage && (
+          <img
+            src={product.images[1]}
+            alt={`${product.name} (View 2)`}
+            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-500 ease-in-out ${isHovered ? "opacity-100" : "opacity-0"}`}
+            loading="lazy"
+          />
+        )}
+      </div>
+
+      <div className="text-center px-2">
+        <h3 className="text-[13px] font-sans tracking-wide text-black mb-1 line-clamp-1">
+          {product.name}
+        </h3>
+
+        <div className="flex justify-center items-center gap-2">
+          {product.originalPrice && (
+            <span className="text-[13px] font-sans text-gray-400 line-through">
+              ₹{product.originalPrice.toLocaleString()}
+            </span>
+          )}
+          <span className="text-[13px] font-sans text-gray-500">
+            ₹{(product.price || 0).toLocaleString()}
           </span>
         </div>
-      )}
-      <img
-        src={product.image}
-        alt={product.name}
-        className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-      />
+      </div>
     </div>
-    <div>
-      <h4 className="text-sm font-bold uppercase tracking-widest mb-1 group-hover:text-[#D4AF37] transition-colors">
-        {product.name}
-      </h4>
-      <p className="text-gray-500 text-xs">
-        ₹ {product.price.toLocaleString()}
-      </p>
-    </div>
-  </Link>
-);
+  );
+};
 
 export default RoyalShop;

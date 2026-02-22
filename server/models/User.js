@@ -1,12 +1,16 @@
 const mongoose = require("mongoose");
 
 const addressSchema = new mongoose.Schema({
-  addressLine1: { type: String, required: true },
-  addressLine2: String,
-  city: { type: String, required: true },
-  state: { type: String, required: true },
-  pincode: { type: String, required: true },
+  id: String,
+  name: String,
+  mobile: String,
+  addressLine: String,
+  city: { type: String },
+  state: { type: String },
+  pincode: { type: String },
   country: { type: String, default: "India" },
+  type: { type: String, default: "Home" },
+  address: String, // Full formatted string
   isDefault: { type: Boolean, default: false },
 });
 

@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { useGoogleLogin } from "@react-oauth/google";
+
 import { motion, AnimatePresence } from "framer-motion";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "../styles/PhoneInput.css"; // Royal Theme Overrides
 import { useNavigate } from "react-router-dom";
 import {
   Mail,
@@ -13,10 +16,11 @@ import {
   X,
   Facebook,
   Github,
-  Chrome,
+
   Loader2,
   AlertCircle,
   CheckCircle2,
+  Crown,
 } from "lucide-react";
 import Button from "../components/common/Button";
 import SEO from "../components/common/SEO";
@@ -115,8 +119,14 @@ const Auth = () => {
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
       newErrors.email = "Invalid email format";
     if (view === "signup") {
-      if (!formData.fullName || formData.fullName.trim().split(" ").length < 2) {
-        newErrors.firstName = "Please enter your full name (First & Last)";
+      if (!formData.firstName || formData.firstName.trim().length < 2) {
+        newErrors.firstName = "First name is required";
+      }
+      if (!formData.lastName || formData.lastName.trim().length < 1) {
+        newErrors.lastName = "Last name is required";
+      }
+      if (!formData.mobile || formData.mobile.length < 8) {
+        newErrors.mobile = "Invalid mobile number";
       }
       if (formData.password.length < 8) newErrors.password = "Min 8 chars";
       if (formData.password !== formData.confirmPassword)
@@ -167,15 +177,16 @@ const Auth = () => {
           setErrors({ auth: "Invalid email or password" });
         }
       } else if (view === "signup") {
-        // Register via MongoDB Backend
         const apiUrl = import.meta.env.VITE_API_URL || "/api";
+
+        // Register User
         const response = await fetch(`${apiUrl}/auth/register`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            name: formData.fullName,
+            name: `${formData.firstName} ${formData.lastName}`.trim(),
             email: formData.email,
             password: formData.password,
             mobile: formData.mobile,
@@ -197,10 +208,10 @@ const Auth = () => {
             token: data.token,
           };
           localStorage.setItem("userProfile", JSON.stringify(userProfile));
-          showRoyalNotice("Registration Complete", "Your account has been successfully created.", "success", () => navigate("/"));
+          showRoyalNotice("Registration Complete", "Your account has been successfully created.", "success", () => navigate("/complete-profile"));
         } else {
           setErrors({
-            email: "User with this email already exists",
+            email: data.message || "Registration failed",
           });
         }
       } else if (view === "forgot") {
@@ -217,82 +228,7 @@ const Auth = () => {
     }
   };
 
-  const googleLoginHandler = useGoogleLogin({
-    onSuccess: async (tokenResponse) => {
-      setLoading(true);
-      try {
-        const apiUrl = import.meta.env.VITE_API_URL || "/api";
-        const res = await fetch(`${apiUrl}/auth/google`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ token: tokenResponse.access_token }),
-        });
 
-        const data = await res.json();
-
-        if (res.ok) {
-          const userProfile = {
-            firstName: data.name.split(" ")[0],
-            lastName: data.name.split(" ")[1] || "",
-            email: data.email,
-            mobile: data.mobile || "",
-            isMember: data.isMember !== undefined ? data.isMember : true,
-            tier: data.tier || "Silver",
-            role: data.role || "user",
-            _id: data._id,
-            token: data.token,
-            source: "google",
-          };
-          localStorage.setItem("userProfile", JSON.stringify(userProfile));
-          showRoyalNotice("Welcome Back", "You have successfully signed in with Google.", "success", () => navigate("/"));
-        } else {
-          setErrors({ auth: "Google Sign-In failed. Please try again." });
-        }
-      } catch (error) {
-        console.error("Google Auth Error:", error);
-        setErrors({ auth: "Connection failed during Google Sign-In." });
-      } finally {
-        setLoading(false);
-      }
-    },
-    onError: () => {
-      setLoading(false);
-      setErrors({ auth: "Google Sign-In was cancelled or failed." });
-    },
-  });
-
-  const handleSocialLogin = (platform) => {
-    if (platform === "Google") {
-      // PROACTIVE FIX: If Google Client ID is placeholder, use a mock login for testing
-      const isPlaceholder = import.meta.env.VITE_GOOGLE_CLIENT_ID === "YOUR_GOOGLE_CLIENT_ID_HERE" || !import.meta.env.VITE_GOOGLE_CLIENT_ID;
-
-      if (isPlaceholder) {
-        setLoading(true);
-        setTimeout(() => {
-          const mockUser = {
-            firstName: "Royal",
-            lastName: "Guest",
-            email: "guest@murgdur.com",
-            mobile: "+91 00000 00000",
-            isMember: true,
-            tier: "Royal",
-            role: "user",
-            _id: "mock_id_123",
-            token: "mock_token_abc",
-            source: "google_mock"
-          };
-          localStorage.setItem("userProfile", JSON.stringify(mockUser));
-          setLoading(false);
-          showRoyalNotice("Access Granted", "Developer bypass active. Signed in as Royal Guest.", "success", () => navigate("/"));
-        }, 1500);
-      } else {
-        setLoading(true);
-        googleLoginHandler();
-      }
-    }
-  };
 
   const getSEOMeta = () => {
     switch (view) {
@@ -363,15 +299,29 @@ const Auth = () => {
           <div className="w-24 h-[2px] bg-[#D4AF37] mb-12 opacity-80" />
 
           {/* Quote - Matching Styling from reference image */}
-          <blockquote className="font-serif text-4xl lg:text-5xl text-white leading-[1.15] mb-12 font-medium">
-            "Style is a way to say who you are without having to speak."
-          </blockquote>
+          {/* Quote - Dynamic Cycling */}
+          <div className="h-48 relative">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={bgIndex}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.5 }}
+                className="absolute inset-0"
+              >
+                <blockquote className="font-serif text-4xl lg:text-5xl text-white leading-[1.15] mb-8 font-medium">
+                  "{TESTIMONIALS[bgIndex % TESTIMONIALS.length].text}"
+                </blockquote>
 
-          <div className="flex items-center gap-4">
-            <div className="w-10 h-[1px] bg-[#D4AF37]/50" />
-            <cite className="text-[#D4AF37] text-xs font-bold tracking-[0.4em] uppercase not-italic">
-              Rachel Zoe
-            </cite>
+                <div className="flex items-center gap-4">
+                  <div className="w-10 h-[1px] bg-[#D4AF37]/50" />
+                  <cite className="text-[#D4AF37] text-xs font-bold tracking-[0.4em] uppercase not-italic">
+                    {TESTIMONIALS[bgIndex % TESTIMONIALS.length].author}
+                  </cite>
+                </div>
+              </motion.div>
+            </AnimatePresence>
           </div>
         </div>
       </div>
@@ -523,32 +473,39 @@ const Auth = () => {
                     exit={{ opacity: 0 }}
                     className="space-y-8 mt-4"
                   >
-                    {/* Full Name */}
-                    <div className="space-y-1">
-                      <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Full Name</label>
-                      <div className="relative">
-                        <input
-                          type="text"
-                          name="fullName"
-                          value={formData.fullName || ""}
-                          onChange={(e) => {
-                            const val = e.target.value;
-                            const parts = val.split(" ");
-                            setFormData(prev => ({
-                              ...prev,
-                              fullName: val,
-                              firstName: parts[0],
-                              lastName: parts.slice(1).join(" ")
-                            }));
-                          }}
-                          className={`w-full bg-[#141414] border ${errors.firstName ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
-                          placeholder="First and Last Name"
-                        />
-                        {formData.fullName?.length > 3 && (
-                          <CheckCircle2 size={16} className="absolute right-4 top-3.5 text-green-500" />
-                        )}
+                    {/* First Name & Last Name */}
+                    <div className="flex gap-4">
+                      {/* First Name */}
+                      <div className="space-y-1 w-1/2">
+                        <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">First Name</label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="firstName"
+                            value={formData.firstName}
+                            onChange={handleChange}
+                            className={`w-full bg-[#141414] border ${errors.firstName ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                            placeholder="First Name"
+                          />
+                        </div>
+                        {errors.firstName && <p className="text-red-500 text-[10px] ml-1">{errors.firstName}</p>}
                       </div>
-                      {errors.firstName && <p className="text-red-500 text-[10px] ml-1">{errors.firstName}</p>}
+
+                      {/* Last Name */}
+                      <div className="space-y-1 w-1/2">
+                        <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Last Name</label>
+                        <div className="relative">
+                          <input
+                            type="text"
+                            name="lastName"
+                            value={formData.lastName}
+                            onChange={handleChange}
+                            className={`w-full bg-[#141414] border ${errors.lastName ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                            placeholder="Last Name"
+                          />
+                        </div>
+                        {errors.lastName && <p className="text-red-500 text-[10px] ml-1">{errors.lastName}</p>}
+                      </div>
                     </div>
 
                     {/* Email */}
@@ -570,24 +527,27 @@ const Auth = () => {
                       {errors.email && <p className="text-red-500 text-[10px] ml-1">{errors.email}</p>}
                     </div>
 
-                    {/* Mobile */}
+                    {/* Mobile - International */}
                     <div className="space-y-1">
                       <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Mobile Number</label>
-                      <div className="flex gap-2">
-                        <div className="bg-[#141414] border border-zinc-800 text-zinc-400 px-3 py-3 rounded flex items-center gap-1 cursor-not-allowed">
-                          <span className="text-sm font-bold">+91</span>
-                        </div>
-                        <input
-                          type="tel"
-                          name="mobile"
+                      <div className={`relative rounded transition-all duration-300 ${errors.mobile ? 'border border-red-500' : 'border border-zinc-800 focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]'}`}>
+                        <PhoneInput
+                          country={"in"}
                           value={formData.mobile}
-                          onChange={handleChange}
-                          className="flex-1 bg-[#141414] border border-zinc-800 text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
-                          placeholder="10-digit mobile number"
+                          onChange={(phone) => setFormData(prev => ({ ...prev, mobile: phone }))}
+                          countryCodeEditable={false}
+                          enableSearch={true}
+                          disableSearchIcon={true}
+                          inputClass="!bg-[#141414] !text-white !w-full !h-12 !border-none !rounded focus:!ring-0"
+                          buttonClass="!bg-[#141414] !border-r !border-zinc-800 !rounded-l hover:!bg-zinc-900"
+                          dropdownClass="!bg-[#141414] !text-white !border !border-zinc-800 !shadow-xl"
+                          searchClass="!bg-zinc-900 !text-white !border-zinc-700 hover:!border-[#D4AF37]"
                         />
                       </div>
-                      <p className="text-[9px] text-zinc-600 ml-1">We'll send order updates here.</p>
+                      {errors.mobile && <p className="text-red-500 text-[10px] ml-1">{errors.mobile}</p>}
                     </div>
+
+
 
                     {/* Password */}
                     <div className="space-y-1">
@@ -634,7 +594,7 @@ const Auth = () => {
                           className="mt-1 w-4 h-4 accent-[#D4AF37] cursor-pointer"
                         />
                         <p className="text-xs text-zinc-400 leading-relaxed">
-                          By continuing, you agree to Murgdur's <span className="text-[#D4AF37] cursor-pointer hover:underline">Conditions of Use</span> and <span className="text-[#D4AF37] cursor-pointer hover:underline">Privacy Notice</span>.
+                          By continuing, you agree to Murgdur's <a href="/conditions-of-use" className="text-[#D4AF37] cursor-pointer hover:underline" target="_blank" rel="noopener noreferrer">Conditions of Use</a> and <a href="/privacy-notice" className="text-[#D4AF37] cursor-pointer hover:underline" target="_blank" rel="noopener noreferrer">Privacy Notice</a>.
                         </p>
                       </div>
                     </div>
@@ -688,28 +648,7 @@ const Auth = () => {
               </Button>
             </form>
 
-            {/* Social Login */}
-            {view !== "forgot" && (
-              <div className="mt-8">
-                <div className="relative mb-8 text-center">
-                  <div className="absolute inset-0 flex items-center">
-                    <div className="w-full border-t border-white/10"></div>
-                  </div>
-                  <span className="relative bg-[#050505] px-4 text-[10px] uppercase tracking-[0.3em] font-medium text-zinc-600">
-                    Or continue with
-                  </span>
-                </div>
-                <div className="flex justify-center">
-                  <SocialButton
-                    icon={Chrome}
-                    label="Continue with Google"
-                    onClick={() => handleSocialLogin("Google")}
-                    loading={loading}
-                    className="w-full"
-                  />
-                </div>
-              </div>
-            )}
+
 
             {/* View Toggle */}
             {/* Simple & Unique View Toggle */}
