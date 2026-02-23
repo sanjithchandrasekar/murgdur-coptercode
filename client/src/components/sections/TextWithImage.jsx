@@ -37,7 +37,7 @@ const TextWithImage = ({
 
           {hashtag && (
             <h1
-              className="text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight"
+              className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight"
               style={{
                 fontFamily: '"Stardos Stencil", cursive',
                 textShadow: "2px 2px 4px rgba(0,0,0,0.8)",

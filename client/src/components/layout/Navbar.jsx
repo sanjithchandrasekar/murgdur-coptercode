@@ -276,6 +276,7 @@ const Navbar = () => {
         ? "bg-white shadow-[inset_0_-1px_#e1e1e1]"
         : "bg-gradient-to-b from-black/75 via-black/30 to-transparent"
         }`}
+      style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
       <div className="flex items-center h-[3.5rem] md:h-[4.25rem] relative px-5 md:px-8 lg:px-14 xl:px-16 w-full">
         {/* LEFT COMPARTMENT */}

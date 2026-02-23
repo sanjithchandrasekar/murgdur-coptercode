@@ -91,9 +91,14 @@ const SEO = ({
       <meta name="twitter:site" content="@murgdur" />
       <meta name="twitter:creator" content="@murgdur" />
 
-      {/* Additional SEO */}
+      {/* Mobile & PWA */}
       <meta name="theme-color" content="#000000" />
       <meta name="application-name" content="Murgdur" />
+      <meta name="mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-capable" content="yes" />
+      <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+      <meta name="apple-mobile-web-app-title" content="Murgdur" />
+      <meta name="format-detection" content="telephone=no, address=no, email=no" />
 
       {/* Schema.org JSON-LD-Organization */}
       <script type="application/ld+json">

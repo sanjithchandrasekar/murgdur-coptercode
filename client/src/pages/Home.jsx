@@ -924,7 +924,7 @@ const Home = () => {
                 <span className="w-8 h-[1px] bg-gray-300"></span> The King's
                 Tailor
               </h3>
-              <h2 className="text-4xl md:text-6xl font-serif text-black mb-6 leading-tight">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-serif text-black mb-6 leading-tight">
                 Bespoke <br /> Sovereignty
               </h2>
               <p className="text-gray-600 mb-8 leading-relaxed text-lg font-light border-l-2 border-gray-100 pl-6">

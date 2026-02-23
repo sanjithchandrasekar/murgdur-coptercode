@@ -161,7 +161,7 @@ const Cart = () => {
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-6 mt-2">
+                  <div className="flex flex-wrap items-center gap-x-6 gap-y-2 mt-2">
                     {/* Qty Control */}
                     <div className="flex items-center gap-3">
                       <button

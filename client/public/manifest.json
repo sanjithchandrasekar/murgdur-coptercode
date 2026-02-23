@@ -1,20 +1,28 @@
 {
     "short_name": "Murgdur",
     "name": "Murgdur Royal Luxury",
+    "description": "Discover the epitome of luxury. Timeless fashion, royal aesthetics, and signature collections.",
     "icons": [
         {
             "src": "/images/logo.jpeg",
             "type": "image/jpeg",
-            "sizes": "192x192"
+            "sizes": "192x192",
+            "purpose": "any"
         },
         {
             "src": "/images/logo.jpeg",
             "type": "image/jpeg",
-            "sizes": "512x512"
+            "sizes": "512x512",
+            "purpose": "any maskable"
         }
     ],
-    "start_url": ".",
+    "start_url": "/",
+    "scope": "/",
     "display": "standalone",
+    "orientation": "portrait-primary",
     "theme_color": "#000000",
-    "background_color": "#000000"
+    "background_color": "#000000",
+    "categories": ["shopping", "lifestyle", "fashion"],
+    "lang": "en-IN",
+    "dir": "ltr"
 }

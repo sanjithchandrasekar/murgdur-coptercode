@@ -239,14 +239,14 @@ const Checkout = () => {
                             )}
                           </div>
                           <div className="flex-1">
-                            <div className="flex items-center gap-5 mb-1">
+                            <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
                               <span className="font-bold text-white text-lg">
                                 {addr.name}
                               </span>
                               <span className="bg-white/10 text-gray-300 text-[10px] px-2 py-0.5 rounded uppercase font-bold">
                                 {addr.type}
                               </span>
-                              <span className="text-white font-bold ml-4">
+                              <span className="text-white font-bold">
                                 {addr.mobile}
                               </span>
                               <button

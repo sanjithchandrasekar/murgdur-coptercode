@@ -26,7 +26,7 @@ const VideoSection = ({ heading, videoUrl, ctaText, ctaLink }) => {
       <div className="absolute inset-0 flex flex-col items-center justify-center z-10 text-center px-4">
         {heading && (
           <h2
-            className="text-5xl md:text-7xl font-serif text-white tracking-widest uppercase drop-shadow-2xl mb-8 font-bold"
+            className="text-3xl sm:text-5xl md:text-7xl font-serif text-white tracking-widest uppercase drop-shadow-2xl mb-8 font-bold"
             style={{ textShadow: "0 4px 10px rgba(0,0,0,0.8)" }}
           >
             {heading}

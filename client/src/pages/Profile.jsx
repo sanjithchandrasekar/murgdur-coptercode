@@ -405,9 +405,48 @@ const Profile = () => {
           <BackButton className="text-zinc-500 hover:text-white" />
         </div>
 
+        {/* ── MOBILE: compact user card + horizontal tab navigation (hidden on desktop) ── */}
+        <div className="lg:hidden mb-6 space-y-3">
+          <div className="flex items-center gap-4 bg-[#0F0F0F] rounded-lg border border-white/5 p-4">
+            <div
+              className="w-12 h-12 rounded-full bg-[#141414] border-2 border-[#D4AF37]/30 flex items-center justify-center shrink-0 cursor-pointer"
+              onClick={() => setActiveModal("editProfile")}
+            >
+              <span className="text-base font-serif text-[#D4AF37]">{userInitials}</span>
+            </div>
+            <div className="min-w-0 flex-1">
+              <p className="text-white font-medium text-sm truncate">{fullName}</p>
+              <p className="text-[#D4AF37] text-[10px] uppercase tracking-widest">Silver Member</p>
+            </div>
+            <button
+              onClick={handleLogout}
+              className="text-red-400 hover:text-red-300 shrink-0 p-1"
+              title="Sign Out"
+            >
+              <LogOut size={18} />
+            </button>
+          </div>
+          <div className="flex overflow-x-auto gap-2 scrollbar-hide pb-1">
+            {menuItems.map((item) => (
+              <button
+                key={item.id}
+                onClick={() => setActiveTab(item.id)}
+                className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 text-[10px] uppercase tracking-wider font-bold rounded-full border transition-all whitespace-nowrap ${
+                  activeTab === item.id
+                    ? "bg-[#D4AF37] text-black border-[#D4AF37]"
+                    : "bg-transparent text-zinc-400 border-white/10 hover:border-white/30 hover:text-white"
+                }`}
+              >
+                <item.icon size={12} />
+                {item.label}
+              </button>
+            ))}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-          {/* Sidebar */}
-          <div className="lg:col-span-3 space-y-8">
+          {/* Sidebar — desktop only */}
+          <div className="hidden lg:block lg:col-span-3 space-y-8">
             <div className="bg-[#0F0F0F] rounded-lg border border-white/5 overflow-hidden sticky top-32">
               <div className="h-24 bg-gradient-to-r from-[#D4AF37]/20 via-[#0F0F0F] to-[#0F0F0F] relative">
                 <div className="absolute -bottom-10 left-6">
@@ -1319,7 +1358,7 @@ const Profile = () => {
 
           {/* Chat Modal */}
           {activeModal === "chat" && (
-            <div className="fixed bottom-4 right-4 md:bottom-8 md:right-8 z-50 w-80 md:w-96 bg-[#0F0F0F] border border-[#D4AF37] rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300 h-[500px]">
+            <div className="fixed bottom-4 right-2 left-2 sm:left-auto sm:right-4 md:bottom-8 md:right-8 z-50 sm:w-[calc(100vw-2rem)] sm:max-w-sm md:w-96 bg-[#0F0F0F] border border-[#D4AF37] rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300 h-[500px]">
               <div className="bg-[#D4AF37] p-4 flex justify-between items-center text-black">
                 <div className="flex items-center gap-2">
                   <MessageSquare size={18} />

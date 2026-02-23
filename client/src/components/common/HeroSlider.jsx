@@ -107,7 +107,7 @@ const HeroSlider = ({ slides: customSlides }) => {
                 </h2>
 
                 {/* CTA Links-Dynamic */}
-                <div className="flex gap-12 animate-fade-in delay-200">
+                <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 md:gap-12 animate-fade-in delay-200">
                   <Link
                     to={slide.link || "/shop"}
                     className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] border-b border-white pb-1 hover:text-gray-200 hover:border-gray-200 transition-all"
