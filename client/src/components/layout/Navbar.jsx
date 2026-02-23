@@ -278,16 +278,17 @@ const Navbar = () => {
         }`}
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
-      <div className="flex items-center h-[3.5rem] md:h-[4.25rem] relative px-5 md:px-8 lg:px-14 xl:px-16 w-full">
-        {/* LEFT COMPARTMENT */}
-        <div className="flex-1 flex h-full items-center gap-6 lg:gap-10">
-          {/* Menu Button */}
+      {/* ── TOP BAR ── */}
+      <div className="flex items-center h-[3.5rem] md:h-[4.25rem] relative px-4 md:px-8 lg:px-14 xl:px-16 w-full">
+
+        {/* LEFT: hamburger + desktop search */}
+        <div className="flex-none flex h-full items-center gap-6 lg:gap-10">
           <button
             className={`flex items-center gap-2.5 hover:opacity-70 transition-opacity ${textColor}`}
             onClick={() => setIsMobileMenuOpen(true)}
             aria-label="Menu"
           >
-            <div className="w-4 flex flex-col gap-[4.5px]">
+            <div className="w-[18px] flex flex-col gap-[5px]">
               <span className={`block w-full h-[1.2px] ${barColor}`}></span>
               <span className={`block w-full h-[1.2px] ${barColor}`}></span>
               <span className={`block w-full h-[1.2px] ${barColor}`}></span>
@@ -295,7 +296,7 @@ const Navbar = () => {
             <span className="hidden md:block text-[9px] uppercase tracking-[0.25em] font-bold">MENU</span>
           </button>
 
-          {/* Search Button (Desktop) */}
+          {/* Search Button — desktop only */}
           <button
             className={`hidden md:flex items-center gap-2 hover:opacity-70 transition-opacity ${textColor}`}
             onClick={() => setIsSearchOpen(true)}
@@ -306,23 +307,22 @@ const Navbar = () => {
           </button>
         </div>
 
-        {/* LOGO */}
-        <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center">
+        {/* CENTER: Logo absolutely centered */}
+        <div className="absolute left-1/2 -translate-x-1/2 flex items-center justify-center pointer-events-none">
           <Link
             to="/"
-            className="flex items-center justify-center hover:opacity-80 transition-opacity"
+            className="flex items-center justify-center hover:opacity-80 transition-opacity pointer-events-auto"
             onClick={() => window.scrollTo(0, 0)}
           >
-            <span className={`text-[1.2rem] md:text-[1.35rem] tracking-[0.45em] font-sans font-bold uppercase whitespace-nowrap transition-colors duration-500 ${textColor}`}
-              style={{ marginRight: "-0.45em" }}>
+            <span className={`text-[1.05rem] md:text-[1.35rem] tracking-[0.3em] md:tracking-[0.45em] font-sans font-bold uppercase whitespace-nowrap transition-colors duration-500 ${textColor}`}>
               {siteSettings?.title || "MURGDUR"}
             </span>
           </Link>
         </div>
 
-        {/* RIGHT COMPARTMENT */}
-        <div className="flex-1 flex h-full items-center justify-end gap-6 lg:gap-9">
-          {/* Call Us (Desktop) */}
+        {/* RIGHT: desktop extras + cart + account */}
+        <div className="flex-1 flex h-full items-center justify-end gap-4 md:gap-6 lg:gap-9">
+          {/* Call Us — desktop only */}
           <Link
             to="/contact"
             className={`hidden lg:block text-[9px] uppercase tracking-[0.25em] font-bold hover:opacity-70 transition-opacity ${textColor}`}
@@ -330,48 +330,71 @@ const Navbar = () => {
             CALL US
           </Link>
 
-          {/* Search (Mobile Only) */}
-          <button
-            className={`md:hidden flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
-            onClick={() => setIsSearchOpen(true)}
-            aria-label="Search"
+          {/* Wishlist — desktop only */}
+          <Link
+            to="/vault"
+            className={`hidden md:flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+            title="Wishlist"
           >
-            <SearchIcon className="w-[18px] h-[18px]" />
-          </button>
+            <WishlistIcon className="w-[18px] h-[18px]" />
+          </Link>
 
-          {/* Icons Group */}
-          <div className="flex items-center gap-5 lg:gap-6">
-            {/* Wishlist */}
-            <Link
-              to="/vault"
-              className={`flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
-              title="Wishlist"
-            >
-              <WishlistIcon className="w-[18px] h-[18px]" />
-            </Link>
+          {/* Cart */}
+          <Link
+            to="/cart"
+            className={`flex items-center hover:opacity-70 transition-opacity relative ${iconColor}`}
+            title="Shopping Bag"
+          >
+            <CartIcon className="w-[18px] h-[18px]" />
+            {getCartCount() > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 text-[8px] font-bold w-[13px] h-[13px] rounded-full flex items-center justify-center bg-[#c9a96e] text-black leading-none">
+                {getCartCount()}
+              </span>
+            )}
+          </Link>
 
-            {/* Cart */}
-            <Link
-              to="/cart"
-              className={`flex items-center hover:opacity-70 transition-opacity relative ${iconColor}`}
-              title="Shopping Bag"
-            >
-              <CartIcon className="w-[18px] h-[18px]" />
-              {getCartCount() > 0 && (
-                <span className="absolute -top-1.5 -right-1.5 text-[8px] font-bold w-[13px] h-[13px] rounded-full flex items-center justify-center bg-[#c9a96e] text-black leading-none">
-                  {getCartCount()}
-                </span>
-              )}
-            </Link>
+          {/* Account */}
+          <Link
+            to={user ? "/profile" : "/login"}
+            className={`flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+            title={user ? "My Profile" : "Sign In"}
+          >
+            <AccountIcon className="w-[18px] h-[18px]" />
+          </Link>
+        </div>
+      </div>
 
-            {/* User Profile */}
-            <Link
-              to={user ? "/profile" : "/login"}
-              className={`flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
-              title={user ? "My Profile" : "Sign In"}
-            >
-              <AccountIcon className="w-[18px] h-[18px]" />
-            </Link>
+      {/* ── MOBILE SEARCH BAR (below top bar, mobile only) ── */}
+      <div className={`md:hidden transition-colors duration-500 ${
+        isScrolled ? "border-t border-gray-200 bg-white" : "border-t border-white/15"
+      }`}>
+        <div className="px-4 py-2">
+          <div className={`flex items-center gap-2.5 rounded-sm px-3 py-2 ${
+            isScrolled ? "border border-gray-300" : "border border-white/30"
+          }`}>
+            <SearchIcon className={`w-4 h-4 flex-shrink-0 ${
+              isScrolled ? "text-gray-400" : "text-white/60"
+            }`} />
+            <input
+              type="text"
+              placeholder='Search for "New Arrivals"'
+              className={`bg-transparent border-none outline-none text-[13px] w-full font-sans tracking-wide ${
+                isScrolled ? "text-black placeholder-gray-400" : "text-white placeholder-white/60"
+              }`}
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onKeyDown={handleSearch}
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className={`flex-shrink-0 ${
+                  isScrolled ? "text-gray-400" : "text-white/60"
+                }`}
+              >
+                <XIcon className="w-3.5 h-3.5" />
+              </button>
+            )}
           </div>
         </div>
       </div>
