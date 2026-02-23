@@ -30,17 +30,17 @@ const TextWithImage = ({
         {/* Content Overlay */}
         <div className="relative z-10 text-center px-4 flex flex-col items-center justify-center h-full max-w-5xl mx-auto">
           {eyebrow && (
-            <span className="text-sm md:text-base font-bold tracking-[0.3em] uppercase text-royal-gold mb-4 animate-fade-in block drop-shadow-md">
+            <span className="text-[11px] md:text-[13px] font-light tracking-[0.4em] uppercase text-white/90 mb-5 animate-fade-in block drop-shadow-md">
               {eyebrow}
             </span>
           )}
 
           {hashtag && (
             <h1
-              className="text-3xl sm:text-5xl md:text-7xl lg:text-9xl font-bold text-royal-gold tracking-widest uppercase mb-6 drop-shadow-2xl w-full leading-tight"
+              className="text-4xl sm:text-6xl md:text-8xl lg:text-[7rem] font-light text-white tracking-widest uppercase mb-8 drop-shadow-2xl w-full leading-[0.9]"
               style={{
-                fontFamily: '"Stardos Stencil", cursive',
-                textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+                fontFamily: '"Futura PT", Futura, sans-serif',
+                textShadow: "0 4px 15px rgba(0,0,0,0.6)",
               }}
             >
               {hashtag}
@@ -48,22 +48,31 @@ const TextWithImage = ({
           )}
 
           {heading && (
-            <h2 className="text-3xl md:text-5xl font-serif text-white font-medium drop-shadow-lg mb-8 tracking-wide">
+            <h2
+              className="text-white drop-shadow-lg mb-10 max-w-4xl mx-auto"
+              style={{
+                fontSize: "clamp(2rem, 5vw, 4.5rem)",
+                fontWeight: 300,
+                letterSpacing: "-0.01em",
+                lineHeight: 1.1,
+                textShadow: "0 2px 10px rgba(0,0,0,0.5)",
+              }}
+            >
               {heading}
             </h2>
           )}
 
           {body && (
-            <p className="text-gray-200 mb-8 max-w-2xl mx-auto font-normal leading-relaxed text-xl drop-shadow-md">
+            <p className="text-white/90 mb-10 max-w-2xl mx-auto font-light leading-relaxed text-lg md:text-xl drop-shadow-md">
               {body}
             </p>
           )}
 
           {ctaText && ctaLink && (
-            <div>
+            <div className="flex justify-center gap-10">
               <Link
                 to={ctaLink}
-                className="inline-block text-white border-b-2 border-royal-gold pb-1 text-base md:text-lg font-bold tracking-widest hover:text-royal-gold transition-colors drop-shadow-md uppercase"
+                className="inline-block text-white border-b border-white/40 pb-[4px] text-[15px] md:text-[17px] font-light tracking-wide hover:text-gray-200 hover:border-white transition-all drop-shadow-md"
               >
                 {ctaText}
               </Link>
@@ -108,37 +117,36 @@ const TextWithImage = ({
             className="w-full md:w-1/2 text-left"
           >
             {eyebrow && (
-              <h3 className="text-royal-gold text-sm font-bold uppercase tracking-[0.3em] mb-4 flex items-center gap-3">
-                <span className="w-8 h-[2px] bg-royal-gold"></span> {eyebrow}
+              <h3 className="text-black text-[11px] md:text-[12px] font-light uppercase tracking-[0.3em] mb-6 flex items-center gap-4">
+                <span className="w-10 h-[1px] bg-black/30"></span> {eyebrow}
               </h3>
             )}
 
             {heading && (
-              <h2 className="text-4xl md:text-6xl font-serif text-black mb-6 leading-tight font-medium">
+              <h2 className="text-4xl md:text-6xl lg:text-7xl font-light text-black mb-8 leading-[1.1] tracking-tight">
                 {heading}
               </h2>
             )}
 
             {hashtag && (
               <h3
-                className="text-2xl font-bold uppercase tracking-widest text-royal-gold mb-6"
-                style={{ fontFamily: '"Stardos Stencil", cursive' }}
+                className="text-xl md:text-2xl font-light uppercase tracking-[0.2em] text-gray-500 mb-8"
               >
                 {hashtag}
               </h3>
             )}
 
             {body && (
-              <p className="text-gray-700 mb-10 leading-relaxed text-lg font-normal border-l-4 border-royal-gold pl-6">
+              <p className="text-gray-600 mb-12 leading-relaxed text-lg md:text-xl font-light border-l border-gray-200 pl-8 max-w-lg">
                 {body}
               </p>
             )}
 
             {ctaText && ctaLink && (
-              <div className="pl-6">
+              <div className="pl-8">
                 <Link
                   to={ctaLink}
-                  className="inline-block px-10 py-4 bg-black text-white text-xs md:text-sm font-bold uppercase tracking-[0.2em] hover:bg-royal-gold hover:text-black transition-colors shadow-lg"
+                  className="inline-block text-black border-b border-black/30 pb-[3px] text-[14px] md:text-[16px] font-light tracking-[0.05em] hover:text-gray-600 hover:border-black transition-all"
                 >
                   {ctaText}
                 </Link>

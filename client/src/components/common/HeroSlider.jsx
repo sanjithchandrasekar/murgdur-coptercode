@@ -92,35 +92,41 @@ const HeroSlider = ({ slides: customSlides }) => {
                 </div>
               )}
 
-              <div className="absolute inset-0 flex flex-col items-center justify-end pb-12 md:pb-16 text-center text-white px-4 z-20">
+              <div className="absolute inset-0 flex flex-col items-center justify-end pb-16 md:pb-24 lg:pb-32 xl:pb-40 text-center text-white px-4 z-20">
                 {/* Eyebrow / Category */}
-                <span className="text-[10px] font-bold tracking-[0.25em] uppercase mb-4 drop-shadow-md animate-fade-in block">
+                <span className="text-[11px] md:text-[13px] font-light tracking-[0.4em] uppercase mb-5 md:mb-6 animate-fade-in block text-white/90 drop-shadow-md">
                   {slide.subtitle ? slide.subtitle.split(" ")[0] : "WOMEN"}
                 </span>
 
-                {/* Main Title */}
+                {/* Main Heading */}
                 <h2
-                  className="text-3xl md:text-5xl lg:text-7xl font-sans font-black uppercase tracking-widest mb-6 drop-shadow-lg animate-slide-up"
-                  style={{ textShadow: "1px 1px 4px rgba(0,0,0,0.5)" }}
+                  className="font-sans drop-shadow-xl animate-slide-up mb-8 md:mb-12 lg:mb-16 max-w-5xl px-4"
+                  style={{
+                    fontSize: "clamp(2rem, 6vw, 5.5rem)",
+                    fontWeight: 300,
+                    letterSpacing: "-0.01em",
+                    lineHeight: 1.1,
+                    textShadow: "0 2px 12px rgba(0,0,0,0.5)",
+                  }}
                 >
                   {slide.title}
                 </h2>
 
-                {/* CTA Links-Dynamic */}
-                <div className="flex flex-wrap justify-center gap-x-10 gap-y-4 md:gap-12 animate-fade-in delay-200">
+                {/* CTA Links — side-by-side with underline */}
+                <div className="flex flex-col md:flex-row items-center gap-6 md:gap-14 lg:gap-20 animate-fade-in delay-200">
                   <Link
                     to={slide.link || "/shop"}
-                    className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] border-b border-white pb-1 hover:text-gray-200 hover:border-gray-200 transition-all"
+                    className="text-[14px] md:text-[17px] font-light tracking-[0.05em] border-b border-white/40 pb-[4px] hover:text-gray-200 hover:border-white transition-all whitespace-nowrap drop-shadow-md"
                   >
-                    {slide.ctaText || "Explore Collection"}
+                    {slide.ctaText || "Explore the Collection"}
                   </Link>
 
                   {(slide.secondaryCtaText || slide.secondaryLink) && (
                     <Link
                       to={slide.secondaryLink || "/royal-collection"}
-                      className="text-[11px] md:text-xs font-bold uppercase tracking-[0.15em] border-b border-white pb-1 hover:text-gray-200 hover:border-gray-200 transition-all"
+                      className="text-[14px] md:text-[17px] font-light tracking-[0.05em] border-b border-white/40 pb-[4px] hover:text-gray-200 hover:border-white transition-all whitespace-nowrap drop-shadow-md"
                     >
-                      {slide.secondaryCtaText || "Discover Campaign"}
+                      {slide.secondaryCtaText || "Discover more"}
                     </Link>
                   )}
                 </div>

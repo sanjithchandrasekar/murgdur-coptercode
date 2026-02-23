@@ -72,60 +72,42 @@ const Home = () => {
         {/* Subtle Dark Overlay */}
         <div className="absolute inset-0 bg-black/20"></div>
 
-        {/* Content Overlay — Positioned in Lower Third */}
-        <div className="relative z-10 h-full flex flex-col items-center text-center px-6">
-          {/* Main Content-Lower Middle */}
-          <div className="flex-1 flex flex-col items-center justify-end pb-20">
-            {/* Category Label */}
-            <span className="text-white/90 text-xs md:text-sm tracking-[0.3em] uppercase mb-6 font-light">
-              {homeData?.promoSection?.eyebrow || "HERITAGE"}
-            </span>
+        {/* Content Overlay — Bottom-anchored */}
+        <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-6 pb-12 md:pb-16 lg:pb-20 xl:pb-24">
 
-            {/* Main Collection Title */}
-            <h2
-              className="text-white text-center max-w-5xl"
-              style={{
-                fontSize: "2rem",
-                fontWeight: 400,
-                letterSpacing: "0.025rem",
-                lineHeight: "2.5rem",
-                margin: "0 0 1rem",
-                overflowWrap: "break-word",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
-            >
-              {homeData?.promoSection?.heading || "Royal Heritage Collection"}
-            </h2>
-          </div>
+          {/* Category Eyebrow */}
+          <span className="text-white/95 text-[11px] md:text-[13px] tracking-[0.4em] uppercase font-light mb-5 md:mb-6 block drop-shadow-md">
+            {homeData?.promoSection?.eyebrow || "HERITAGE"}
+          </span>
 
-          {/* CTA Links — Bottom */}
-          <div className="absolute bottom-12 left-0 right-0 flex flex-col sm:flex-row gap-6 items-center justify-center">
+          {/* Main Collection Title */}
+          <h2
+            className="text-white text-center max-w-5xl mb-8 md:mb-12 lg:mb-16 px-4"
+            style={{
+              fontSize: "clamp(2.25rem, 7vw, 5.5rem)",
+              fontWeight: 300,
+              letterSpacing: "-0.01em",
+              lineHeight: 1.1,
+              textShadow: "0 4px 15px rgba(0,0,0,0.5)",
+              WebkitFontSmoothing: "antialiased",
+            }}
+          >
+            {homeData?.promoSection?.heading || "Royal Heritage Collection"}
+          </h2>
+
+          {/* CTA Links — side-by-side with elegant underline */}
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-14 lg:gap-20">
             <Link
               to="/shop"
-              className="text-white text-[11px] md:text-xs tracking-[0.025rem] uppercase font-light hover:text-[#D4AF37] cursor-pointer"
-              style={{
-                boxShadow: "0 2px 0 -1px currentColor",
-                textDecoration: "none",
-                transition: "color 0.3s cubic-bezier(0.39, 0.575, 0.565, 1)",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
+              className="text-white text-[14px] md:text-[17px] tracking-[0.05em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/40 hover:border-white pb-[4px] whitespace-nowrap drop-shadow-md"
             >
-              Explore the Royal Vault
+              Explore the Collection
             </Link>
             <Link
               to="/royal-collection"
-              className="text-white text-[11px] md:text-xs tracking-[0.025rem] uppercase font-light hover:text-[#D4AF37] cursor-pointer"
-              style={{
-                boxShadow: "0 2px 0 -1px currentColor",
-                textDecoration: "none",
-                transition: "color 0.3s cubic-bezier(0.39, 0.575, 0.565, 1)",
-                WebkitFontSmoothing: "antialiased",
-                MozOsxFontSmoothing: "grayscale",
-              }}
+              className="text-white text-[14px] md:text-[17px] tracking-[0.05em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/40 hover:border-white pb-[4px] whitespace-nowrap drop-shadow-md"
             >
-              Discover Heritage & Luxury
+              Discover Heritage
             </Link>
           </div>
         </div>
