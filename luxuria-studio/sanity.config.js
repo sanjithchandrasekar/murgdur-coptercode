@@ -4,7 +4,7 @@ import { visionTool } from '@sanity/vision'
 import { schemaTypes } from './schemaTypes'
 import {
   HomeIcon,
-  ShoppingCartIcon,
+  TrolleyIcon,
   ImagesIcon,
   CogIcon,
   UsersIcon,
@@ -17,7 +17,6 @@ import {
   LaunchIcon,
   BulbOutlineIcon,
   ThListIcon,
-  TrolleyIcon,
   UserIcon,
   PackageIcon,
   StackCompactIcon,
@@ -73,7 +72,7 @@ export default defineConfig({
                       .child(
                         S.list().title('Main Pages').items([
                           singleton(S, 'homePage',            'Home',             HomeIcon),
-                          singleton(S, 'shopPage',            'Shop',             ShoppingCartIcon),
+                          singleton(S, 'shopPage',            'Shop',             TrolleyIcon),
                           singleton(S, 'heritagePage',        'Heritage',         BookIcon),
                           singleton(S, 'royalCollectionPage', 'Royal Collection', SparklesIcon),
                           singleton(S, 'vaultPage',           'Vault / Wishlist', HeartIcon),
