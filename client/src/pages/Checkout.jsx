@@ -72,7 +72,7 @@ const Checkout = () => {
       // Fallback to first one
       setSelectedAddressId(storedAddresses[0].id);
       localStorage.setItem("selectedAddress", JSON.stringify(storedAddresses[0]));
-      localStorage.setItem("selectedAddress", JSON.stringify(storedAddresses[0]));
+
     } else {
       // If no addresses, prompt to add one
       // Optionally redirect: navigate("/complete-profile", { state: { returnUrl: "/checkout" } });
@@ -164,10 +164,10 @@ const Checkout = () => {
       clearCart();
       showRoyalNotice(
         "Order Placed",
-        "Your order has been placed successfully!",
+        "Your order has been placed successfully! Track it in your profile.",
         "alert",
         () => {
-          navigate("/");
+          navigate("/profile", { state: { activeTab: "orders" } });
         }
       );
     } else {
@@ -183,7 +183,7 @@ const Checkout = () => {
   );
 
   return (
-    <div className="bg-royal-black min-h-screen pt-32 pb-20 px-6 md:px-12 font-sans text-white">
+    <div className="bg-white min-h-screen pt-32 pb-20 px-6 md:px-12 font-sans text-gray-900">
       <div className="container mx-auto max-w-7xl relative">
         <div className="mb-8">
           <BackButton className="text-gray-400 hover:text-royal-gold" />
@@ -197,10 +197,10 @@ const Checkout = () => {
           <div className="lg:w-2/3 space-y-6">
             {/* Step 1: Delivery Address */}
             <div
-              className={`bg-white/5 border ${step === 1 ? "border-royal-gold" : "border-white/10"} rounded-sm transition-all overflow-hidden`}
+              className={`bg-gray-50 border ${step === 1 ? "border-royal-gold" : "border-gray-200"} rounded-sm transition-all overflow-hidden`}
             >
               {/* Header */}
-              <div className="p-4 md:p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
+              <div className="p-4 md:p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                 <h2 className="text-xl font-bold flex items-center gap-3">
                   <span
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 1 ? "bg-royal-gold text-black" : "bg-gray-700 text-gray-400"}`}
@@ -228,7 +228,7 @@ const Checkout = () => {
                       <div
                         key={addr.id}
                         onClick={() => handleAddressSelect(addr)}
-                        className={`border p-4 rounded-sm cursor-pointer relative transition-all ${selectedAddressId === addr.id ? "border-royal-gold bg-royal-gold/5" : "border-white/10 hover:border-white/30"}`}
+                        className={`border p-4 rounded-sm cursor-pointer relative transition-all ${selectedAddressId === addr.id ? "border-royal-gold bg-royal-gold/5" : "border-gray-200 hover:border-gray-400"}`}
                       >
                         <div className="flex items-start gap-6">
                           <div
@@ -240,13 +240,13 @@ const Checkout = () => {
                           </div>
                           <div className="flex-1">
                             <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
-                              <span className="font-bold text-white text-lg">
+                              <span className="font-bold text-gray-900 text-lg">
                                 {addr.name}
                               </span>
-                              <span className="bg-white/10 text-gray-300 text-[10px] px-2 py-0.5 rounded uppercase font-bold">
+                              <span className="bg-gray-100 text-gray-600 text-[10px] px-2 py-0.5 rounded uppercase font-bold">
                                 {addr.type}
                               </span>
-                              <span className="text-white font-bold">
+                              <span className="text-gray-900 font-bold">
                                 {addr.mobile}
                               </span>
                               <button
@@ -289,7 +289,7 @@ const Checkout = () => {
                   {/* Add New Address Button */}
                   <button
                     onClick={() => navigate("/complete-profile", { state: { returnUrl: "/checkout" } })}
-                    className="flex items-center gap-2 text-royal-gold font-bold uppercase tracking-widest text-sm py-4 w-full border border-dashed border-white/20 hover:border-royal-gold hover:bg-white/5 justify-center transition-all"
+                    className="flex items-center gap-2 text-royal-gold font-bold uppercase tracking-widest text-sm py-4 w-full border border-dashed border-gray-300 hover:border-royal-gold hover:bg-gray-50 justify-center transition-all"
                   >
                     <Plus size={18} /> Add New Address
                   </button>
@@ -298,16 +298,16 @@ const Checkout = () => {
 
               {/* Minimized View for Step 1 when Step 2 is active */}
               {step > 1 && selectedAddress && (
-                <div className="p-6 bg-white/5 flex flex-col md:flex-row justify-between items-start md:items-center">
+                <div className="p-6 bg-gray-50 flex flex-col md:flex-row justify-between items-start md:items-center">
                   <div>
                     <div className="flex items-center gap-2 mb-1">
-                      <span className="font-bold text-white">
+                      <span className="font-bold text-gray-900">
                         {selectedAddress.name}
                       </span>
-                      <span className="bg-white/20 text-[10px] px-2 rounded uppercase font-bold">
+                      <span className="bg-gray-100 text-[10px] px-2 rounded uppercase font-bold text-gray-600">
                         {selectedAddress.type}
                       </span>
-                      <span className="text-gray-300 text-sm ml-2">
+                      <span className="text-gray-600 text-sm ml-2">
                         {selectedAddress.mobile}
                       </span>
                     </div>
@@ -322,9 +322,9 @@ const Checkout = () => {
 
             {/* Step 2: Payment Options */}
             <div
-              className={`bg-white/5 border ${step === 2 ? "border-royal-gold" : "border-white/10"} rounded-sm transition-all overflow-hidden`}
+              className={`bg-white border ${step === 2 ? "border-royal-gold" : "border-gray-200"} rounded-sm transition-all overflow-hidden`}
             >
-              <div className="p-4 md:p-6 bg-white/5 border-b border-white/5">
+              <div className="p-4 md:p-6 bg-gray-50 border-b border-gray-100">
                 <h2 className="text-xl font-bold flex items-center gap-3">
                   <span
                     className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 2 ? "bg-royal-gold text-black" : "bg-gray-700 text-gray-400"}`}
@@ -350,7 +350,7 @@ const Checkout = () => {
                     </div>
                   </div>
                   {/* Other dummy payment options */}
-                  <div className="border border-white/10 p-4 rounded flex items-center gap-4 cursor-pointer hover:border-white/30 opacity-50">
+                  <div className="border border-gray-200 p-4 rounded flex items-center gap-4 cursor-pointer hover:border-gray-400 opacity-50">
                     <div className="w-5 h-5 rounded-full border border-gray-500"></div>
                     <div className="text-blue-400 font-bold">UPI</div>
                     <p className="font-bold">Google Pay / PhonePe / UPI</p>
@@ -358,8 +358,8 @@ const Checkout = () => {
 
                   <Button
                     onClick={handlePlaceOrder}
-                    variant="primary"
-                    className="w-full py-4 text-sm font-bold tracking-widest bg-royal-gold text-black hover:bg-white shadow-[0_0_15px_rgba(212,175,55,0.3)] mt-6"
+                    variant="gold"
+                    className="w-full py-4 shadow-[0_0_15px_rgba(212,175,55,0.3)] mt-6"
                   >
                     CONFIRM ORDER
                   </Button>
@@ -375,44 +375,55 @@ const Checkout = () => {
 
           {/* RIGHT SIDE: Mini Order Summary (Same as before but styled) */}
           <div className="lg:w-1/3">
-            <div className="bg-white/5 border border-white/10 rounded-sm sticky top-28 overflow-hidden">
-              <div className="p-4 border-b border-white/10 bg-white/5">
-                <h3 className="text-gray-400 uppercase font-bold text-xs tracking-widest">
+            <div className="bg-gray-50 border border-gray-200 rounded-sm sticky top-28 overflow-hidden">
+              <div className="p-4 border-b border-gray-200 bg-gray-50">
+                <h3 className="text-gray-600 uppercase font-bold text-xs tracking-widest">
                   Price Details
                 </h3>
               </div>
 
               <div className="p-6 space-y-4">
-                <div className="flex justify-between text-sm">
-                  <span className="text-white">Price (1 item)</span>
-                  <span className="text-white">₹ 35,000</span>
-                </div>
-                <div className="flex justify-between text-sm text-green-400">
-                  <span>Discount</span>
-                  <span>− ₹ 10,001</span>
-                </div>
-                <div className="flex justify-between text-sm text-white">
-                  <span>Platform Fee</span>
-                  <span>₹ 20</span>
-                </div>
-                <div className="flex justify-between text-sm">
-                  <span>Delivery Charges</span>
-                  <span className="text-green-400">Free</span>
-                </div>
-
-                <div className="border-t border-dashed border-white/20 pt-4 mt-4">
-                  <div className="flex justify-between font-bold text-xl text-white">
-                    <span>Total Amount</span>
-                    <span>₹ 24,999</span>
-                  </div>
-                </div>
-
-                <div className="bg-green-900/20 border border-green-500/20 p-3 rounded text-xs text-green-400 font-medium text-center">
-                  You will save ₹10,001 on this order
-                </div>
+                {(() => {
+                  const totalMRP = cartItems.reduce((acc, item) => acc + item.originalPrice * item.quantity, 0);
+                  const totalDiscount = cartItems.reduce((acc, item) => acc + (item.originalPrice - item.price) * item.quantity, 0);
+                  const totalSellingPrice = totalMRP - totalDiscount;
+                  const deliveryFee = totalSellingPrice > 5000 ? 0 : 500;
+                  const total = totalSellingPrice + 20 + deliveryFee;
+                  return (
+                    <>
+                      <div className="flex justify-between text-sm text-gray-900">
+                        <span>Price ({cartItems.length} item{cartItems.length !== 1 ? 's' : ''})</span>
+                        <span>₹{totalSellingPrice.toLocaleString()}</span>
+                      </div>
+                      <div className="flex justify-between text-sm text-gray-900">
+                        <span>Platform Fee</span>
+                        <span>₹20</span>
+                      </div>
+                      <div className="flex justify-between text-sm text-gray-900">
+                        <span>Delivery Charges</span>
+                        {deliveryFee === 0 ? (
+                          <span className="text-green-400">Free</span>
+                        ) : (
+                          <span>₹{deliveryFee}</span>
+                        )}
+                      </div>
+                      <div className="border-t border-dashed border-gray-300 pt-4 mt-4">
+                        <div className="flex justify-between font-bold text-xl text-gray-900">
+                          <span>Total Amount</span>
+                          <span>₹{total.toLocaleString()}</span>
+                        </div>
+                      </div>
+                      {totalDiscount > 0 && (
+                        <div className="bg-green-900/20 border border-green-500/20 p-3 rounded text-xs text-green-400 font-medium text-center">
+                          You will save ₹{totalDiscount.toLocaleString()} on this order
+                        </div>
+                      )}
+                    </>
+                  );
+                })()}
               </div>
 
-              <div className="p-4 bg-gray-900 border-t border-white/10 flex items-center gap-3">
+              <div className="p-4 bg-gray-100 border-t border-gray-200 flex items-center gap-3">
                 <ShieldCheck className="text-gray-500" size={24} />
                 <p className="text-[10px] text-gray-500 uppercase tracking-wide">
                   Safe and Secure Payments. Easy returns. 100% Authentic
@@ -439,7 +450,7 @@ const Checkout = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative bg-[#141414] border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
+              className="relative bg-white border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
 
@@ -452,7 +463,7 @@ const Checkout = () => {
               <h3 className="text-[#D4AF37] font-serif text-xl mb-3 tracking-widest uppercase">
                 {dialog.title}
               </h3>
-              <p className="text-zinc-400 text-sm leading-relaxed mb-8">
+              <p className="text-gray-600 text-sm leading-relaxed mb-8">
                 {dialog.message}
               </p>
 
@@ -461,7 +472,7 @@ const Checkout = () => {
                   <>
                     <button
                       onClick={closeDialog}
-                      className="flex-1 px-6 py-3 border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors rounded-sm"
+                      className="flex-1 px-6 py-3 border border-gray-300 text-gray-600 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors rounded-sm"
                     >
                       Cancel
                     </button>

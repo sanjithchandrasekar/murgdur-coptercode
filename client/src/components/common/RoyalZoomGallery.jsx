@@ -1,13 +1,19 @@
-import React, { useState, useRef, useEffect } from "react";
+﻿import React, { useState, useRef, useEffect } from "react";
 import { X, ZoomIn, ZoomOut, ChevronLeft, ChevronRight } from "lucide-react";
+import { getWhiteBgImageArray } from "../../utils/whiteBgImages";
 
 /**
  * Luxury product image gallery
- * Desktop: vertical thumbnail strip on left + large main image
- * Mobile: swipeable single image with dot indicators
+ * Desktop: Stacked large images (Louis Vuitton style)
+ * Mobile: Swipeable single image with dot indicators
+ * Automatically uses white-background versions when available
  */
 const RoyalZoomGallery = ({ images, productName }) => {
-  const safeImages = images && images.length > 0 ? images : ["/images/logo.jpeg"];
+  // Convert images to white-bg versions (auto fallback if not available)
+  const displayImages = images && images.length > 0 
+    ? getWhiteBgImageArray(images)
+    : ["/images/branding/logo.jpeg"];
+  const safeImages = displayImages;
   const [activeIdx, setActiveIdx] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [modalZoom, setModalZoom] = useState(1);
@@ -16,14 +22,6 @@ const RoyalZoomGallery = ({ images, productName }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const touchStartX = useRef(null);
-  const thumbnailRefs = useRef([]);
-
-  // Scroll active thumbnail into view
-  useEffect(() => {
-    if (thumbnailRefs.current[activeIdx]) {
-      thumbnailRefs.current[activeIdx].scrollIntoView({ block: "nearest", behavior: "smooth" });
-    }
-  }, [activeIdx]);
 
   // Reset pan when modal closes
   useEffect(() => {
@@ -49,80 +47,34 @@ const RoyalZoomGallery = ({ images, productName }) => {
   };
   const onMouseUp = () => setIsDragging(false);
 
+  const openFullscreen = (idx) => {
+    setActiveIdx(idx);
+    setIsModalOpen(true);
+  };
+
   return (
     <>
-      {/* ── DESKTOP: thumbnail strip + large main image ── */}
-      <div className="hidden md:flex gap-3 w-full">
-
-        {/* Vertical thumbnail strip */}
-        {safeImages.length > 1 && (
+      {/* ── DESKTOP: STACKED LARGE IMAGES ── */}
+      <div className="hidden md:flex flex-col gap-[2px] w-full">
+        {safeImages.map((img, idx) => (
           <div
-            className="flex flex-col gap-2 flex-shrink-0 overflow-y-auto"
-            style={{ width: 68, maxHeight: 720 }}
+            key={idx}
+            className="w-full relative bg-[#F6F5F3] overflow-hidden cursor-zoom-in group"
+            onClick={() => openFullscreen(idx)}
           >
-            {safeImages.map((img, idx) => (
-              <button
-                key={idx}
-                ref={(el) => (thumbnailRefs.current[idx] = el)}
-                onClick={() => setActiveIdx(idx)}
-                className={`w-full flex-shrink-0 bg-[#F6F5F3] overflow-hidden transition-all duration-200 border-b-2 ${
-                  activeIdx === idx
-                    ? "border-b-black opacity-100"
-                    : "border-b-transparent opacity-55 hover:opacity-85"
-                }`}
-                style={{ aspectRatio: "3/4" }}
-              >
-                <img src={img} alt={`view ${idx + 1}`} className="w-full h-full object-cover" />
-              </button>
-            ))}
-          </div>
-        )}
+            <img
+              src={img}
+              alt={`${productName} - view ${idx + 1}`}
+              className="w-full h-auto object-cover transition-transform duration-[1200ms] group-hover:scale-[1.02]"
+            />
 
-        {/* Main large image */}
-        <div
-          className="flex-1 relative bg-[#F6F5F3] overflow-hidden cursor-zoom-in group"
-          onClick={() => setIsModalOpen(true)}
-        >
-          <img
-            key={activeIdx}
-            src={safeImages[activeIdx]}
-            alt={productName}
-            className="w-full h-auto object-cover"
-          />
-
-          {/* Prev / Next arrows — visible on hover */}
-          {safeImages.length > 1 && (
-            <>
-              <button
-                onClick={(e) => { e.stopPropagation(); prev(); }}
-                disabled={activeIdx === 0}
-                className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"
-              >
-                <ChevronLeft size={16} strokeWidth={1.5} />
-              </button>
-              <button
-                onClick={(e) => { e.stopPropagation(); next(); }}
-                disabled={activeIdx === safeImages.length - 1}
-                className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 bg-white/80 hover:bg-white flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 disabled:opacity-0"
-              >
-                <ChevronRight size={16} strokeWidth={1.5} />
-              </button>
-            </>
-          )}
-
-          {/* Zoom hint */}
-          <div className="absolute bottom-4 right-4 flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-2.5 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
-            <ZoomIn size={11} strokeWidth={1.5} />
-            <span className="text-[8px] uppercase tracking-[0.2em]">Zoom</span>
-          </div>
-
-          {/* Image counter */}
-          {safeImages.length > 1 && (
-            <div className="absolute bottom-4 left-4 bg-white/80 backdrop-blur-sm px-2 py-1 text-[9px] uppercase tracking-[0.15em]">
-              {activeIdx + 1} / {safeImages.length}
+            {/* Zoom hint */}
+            <div className="absolute bottom-6 right-6 flex items-center gap-1.5 bg-white/80 backdrop-blur-sm px-3 py-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+              <ZoomIn size={12} strokeWidth={1.5} />
+              <span className="text-[9px] uppercase tracking-[0.2em] font-semibold">Zoom</span>
             </div>
-          )}
-        </div>
+          </div>
+        ))}
       </div>
 
       {/* ── MOBILE: swipeable image + dot indicators ── */}
@@ -131,9 +83,9 @@ const RoyalZoomGallery = ({ images, productName }) => {
           className="w-full bg-[#F6F5F3] overflow-hidden cursor-zoom-in"
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
-          onClick={() => setIsModalOpen(true)}
+          onClick={() => openFullscreen(activeIdx)}
         >
-          <img key={activeIdx} src={safeImages[activeIdx]} alt={productName} className="w-full h-auto object-cover" />
+          <img src={safeImages[activeIdx]} alt={productName} className="w-full h-auto object-cover" />
         </div>
 
         {safeImages.length > 1 && (

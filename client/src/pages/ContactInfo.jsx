@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Mail, Phone, MapPin, Clock, Send } from "lucide-react";
-import Button from "../components/common/Button";
+import { Mail, Phone, MapPin, Clock, Send, MessageCircle } from "lucide-react";
 import { fetchContactPage } from "../utils/sanity";
-
 import SEO from "../components/common/SEO";
 import BackButton from "../components/common/BackButton";
 
@@ -18,7 +16,7 @@ const ContactInfo = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-royal-black text-white pt-24 pb-12">
+    <div className="min-h-screen bg-white text-gray-900 pt-24 pb-12">
       <SEO
         title={`${data?.heading || "Contact Us"} | Murgdur Support`}
         description="Get in touch with Murgdur. We are here to assist you with your royal experience."
@@ -33,7 +31,7 @@ const ContactInfo = () => {
           <span className="text-royal-gold uppercase tracking-[0.2em] text-sm font-bold block mb-4">
             {data?.eyebrow || "Contact Us"}
           </span>
-          <h1 className="text-4xl md:text-6xl font-serif text-white mb-6">
+          <h1 className="text-4xl md:text-6xl font-serif text-gray-900 mb-6">
             {data?.heading || "Get in Touch"}
           </h1>
           <div className="w-24 h-0.5 bg-royal-gold mx-auto"></div>
@@ -43,7 +41,7 @@ const ContactInfo = () => {
           {/* Contact Details */}
           <div className="w-full lg:w-5/12 space-y-12">
             <div>
-              <h3 className="text-2xl font-serif text-white mb-6 border-l-2 border-royal-gold pl-4">
+              <h3 className="text-2xl font-serif text-gray-900 mb-6 border-l-2 border-royal-gold pl-4">
                 Contact Information
               </h3>
               <p className="text-gray-400 font-light mb-8 leading-relaxed">
@@ -54,13 +52,13 @@ const ContactInfo = () => {
               <div className="space-y-6">
                 <a
                   href={`tel:${data?.phone || "+910000000000"}`}
-                  className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all"
+                  className="flex items-start gap-4 group cursor-pointer hover:bg-gray-50 p-2 -ml-2 rounded-lg transition-all"
                 >
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
                     <Phone size={20} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1 group-hover:text-royal-gold transition-colors">
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-1 group-hover:text-royal-gold transition-colors">
                       Phone
                     </h4>
                     <p className="text-gray-400 font-serif">
@@ -69,15 +67,32 @@ const ContactInfo = () => {
                   </div>
                 </a>
 
+                {/* WhatsApp */}
+                {data?.socialLinks?.whatsapp && (
+                  <a
+                    href={`https://wa.me/${data.socialLinks.whatsapp.replace(/[^0-9]/g, "")}`}
+                    target="_blank" rel="noopener noreferrer"
+                    className="flex items-start gap-4 group cursor-pointer hover:bg-gray-50 p-2 -ml-2 rounded-lg transition-all"
+                  >
+                    <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-green-600 group-hover:bg-green-600 group-hover:text-white transition-colors">
+                      <MessageCircle size={20} />
+                    </div>
+                    <div>
+                      <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-1">WhatsApp</h4>
+                      <p className="text-gray-400 font-serif">{data.socialLinks.whatsapp}</p>
+                    </div>
+                  </a>
+                )}
+
                 <a
                   href={`mailto:${data?.email || "support@murgdur.com"}`}
-                  className="flex items-start gap-4 group cursor-pointer hover:bg-white/5 p-2 -ml-2 rounded-lg transition-all"
+                  className="flex items-start gap-4 group cursor-pointer hover:bg-gray-50 p-2 -ml-2 rounded-lg transition-all"
                 >
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
                     <Mail size={20} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1 group-hover:text-royal-gold transition-colors">
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-1 group-hover:text-royal-gold transition-colors">
                       Email
                     </h4>
                     <p className="text-gray-400 font-serif">
@@ -87,11 +102,11 @@ const ContactInfo = () => {
                 </a>
 
                 <div className="flex items-start gap-4 group p-2 -ml-2">
-                  <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
                     <Clock size={20} />
                   </div>
                   <div>
-                    <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1">
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-1">
                       Working Hours
                     </h4>
                     <p className="text-gray-400 font-serif">
@@ -103,79 +118,99 @@ const ContactInfo = () => {
             </div>
 
             <div>
-              <h3 className="text-2xl font-serif text-white mb-6 border-l-2 border-royal-gold pl-4">
-                Our Store
+              <h3 className="text-2xl font-serif text-gray-900 mb-6 border-l-2 border-royal-gold pl-4">
+                {data?.stores?.length > 1 ? "Our Stores" : "Our Store"}
               </h3>
-              <div className="flex items-start gap-4 group">
-                <div className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-royal-gold group-hover:bg-royal-gold group-hover:text-black transition-colors">
-                  <MapPin size={20} />
+              {data?.stores?.length > 0 ? (
+                <div className="space-y-6">
+                  {data.stores.map((store, i) => (
+                    <div key={i} className="flex items-start gap-4 group">
+                      <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-royal-gold shrink-0">
+                        <MapPin size={20} />
+                      </div>
+                      <div>
+                        {store.name && <h4 className="text-sm font-bold text-gray-900 mb-1">{store.name}</h4>}
+                        <p className="text-gray-400 font-serif text-sm leading-relaxed whitespace-pre-line">{store.address}</p>
+                        {store.hours && <p className="text-xs text-gray-400 mt-1">{store.hours}</p>}
+                        {store.phone && <p className="text-xs text-gray-400">{store.phone}</p>}
+                      </div>
+                    </div>
+                  ))}
                 </div>
-                <div>
-                  <h4 className="text-sm font-bold uppercase tracking-widest text-white mb-1">
-                    Address
-                  </h4>
-                  <p className="text-gray-400 font-serif leading-relaxed whitespace-pre-line">
-                    {data?.address ||
-                      `123, Heritage Boulevard,
-                                        Palace Road, Bengaluru,
-                                        Karnataka-560001`}
-                  </p>
+              ) : (
+                <div className="flex items-start gap-4 group">
+                  <div className="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-royal-gold shrink-0">
+                    <MapPin size={20} />
+                  </div>
+                  <div>
+                    <h4 className="text-sm font-bold uppercase tracking-widest text-gray-900 mb-1">Address</h4>
+                    <p className="text-gray-400 font-serif leading-relaxed whitespace-pre-line">
+                      {data?.address || `123, Heritage Boulevard,\nPalace Road, Bengaluru,\nKarnataka-560001`}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
+
+              {/* Map Embed */}
+              {data?.mapEmbedUrl && (
+                <div className="mt-6 rounded-lg overflow-hidden border border-gray-200" style={{ height: "200px" }}>
+                  <iframe src={data.mapEmbedUrl} width="100%" height="200" style={{ border: 0 }} allowFullScreen loading="lazy" title="Store Location" />
+                </div>
+              )}
             </div>
           </div>
 
           {/* Contact Form */}
-          <div className="w-full lg:w-7/12 bg-white/5 backdrop-blur-sm border border-white/10 p-8 md:p-12 rounded-lg relative">
-            <h3 className="text-2xl font-serif text-white mb-8">
+          <div className="w-full lg:w-7/12 bg-gray-50 border border-gray-200 p-8 md:p-12 rounded-lg relative">
+            <h3 className="text-2xl font-serif text-gray-900 mb-8">
               Send a message
             </h3>
 
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <label className="text-sm text-gray-400">First Name</label>
+                  <label className="text-sm text-gray-600 font-medium">First Name</label>
                   <input
                     type="text"
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-600"
+                    className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-400"
                   />
                 </div>
                 <div className="space-y-2">
-                  <label className="text-sm text-gray-400">Last Name</label>
+                  <label className="text-sm text-gray-600 font-medium">Last Name</label>
                   <input
                     type="text"
-                    className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-600"
+                    className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-400"
                   />
                 </div>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm text-gray-400">Email Address</label>
+                <label className="text-sm text-gray-600 font-medium">Email Address</label>
                 <input
                   type="email"
-                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-600"
+                  className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors placeholder:text-gray-400"
                 />
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm text-gray-400">Subject</label>
-                <select className="w-full bg-white/5 border border-white/10 text-gray-300 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors">
-                  <option className="bg-gray-900">General Inquiry</option>
-                  <option className="bg-gray-900">Support</option>
-                  <option className="bg-gray-900">Feedback</option>
-                  <option className="bg-gray-900">Other</option>
+                <label className="text-sm text-gray-600 font-medium">Subject</label>
+                <select className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none transition-colors">
+                  <option>General Inquiry</option>
+                  <option>Support</option>
+                  <option>Feedback</option>
+                  <option>Other</option>
                 </select>
               </div>
 
               <div className="space-y-2">
-                <label className="text-sm text-gray-400">Message</label>
+                <label className="text-sm text-gray-600 font-medium">Message</label>
                 <textarea
                   rows="5"
-                  className="w-full bg-white/5 border border-white/10 text-white px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none resize-none transition-colors placeholder:text-gray-600"
+                  className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded-md focus:border-royal-gold focus:outline-none resize-none transition-colors placeholder:text-gray-400"
                 ></textarea>
               </div>
 
-              <button className="w-full bg-white text-black font-medium py-3 rounded-md hover:bg-gray-200 transition-colors flex items-center justify-center gap-2">
+              <button className="w-full bg-black text-white font-medium py-3 rounded-md hover:bg-[#1a1a1a] transition-colors flex items-center justify-center gap-2 uppercase tracking-widest text-sm">
                 Send Message <Send size={16} />
               </button>
             </form>

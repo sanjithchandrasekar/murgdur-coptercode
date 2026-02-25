@@ -64,17 +64,17 @@ CIN : U51109KA2012PTC066107
 Telephone: 044-45614700 / 044-67415800`;
 
   return (
-    <footer className="bg-royal-black text-white font-sans text-[13px] leading-relaxed border-t border-white/10">
+    <footer className="bg-[#f8f7f4] text-gray-900 font-sans text-[13px] leading-relaxed border-t border-gray-200">
       {/* Top Footer Section */}
       <div className="container mx-auto px-6 py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
           {/* Column 1: HELP */}
           <div>
-            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-gray-900">
               Help
             </h3>
             <div className="flex flex-col space-y-3">
-              <p className="mb-2 text-gray-400">
+              <p className="mb-2 text-gray-600">
                 A Client Advisor is available at{" "}
                 <a
                   href="tel:+914445614700"
@@ -102,14 +102,14 @@ Telephone: 044-45614700 / 044-67415800`;
                 <Link
                   key={idx}
                   to={link.url}
-                  className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                  className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
                 >
                   {link.title}
                 </Link>
               ))}
               <Link
                 to="/stores"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Stores
               </Link>
@@ -118,31 +118,31 @@ Telephone: 044-45614700 / 044-67415800`;
 
           {/* Column 2: SERVICES */}
           <div>
-            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-gray-900">
               Services
             </h3>
             <div className="flex flex-col space-y-3">
               <Link
                 to="/repairs"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Repairs
               </Link>
               <Link
                 to="/personalisation"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Personalisation
               </Link>
               <Link
                 to="/gifting"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Art of Gifting
               </Link>
               <Link
                 to="/apps"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Download our Apps
               </Link>
@@ -151,7 +151,7 @@ Telephone: 044-45614700 / 044-67415800`;
 
           {/* Column 3: ABOUT MURUGDUR */}
           <div>
-            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-gray-900">
               About Murugdur
             </h3>
             <div className="flex flex-col space-y-3">
@@ -159,26 +159,26 @@ Telephone: 044-45614700 / 044-67415800`;
                 <Link
                   key={idx}
                   to={link.url}
-                  className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                  className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
                 >
                   {link.title}
                 </Link>
               ))}
               <Link
                 to="/sustainability"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Sustainability
               </Link>
               <Link
                 to="/news"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Latest News
               </Link>
               <Link
                 to="/foundation"
-                className="text-gray-300 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
+                className="text-gray-600 hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"
               >
                 Foundation Murugdur
               </Link>
@@ -187,11 +187,11 @@ Telephone: 044-45614700 / 044-67415800`;
 
           {/* Column 4: CONNECT */}
           <div>
-            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-white">
+            <h3 className="uppercase mb-6 text-[11px] tracking-[0.2em] font-medium text-gray-900">
               Connect
             </h3>
             <div className="flex flex-col space-y-6">
-              <p className="text-gray-400 leading-relaxed">
+              <p className="text-gray-600 leading-relaxed">
                 <Link
                   to="/signup"
                   className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
@@ -203,8 +203,8 @@ Telephone: 044-45614700 / 044-67415800`;
               </p>
 
               <div className="space-y-3">
-                <h4 className="text-[13px] mb-2 text-white">Follow Us</h4>
-                <div className="flex gap-5 text-white">
+                <h4 className="text-[13px] mb-2 text-gray-900">Follow Us</h4>
+                <div className="flex gap-5 text-gray-700">
                   <a
                     href={data?.socialLinks?.facebook || "#!"}
                     className="hover:text-royal-gold transition-colors"
@@ -237,11 +237,11 @@ Telephone: 044-45614700 / 044-67415800`;
       </div>
 
       {/* Bottom Footer Section */}
-      <div className="border-t border-white/10 py-12">
+      <div className="border-t border-gray-200 py-12">
         <div className="container mx-auto px-6">
           {/* Top Row: Country & Navigation */}
           <div className="mb-12">
-            <div className="flex items-center gap-2 mb-8 text-white">
+            <div className="flex items-center gap-2 mb-8 text-gray-900">
               {/* India Flag Placeholder or SVG */}
               <span className="text-lg">🇮🇳</span>
               <span className="underline decoration-1 underline-offset-4 text-xs uppercase tracking-wider font-medium">
@@ -254,10 +254,10 @@ Telephone: 044-45614700 / 044-67415800`;
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-24 text-[11px] text-gray-500 uppercase tracking-widest leading-loose">
             {/* Manufacturer */}
             <div>
-              <h4 className="mb-3 text-white font-medium">
+              <h4 className="mb-3 text-gray-900 font-medium">
                 Full Name and Address of the Manufacturer
               </h4>
-              <div className="whitespace-pre-line text-gray-400">
+              <div className="whitespace-pre-line text-gray-500">
                 {data?.mailAddress || defaultMailAddress}
               </div>
               <div className="mt-4">
@@ -267,10 +267,10 @@ Telephone: 044-45614700 / 044-67415800`;
 
             {/* Importer */}
             <div>
-              <h4 className="mb-3 text-white font-medium">
+              <h4 className="mb-3 text-gray-900 font-medium">
                 Full Name and Address of the Importer
               </h4>
-              <div className="whitespace-pre-line text-gray-400">
+              <div className="whitespace-pre-line text-gray-500">
                 {data?.officeAddress || defaultOfficeAddress}
               </div>
               <div className="mt-4 lowercase normal-case tracking-normal">
@@ -283,7 +283,7 @@ Telephone: 044-45614700 / 044-67415800`;
           </div>
 
           {/* Bottom Row: Links */}
-          <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-gray-300">
+          <div className="flex flex-col md:flex-row justify-end items-center gap-6 mt-16 text-[13px] text-gray-600">
             <Link
               to="/sitemap"
               className="hover:text-royal-gold hover:underline decoration-1 underline-offset-4 transition-colors"

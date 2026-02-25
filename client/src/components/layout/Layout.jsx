@@ -13,7 +13,7 @@ const Layout = () => {
     ) && !localStorage.getItem("userProfile");
 
   return (
-    <div className="min-h-screen flex flex-col bg-royal-black text-royal-ivory font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen flex flex-col bg-white text-gray-900 font-sans antialiased overflow-x-hidden">
       {!isAuthPage && <Navbar />}
       <NotificationPopup />
       <main className="flex-grow">

@@ -27,7 +27,7 @@ const GenericPage = () => {
 
   if (loading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-royal-black text-white">
+      <div className="h-screen flex items-center justify-center bg-white text-gray-900">
         <div className="animate-pulse text-xl font-serif">Loading...</div>
       </div>
     );
@@ -35,9 +35,9 @@ const GenericPage = () => {
 
   if (error || !pageData) {
     return (
-      <div className="h-screen flex flex-col items-center justify-center bg-royal-black text-white">
+      <div className="h-screen flex flex-col items-center justify-center bg-white text-gray-900">
         <h1 className="text-4xl font-serif mb-4">404</h1>
-        <p className="text-gray-400">Page not found.</p>
+        <p className="text-gray-500">Page not found.</p>
       </div>
     );
   }
@@ -47,7 +47,7 @@ const GenericPage = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      className="bg-royal-black min-h-screen pt-20" // Add padding top for navbar
+      className="bg-white min-h-screen pt-20" // Add padding top for navbar
     >
       <PageSections sections={pageData.pageBuilder} />
     </motion.div>

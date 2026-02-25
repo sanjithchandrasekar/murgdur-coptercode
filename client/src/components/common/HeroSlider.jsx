@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Swiper as SwiperComponent, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade, Pagination } from "swiper/modules";
 import "swiper/css";
@@ -7,9 +7,9 @@ import "swiper/css/pagination";
 import Button from "./Button";
 import { Link } from "react-router-dom";
 
-const img1 = "/images/Gemini_Generated_Image_120fuv120fuv120f.png";
-const img2 = "/images/Gemini_Generated_Image_2heebf2heebf2hee.png";
-const img3 = "/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png";
+const img1 = "/images/hero/Gemini_Generated_Image_120fuv120fuv120f.png";
+const img2 = "/images/hero/Gemini_Generated_Image_2heebf2heebf2hee.png";
+const img3 = "/images/hero/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png";
 
 const HeroSlider = ({ slides: customSlides }) => {
   const defaultSlides = [

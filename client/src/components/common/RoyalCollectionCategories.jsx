@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { fetchRoyalCollectionPage } from "../../utils/sanity";
 
-const mensImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
-const womensImg = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
+const mensImg = "/images/hero/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const womensImg = "/images/hero/Gemini_Generated_Image_aimaqdaimaqdaima.png";
 
 const RoyalCollectionCategories = () => {
   const [data, setData] = useState(null);

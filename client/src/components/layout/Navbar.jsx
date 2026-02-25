@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   ArrowLeft,
@@ -43,29 +43,29 @@ const CartIcon = ({ className }) => (
   </svg>
 );
 
-const defaultLogo = "/images/logo.jpeg";
+const defaultLogo = "/images/branding/logo.jpeg";
 
 const menuData = [
   {
     id: "new",
     name: "New",
     path: "/shop?sort=newest",
-    image: "/images/girl.png",
+    image: "/images/site/girl.png",
     imageSubtitle: "Latest Arrivals",
     subcategories: [
       { name: "For Women", path: "/shop?cat=women&sort=newest" },
       { name: "For Men", path: "/shop?cat=men&sort=newest" },
     ],
     highlights: [
-      { name: "All New In", image: "/images/girl.png", path: "/shop?sort=newest" },
-      { name: "New Bags", image: "/images/hand bag.png", path: "/shop?type=bags&sort=newest" },
+      { name: "All New In", image: "/images/hero/Gemini_Generated_Image_hge4lhge4lhge4lh.png", path: "/shop?sort=newest" },
+      { name: "New Bags", image: "/images/women/handbags/hand bag.png", path: "/shop?type=bags&sort=newest" },
     ]
   },
   {
     id: "bags",
     name: "Bags and Wallets",
     path: "/shop?type=bags",
-    image: "/images/hand bag.png",
+    image: "/images/women/handbags/hand bag.png",
     imageSubtitle: "Signature Heritage",
     subcategories: [
       { name: "Women Bags", path: "/shop?cat=women&type=bags" },
@@ -75,68 +75,70 @@ const menuData = [
       { name: "Personalisation", path: "/services" },
     ],
     highlights: [
-      { name: "All Handbags", image: "/images/hand bag.png", path: "/shop?type=bags" },
-      { name: "New In", image: "/images/girl.png", path: "/shop?type=bags&sort=newest" },
-      { name: "Heritage Icons", image: "/images/cares.jpg", path: "/shop?collection=icons" },
-      { name: "Signature Collection", image: "/images/zippy wallet.jpg", path: "/shop?collection=signature" },
-      { name: "Side Trunk", image: "/images/vanitycase.jpg", path: "/shop?collection=side-trunk" },
-      { name: "Capucines", image: "/images/woens small bag.jpg", path: "/shop?collection=capucines" },
+      { name: "All Handbags", image: "/images/women/handbags/women bag brown front.jpeg", path: "/shop?type=bags" },
+      { name: "New In", image: "/images/women/dresses/womendress4.png", path: "/shop?type=bags&sort=newest" },
+      { name: "Heritage Icons", image: "/images/site/cares.jpg", path: "/shop?collection=icons" },
+      { name: "Signature Collection", image: "/images/women/accessories/zippy wallet.jpg", path: "/shop?collection=signature" },
+      { name: "Side Trunk", image: "/images/site/vanitycase.jpg", path: "/shop?collection=side-trunk" },
+      { name: "Capucines", image: "/images/women/handbags/woens small bag.jpg", path: "/shop?collection=capucines" },
     ]
   },
   {
     id: "women",
     name: "Women",
     path: "/shop?cat=women",
-    image: "/images/girl.png",
+    image: "/images/site/girl.png",
     imageSubtitle: "Women's Collection",
     subcategories: [
+      { name: "Dresses", path: "/shop?cat=women&type=dresses" },
       { name: "Bags", path: "/shop?cat=women&type=bags" },
       { name: "Small Leather Goods", path: "/shop?cat=women&type=wallets" },
       { name: "Accessories", path: "/shop?cat=women&type=accessories" },
       { name: "Perfumes", path: "/shop?cat=women&type=perfumes" },
     ],
     highlights: [
-      { name: "All Women's Collection", image: "/images/girl.png", path: "/shop?cat=women" },
-      { name: "Women's Perfumes", image: "/images/per.jpg", path: "/shop?cat=women&type=perfumes" },
+      { name: "All Women's Collection", image: "/images/hero/Gemini_Generated_Image_2heebf2heebf2hee.png", path: "/shop?cat=women" },
+      { name: "Women's Perfumes", image: "/images/site/per.jpg", path: "/shop?cat=women&type=perfumes" },
     ]
   },
   {
     id: "men",
     name: "Men",
     path: "/shop?cat=men",
-    image: "/images/boy.jpeg",
+    image: "/images/site/boy.jpeg",
     imageSubtitle: "Men's Collection",
     subcategories: [
+      { name: "Clothing", path: "/shop?cat=men&type=clothing" },
       { name: "Bags", path: "/shop?cat=men&type=bags" },
       { name: "Small Leather Goods", path: "/shop?cat=men&type=wallets" },
       { name: "Accessories", path: "/shop?cat=men&type=accessories" },
       { name: "Perfumes", path: "/shop?cat=men&type=perfumes" },
     ],
     highlights: [
-      { name: "All Men's Collection", image: "/images/boy.jpeg", path: "/shop?cat=men" },
-      { name: "Men's Wallets", image: "/images/mens_royal_wallet_section.png", path: "/shop?cat=men&type=wallets" },
+      { name: "All Men's Collection", image: "/images/hero/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png", path: "/shop?cat=men" },
+      { name: "Men's Wallets", image: "/images/men/wallets/mens_royal_wallet_section.png", path: "/shop?cat=men&type=wallets" },
     ]
   },
   {
     id: "perfumes",
     name: "Perfumes",
     path: "/shop?type=perfumes",
-    image: "/images/per.jpg",
+    image: "/images/site/per.jpg",
     imageSubtitle: "Fragrances",
     subcategories: [
       { name: "Women's Perfumes", path: "/shop?cat=women&type=perfumes" },
       { name: "Men's Perfumes", path: "/shop?cat=men&type=perfumes" },
     ],
     highlights: [
-      { name: "All Perfumes", image: "/images/per.jpg", path: "/shop?type=perfumes" },
-      { name: "New Fragrances", image: "/images/royal_perfume.png", path: "/shop?type=perfumes&sort=newest" },
+      { name: "All Perfumes", image: "/images/men/perfume/mens-perfume3.png", path: "/shop?type=perfumes" },
+      { name: "New Fragrances", image: "/images/men/perfume/royal_perfume.png", path: "/shop?type=perfumes&sort=newest" },
     ]
   },
   {
     id: "jewellery",
     name: "Jewellery",
     path: "/shop?type=jewellery",
-    image: "/images/royal_jewellery.png",
+    image: "/images/women/accessories/royal_jewellery.png",
     imageSubtitle: "Fine Jewellery",
     subcategories: [
       { name: "Rings", path: "/shop?type=jewellery&search=rings" },
@@ -145,23 +147,83 @@ const menuData = [
       { name: "Earrings", path: "/shop?type=jewellery&search=earrings" },
     ],
     highlights: [
-      { name: "All Jewellery", image: "/images/royal_jewellery.png", path: "/shop?type=jewellery" },
-      { name: "Royal Collection", image: "/images/royal_gown.png", path: "/royal-collection" },
+      { name: "All Jewellery", image: "/images/men/watches/micro.jpg", path: "/shop?type=jewellery" },
+      { name: "Royal Collection", image: "/images/women/dresses/royal_gown.png", path: "/royal-collection" },
     ]
   },
   {
     id: "watches",
     name: "Watches",
     path: "/shop?type=watches",
-    image: "/images/watch1.png",
+    image: "/images/men/watches/watch1.png",
     imageSubtitle: "Timepieces",
     subcategories: [
       { name: "Women's Watches", path: "/shop?cat=women&type=watches" },
       { name: "Men's Watches", path: "/shop?cat=men&type=watches" },
     ],
     highlights: [
-      { name: "All Watches", image: "/images/watch1.png", path: "/shop?type=watches" },
-      { name: "New Watches", image: "/images/watch 2.png", path: "/shop?type=watches&sort=newest" },
+      { name: "All Watches", image: "/images/men/watches/watch4.png", path: "/shop?type=watches" },
+      { name: "New Watches", image: "/images/men/watches/watch 2.png", path: "/shop?type=watches&sort=newest" },
+    ]
+  },
+  {
+    id: "sunglasses",
+    name: "Sunglasses",
+    path: "/shop?type=sunglasses",
+    image: "/images/men/sunglasses/sunglass1.png",
+    imageSubtitle: "Eyewear",
+    subcategories: [
+      { name: "Women's Sunglasses", path: "/shop?cat=women&type=sunglasses" },
+      { name: "Men's Sunglasses", path: "/shop?cat=men&type=sunglasses" },
+    ],
+    highlights: [
+      { name: "All Sunglasses", image: "/images/men/sunglasses/sunglass2.png", path: "/shop?type=sunglasses" },
+      { name: "New Arrivals", image: "/images/men/sunglasses/sunglass3.png", path: "/shop?type=sunglasses&sort=newest" },
+    ]
+  },
+  {
+    id: "slippers",
+    name: "Slippers",
+    path: "/shop?type=slippers",
+    image: "/images/men/slippers/mensslipper1.png",
+    imageSubtitle: "Comfort Wear",
+    subcategories: [
+      { name: "Indoor Slippers", path: "/shop?type=slippers&search=indoor" },
+      { name: "Outdoor Slippers", path: "/shop?type=slippers&search=outdoor" },
+    ],
+    highlights: [
+      { name: "All Slippers", image: "/images/men/slippers/mensslipper1.png", path: "/shop?type=slippers" },
+      { name: "New Arrives", image: "/images/women/shoes/womensslipper.jpeg", path: "/shop?type=slippers&sort=newest" },
+    ]
+  },
+  {
+    id: "hoodies",
+    name: "Hoodies",
+    path: "/shop?type=hoodies",
+    image: "/images/new/Heather Grey Pullover Hoodie/1person.png",
+    imageSubtitle: "Casual Luxury",
+    subcategories: [
+      { name: "Classic Hoodies", path: "/shop?type=hoodies&search=classic" },
+      { name: "Premium Selection", path: "/shop?type=hoodies&search=premium" },
+    ],
+    highlights: [
+      { name: "All Hoodies", image: "/images/new/Heather Grey Pullover Hoodie/1person.png", path: "/shop?type=hoodies" },
+      { name: "New Collection", image: "/images/new/Premium Luxury Hoodie/1.png", path: "/shop?type=hoodies&sort=newest" },
+    ]
+  },
+  {
+    id: "sweaters",
+    name: "Sweaters",
+    path: "/shop?type=sweaters",
+    image: "/images/new/Charcoal Cable Knit Sweater/1person.png",
+    imageSubtitle: "Fine Knit",
+    subcategories: [
+      { name: "Cable Knit", path: "/shop?type=sweaters&search=cable" },
+      { name: "Merino Wool", path: "/shop?type=sweaters&search=merino" },
+    ],
+    highlights: [
+      { name: "All Sweaters", image: "/images/new/Charcoal Cable Knit Sweater/1person.png", path: "/shop?type=sweaters" },
+      { name: "Premium Sweaters", image: "/images/new/Cream Merino Turtleneck Sweater/1person.png", path: "/shop?type=sweaters&sort=newest" },
     ]
   },
 ];
@@ -266,18 +328,38 @@ const Navbar = () => {
     { name: "Vault", path: "/vault" },
   ];
 
-  const textColor = isScrolled ? "text-black" : "text-white";
-  const iconColor = isScrolled ? "text-black" : "text-white";
-  const barColor = isScrolled ? "bg-black" : "bg-white";
+  // Transparent on home hero; white once scrolled or on any other page
+  const isTransparent = isHome && !isScrolled && !isMobileMenuOpen;
+  const textColor = isTransparent ? "text-white" : "text-black";
+  const iconColor = isTransparent ? "text-white" : "text-black";
+  const barColor = isTransparent ? "bg-white" : "bg-black";
 
   return (
     <header
-      className={`fixed w-full z-50 top-0 transition-all duration-500 ${isScrolled
-        ? "bg-white shadow-[inset_0_-1px_#e1e1e1]"
-        : "bg-gradient-to-b from-black/75 via-black/30 to-transparent"
+      className={`fixed w-full z-50 top-0 transition-all duration-500 ${isTransparent
+        ? "bg-transparent shadow-none"
+        : "bg-white shadow-[inset_0_-1px_#e1e1e1]"
         }`}
       style={{ paddingTop: "env(safe-area-inset-top)" }}
     >
+      {/* ── ANNOUNCEMENT BAR (Sanity-driven) ── */}
+      {siteSettings?.announcementEnabled && siteSettings?.announcementText && (
+        <div
+          className="w-full text-center text-xs py-2 px-4 font-medium tracking-wider"
+          style={{
+            backgroundColor: siteSettings.announcementBgColor || "#000000",
+            color: siteSettings.announcementTextColor || "#D4AF37",
+          }}
+        >
+          {siteSettings.announcementLink ? (
+            <a href={siteSettings.announcementLink} className="hover:underline">
+              {siteSettings.announcementText}
+            </a>
+          ) : (
+            siteSettings.announcementText
+          )}
+        </div>
+      )}
       {/* ── TOP BAR ── */}
       <div className="flex items-center h-[3.5rem] md:h-[4.25rem] relative px-4 md:px-8 lg:px-14 xl:px-16 w-full">
 
@@ -333,10 +415,15 @@ const Navbar = () => {
           {/* Wishlist — desktop only */}
           <Link
             to="/vault"
-            className={`hidden md:flex items-center hover:opacity-70 transition-opacity ${iconColor}`}
+            className={`hidden md:flex items-center hover:opacity-70 transition-opacity relative ${iconColor}`}
             title="Wishlist"
           >
             <WishlistIcon className="w-[18px] h-[18px]" />
+            {wishlistItems?.length > 0 && (
+              <span className="absolute -top-1.5 -right-1.5 text-[8px] font-bold w-[13px] h-[13px] rounded-full flex items-center justify-center bg-[#c9a96e] text-black leading-none">
+                {wishlistItems.length}
+              </span>
+            )}
           </Link>
 
           {/* Cart */}
@@ -365,22 +452,14 @@ const Navbar = () => {
       </div>
 
       {/* ── MOBILE SEARCH BAR (below top bar, mobile only) ── */}
-      <div className={`md:hidden transition-colors duration-500 ${
-        isScrolled ? "border-t border-gray-200 bg-white" : "border-t border-white/15"
-      }`}>
+      <div className={`md:hidden border-t ${isTransparent ? "border-white/20 bg-transparent" : "border-gray-200 bg-white"}`}>
         <div className="px-4 py-2">
-          <div className={`flex items-center gap-2.5 rounded-sm px-3 py-2 ${
-            isScrolled ? "border border-gray-300" : "border border-white/30"
-          }`}>
-            <SearchIcon className={`w-4 h-4 flex-shrink-0 ${
-              isScrolled ? "text-gray-400" : "text-white/60"
-            }`} />
+          <div className="flex items-center gap-2.5 rounded-sm px-3 py-2 border border-gray-300">
+            <SearchIcon className="w-4 h-4 flex-shrink-0 text-gray-400" />
             <input
               type="text"
               placeholder='Search for "New Arrivals"'
-              className={`bg-transparent border-none outline-none text-[13px] w-full font-sans tracking-wide ${
-                isScrolled ? "text-black placeholder-gray-400" : "text-white placeholder-white/60"
-              }`}
+              className="bg-transparent border-none outline-none text-[13px] w-full font-sans tracking-wide text-black placeholder-gray-400"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyDown={handleSearch}
@@ -388,9 +467,7 @@ const Navbar = () => {
             {searchQuery && (
               <button
                 onClick={() => setSearchQuery("")}
-                className={`flex-shrink-0 ${
-                  isScrolled ? "text-gray-400" : "text-white/60"
-                }`}
+                className="flex-shrink-0 text-gray-400"
               >
                 <XIcon className="w-3.5 h-3.5" />
               </button>
@@ -440,10 +517,10 @@ const Navbar = () => {
                       >
                         <div className="w-16 h-16 bg-gray-50 flex-shrink-0 flex items-center justify-center overflow-hidden">
                           <img
-                            src={product.mainImage || product.images?.[0] || "/images/placeholder.png"}
+                            src={product.mainImage || product.images?.[0] || "/images/placeholder/placeholder.png"}
                             alt={product.name}
                             className="w-full h-full object-contain mix-blend-multiply"
-                            onError={(e) => e.target.src = "/images/placeholder.png"}
+                            onError={(e) => e.target.src = "/images/placeholder/placeholder.png"}
                           />
                         </div>
                         <div>
@@ -572,14 +649,14 @@ const Navbar = () => {
                       "The Maison Murgdur": "/heritage",
                     };
                     return (
-                    <Link
-                      key={name}
-                      to={linkMap[name]}
-                      className="text-base font-sans text-gray-600 tracking-wide hover:text-black transition-colors block"
-                      onClick={() => setIsMobileMenuOpen(false)}
-                    >
-                      {name}
-                    </Link>
+                      <Link
+                        key={name}
+                        to={linkMap[name]}
+                        className="text-base font-sans text-gray-600 tracking-wide hover:text-black transition-colors block"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {name}
+                      </Link>
                     );
                   })}
 

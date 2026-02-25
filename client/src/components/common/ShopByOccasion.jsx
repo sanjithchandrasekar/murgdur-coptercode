@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { fetchShopByOccasion } from "../../utils/sanity";
 
-const occ1 = "/images/Gemini_Generated_Image_7ou9zl7ou9zl7ou9.png";
-const occ2 = "/images/Gemini_Generated_Image_96hr3v96hr3v96hr.png";
-const occ3 = "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png";
-const occ4 = "/images/Gemini_Generated_Image_b1fmq6b1fmq6b1fm.png";
+const occ1 = "/images/hero/Gemini_Generated_Image_7ou9zl7ou9zl7ou9.png";
+const occ2 = "/images/hero/Gemini_Generated_Image_96hr3v96hr3v96hr.png";
+const occ3 = "/images/hero/Gemini_Generated_Image_aimaqdaimaqdaima.png";
+const occ4 = "/images/hero/Gemini_Generated_Image_b1fmq6b1fmq6b1fm.png";
 
 const ShopByOccasion = () => {
   const defaultOccasions = [
@@ -32,18 +32,18 @@ const ShopByOccasion = () => {
   }, []);
 
   return (
-    <section className="py-20 bg-royal-black text-center">
+    <section className="py-20 bg-gray-50 text-center">
       <span className="text-royal-gold uppercase tracking-widest text-xs font-bold mb-2 block">
         {data?.eyebrow || "Curated For You"}
       </span>
-      <h2 className="text-3xl md:text-4xl font-serif text-white mb-12">
+      <h2 className="text-3xl md:text-4xl font-serif text-gray-900 mb-12">
         {data?.heading || "Shop By Occasion"}
       </h2>
 
       <div className="container mx-auto px-6 grid grid-cols-2 md:grid-cols-4 gap-4">
         {occasions.map((item, idx) => (
           <Link
-            to="/shop"
+            to={item.link || "/shop"}
             key={idx}
             className="group relative aspect-[3/4] overflow-hidden rounded-sm cursor-pointer block"
           >

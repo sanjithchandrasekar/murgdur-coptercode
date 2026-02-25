@@ -8,21 +8,23 @@ const Button = ({
   ...props
 }) => {
   const baseStyle =
-    "uppercase tracking-widest text-sm font-bold py-4 px-8 transition-all duration-300 transform hover:-translate-y-1";
+    "uppercase tracking-widest text-sm font-bold py-4 px-8 transition-all duration-300 transform hover:-translate-y-0.5";
 
   const variants = {
     primary:
-      "bg-royal-platinum text-royal-black hover:bg-white shadow-[0_0_20px_rgba(255,255,255,0.3)] hover:shadow-[0_0_30px_rgba(255,255,255,0.5)]",
+      "bg-black text-white hover:bg-[#1a1a1a] border border-black shadow-sm hover:shadow-md",
     secondary:
-      "border border-royal-ivory text-royal-ivory hover:bg-royal-platinum hover:text-royal-black",
+      "border border-black text-black hover:bg-black hover:text-white bg-transparent",
     outline:
-      "border border-royal-platinum text-royal-platinum hover:bg-royal-platinum hover:text-royal-black",
+      "border border-black text-black hover:bg-black hover:text-white bg-transparent",
+    gold:
+      "bg-[#C9A96E] text-white hover:bg-[#b89660] border border-[#C9A96E] shadow-sm hover:shadow-md",
   };
 
   return (
     <button
       onClick={onClick}
-      className={`${baseStyle} ${variants[variant]} ${className}`}
+      className={`${baseStyle} ${variants[variant] || variants.primary} ${className}`}
       {...props}
     >
       {children}
@@ -31,3 +33,4 @@ const Button = ({
 };
 
 export default Button;
+

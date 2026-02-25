@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Helmet } from "react-helmet-async";
 
 const SEO = ({
@@ -15,7 +15,7 @@ const SEO = ({
   const metaDescription =
     description ||
     "Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty. Shop premium royal attire, luxury accessories, and bespoke heritage items.";
-  const metaImage = image || "https://murugdur1.vercel.app/images/logo.jpeg";
+  const metaImage = image || "https://murugdur1.vercel.app/images/branding/logo.jpeg";
   const metaUrl = url || window.location.href;
   const metaKeywords =
     keywords ||
@@ -30,7 +30,7 @@ const SEO = ({
     url: "https://murugdur1.vercel.app/",
     logo: {
       "@type": "ImageObject",
-      url: "https://murugdur1.vercel.app/images/logo.jpeg",
+      url: "https://murugdur1.vercel.app/images/branding/logo.jpeg",
     },
     description: metaDescription,
     sameAs: [

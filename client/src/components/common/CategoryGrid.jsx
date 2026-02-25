@@ -1,12 +1,12 @@
-import React from "react";
+﻿import React from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowUpRight } from "lucide-react";
 
-const cat1 = "/images/Gemini_Generated_Image_687ijq687ijq687i.png";
-const cat2 = "/images/hand bag.png";
-const cat3 = "/images/Gemini_Generated_Image_7cejht7cejht7cej.png";
-const cat4 = "/images/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
+const cat1 = "/images/hero/Gemini_Generated_Image_687ijq687ijq687i.png";
+const cat2 = "/images/women/handbags/hand bag.png";
+const cat3 = "/images/hero/Gemini_Generated_Image_7cejht7cejht7cej.png";
+const cat4 = "/images/hero/Gemini_Generated_Image_6x7jv96x7jv96x7j.png";
 
 const CategoryGrid = () => {
   const categories = [
@@ -22,11 +22,11 @@ const CategoryGrid = () => {
   ];
 
   return (
-    <section className="py-24 px-4 bg-royal-black">
+    <section className="py-24 px-4 bg-white">
       <div className="container mx-auto">
         <div className="flex justify-between items-end mb-12">
           <div>
-            <h2 className="text-4xl font-serif text-royal-ivory mb-2">
+            <h2 className="text-4xl font-serif text-gray-900 mb-2">
               Curated Collections
             </h2>
             <p className="text-gray-400">Handpicked for the connoisseur.</p>
@@ -44,7 +44,7 @@ const CategoryGrid = () => {
             <Link
               to={cat.link}
               key={idx}
-              className={`relative group overflow-hidden border border-gray-800 h-[300px] md:h-auto ${
+              className={`relative group overflow-hidden border border-gray-200 h-[300px] md:h-auto ${
                 cat.size === "large"
                   ? "md:col-span-2 md:row-span-2"
                   : cat.size === "wide"

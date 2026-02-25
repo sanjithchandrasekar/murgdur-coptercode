@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
 import {
   Heart,
@@ -11,20 +11,22 @@ import {
   History,
   Truck,
   ShieldCheck,
+  ArrowLeft,
 } from "lucide-react";
 import Button from "../components/common/Button";
 import { useCart } from "../context/CartContext";
 import { fetchProducts } from "../utils/sanity";
 import RoyalZoomGallery from "../components/common/RoyalZoomGallery";
 import SEO from "../components/common/SEO";
+import ProductImage from "../components/common/ProductImage";
 import { motion, AnimatePresence } from "framer-motion";
 
-const imgLogo = "/images/logo.jpeg";
+const imgLogo = "/images/branding/logo.jpeg";
 
 const ProductDetails = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { addToCart, addToWishlist, removeFromWishlist, wishlistItems } =
+  const { addToCart, addToWishlist, removeFromWishlist, wishlistItems, cartItems } =
     useCart();
 
   // Dialog State
@@ -51,6 +53,7 @@ const ProductDetails = () => {
   const [selectedSize, setSelectedSize] = useState("M");
   const [selectedColor, setSelectedColor] = useState(null);
   const [isSizeGuideOpen, setIsSizeGuideOpen] = useState(false);
+  const [isDescExpanded, setIsDescExpanded] = useState(false);
 
   // Fetch Product
   useEffect(() => {
@@ -175,6 +178,7 @@ const ProductDetails = () => {
   }
 
   const isWishlisted = wishlistItems.some((item) => item.id == product.id);
+  const isInCart = cartItems.some((item) => item.id == product.id);
 
   return (
     <div className="bg-white min-h-screen pt-24 pb-24 text-gray-900 font-sans">
@@ -187,6 +191,15 @@ const ProductDetails = () => {
       />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-8 lg:px-16">
+
+        {/* ── BACK BUTTON ── */}
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-[10px] uppercase tracking-[0.2em] font-semibold text-gray-500 hover:text-black transition-colors mb-6 group"
+        >
+          <ArrowLeft size={14} strokeWidth={1.5} className="group-hover:-translate-x-1 transition-transform" />
+          <span>Back</span>
+        </button>
 
         {/* ── BREADCRUMBS ── */}
         <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-gray-400 mb-8">
@@ -223,227 +236,118 @@ const ProductDetails = () => {
           {/* RIGHT: Sticky product info */}
           <div className="lg:w-[42%] xl:w-[40%] lg:sticky lg:top-28 self-start lg:pb-10">
 
-            {/* Category badge + Wishlist */}
-            <div className="flex items-center justify-between mb-3">
-              <span className="text-[10px] uppercase tracking-[0.22em] text-gray-400 font-semibold">
-                {product.subcategory || product.type || product.category}
-              </span>
+            {/* Header Info: Product ID and Wishlist */}
+            <div className="flex justify-between items-start mb-2">
+              <div className="flex flex-col gap-0.5">
+                <span className="text-[10px] text-gray-400 tracking-[0.15em] uppercase font-medium">
+                  Product ID
+                </span>
+                <span className="text-[13px] text-black tracking-[0.08em] uppercase font-semibold">
+                  {product.productId || product.sku || "MURG-0000"}
+                </span>
+                {product.sku && product.sku !== product.productId && (
+                  <span className="text-[10px] text-gray-400 tracking-[0.05em] uppercase">
+                    SKU: {product.sku}
+                  </span>
+                )}
+              </div>
               <button
                 onClick={(e) => {
                   e.preventDefault();
                   isWishlisted ? removeFromWishlist(product.id) : addToWishlist(product);
                 }}
-                className="flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-gray-500 hover:text-black transition-colors group"
+                className="flex items-center text-black transition-colors"
+                aria-label="Add to wishlist"
               >
                 <Heart
-                  size={15}
+                  size={18}
                   strokeWidth={1.5}
                   fill={isWishlisted ? "black" : "none"}
-                  className={`transition-all ${isWishlisted ? "text-black" : "text-gray-400 group-hover:text-black"}`}
+                  className="transition-all text-black hover:scale-110"
                 />
-                <span className="hidden sm:inline">{isWishlisted ? "Saved" : "Save"}</span>
               </button>
             </div>
 
-            {/* Product Name */}
-            <h1 className="text-[1.6rem] leading-tight font-normal tracking-wide text-black mb-2">
-              {product.name}
-            </h1>
-
-            {/* Rating */}
-            {product.rating && (
-              <div className="flex items-center gap-2 mb-3">
-                <div className="flex items-center gap-0.5">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <svg
-                      key={star}
-                      width="11"
-                      height="11"
-                      viewBox="0 0 24 24"
-                      fill={star <= Math.round(product.rating) ? "#000" : "none"}
-                      stroke="#000"
-                      strokeWidth="1.5"
-                    >
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
-                    </svg>
-                  ))}
-                </div>
-                <span className="text-[11px] text-gray-400 tracking-wide">
-                  {product.rating.toFixed(1)} ({product.reviews || 0} reviews)
-                </span>
-              </div>
-            )}
+            {/* Commercial Tag & Title */}
+            <div className="mb-4">
+              <div className="text-[12px] text-gray-500 mb-1">Pre-order Now</div>
+              <h1 className="text-[1.8rem] leading-tight font-normal text-black tracking-wide">
+                {product.name}
+              </h1>
+            </div>
 
             {/* Price */}
-            <div className="mb-1">
-              <span className="text-[1.05rem] font-normal tracking-wide text-black">
-                ₹{product.price.toLocaleString()}
+            <div className="mb-8">
+              <span className="text-[1.1rem] font-normal text-black block mb-1">
+                ₹{Number(product.price || 0).toLocaleString("en-IN", { minimumFractionDigits: 2 })}
               </span>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="ml-3 text-sm text-gray-400 line-through">
-                  ₹{product.originalPrice.toLocaleString()}
-                </span>
-              )}
-            </div>
-            <p className="text-[10px] text-gray-400 tracking-wide mb-7">
-              M.R.P. inclusive of all taxes
-            </p>
-
-            {/* ── COLOUR / MATERIAL ── */}
-            {product.colors && product.colors.length > 0 && product.type !== "perfumes" && (
-              <div className="mb-5 pb-5 border-b border-gray-100">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-black">
-                    Colour
-                  </span>
-                  <span className="text-[11px] text-gray-500 capitalize">
-                    {selectedColor || product.colors[0]}
-                  </span>
-                </div>
-                <div className="flex gap-2 flex-wrap">
-                  {product.colors.map((color, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedColor(color)}
-                      title={color}
-                      className={`w-7 h-7 rounded-full border-2 transition-all duration-150 ${
-                        selectedColor === color
-                          ? "border-black scale-110 shadow-sm"
-                          : "border-transparent hover:border-gray-400"
-                      }`}
-                      style={{ backgroundColor: color }}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── SIZE SELECTION ── */}
-            {product.sizes && product.sizes.length > 0 && (
-              <div className="mb-5 pb-5 border-b border-gray-100">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-black">
-                    Size
-                  </span>
-                  <button
-                    onClick={() => setIsSizeGuideOpen(true)}
-                    className="text-[10px] uppercase tracking-[0.15em] text-gray-400 underline underline-offset-2 hover:text-black transition-colors"
-                  >
-                    Size Guide
-                  </button>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  {product.sizes.map((size, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setSelectedSize(size)}
-                      className={`min-w-[44px] h-10 px-3 text-[11px] uppercase tracking-widest border transition-all duration-150 font-medium ${
-                        selectedSize === size
-                          ? "bg-black text-white border-black"
-                          : "bg-white text-black border-gray-300 hover:border-black"
-                      }`}
-                    >
-                      {size}
-                    </button>
-                  ))}
-                </div>
-              </div>
-            )}
-
-            {/* ── ADD TO BAG ── */}
-            <div className="flex flex-col gap-3 mb-6">
-              <button
-                className="w-full py-[15px] bg-[#19110b] text-white hover:bg-black active:scale-[0.99] transition-all duration-150 text-[11px] uppercase tracking-[0.25em] font-semibold"
-                onClick={() => {
-                  addToCart({ ...product, selectedSize, selectedColor, isGiftWrapped }, 1);
-                  navigate("/checkout");
-                }}
-              >
-                Add to Bag
-              </button>
-              <button
-                onClick={(e) => {
-                  e.preventDefault();
-                  isWishlisted ? removeFromWishlist(product.id) : addToWishlist(product);
-                }}
-                className="w-full py-[13px] border border-gray-300 text-black hover:border-black transition-all duration-150 text-[11px] uppercase tracking-[0.2em] font-semibold flex items-center justify-center gap-2"
-              >
-                <Heart size={13} strokeWidth={1.5} fill={isWishlisted ? "black" : "none"} />
-                {isWishlisted ? "Saved to Wishlist" : "Save to Wishlist"}
-              </button>
-            </div>
-
-            {/* ── CONCIERGE LINE ── */}
-            <p className="text-[10px] text-gray-400 leading-relaxed mb-6 text-center">
-              Questions about this piece?{" "}
-              <span
-                className="text-black underline underline-offset-2 cursor-pointer hover:opacity-60 transition-opacity"
-                onClick={() => showNotice("Digital Concierge", "Our team of luxury experts is available 24/7. Call +91 0000 000000 or email concierge@murgdur.com")}
-              >
-                Contact our Digital Concierge
-              </span>
-            </p>
-
-            {/* ── PERSONALISATION ── */}
-            <button
-              className="w-full text-left flex items-center justify-between py-3 mb-1 hover:opacity-70 transition-opacity border-b border-gray-100"
-              onClick={() => showNotice("Royal Initials", "Personalisation services — custom initials, hand-painted motifs and signature stripes — are available exclusively in our flagship boutiques. Please contact our Digital Concierge for assistance.")}
-            >
-              <div>
-                <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-black block mb-0.5">Royal Initials</span>
-                <span className="text-[10px] text-gray-400">Personalise with initials or patches</span>
-              </div>
-              <span className="text-gray-400 text-lg font-light ml-4">›</span>
-            </button>
-
-            {/* ── SHORT DESCRIPTION ── */}
-            <div className="py-5 border-b border-gray-100">
-              <p className="text-[13px] text-gray-600 leading-relaxed font-light">
-                {product.description
-                  ? product.description.length > 200
-                    ? product.description.slice(0, 200) + "…"
-                    : product.description
-                  : getProductInsight(product)}
+              <p className="text-[11px] text-gray-500 tracking-wide">
+                (M.R.P. incl. of all taxes)
               </p>
             </div>
 
-            {/* ── ACCORDION SECTIONS ── */}
-            <div className="divide-y divide-gray-100">
+            {/* Concierge Button */}
+            <div className="mb-6">
+              <button
+                className="w-full py-[15px] bg-black text-white hover:bg-[#1a1a1a] transition-all rounded-full text-[13px] font-medium flex items-center justify-center"
+                onClick={() => {
+                  if (isInCart) {
+                    navigate("/cart");
+                    return;
+                  }
+                  const loggedIn = !!localStorage.getItem("userProfile");
+                  addToCart({ ...product, selectedSize, selectedColor, isGiftWrapped }, 1);
+                  if (!loggedIn) {
+                    navigate("/profile", { state: { returnUrl: `/product/${product.id}` } });
+                  } else {
+                    navigate("/cart");
+                  }
+                }}
+              >
+                {isInCart ? "View in Cart" : "Add To Cart"}
+              </button>
+            </div>
 
-              {/* Product Details */}
+
+
+            {/* Short Description */}
+            <div className="py-2 mb-4">
+              <div
+                className={`text-[13px] text-gray-600 leading-relaxed font-light ${!isDescExpanded ? 'line-clamp-[4]' : ''}`}
+                dangerouslySetInnerHTML={{ __html: getProductFullDescription(product) }}
+              />
+              <button
+                onClick={() => setIsDescExpanded(!isDescExpanded)}
+                className="text-[12px] font-semibold underline underline-offset-4 mt-3 hover:text-gray-600 transition-colors inline-block"
+              >
+                {isDescExpanded ? "Read Less" : "Read More"}
+              </button>
+            </div>
+
+            {/* Accordion Sections */}
+            <div className="divide-y divide-gray-200 border-t border-b border-gray-200 mt-6">
+
+              {/* Sustainability */}
               <details className="group [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer items-center justify-between py-4 text-black hover:opacity-70 transition-opacity">
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-semibold">Product Details</span>
+                  <span className="text-[12px] font-normal tracking-wide">Sustainability</span>
                   <span className="relative h-4 w-4 flex-shrink-0">
-                    <Plus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity" />
-                    <Minus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity" />
+                    <Plus size={16} strokeWidth={1} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" />
+                    <Minus size={16} strokeWidth={1} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity text-gray-400" />
                   </span>
                 </summary>
-                <div className="pb-5 text-[12px] text-gray-500 font-light leading-relaxed space-y-2">
-                  {product.description ? (
-                    <p>{product.description}</p>
-                  ) : (
-                    <p>{getProductInsight(product)}</p>
-                  )}
-                  {product.colors && product.colors.length > 0 && (
-                    <p><span className="text-black font-medium">Available colours:</span> {product.colors.length} option{product.colors.length !== 1 ? "s" : ""}</p>
-                  )}
-                  {product.sizes && product.sizes.length > 0 && (
-                    <p><span className="text-black font-medium">Sizes:</span> {product.sizes.join(", ")}</p>
-                  )}
-                  {product.isNew && (
-                    <p className="text-black font-medium uppercase tracking-widest text-[10px]">New Arrival</p>
-                  )}
+                <div className="pb-5 text-[12px] text-gray-500 font-light leading-relaxed">
+                  We are committed to preserving natural resources and holding our supply chain to the highest environmental and ethical standards. All materials are responsibly sourced, and our packaging is recyclable.
                 </div>
               </details>
 
-              {/* Materials & Care */}
+              {/* Product Care */}
               <details className="group [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer items-center justify-between py-4 text-black hover:opacity-70 transition-opacity">
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-semibold">Materials & Care</span>
+                  <span className="text-[12px] font-normal tracking-wide">Product Care</span>
                   <span className="relative h-4 w-4 flex-shrink-0">
-                    <Plus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity" />
-                    <Minus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity" />
+                    <Plus size={16} strokeWidth={1} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" />
+                    <Minus size={16} strokeWidth={1} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity text-gray-400" />
                   </span>
                 </summary>
                 <div className="pb-5 text-[12px] text-gray-500 font-light leading-relaxed">
@@ -452,34 +356,34 @@ const ProductDetails = () => {
                 </div>
               </details>
 
-              {/* Sustainability */}
+              {/* In-Store Services */}
               <details className="group [&_summary::-webkit-details-marker]:hidden">
                 <summary className="flex cursor-pointer items-center justify-between py-4 text-black hover:opacity-70 transition-opacity">
-                  <span className="text-[10px] tracking-[0.2em] uppercase font-semibold">Sustainability</span>
+                  <span className="text-[12px] font-normal tracking-wide">In-Store Services</span>
                   <span className="relative h-4 w-4 flex-shrink-0">
-                    <Plus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity" />
-                    <Minus size={14} strokeWidth={1.5} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity" />
+                    <Plus size={16} strokeWidth={1} className="absolute inset-0 opacity-100 group-open:opacity-0 transition-opacity text-gray-400" />
+                    <Minus size={16} strokeWidth={1} className="absolute inset-0 opacity-0 group-open:opacity-100 transition-opacity text-gray-400" />
                   </span>
                 </summary>
                 <div className="pb-5 text-[12px] text-gray-500 font-light leading-relaxed">
-                  We are committed to preserving natural resources and holding our supply chain to the highest environmental and ethical standards. All materials are responsibly sourced, and our packaging is recyclable.
+                  Discover this item in store with an advisor. <span className="underline cursor-pointer text-black">Check availability in store</span>
                 </div>
               </details>
+
             </div>
 
-            {/* ── DELIVERY / GIFTING LINKS ── */}
-            <div className="mt-2 border-t border-gray-100 divide-y divide-gray-100">
+            {/* Links Sections: Delivery & Returns, Gifting */}
+            <div className="divide-y divide-gray-200 border-b border-gray-200 mb-8">
               {[
                 { label: "Delivery & Returns", msg: "Complimentary shipping on all orders. Delivery within 3–5 business days. Easy 30-day returns on all unworn and unaltered items." },
-                { label: "Gifting", msg: "Every order arrives in our signature luxury gift box, ribboned and sealed, with a personalised handwritten message card." },
-                { label: "Boutique Services", msg: "Our boutiques offer complimentary cleaning, conditioning and expert repair evaluation for all authentic Murgdur pieces." },
+                { label: "Gifting", msg: "Every order arrives in our signature luxury gift box, ribboned and sealed, with a personalised handwritten message card." }
               ].map(({ label, msg }) => (
                 <button
                   key={label}
                   onClick={() => showNotice(label, msg)}
                   className="w-full flex items-center justify-between py-4 hover:opacity-60 transition-opacity group"
                 >
-                  <span className="text-[10px] uppercase tracking-[0.2em] font-semibold text-black">{label}</span>
+                  <span className="text-[12px] font-normal tracking-wide text-black">{label}</span>
                   <span className="text-gray-400 text-lg font-light">›</span>
                 </button>
               ))}
@@ -488,33 +392,7 @@ const ProductDetails = () => {
           </div>
         </div>
 
-        {/* ── YOU MAY ALSO LIKE ── */}
-        {relatedProducts.length > 0 && (
-          <section className="mt-24 border-t border-gray-100 pt-14">
-            <h2 className="text-center text-[11px] uppercase tracking-[0.3em] font-semibold text-black mb-10">
-              You May Also Like
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-              {relatedProducts.slice(0, 4).map((p) => (
-                <ProductCardLite key={p.id || p._id} product={p} />
-              ))}
-            </div>
-          </section>
-        )}
 
-        {/* ── RECENTLY VIEWED ── */}
-        {recentlyViewed.length > 0 && (
-          <section className="mt-20 border-t border-gray-100 pt-14">
-            <h2 className="text-center text-[11px] uppercase tracking-[0.3em] font-semibold text-black mb-10">
-              Recently Viewed
-            </h2>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {recentlyViewed.map((p) => (
-                <ProductCardLite key={p.id} product={p} small />
-              ))}
-            </div>
-          </section>
-        )}
 
       </div>
 
@@ -523,9 +401,8 @@ const ProductDetails = () => {
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
           <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setIsSizeGuideOpen(false)} />
           <div
-            className={`bg-white border text-black p-6 md:p-10 w-full relative shadow-2xl z-10 max-h-[85vh] overflow-y-auto ${
-              product.type === "shoes" ? "max-w-md" : product.type === "watches" ? "max-w-lg" : "max-w-2xl"
-            }`}
+            className={`bg-white border text-black p-6 md:p-10 w-full relative shadow-2xl z-10 max-h-[85vh] overflow-y-auto ${product.type === "shoes" ? "max-w-md" : product.type === "watches" ? "max-w-lg" : "max-w-2xl"
+              }`}
           >
             <button onClick={() => setIsSizeGuideOpen(false)} className="absolute top-4 right-4 text-gray-400 hover:text-black transition-colors p-1">
               <X size={22} strokeWidth={1} />
@@ -543,11 +420,11 @@ const ProductDetails = () => {
                 <table className="w-full text-center border-collapse">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      {["US M","UK","EU","CM","US W"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
+                      {["US M", "UK", "EU", "CM", "US W"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
-                    {[{usM:7,uk:6,eu:40,cm:24.4,usW:8},{usM:8,uk:7,eu:41,cm:25.2,usW:9},{usM:9,uk:8,eu:42.5,cm:26,usW:10},{usM:10,uk:9,eu:44,cm:27,usW:11}].map((row,i) => (
+                    {[{ usM: 7, uk: 6, eu: 40, cm: 24.4, usW: 8 }, { usM: 8, uk: 7, eu: 41, cm: 25.2, usW: 9 }, { usM: 9, uk: 8, eu: 42.5, cm: 26, usW: 10 }, { usM: 10, uk: 9, eu: 44, cm: 27, usW: 11 }].map((row, i) => (
                       <tr key={i} className="border-b border-gray-100">
                         <td className="p-3 font-medium text-sm">{row.usM}</td>
                         <td className="p-3 text-gray-500 text-sm">{row.uk}</td>
@@ -562,11 +439,11 @@ const ProductDetails = () => {
                 <table className="w-full text-center border-collapse">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      {["Size","Bust","Waist","Hips"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
+                      {["Size", "Bust", "Waist", "Hips"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
-                    {[{size:"XS",bust:32,waist:24,hips:34},{size:"S",bust:34,waist:26,hips:36},{size:"M",bust:36,waist:28,hips:38},{size:"L",bust:39,waist:31,hips:41},{size:"XL",bust:42,waist:34,hips:44}].map(row => (
+                    {[{ size: "XS", bust: 32, waist: 24, hips: 34 }, { size: "S", bust: 34, waist: 26, hips: 36 }, { size: "M", bust: 36, waist: 28, hips: 38 }, { size: "L", bust: 39, waist: 31, hips: 41 }, { size: "XL", bust: 42, waist: 34, hips: 44 }].map(row => (
                       <tr key={row.size} className="border-b border-gray-100">
                         <td className="p-3 font-medium">{row.size}</td>
                         <td className="p-3 text-gray-500">{row.bust}"</td>
@@ -580,11 +457,11 @@ const ProductDetails = () => {
                 <table className="w-full text-center border-collapse">
                   <thead>
                     <tr className="border-b border-gray-200">
-                      {["Size","Chest","Waist","Length"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
+                      {["Size", "Chest", "Waist", "Length"].map(h => <th key={h} className="p-3 font-semibold text-[11px] tracking-wider text-gray-600">{h}</th>)}
                     </tr>
                   </thead>
                   <tbody>
-                    {[{size:"S",chest:36,waist:30,length:28},{size:"M",chest:38,waist:32,length:29},{size:"L",chest:40,waist:34,length:30},{size:"XL",chest:42,waist:36,length:31},{size:"XXL",chest:44,waist:38,length:32}].map(row => (
+                    {[{ size: "S", chest: 36, waist: 30, length: 28 }, { size: "M", chest: 38, waist: 32, length: 29 }, { size: "L", chest: 40, waist: 34, length: 30 }, { size: "XL", chest: 42, waist: 36, length: 31 }, { size: "XXL", chest: 44, waist: 38, length: 32 }].map(row => (
                       <tr key={row.size} className="border-b border-gray-100">
                         <td className="p-3 font-medium">{row.size}</td>
                         <td className="p-3 text-gray-500">{row.chest}"</td>
@@ -634,6 +511,50 @@ const ProductDetails = () => {
 };
 
 // ── HELPER FUNCTIONS ──────────────────────────────────────────
+
+function getProductFullDescription(product) {
+  let desc = product.description || getProductInsight(product);
+
+  if (desc.includes("This reference is either Made in")) {
+    return desc.replace(/\n/g, "<br/>");
+  }
+
+  let specs = [];
+
+  // Dimensions
+  if (product.type === "bags" || product.type === "handbags" || (product.name || "").toLowerCase().includes("bag")) {
+    specs.push("23 x 12 x 4 cm<br/>(Length x Height x Width)");
+  } else if (product.type === "wallets" || (product.name || "").toLowerCase().includes("wallet")) {
+    specs.push("11 x 8.5 x 2 cm<br/>(Length x Height x Width)");
+  } else if (product.type === "watches" || (product.name || "").toLowerCase().includes("watch")) {
+    specs.push("Case Diameter: 40 mm<br/>(Diameter x Thickness)");
+  }
+
+  // Materials / Hardware
+  const t = (product.type || "").toLowerCase();
+  const n = (product.name || "").toLowerCase();
+  if (t === "bags" || t === "handbags" || n.includes("bag")) {
+    specs.push("Calfskin<br/>Calfskin trim<br/>Cotton lining<br/>Gold-toned hardware<br/>Zipper closure with S-lock<br/>Strap: Removable, adjustable<br/>Strap Drop: 53.0 cm<br/>Strap Drop Max: 58.0 cm<br/>Chain: Removable<br/>Chain Drop: 17.0 cm");
+  } else if (t === "shoes" || t === "slippers" || n.includes("shoe")) {
+    specs.push("Full-grain leather<br/>Leather lining<br/>Rubber sole with leather heel<br/>Signature embossed logo<br/>Classic slip-on or laced fastening");
+  } else if (t === "watches" || n.includes("watch")) {
+    specs.push("316L stainless steel<br/>Sapphire crystal glass<br/>Anti-reflective coating<br/>Water-resistant to 50m<br/>Strap: Adjustable<br/>Swiss-inspired precision movement");
+  } else if (t === "perfumes" || n.includes("perfume")) {
+    specs.push("Signature glass flacon<br/>Lacquered stopper<br/>Travel-friendly design<br/>Concentration: Eau de Parfum");
+  } else if (t === "dresses" || t === "shirts" || n.includes("dress") || n.includes("shirt") || t === "clothing") {
+    specs.push("Premium woven fabric<br/>Hand-finished seams<br/>Comfortable cotton lining<br/>Signature aesthetic details<br/>Relaxed yet tailored fit");
+  } else if (t === "wallets" || n.includes("wallet")) {
+    specs.push("Full-grain leather<br/>Multiple card slots<br/>Bill compartment<br/>Zip coin pocket<br/>Gold-toned hardware");
+  } else if (t === "sunglasses" || n.includes("sunglass")) {
+    specs.push("Italian acetate frame<br/>Mineral glass lenses<br/>UV-400 protection<br/>Adjustable nose pads");
+  } else {
+    specs.push("Premium materials<br/>Signature detailing<br/>Expert craftsmanship");
+  }
+
+  specs.push("<br/>This reference is either Made in France, Spain, Italy or in the US.");
+
+  return `<p>${desc}</p><br/>` + specs.join("<br/>");
+}
 
 function getProductInsight(product) {
   const t = (product.type || "").toLowerCase();
@@ -709,11 +630,12 @@ const ProductCardLite = ({ product, small = false }) => {
             <span className="text-[9px] font-bold uppercase tracking-widest text-black">New</span>
           </div>
         )}
-        <img
+        <ProductImage
           src={product.image}
           alt={product.name}
           className="w-full h-full object-cover transition-transform duration-700 ease-in-out group-hover:scale-105"
           loading="lazy"
+          useWhiteBg={true}
         />
       </div>
       <div className="text-center px-1 pt-1">

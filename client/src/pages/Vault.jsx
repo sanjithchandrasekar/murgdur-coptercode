@@ -15,6 +15,7 @@ const Vault = () => {
 
   // Connect to Sanity for page text labels
   const [data, setData] = useState(null);
+  const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
     const load = async () => {
@@ -24,8 +25,14 @@ const Vault = () => {
     load();
   }, []);
 
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
+
   return (
-    <div className="min-h-screen bg-royal-black pt-32 pb-20 px-4 md:px-0">
+    <div className="min-h-screen bg-white pt-32 pb-20 px-4 md:px-0">
       <SEO
         title={`${data?.heading || "My Vault"} | Murgdur`}
         description="Your personal collection of Murgdur's finest. View and manage your saved items."
@@ -34,9 +41,9 @@ const Vault = () => {
       <div className="container mx-auto max-w-5xl">
         {/* Header */}
         <div className="mb-6">
-          <BackButton className="text-gray-400 hover:text-white" />
+          <BackButton className="text-gray-400 hover:text-gray-900" />
         </div>
-        <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-white/10 pb-4">
+        <div className="flex flex-col md:flex-row justify-between items-end mb-10 border-b border-gray-200 pb-4">
           <div>
             <h1 className="text-3xl md:text-4xl font-serif text-royal-gold mb-2">
               {data?.heading || "My Vault"}
@@ -48,9 +55,10 @@ const Vault = () => {
           <div className="mt-4 md:mt-0">
             <Button
               variant="outline"
-              className="text-xs py-2 px-4 border-royal-gold text-royal-gold hover:bg-royal-gold hover:text-black"
+              className="text-xs py-2 px-4 border-royal-gold text-royal-gold hover:bg-royal-gold hover:text-black w-[130px] flex justify-center items-center"
+              onClick={handleShare}
             >
-              Share Vault
+              {isCopied ? "Link Copied!" : "Share Vault"}
             </Button>
           </div>
         </div>
@@ -62,22 +70,15 @@ const Vault = () => {
               key={item.id}
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="bg-white/5 border border-white/10 rounded-lg p-4 md:p-6 flex flex-col md:flex-row gap-6 shadow-lg hover:border-royal-gold/30 transition-all relative group"
+              className="bg-white border border-gray-200 rounded-sm p-4 md:p-6 flex flex-col md:flex-row gap-6 shadow-sm hover:border-royal-gold/40 transition-all relative group hover:shadow-md"
             >
               {/* Image Section */}
-              <div className="w-full md:w-48 aspect-[3/4] md:aspect-square bg-gray-900 rounded-sm overflow-hidden relative shrink-0">
+              <div className="w-full md:w-48 aspect-[3/4] md:aspect-square bg-gray-100 rounded-sm overflow-hidden relative shrink-0">
                 <img
                   src={item.image || (item.images && item.images[0])}
                   alt={item.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                 />
-                {!item.inStock && (
-                  <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
-                    <span className="text-white text-xs font-bold uppercase tracking-widest border border-white px-3 py-1">
-                      Out of Stock
-                    </span>
-                  </div>
-                )}
               </div>
 
               {/* Details Section */}
@@ -88,7 +89,7 @@ const Vault = () => {
                       <p className="text-xs text-royal-gold uppercase tracking-wider mb-1">
                         {item.category}
                       </p>
-                      <h3 className="text-xl font-serif text-white mb-2">
+                      <h3 className="text-xl font-serif text-gray-900 mb-2">
                         {item.name}
                       </h3>
 
@@ -111,7 +112,7 @@ const Vault = () => {
                   </div>
 
                   <div className="flex items-baseline gap-3 mb-4">
-                    <span className="text-2xl font-bold text-white">
+                    <span className="text-2xl font-bold text-gray-900">
                       ₹{item.price.toLocaleString()}
                     </span>
                     {item.discount > 0 && (
@@ -130,16 +131,11 @@ const Vault = () => {
                 {/* Actions */}
                 <div className="flex items-center gap-4">
                   <button
-                    disabled={!item.inStock}
                     onClick={() => moveToCart(item)}
-                    className={`flex items-center justify-center gap-2 px-6 py-3 uppercase tracking-wider text-sm font-bold transition-all ${
-                      item.inStock
-                        ? "bg-royal-gold text-black hover:bg-white"
-                        : "bg-white/10 text-gray-500 cursor-not-allowed"
-                    }`}
+                    className="flex items-center justify-center gap-2 px-6 py-3 uppercase tracking-wider text-sm font-bold transition-all bg-black text-white hover:bg-gray-800"
                   >
                     <ShoppingBag size={18} />
-                    {item.inStock ? "Move to Cart" : "Out of Stock"}
+                    Add To Cart
                   </button>
                 </div>
               </div>
@@ -152,7 +148,7 @@ const Vault = () => {
                       <p className="text-xs text-royal-gold uppercase tracking-wider mb-1">
                         {item.category}
                       </p>
-                      <h3 className="text-lg font-serif text-white mb-2">
+                      <h3 className="text-lg font-serif text-gray-900 mb-2">
                         {item.name}
                       </h3>
                     </div>
@@ -164,21 +160,16 @@ const Vault = () => {
                     </button>
                   </div>
                   <div className="flex items-baseline gap-3 mb-4">
-                    <span className="text-xl font-bold text-white">
+                    <span className="text-xl font-bold text-gray-900">
                       ₹{item.price.toLocaleString()}
                     </span>
                   </div>
                 </div>
                 <button
-                  disabled={!item.inStock}
                   onClick={() => moveToCart(item)}
-                  className={`w-full flex items-center justify-center gap-2 px-4 py-3 uppercase tracking-wider text-xs font-bold transition-all ${
-                    item.inStock
-                      ? "bg-royal-gold text-black"
-                      : "bg-white/10 text-gray-500"
-                  }`}
+                  className="w-full flex items-center justify-center gap-2 px-4 py-3 uppercase tracking-wider text-xs font-bold transition-all bg-black text-white"
                 >
-                  {item.inStock ? "Add to Cart" : "Out of Stock"}
+                  Add To Cart
                 </button>
               </div>
             </motion.div>
@@ -191,9 +182,9 @@ const Vault = () => {
             {data?.emptyStateText || "Looking for more?"}
           </p>
           <Button
-            variant="outline"
+            variant="secondary"
             onClick={() => navigate("/shop")}
-            className="border-white/20 text-white hover:bg-white hover:text-black"
+            className="border-black text-black hover:bg-black hover:text-white"
           >
             {data?.emptyStateButton || "Continue Shopping"}
           </Button>

@@ -15,7 +15,15 @@
   }
 
   body {
-    @apply font-sans tracking-normal;
+    @apply font-sans tracking-normal bg-white text-gray-900;
+    background-color: #ffffff;
+    color: #1a1a1a;
+  }
+
+  /* Selection styling */
+  ::selection {
+    background-color: #C9A96E33;
+    color: #000;
   }
 
   /* Ensure images never overflow on mobile */

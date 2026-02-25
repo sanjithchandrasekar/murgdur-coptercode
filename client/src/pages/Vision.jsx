@@ -38,7 +38,7 @@ const Vision = () => {
   const pillars = data?.pillars || defaultPillars;
 
   return (
-    <div className="bg-black min-h-screen text-white">
+    <div className="bg-white min-h-screen text-gray-900">
       <SEO
         title={`${data?.heading || "Our Vision"} | Murgdur Future`}
         description={
@@ -55,7 +55,7 @@ const Vision = () => {
           <span className="text-royal-gold uppercase tracking-[0.3em] text-xs font-bold mb-4 block animate-fade-in-up">
             {data?.eyebrow || "The Future of Royalty"}
           </span>
-          <h1 className="text-4xl md:text-6xl font-serif text-white mb-6 animate-fade-in">
+          <h1 className="text-4xl md:text-6xl font-serif text-gray-900 mb-6 animate-fade-in">
             {data?.heading || "Our Vision"}
           </h1>
           <div className="w-24 h-0.5 bg-royal-gold mx-auto opacity-50"></div>
@@ -64,7 +64,7 @@ const Vision = () => {
         <div className="max-w-5xl mx-auto space-y-20">
           {/* Main Vision Statement */}
           <div className="text-center max-w-3xl mx-auto">
-            <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-200">
+            <p className="text-xl md:text-2xl font-light leading-relaxed text-gray-600">
               "
               {data?.statement ||
                 "To be the global standard of regal elegance, bringing the aura of majesty to the modern wardrobe."}
@@ -77,25 +77,34 @@ const Vision = () => {
             {pillars.map((pillar, idx) => (
               <div
                 key={idx}
-                className="bg-white/5 border border-white/10 p-8 rounded-lg hover:border-royal-gold/30 transition-colors group"
+                className="bg-gray-50 border border-gray-100 p-8 rounded-lg hover:border-royal-gold/30 transition-colors group"
               >
                 <div className="h-12 w-12 rounded-full bg-royal-gold/10 flex items-center justify-center mb-6 group-hover:bg-royal-gold/20 transition-colors">
                   <span className="text-2xl">{pillar.icon}</span>
                 </div>
-                <h3 className="text-xl font-serif text-white mb-4">
+                <h3 className="text-xl font-serif text-gray-900 mb-4">
                   {pillar.title}
                 </h3>
-                <p className="text-gray-400 font-light text-sm leading-relaxed">
+                <p className="text-gray-500 font-light text-sm leading-relaxed">
                   {pillar.description}
                 </p>
               </div>
             ))}
           </div>
 
+          {/* Future Section */}
+          {(data?.futureHeading || data?.futureBody) && (
+            <div className="text-center max-w-3xl mx-auto mt-8 p-12 bg-gray-50 border border-gray-100 rounded-lg">
+              {data.futureHeading && <h2 className="text-3xl font-serif text-gray-900 mb-6">{data.futureHeading}</h2>}
+              {data.futureBody && <p className="text-gray-500 font-light text-lg leading-relaxed">{data.futureBody}</p>}
+            </div>
+          )}
+
           {/* Image Section */}
           <div className="relative h-[400px] overflow-hidden rounded-lg">
             <img
               src={
+                data?.heroBgImage ||
                 data?.bottomImage ||
                 "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop"
               }
@@ -104,7 +113,7 @@ const Vision = () => {
               loading="lazy"
             />
             <div className="absolute inset-0 flex items-center justify-center">
-              <h2 className="text-3xl font-serif text-white text-center px-4">
+              <h2 className="text-3xl font-serif text-white drop-shadow-lg text-center px-4">
                 {data?.bottomCaption || "Creating the Heritage of Tomorrow"}
               </h2>
             </div>

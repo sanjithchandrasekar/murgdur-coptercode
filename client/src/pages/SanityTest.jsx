@@ -13,7 +13,7 @@ import { client } from "../utils/sanity";
 
 const HealthIndicator = ({ status, label, details }) => {
   let color = "text-gray-400";
-  let bgColor = "bg-gray-800/50";
+  let bgColor = "bg-gray-200/50";
   let icon = <RefreshCw className="animate-spin" size={20} />;
 
   if (status === "success") {
@@ -172,7 +172,7 @@ const SanityHealthCheck = () => {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white p-6 pt-32 flex flex-col items-center font-sans">
+    <div className="min-h-screen bg-white text-gray-900 p-6 pt-32 flex flex-col items-center font-sans">
       <div className="max-w-3xl w-full">
         {/* Header */}
         <div className="mb-8 text-center">
@@ -184,9 +184,9 @@ const SanityHealthCheck = () => {
           </p>
         </div>
 
-        <div className="bg-gray-900 border border-white/10 rounded-xl p-6 shadow-2xl">
-          <div className="mb-6 flex justify-between items-center border-b border-white/10 pb-4">
-            <h2 className="text-lg font-semibold text-white">Service Status</h2>
+        <div className="bg-gray-100 border border-gray-200 rounded-xl p-6 shadow-sm">
+          <div className="mb-6 flex justify-between items-center border-b border-gray-200 pb-4">
+            <h2 className="text-lg font-semibold text-gray-900">Service Status</h2>
             <button
               onClick={runAllTests}
               className="flex items-center gap-2 px-4 py-2 bg-royal-gold/20 text-royal-gold hover:bg-royal-gold/30 rounded-lg transition-colors text-sm font-medium"
@@ -221,8 +221,8 @@ const SanityHealthCheck = () => {
             />
           </div>
 
-          <div className="mt-8 p-4 bg-black/50 rounded border border-white/5 text-xs text-gray-500 font-mono">
-            <p className="mb-2 uppercase tracking-wider font-bold text-gray-400">
+          <div className="mt-8 p-4 bg-gray-50 rounded border border-gray-200 text-xs text-gray-500 font-mono">
+            <p className="mb-2 uppercase tracking-wider font-bold text-gray-600">
               Environment Details
             </p>
             <div className="grid grid-cols-2 gap-2">

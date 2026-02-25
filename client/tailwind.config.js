@@ -8,15 +8,19 @@ export default {
     extend: {
       colors: {
         royal: {
-          black: '#000000',    // Pure Void Black for contrast
-          charcoal: '#0F0F0F', // Rich Dark Gray for cards/sections
-          obsidian: '#141414', // Slightly lighter black for headers
-          platinum: '#E5E4E2', // Platinum (Luxury White) for Accents/Buttons
-          silver: '#C0C0C0',   // Metallic Silver
-          gold: '#D4AF37',     // Royal Gold (Metallic)
-          ivory: '#FAFAFA',    // Crisp White text
-          muted: '#9CA3AF',    // Muted Silver/Gray for secondary text
-          white: '#FFFFFF',    // Pure White
+          black: '#000000',      // Pure Black for contrast
+          charcoal: '#1a1a1a',   // Near-black for text
+          obsidian: '#2a2a2a',   // Soft dark for subtle contrast
+          platinum: '#E5E4E2',   // Platinum for accents
+          silver: '#C0C0C0',     // Metallic Silver
+          gold: '#C9A96E',       // Warm Royal Gold
+          goldLight: '#E8C98A',  // Light Gold highlight
+          ivory: '#FAFAF8',      // Warm White
+          cream: '#F8F6F2',      // Soft Cream background
+          linen: '#F2EFE9',      // Warm Linen tone
+          muted: '#9CA3AF',      // Muted Gray for secondary text
+          white: '#FFFFFF',      // Pure White
+          maroon: '#7B1A1A',     // Deep Maroon accent
         }
       },
       fontFamily: {

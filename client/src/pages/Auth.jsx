@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneInput from "react-phone-input-2";
@@ -48,7 +48,7 @@ const TESTIMONIALS = [
   },
 ];
 
-const Auth = () => {
+const Auth = ({ returnUrl }) => {
   const navigate = useNavigate();
   const [view, setView] = useState("login"); // 'login', 'signup', 'forgot'
   const [loading, setLoading] = useState(false);
@@ -172,7 +172,7 @@ const Auth = () => {
             token: data.token,
           };
           localStorage.setItem("userProfile", JSON.stringify(userProfile));
-          showRoyalNotice("Welcome Back", "You have successfully signed in.", "success", () => navigate("/"));
+          showRoyalNotice("Welcome Back", "You have successfully signed in.", "success", () => navigate(returnUrl || "/"));
         } else {
           setErrors({ auth: "Invalid email or password" });
         }
@@ -208,7 +208,7 @@ const Auth = () => {
             token: data.token,
           };
           localStorage.setItem("userProfile", JSON.stringify(userProfile));
-          showRoyalNotice("Registration Complete", "Your account has been successfully created.", "success", () => navigate("/complete-profile"));
+          showRoyalNotice("Registration Complete", "Your account has been successfully created.", "success", () => navigate("/complete-profile", { state: { returnUrl: returnUrl || "/" } }));
         } else {
           setErrors({
             email: data.message || "Registration failed",
@@ -256,7 +256,7 @@ const Auth = () => {
   const seoData = getSEOMeta();
 
   return (
-    <div className="min-h-screen bg-[#050505] flex text-white font-sans overflow-hidden">
+    <div className="min-h-screen bg-white flex text-gray-900 font-sans overflow-hidden">
       <SEO
         title={seoData.title}
         description={seoData.description}
@@ -283,7 +283,7 @@ const Auth = () => {
         <div className="relative z-10">
           {/* Logo Mark Container */}
           <div className="w-20 h-20 rounded-full border border-[#D4AF37]/40 flex items-center justify-center bg-black/40 backdrop-blur-xl mb-12 shadow-[0_0_30px_rgba(212,175,55,0.1)]">
-            <img src="/images/logo.jpeg" alt="M" className="w-12 h-12 object-cover rounded-full opacity-90 shadow-2xl" />
+            <img src="/images/branding/logo.jpeg" alt="M" className="w-12 h-12 object-cover rounded-full opacity-90 shadow-2xl" />
           </div>
 
           <div className="space-y-4 mb-16">
@@ -327,7 +327,7 @@ const Auth = () => {
       </div>
 
       {/* --- RIGHT: INTERACTIVE FORM --- */}
-      <div className="relative flex w-full flex-col bg-[#050505] lg:w-7/12">
+      <div className="relative flex w-full flex-col bg-white lg:w-7/12">
         {/* Decorative Light Glow */}
         <div className="absolute top-0 right-0 h-[500px] w-[500px] rounded-full bg-[#D4AF37]/5 blur-[120px]" />
 
@@ -337,14 +337,14 @@ const Auth = () => {
             {/* Logo Mark */}
             <div className="h-10 w-10 overflow-hidden rounded-full border border-[#D4AF37]/20 lg:hidden">
               <img
-                src="/images/logo.jpeg"
+                src="/images/branding/logo.jpeg"
                 alt="Logo"
                 className="h-full w-full object-cover"
               />
             </div>
             {/* Nav Links */}
             <div className="flex flex-col">
-              <h1 className="font-serif text-lg font-bold tracking-[0.2em] uppercase text-white lg:hidden">
+              <h1 className="font-serif text-lg font-bold tracking-[0.2em] uppercase text-gray-900 lg:hidden">
                 Murgdur
               </h1>
               <button
@@ -381,9 +381,9 @@ const Auth = () => {
                   transition={{ duration: 0.5 }}
                 >
                   <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-xl bg-[#D4AF37]/10 overflow-hidden lg:hidden">
-                    <img src="/images/logo.jpeg" alt="Murgdur Logo" className="w-full h-full object-cover" />
+                    <img src="/images/branding/logo.jpeg" alt="Murgdur Logo" className="w-full h-full object-cover" />
                   </div>
-                  <h2 className="font-serif text-4xl text-white md:text-5xl">
+                  <h2 className="font-serif text-4xl text-gray-900 md:text-5xl">
                     {view === "login" && "Welcome Back"}
                     {view === "signup" && "Create Account"}
                     {view === "forgot" && "Reset Password"}
@@ -428,7 +428,7 @@ const Auth = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className={`w-full bg-[#141414] border ${errors.email ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                          className={`w-full bg-white border ${errors.email ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded border-gray-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                           placeholder="name@example.com"
                         />
                         {formData.email.includes('@') && (
@@ -447,7 +447,7 @@ const Auth = () => {
                           name="password"
                           value={formData.password}
                           onChange={handleChange}
-                          className="w-full bg-[#141414] border border-zinc-800 text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                          className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400"
                           placeholder="Enter your password"
                         />
                         <div className="flex justify-end mt-2">
@@ -484,7 +484,7 @@ const Auth = () => {
                             name="firstName"
                             value={formData.firstName}
                             onChange={handleChange}
-                            className={`w-full bg-[#141414] border ${errors.firstName ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                            className={`w-full bg-white border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded border-gray-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                             placeholder="First Name"
                           />
                         </div>
@@ -500,7 +500,7 @@ const Auth = () => {
                             name="lastName"
                             value={formData.lastName}
                             onChange={handleChange}
-                            className={`w-full bg-[#141414] border ${errors.lastName ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                            className={`w-full bg-white border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded border-gray-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                             placeholder="Last Name"
                           />
                         </div>
@@ -517,7 +517,7 @@ const Auth = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className={`w-full bg-[#141414] border ${errors.email ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                          className={`w-full bg-white border ${errors.email ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded border-gray-300 focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                           placeholder="name@example.com"
                         />
                         {formData.email.includes('@') && (
@@ -538,10 +538,10 @@ const Auth = () => {
                           countryCodeEditable={false}
                           enableSearch={true}
                           disableSearchIcon={true}
-                          inputClass="!bg-[#141414] !text-white !w-full !h-12 !border-none !rounded focus:!ring-0"
-                          buttonClass="!bg-[#141414] !border-r !border-zinc-800 !rounded-l hover:!bg-zinc-900"
-                          dropdownClass="!bg-[#141414] !text-white !border !border-zinc-800 !shadow-xl"
-                          searchClass="!bg-zinc-900 !text-white !border-zinc-700 hover:!border-[#D4AF37]"
+                          inputClass="!bg-white !text-gray-900 !w-full !h-12 !border-none !rounded focus:!ring-0"
+                          buttonClass="!bg-white !border-r !border-gray-300 !rounded-l hover:!bg-gray-50"
+                          dropdownClass="!bg-white !text-gray-900 !border !border-gray-300 !shadow-xl"
+                          searchClass="!bg-white !text-gray-900 !border-gray-300 hover:!border-[#D4AF37]"
                         />
                       </div>
                       {errors.mobile && <p className="text-red-500 text-[10px] ml-1">{errors.mobile}</p>}
@@ -558,7 +558,7 @@ const Auth = () => {
                           name="password"
                           value={formData.password}
                           onChange={handleChange}
-                          className={`w-full bg-[#141414] border ${errors.password ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                          className={`w-full bg-white border ${errors.password ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                           placeholder="At least 8 characters"
                         />
                         <div className="absolute right-4 top-3.5 flex gap-1">
@@ -577,7 +577,7 @@ const Auth = () => {
                         name="confirmPassword"
                         value={formData.confirmPassword}
                         onChange={handleChange}
-                        className="w-full bg-[#141414] border border-zinc-800 text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                        className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400"
                         placeholder="Re-enter password"
                       />
                       {errors.confirmPassword && <p className="text-red-500 text-[10px] ml-1">{errors.confirmPassword}</p>}
@@ -624,7 +624,7 @@ const Auth = () => {
                           name="email"
                           value={formData.email}
                           onChange={handleChange}
-                          className="w-full bg-[#141414] border border-zinc-800 text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                          className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400"
                           placeholder="name@example.com"
                         />
                       </div>
@@ -654,12 +654,12 @@ const Auth = () => {
             {/* Simple & Unique View Toggle */}
             {(view === "login" || view === "signup") && (
               <div className="mt-12 flex flex-col items-center justify-center gap-4">
-                <div className="relative w-full text-center">
+                <div className="relative w-full text-center mb-6">
                   <div className="absolute inset-0 flex items-center" aria-hidden="true">
-                    <div className="w-full border-t border-white/5"></div>
+                    <div className="w-full border-t border-gray-200"></div>
                   </div>
                   <div className="relative flex justify-center">
-                    <span className="bg-[#050505] px-2 text-[10px] text-zinc-500 uppercase tracking-widest">
+                    <span className="bg-white px-3 text-[10px] text-zinc-500 uppercase tracking-widest font-bold">
                       {view === "login" ? "New here?" : "Been here before?"}
                     </span>
                   </div>
@@ -705,7 +705,7 @@ const Auth = () => {
               initial={{ opacity: 0, scale: 0.9, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.9, y: 20 }}
-              className="relative bg-[#141414] border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
+              className="relative bg-white border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
             >
               <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
 
@@ -727,7 +727,7 @@ const Auth = () => {
                   <>
                     <button
                       onClick={closeDialog}
-                      className="flex-1 px-6 py-3 border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors rounded-sm"
+                      className="flex-1 px-6 py-3 border border-gray-200 text-zinc-600 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors rounded-sm"
                     >
                       Cancel
                     </button>
@@ -857,3 +857,4 @@ const SocialButton = ({ icon: Icon, label, onClick, loading }) => (
 );
 
 export default Auth;
+

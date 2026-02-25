@@ -1,4 +1,4 @@
-import React from "react";
+﻿import React from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
@@ -15,7 +15,7 @@ const TextWithImage = ({
   // Layout: 'stacked' (Background Overlay), 'imageLeft', 'imageRight'
 
   if (layout === "stacked") {
-    const bgImage = image || "/images/royal_dress_bg.png";
+    const bgImage = image || "/images/women/dresses/royal_dress_bg.png";
     return (
       <div className="relative w-full min-h-[400px] h-[60vh] md:h-[80vh] overflow-hidden flex items-center justify-center bg-royal-black">
         {/* Background Image */}
@@ -101,7 +101,7 @@ const TextWithImage = ({
           >
             <div className="aspect-[4/5] bg-gray-100 border border-gray-200 relative overflow-hidden group rounded-sm shadow-xl">
               <img
-                src={image || "/images/placeholder.jpg"}
+                src={image || "/images/placeholder/placeholder.jpg"}
                 alt={heading}
                 className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                 loading="lazy"

@@ -1,26 +1,28 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ArrowRight, Star } from "lucide-react";
 import { fetchRoyalCollectionPage, fetchProducts } from "../utils/sanity";
 import SEO from "../components/common/SEO";
 import BackButton from "../components/common/BackButton";
+import ProductImage from "../components/common/ProductImage";
+import { getWhiteBgImagePath } from "../utils/whiteBgImages";
 
 // Asset Imports (Static Fallbacks)
-const imgMen = "/images/boy.jpeg";
-const imgWomen = "/images/girl.png";
-const imgRoyalWatch = "/images/royal_watch.png";
-const imgRoyalBelt = "/images/royal_belt.png";
-const imgRoyalWallet = "/images/royal_wallet.png";
-const imgRoyalPerfume = "/images/royal_perfume.png";
-const imgRoyalSunglasses = "/images/royal_sunglasses.png";
-const imgRoyalJewellery = "/images/royal_jewellery.png";
-const imgRoyalSaree = "/images/royal_saree.png";
-const imgRoyalSherwani = "/images/royal_sherwani.png";
-const imgBag = "/images/hand bag.png";
-const imgRoyalShirt = "/images/royal_shirt.png";
-const imgRoyalTShirt = "/images/royal_tshirt.png";
-const imgRoyalGown = "/images/royal_gown.png";
+const imgMen = "/images/site/boy.jpeg";
+const imgWomen = "/images/site/girl.png";
+const imgRoyalWatch = "/images/men/watches/royal_watch.png";
+const imgRoyalBelt = "/images/men/accessories/royal_belt.png";
+const imgRoyalWallet = "/images/men/wallets/royal_wallet.png";
+const imgRoyalPerfume = "/images/men/perfume/royal_perfume.png";
+const imgRoyalSunglasses = "/images/men/sunglasses/royal_sunglasses.png";
+const imgRoyalJewellery = "/images/women/accessories/royal_jewellery.png";
+const imgRoyalSaree = "/images/women/dresses/royal_saree.png";
+const imgRoyalSherwani = "/images/men/shirts/royal_sherwani.png";
+const imgBag = "/images/women/handbags/hand bag.png";
+const imgRoyalShirt = "/images/men/shirts/royal_shirt.png";
+const imgRoyalTShirt = "/images/men/shirts/royal_tshirt.png";
+const imgRoyalGown = "/images/women/dresses/royal_gown.png";
 
 // Reusable Product Card Component
 const CollectionProductCard = ({ product, badge }) => (
@@ -36,15 +38,16 @@ const CollectionProductCard = ({ product, badge }) => (
           </span>
         </div>
       )}
-      <img
+      <ProductImage
         src={product.image || product.img}
         alt={product.name}
         className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
         loading="lazy"
+        useWhiteBg={true}
       />
     </div>
     <div className="text-left px-1">
-      <h3 className="text-[#19110b] font-sans text-xs font-bold tracking-[0.1em] uppercase mb-1 leading-relaxed">
+      <h3 className="text-[#1a1a1a] font-sans text-xs font-bold tracking-[0.1em] uppercase mb-1 leading-relaxed">
         {product.name}
       </h3>
       {product.price && (
@@ -142,27 +145,27 @@ const RoyalCollection = () => {
         url="https://murugdur1.vercel.app/royal-collection"
       />
       {/* 1. HERO / INTRO SECTION */}
-      <section className="relative h-[80vh] overflow-hidden bg-black flex items-center justify-center">
+      <section className="relative h-[80vh] overflow-hidden bg-[#f0ece5] flex items-center justify-center">
         {/* Back Button */}
         <div className="absolute top-32 left-8 z-30">
-          <BackButton className="text-white hover:text-royal-gold" />
+          <BackButton className="text-gray-700 hover:text-royal-gold" />
         </div>
-        {/* Simplified Hero Image Background-Fixed Opacity to ensure visibility */}
-        <div className="absolute inset-0 opacity-60">
+        {/* Hero Image Background */}
+        <div className="absolute inset-0 opacity-100">
           <img
             src={pageData?.menSection?.image || imgMen}
             className="w-full h-full object-cover"
             alt="Royal Collection Hero"
           />
         </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/90"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/35 to-black/65"></div>
 
         <div className="relative z-10 text-center px-4 max-w-4xl mx-auto mt-20">
           <motion.span
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white/80 uppercase tracking-[0.3em] text-xs font-bold block mb-6"
+            className="text-white/90 uppercase tracking-[0.3em] text-xs font-bold block mb-6"
           >
             The Anniversary Edition
           </motion.span>
@@ -174,7 +177,7 @@ const RoyalCollection = () => {
           >
             The Collections
           </motion.h1>
-          <p className="text-gray-300 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="text-white/80 text-lg md:text-xl font-light leading-relaxed max-w-2xl mx-auto">
             Celebrating a legacy of sovereignty. From the archives of the
             monarchy to the forefront of modern luxury. Three exclusive capsules
             that honor our heritage.
@@ -378,6 +381,7 @@ const RoyalCollection = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 alt="Watch"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6">
                 <h3 className="text-white font-serif text-2xl">Timepieces</h3>
                 <Link
@@ -394,6 +398,7 @@ const RoyalCollection = () => {
                 className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                 alt="Leather"
               />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
               <div className="absolute bottom-6 left-6">
                 <h3 className="text-white font-serif text-2xl">
                   Leather Goods

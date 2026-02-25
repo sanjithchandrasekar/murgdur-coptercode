@@ -1,6 +1,8 @@
 import product from './product'
+import collection from './collection'
 import siteSettings from './siteSettings'
 import homePage from './homePage'
+import shopPage from './shopPage'
 import heritagePage from './heritagePage'
 import royalCollectionPage from './royalCollectionPage'
 import footer from './footer'
@@ -20,40 +22,75 @@ import policyPage from './policyPage'
 
 import customer from './customer'
 import order from './order'
+
+// Page Builder Sections
 import heroSection from './objects/heroSection'
 import textWithImage from './objects/textWithImage'
 import productGrid from './objects/productGrid'
 import videoSection from './objects/videoSection'
+
+// Reusable Object Types
+import statCard from './objects/statCard'
+import coreValue from './objects/coreValue'
+import timelineEntry from './objects/timelineEntry'
+import teamMember from './objects/teamMember'
+import pressRelease from './objects/pressRelease'
+import jobPosting from './objects/jobPosting'
+import storyItem from './objects/storyItem'
+import testimonialItem from './objects/testimonialItem'
+import partnerItem from './objects/partnerItem'
+import awardItem from './objects/awardItem'
+
 import page from './page'
 
 export const schemaTypes = [
-    // Objects (Sections)
+    // --- Reusable Objects ---
     heroSection,
     textWithImage,
     productGrid,
     videoSection,
+    statCard,
+    coreValue,
+    timelineEntry,
+    teamMember,
+    pressRelease,
+    jobPosting,
+    storyItem,
+    testimonialItem,
+    partnerItem,
+    awardItem,
 
-    // Documents
+    // --- Core Documents ---
     page,
     product,
+    collection,
+
+    // --- Global Settings ---
     siteSettings,
-    homePage,
-    heritagePage,
-    royalCollectionPage,
     footer,
     testimonials,
-    legacySection,
     newsletter,
-    shopByOccasion,
+
+    // --- Page Documents ---
+    homePage,
+    shopPage,
+    heritagePage,
+    royalCollectionPage,
     aboutPage,
+    visionPage,
     careersPage,
-    contactPage,
-    corporatePage,
     pressPage,
     storiesPage,
-    visionPage,
+    contactPage,
+    corporatePage,
     vaultPage,
     policyPage,
+
+    // --- Legacy Sections ---
+    legacySection,
+    shopByOccasion,
+
+    // --- Commerce ---
     customer,
     order
 ]

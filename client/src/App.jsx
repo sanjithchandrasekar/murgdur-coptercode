@@ -58,6 +58,7 @@ function App() {
               <Route path="login" element={<Profile />} />
               <Route path="signup" element={<Profile />} />
               <Route path="register" element={<Profile />} />
+              <Route path="auth" element={<Profile />} />
               <Route path="cart" element={<Cart />} />
               <Route path="checkout" element={<Checkout />} />
               <Route path="complete-profile" element={<AddressInput />} />
@@ -79,7 +80,6 @@ function App() {
               <Route path="careers" element={<Careers />} />
               <Route path="partner" element={<InfoPage />} />
               <Route path="contact" element={<ContactInfo />} />
-              <Route path="internship" element={<InfoPage />} />
               <Route path="internship" element={<InfoPage />} />
               <Route path="privacy-notice" element={<PrivacyNotice />} />
               <Route path="conditions-of-use" element={<ConditionsOfUse />} />
@@ -110,6 +110,7 @@ function App() {
               <Route path="cookies" element={<InfoPage />} />
               <Route path="help" element={<InfoPage />} />
               <Route path="diagnostics" element={<SanityTest />} />
+              <Route path="sanity-test" element={<SanityTest />} />
             </Route>
             {/* Studio Route-Outside Layout */}
             <Route path="/sanity-studio/*" element={<StudioPage />} />

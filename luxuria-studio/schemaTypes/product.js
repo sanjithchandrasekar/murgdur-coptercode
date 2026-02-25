@@ -124,6 +124,20 @@ export default {
             ],
         },
         {
+            name: 'tags',
+            title: 'Tags',
+            type: 'array',
+            of: [{ type: 'string' }],
+            description: 'Optional tags for filtering (e.g. bestseller, new-arrival, featured)'
+        },
+        {
+            name: 'featured',
+            title: 'Featured Product?',
+            type: 'boolean',
+            initialValue: false,
+            description: 'Show this product in homepage & featured sections'
+        },
+        {
             name: 'rating',
             title: 'Rating',
             type: 'number',
@@ -141,6 +155,16 @@ export default {
             title: 'Stock Quantity',
             type: 'number',
             initialValue: 10
+        },
+        {
+            name: 'productId',
+            title: 'Product ID',
+            type: 'string',
+            description: 'Unique product identifier e.g. MURG-0001',
+            validation: (Rule) => Rule.regex(/^MURG-\d{4}$/, {
+                name: 'productId',
+                invert: false,
+            }).warning('Format should be MURG-XXXX (e.g. MURG-0042)'),
         },
         {
             name: 'sku',

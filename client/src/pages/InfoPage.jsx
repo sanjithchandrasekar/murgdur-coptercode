@@ -2,29 +2,37 @@ import React, { useEffect, useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { fetchPolicyPage } from "../utils/sanity";
 import SEO from "../components/common/SEO";
-// Note: Ideally use @portabletext/react for rich text, but doing a simple map here for text blocks
-const SimpleBlockRenderer = ({ blocks }) => {
-  if (!blocks) return null;
-  return (
-    <div className="text-left space-y-6 text-gray-300 font-light">
-      {blocks.map((block, idx) => {
-        if (block._type === "block") {
-          return <p key={idx}>{block.children.map((c) => c.text).join("")}</p>;
-        }
-        if (block._type === "infobox") {
-          return (
-            <div key={idx}>
-              <h3 className="text-white font-serif text-xl mb-2">
-                {block.title}
-              </h3>
-              <p className="whitespace-pre-line">{block.text}</p>
-            </div>
-          );
-        }
-        return null;
-      })}
-    </div>
-  );
+import { PortableText } from "@portabletext/react";
+
+const portableComponents = {
+  block: {
+    normal: ({ children }) => <p className="text-gray-600 leading-relaxed mb-4">{children}</p>,
+    h1: ({ children }) => <h1 className="text-gray-900 font-serif text-3xl mb-4 mt-8">{children}</h1>,
+    h2: ({ children }) => <h2 className="text-royal-gold text-xl font-serif mb-3 mt-6 uppercase tracking-wide">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-gray-900 font-serif text-lg mb-2 mt-5">{children}</h3>,
+    h4: ({ children }) => <h4 className="text-gray-800 font-semibold text-base mb-1 mt-4">{children}</h4>,
+    blockquote: ({ children }) => <blockquote className="border-l-4 border-royal-gold pl-4 italic text-gray-500 my-4">{children}</blockquote>,
+  },
+  list: {
+    bullet: ({ children }) => <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-4">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-5 space-y-2 text-gray-600 mb-4">{children}</ol>,
+  },
+  listItem: { bullet: ({ children }) => <li>{children}</li>, number: ({ children }) => <li>{children}</li> },
+  marks: {
+    strong: ({ children }) => <strong className="text-gray-900 font-semibold">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    link: ({ value, children }) => (
+      <a href={value?.href} target={value?.blank ? "_blank" : "_self"} rel="noopener noreferrer" className="text-royal-gold hover:underline">{children}</a>
+    ),
+  },
+  types: {
+    infobox: ({ value }) => (
+      <div className="border border-gray-200 bg-gray-50 rounded p-6 my-4 text-left">
+        {value.title && <h3 className="text-gray-900 font-serif text-xl mb-2">{value.title}</h3>}
+        {value.text && <p className="whitespace-pre-line text-gray-600">{value.text}</p>}
+      </div>
+    ),
+  },
 };
 
 const InfoPage = () => {
@@ -53,7 +61,7 @@ const InfoPage = () => {
     "/cancellation": {
       title: "Cancellation & Returns",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             At Murgdur, we pride ourselves on the exquisite quality of our
             craftsmanship. If you are not entirely satisfied with your purchase,
@@ -61,7 +69,7 @@ const InfoPage = () => {
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Return Policy
             </h3>
             <ul className="list-disc pl-5 space-y-2">
@@ -82,7 +90,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Refund Process
             </h3>
             <p>
@@ -93,7 +101,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Cancellations
             </h3>
             <p>
@@ -108,14 +116,14 @@ const InfoPage = () => {
     "/terms": {
       title: "Terms of Use",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             Welcome to the House of Murgdur. By accessing our website, you agree
             to be bound by the following terms and conditions.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Intellectual Property
             </h3>
             <p>
@@ -126,7 +134,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Product Accuracy
             </h3>
             <p>
@@ -137,7 +145,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Governing Law
             </h3>
             <p>
@@ -152,14 +160,14 @@ const InfoPage = () => {
     "/security": {
       title: "Security",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             Your security is paramount to the Murgdur experience. We employ
             state-of-the-art measures to ensure your data remains protected.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Secure Transactions
             </h3>
             <p>
@@ -170,7 +178,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Data Protection
             </h3>
             <p>
@@ -185,7 +193,7 @@ const InfoPage = () => {
     "/privacy": {
       title: "Privacy Policy",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             Murgdur is committed to respecting your privacy. This policy
             outlines how your personal information is collected, used, and
@@ -193,7 +201,7 @@ const InfoPage = () => {
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Information We Collect
             </h3>
             <p>
@@ -205,7 +213,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Use of Information
             </h3>
             <p>
@@ -221,30 +229,30 @@ const InfoPage = () => {
     "/sitemap": {
       title: "Sitemap",
       content: (
-        <div className="text-left max-w-lg mx-auto">
-          <div className="grid grid-cols-2 gap-8 text-gray-300 font-light">
+        <div className="text-left max-w-lg mx-auto text-gray-700">
+          <div className="grid grid-cols-2 gap-8 text-gray-600 font-light">
             <div>
               <h3 className="text-royal-gold font-bold mb-4 uppercase text-xs tracking-widest">
                 Main
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/" className="hover:text-white">
+                  <Link to="/" className="hover:text-royal-gold">
                     Home
                   </Link>
                 </li>
                 <li>
-                  <Link to="/shop" className="hover:text-white">
+                  <Link to="/shop" className="hover:text-royal-gold">
                     Shop Collection
                   </Link>
                 </li>
                 <li>
-                  <Link to="/heritage" className="hover:text-white">
+                  <Link to="/heritage" className="hover:text-royal-gold">
                     Our Heritage
                   </Link>
                 </li>
                 <li>
-                  <Link to="/royal-collection" className="hover:text-white">
+                  <Link to="/royal-collection" className="hover:text-royal-gold">
                     Royal Collection
                   </Link>
                 </li>
@@ -256,22 +264,22 @@ const InfoPage = () => {
               </h3>
               <ul className="space-y-2">
                 <li>
-                  <Link to="/about" className="hover:text-white">
+                  <Link to="/about" className="hover:text-royal-gold">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/contact" className="hover:text-white">
+                  <Link to="/contact" className="hover:text-royal-gold">
                     Contact Us
                   </Link>
                 </li>
                 <li>
-                  <Link to="/careers" className="hover:text-white">
+                  <Link to="/careers" className="hover:text-royal-gold">
                     Careers
                   </Link>
                 </li>
                 <li>
-                  <Link to="/press" className="hover:text-white">
+                  <Link to="/press" className="hover:text-royal-gold">
                     Press
                   </Link>
                 </li>
@@ -284,31 +292,31 @@ const InfoPage = () => {
     "/grievance": {
       title: "Grievance Redressal",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             In accordance with the Information Technology Act, 2000 and rules
             made there under, the name and contact details of the Grievance
             Officer are provided below:
           </p>
 
-          <div className="bg-white/5 border border-white/10 p-6 rounded text-sm">
+          <div className="bg-gray-100 border border-gray-200 p-6 rounded text-sm">
             <p className="mb-2">
-              <strong className="text-white">Name:</strong> Mr. Arjun Rathore
+              <strong className="text-gray-900">Name:</strong> Mr. Arjun Rathore
             </p>
             <p className="mb-2">
-              <strong className="text-white">Designation:</strong> Grievance
+              <strong className="text-gray-900">Designation:</strong> Grievance
               Officer
             </p>
             <p className="mb-2">
-              <strong className="text-white">Address:</strong> Murgdur Private
+              <strong className="text-gray-900">Address:</strong> Murgdur Private
               Limited, Embassy Tech Village, Bengaluru, Karnataka-560103
             </p>
             <p className="mb-2">
-              <strong className="text-white">Phone:</strong> +91-80-1234-5678
+              <strong className="text-gray-900">Phone:</strong> +91-80-1234-5678
               (Mon-Fri, 9:30 AM-6:30 PM)
             </p>
             <p>
-              <strong className="text-white">Email:</strong>{" "}
+              <strong className="text-gray-900">Email:</strong>{" "}
               grievance@murgdur.com
             </p>
           </div>
@@ -323,14 +331,14 @@ const InfoPage = () => {
     "/epr": {
       title: "EPR Compliance",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             As a responsible luxury brand, Murgdur is dedicated to environmental
             sustainability and complying with E-Waste (Management) Rules.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Our Commitment
             </h3>
             <p>
@@ -342,7 +350,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">Packaging</h3>
+            <h3 className="text-gray-900 font-serif text-xl mb-2">Packaging</h3>
             <p>
               Our packaging is designed to be minimal and recyclable. We are
               actively working towards eliminating single-use plastics from our
@@ -355,14 +363,14 @@ const InfoPage = () => {
     "/payments": {
       title: "Payment Methods",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             We offer a secure and seamless checkout experience with diverse
             payment options tailored for your convenience.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Accepted Methods
             </h3>
             <ul className="list-disc pl-5 space-y-2">
@@ -376,7 +384,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Security Assurance
             </h3>
             <p>
@@ -392,14 +400,14 @@ const InfoPage = () => {
     "/shipping": {
       title: "Shipping Policy",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             Experience the joy of receiving your Murgdur treasure with our
             premium delivery service.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Dispatch & Delivery
             </h3>
             <p>
@@ -410,7 +418,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">Tracking</h3>
+            <h3 className="text-gray-900 font-serif text-xl mb-2">Tracking</h3>
             <p>
               Once your order is shipped, you will receive a tracking link via
               email and SMS. You can also track your order status in real-time
@@ -419,7 +427,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               International Shipping
             </h3>
             <p>
@@ -434,9 +442,9 @@ const InfoPage = () => {
     "/faq": {
       title: "Frequently Asked Questions",
       content: (
-        <div className="text-left space-y-8 text-gray-300 font-light">
+        <div className="text-left space-y-8 text-gray-600 font-light">
           <div>
-            <h3 className="text-white font-serif text-lg mb-2">
+            <h3 className="text-gray-900 font-serif text-lg mb-2">
               How do I determine the right size?
             </h3>
             <p>
@@ -447,7 +455,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-lg mb-2">
+            <h3 className="text-gray-900 font-serif text-lg mb-2">
               Can I modify my order after placing it?
             </h3>
             <p>
@@ -459,7 +467,7 @@ const InfoPage = () => {
           </div>
 
           <div>
-            <h3 className="text-white font-serif text-lg mb-2">
+            <h3 className="text-gray-900 font-serif text-lg mb-2">
               Do you offer gift packaging?
             </h3>
             <p>
@@ -468,7 +476,7 @@ const InfoPage = () => {
             </p>
           </div>
           <div>
-            <h3 className="text-white font-serif text-lg mb-2">
+            <h3 className="text-gray-900 font-serif text-lg mb-2">
               Are your products made from genuine leather?
             </h3>
             <p>
@@ -483,14 +491,14 @@ const InfoPage = () => {
     "/report": {
       title: "Report Infringement",
       content: (
-        <div className="text-left space-y-6 text-gray-300 font-light">
+        <div className="text-left space-y-6 text-gray-600 font-light">
           <p>
             Murgdur respects the intellectual property rights of others and
             expects its users to do the same.
           </p>
 
           <div>
-            <h3 className="text-white font-serif text-xl mb-2">
+            <h3 className="text-gray-900 font-serif text-xl mb-2">
               Reporting Process
             </h3>
             <p>
@@ -513,7 +521,7 @@ const InfoPage = () => {
 
           <div className="mt-6">
             <p>Please send your notice to:</p>
-            <p className="mt-2 text-white font-bold">Legal Department</p>
+            <p className="mt-2 text-gray-900 font-bold">Legal Department</p>
             <p>Murgdur Private Limited</p>
             <p>legal@murgdur.com</p>
           </div>
@@ -526,12 +534,16 @@ const InfoPage = () => {
   const currentData = sanityData
     ? {
         title: sanityData.title,
-        content: <SimpleBlockRenderer blocks={sanityData.content} />,
+        content: sanityData.content ? (
+          <div className="text-left space-y-2">
+            <PortableText value={sanityData.content} components={portableComponents} />
+          </div>
+        ) : null,
       }
     : pageContent[path] || { title: defaultTitle, content: null };
 
   return (
-    <div className="min-h-screen bg-royal-black pt-32 pb-20 px-6">
+    <div className="min-h-screen bg-white pt-32 pb-20 px-6">
       <SEO
         title={`${currentData.title} | Murgdur Information`}
         description={`Read about Murgdur's ${currentData.title}. Essential information regarding our policies, services, and commitment to excellence.`}
@@ -541,18 +553,18 @@ const InfoPage = () => {
         <span className="text-royal-gold uppercase tracking-widest text-sm font-bold">
           Murgdur Heritage
         </span>
-        <h1 className="text-4xl md:text-6xl font-serif text-white mt-4 mb-8">
+        <h1 className="text-4xl md:text-6xl font-serif text-gray-900 mt-4 mb-8">
           {currentData.title}
         </h1>
 
         <div className="w-24 h-1 bg-royal-gold mx-auto mb-12"></div>
 
-        <div className="bg-white/5 border border-white/10 p-8 md:p-12 rounded-lg backdrop-blur-sm shadow-2xl">
+        <div className="bg-gray-50 border border-gray-200 p-8 md:p-12 rounded-lg shadow-sm">
           {currentData.content ? (
             currentData.content
           ) : (
             <div className="text-center">
-              <p className="text-xl text-gray-300 font-light leading-relaxed mb-8">
+              <p className="text-xl text-gray-600 font-light leading-relaxed mb-8">
                 Our digital artisans are currently crafting this section of the
                 Royal Experience. The {currentData.title} page will be unveiled
                 shortly.

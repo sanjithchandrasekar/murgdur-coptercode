@@ -1,12 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import { PortableText } from "@portabletext/react";
 import SEO from "../components/common/SEO";
+import { fetchPolicyPage } from "../utils/sanity";
+
+const portableComponents = {
+  block: {
+    normal: ({ children }) => <p className="text-gray-600 leading-relaxed mb-4">{children}</p>,
+    h2: ({ children }) => <h2 className="text-[#D4AF37] text-lg uppercase tracking-widest mb-4 font-serif mt-8">{children}</h2>,
+    h3: ({ children }) => <h3 className="text-gray-900 font-serif text-xl mb-2 mt-6">{children}</h3>,
+    blockquote: ({ children }) => <blockquote className="border-l-4 border-[#D4AF37] pl-4 italic text-gray-500 my-4">{children}</blockquote>,
+  },
+  list: {
+    bullet: ({ children }) => <ul className="list-disc pl-5 space-y-2 text-gray-600 mb-4">{children}</ul>,
+    number: ({ children }) => <ol className="list-decimal pl-5 space-y-2 text-gray-600 mb-4">{children}</ol>,
+  },
+  listItem: { bullet: ({ children }) => <li>{children}</li>, number: ({ children }) => <li>{children}</li> },
+  marks: {
+    strong: ({ children }) => <strong className="text-gray-900 font-semibold">{children}</strong>,
+    em: ({ children }) => <em className="italic">{children}</em>,
+    link: ({ value, children }) => <a href={value?.href} target="_blank" rel="noopener noreferrer" className="text-[#D4AF37] hover:underline">{children}</a>,
+  },
+  types: {
+    infobox: ({ value }) => (
+      <div className="border border-gray-200 bg-gray-50 rounded p-6 my-4">
+        {value.title && <h3 className="text-gray-900 font-serif text-xl mb-2">{value.title}</h3>}
+        {value.text && <p className="whitespace-pre-line text-gray-600">{value.text}</p>}
+      </div>
+    ),
+  },
+};
 
 const ConditionsOfUse = () => {
+  const [sanityData, setSanityData] = useState(undefined);
+  useEffect(() => {
+    fetchPolicyPage("conditions-of-use").then((r) => setSanityData(r || null)).catch(() => setSanityData(null));
+  }, []);
+  const isLoading = sanityData === undefined;
     return (
-        <div className="min-h-screen bg-[#050505] text-white pt-24 pb-16 px-6 lg:px-24 font-serif">
+        <div className="min-h-screen bg-white text-gray-900 pt-24 pb-16 px-6 lg:px-24 font-serif">
             <SEO
-                title="Conditions of Use | Murgdur"
+                title={`${sanityData?.title || "Conditions of Use"} | Murgdur`}
                 description="Review the conditions of use for Murgdur's royal services and products."
             />
 
@@ -18,7 +52,7 @@ const ConditionsOfUse = () => {
                 >
                     <div className="mb-12 text-center">
                         <h1 className="text-4xl md:text-5xl font-bold tracking-widest uppercase mb-4 text-[#D4AF37]">
-                            Royal Decree
+                            {sanityData?.title || "Royal Decree"}
                         </h1>
                         <p className="text-xs tracking-[0.3em] uppercase text-zinc-500">
                             Conditions of Use
@@ -26,7 +60,12 @@ const ConditionsOfUse = () => {
                         <div className="h-px w-24 bg-[#D4AF37] mx-auto mt-8 opacity-50" />
                     </div>
 
-                    <div className="space-y-12 text-zinc-300 leading-relaxed font-sans text-sm md:text-base">
+                    {isLoading ? (
+                      <div className="flex justify-center py-16"><div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-[#D4AF37]" /></div>
+                    ) : sanityData?.content ? (
+                      <div className="space-y-4 text-sm md:text-base"><PortableText value={sanityData.content} components={portableComponents} /></div>
+                    ) : (
+                    <div className="space-y-12 text-gray-600 leading-relaxed font-sans text-sm md:text-base">
                         <section>
                             <h2 className="text-[#D4AF37] text-lg uppercase tracking-widest mb-4 font-serif">
                                 1. Acceptance of Terms
@@ -99,13 +138,14 @@ const ConditionsOfUse = () => {
                             </p>
                         </section>
 
-                        <div className="pt-12 border-t border-white/10 text-center">
+                        <div className="pt-12 border-t border-gray-200 text-center">
                             <p className="text-xs text-zinc-500 uppercase tracking-widest">
                                 Last Updated: February 2026
                             </p>
                         </div>
 
                     </div>
+                    )}
                 </motion.div>
             </div>
         </div>

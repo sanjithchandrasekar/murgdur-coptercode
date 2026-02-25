@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Heart } from "lucide-react";
+import ProductImage from "../common/ProductImage";
+import { getWhiteBgImagePath } from "../../utils/whiteBgImages";
 
 /* ──────────────────────────────────────────────
    Luxury product card
@@ -17,22 +19,24 @@ const LVCard = ({ item }) => {
       {/* ── Image ── */}
       <div className="relative aspect-[3/4] overflow-hidden bg-[#f0efed] mb-4">
         {/* Primary */}
-        <img
+        <ProductImage
           src={item.image}
           alt={item.name}
           className={`absolute inset-0 w-full h-full object-cover transition-all duration-700 ease-out ${
             hasSecondImage ? "group-hover:opacity-0" : "group-hover:scale-105"
           }`}
           loading="lazy"
+          useWhiteBg={true}
         />
 
         {/* Secondary crossfade */}
         {hasSecondImage && (
-          <img
+          <ProductImage
             src={item.images[1]}
             alt={`${item.name} – view 2`}
             className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-out"
             loading="lazy"
+            useWhiteBg={true}
           />
         )}
 
@@ -66,11 +70,11 @@ const LVCard = ({ item }) => {
             {item.category}
           </p>
         )}
-        <h3 className="text-[12.5px] font-sans font-normal tracking-[0.03em] text-[#19110b] leading-snug line-clamp-2">
+        <h3 className="text-[12.5px] font-sans font-normal tracking-[0.03em] text-[#1a1a1a] leading-snug line-clamp-2">
           {item.name}
         </h3>
         <div className="flex items-center gap-2 pt-0.5">
-          <span className="text-[12.5px] font-sans text-[#19110b]">
+          <span className="text-[12.5px] font-sans text-[#1a1a1a]">
             ₹ {(item.price || 0).toLocaleString()}
           </span>
           {item.originalPrice && item.originalPrice > item.price && (
@@ -102,13 +106,13 @@ const ProductGrid = ({ heading, eyebrow, products, viewAllLink }) => {
             </p>
           )}
           <div className="flex items-end justify-between">
-            <h2 className="text-[1.75rem] md:text-[2rem] font-serif font-normal text-[#19110b] leading-tight tracking-tight">
+            <h2 className="text-[1.75rem] md:text-[2rem] font-serif font-normal text-[#1a1a1a] leading-tight tracking-tight">
               {heading || "Featured Collection"}
             </h2>
             {viewAllLink && (
               <Link
                 to={viewAllLink}
-                className="text-[11px] uppercase tracking-[0.2em] text-[#19110b] border-b border-[#19110b] pb-px hover:text-[#c9a96e] hover:border-[#c9a96e] transition-colors duration-300 hidden md:block"
+                className="text-[11px] uppercase tracking-[0.2em] text-[#1a1a1a] border-b border-[#1a1a1a] pb-px hover:text-[#c9a96e] hover:border-[#c9a96e] transition-colors duration-300 hidden md:block"
               >
                 See All
               </Link>
@@ -130,7 +134,7 @@ const ProductGrid = ({ heading, eyebrow, products, viewAllLink }) => {
           <div className="mt-12 flex justify-center md:hidden">
             <Link
               to={viewAllLink}
-              className="text-[11px] uppercase tracking-[0.2em] text-[#19110b] border-b border-[#19110b] pb-px"
+              className="text-[11px] uppercase tracking-[0.2em] text-[#1a1a1a] border-b border-[#1a1a1a] pb-px"
             >
               See All
             </Link>

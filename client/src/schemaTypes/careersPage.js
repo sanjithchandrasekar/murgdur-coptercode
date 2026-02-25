@@ -1,36 +1,57 @@
 export default {
-  name: "careersPage",
-  title: "Careers Page",
-  type: "document",
-  fields: [
-    {
-      name: "heading",
-      type: "string",
-      title: "Heading",
-      initialValue: "Careers at Murgdur",
-    },
-    { name: "intro", type: "text", title: "Intro Text" },
-    {
-      name: "positions",
-      type: "array",
-      title: "Current Openings",
-      of: [
+    name: 'careersPage',
+    title: 'Careers Page',
+    type: 'document',
+    groups: [
+        { name: 'hero', title: 'Hero' },
+        { name: 'culture', title: 'Culture & Values' },
+        { name: 'jobs', title: 'Job Openings' },
+        { name: 'contact', title: 'Contact' },
+        { name: 'seo', title: 'SEO' },
+    ],
+    fields: [
+        // HERO
+        { name: 'heroEyebrow', title: 'Eyebrow', type: 'string', group: 'hero', initialValue: 'Join the House' },
+        { name: 'heading', title: 'Page Heading', type: 'string', group: 'hero', initialValue: 'Careers at Murgdur' },
+        { name: 'intro', title: 'Intro Text', type: 'text', rows: 4, group: 'hero' },
+        { name: 'heroBgImage', title: 'Hero Background Image', type: 'image', group: 'hero', options: { hotspot: true } },
+
+        // CULTURE
+        { name: 'cultureHeading', title: 'Culture Section Heading', type: 'string', group: 'culture' },
         {
-          type: "object",
-          fields: [
-            { name: "role", type: "string", title: "Role" },
-            { name: "location", type: "string", title: "Location" },
-            {
-              name: "type",
-              type: "string",
-              title: "Type",
-              initialValue: "Full Time",
-            },
-          ],
+            name: 'cultureValues',
+            title: 'Culture Values',
+            type: 'array',
+            group: 'culture',
+            of: [{
+                type: 'object',
+                name: 'cultureValue',
+                fields: [
+                    { name: 'icon', title: 'Icon (emoji)', type: 'string' },
+                    { name: 'title', title: 'Title', type: 'string' },
+                    { name: 'description', title: 'Description', type: 'text', rows: 2 },
+                ],
+                preview: { select: { title: 'title', subtitle: 'icon' } }
+            }]
         },
-      ],
-    },
-    { name: "contactText", type: "string", title: "Footer Contact Text" },
-    { name: "contactEmail", type: "string", title: "Footer Contact Email" },
-  ],
-};
+
+        // JOB OPENINGS
+        { name: 'openingsHeading', title: 'Openings Section Heading', type: 'string', group: 'jobs', initialValue: 'Current Openings' },
+        {
+            name: 'positions',
+            title: 'Job Postings',
+            type: 'array',
+            group: 'jobs',
+            of: [{ type: 'jobPosting' }]
+        },
+
+        // CONTACT
+        { name: 'contactText', title: 'Footer Contact Text', type: 'string', group: 'contact' },
+        { name: 'contactEmail', title: 'Careers Email', type: 'string', group: 'contact', initialValue: 'careers@murgdur.com' },
+
+        // SEO
+        { name: 'seoTitle', title: 'SEO Title', type: 'string', group: 'seo' },
+        { name: 'seoDescription', title: 'SEO Description', type: 'text', rows: 2, group: 'seo' },
+    ],
+    preview: { prepare() { return { title: 'Careers Page' } } }
+}

@@ -154,6 +154,10 @@ const Profile = () => {
     if (location.state?.action === "addAddress") {
       navigate("/complete-profile", { state: { returnUrl: "/profile" } });
     }
+    // Handle activeTab from navigation state (e.g. after order placement)
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
   }, [location.state]);
 
   const fetchSanityData = async (email, mobile) => {
@@ -381,11 +385,11 @@ const Profile = () => {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-black flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#D4AF37]"></div>
       </div>
     );
-  if (!user) return <Auth />;
+  if (!user) return <Auth returnUrl={location.state?.returnUrl} />;
 
   const menuItems = [
     { id: "overview", label: "Overview", icon: User },
@@ -398,24 +402,24 @@ const Profile = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-black text-white pt-32 pb-24 px-6 md:px-12 selection:bg-[#D4AF37] selection:text-black font-sans">
+    <div className="min-h-screen bg-white text-gray-900 pt-32 pb-24 px-6 md:px-12 selection:bg-[#D4AF37] selection:text-black font-sans">
       <div className="max-w-7xl mx-auto">
         {/* Back Link */}
         <div className="mb-6">
-          <BackButton className="text-zinc-500 hover:text-white" />
+          <BackButton className="text-zinc-500 hover:text-black" />
         </div>
 
         {/* ── MOBILE: compact user card + horizontal tab navigation (hidden on desktop) ── */}
         <div className="lg:hidden mb-6 space-y-3">
-          <div className="flex items-center gap-4 bg-[#0F0F0F] rounded-lg border border-white/5 p-4">
+          <div className="flex items-center gap-4 bg-gray-50 rounded-lg border border-gray-100 p-4">
             <div
-              className="w-12 h-12 rounded-full bg-[#141414] border-2 border-[#D4AF37]/30 flex items-center justify-center shrink-0 cursor-pointer"
+              className="w-12 h-12 rounded-full bg-gray-100 border-2 border-[#D4AF37]/30 flex items-center justify-center shrink-0 cursor-pointer"
               onClick={() => setActiveModal("editProfile")}
             >
               <span className="text-base font-serif text-[#D4AF37]">{userInitials}</span>
             </div>
             <div className="min-w-0 flex-1">
-              <p className="text-white font-medium text-sm truncate">{fullName}</p>
+              <p className="text-gray-900 font-medium text-sm truncate">{fullName}</p>
               <p className="text-[#D4AF37] text-[10px] uppercase tracking-widest">Silver Member</p>
             </div>
             <button
@@ -434,7 +438,7 @@ const Profile = () => {
                 className={`shrink-0 flex items-center gap-1.5 px-3.5 py-2 text-[10px] uppercase tracking-wider font-bold rounded-full border transition-all whitespace-nowrap ${
                   activeTab === item.id
                     ? "bg-[#D4AF37] text-black border-[#D4AF37]"
-                    : "bg-transparent text-zinc-400 border-white/10 hover:border-white/30 hover:text-white"
+                    : "bg-transparent text-zinc-400 border-gray-200 hover:border-gray-400 hover:text-gray-900"
                 }`}
               >
                 <item.icon size={12} />
@@ -447,11 +451,11 @@ const Profile = () => {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
           {/* Sidebar — desktop only */}
           <div className="hidden lg:block lg:col-span-3 space-y-8">
-            <div className="bg-[#0F0F0F] rounded-lg border border-white/5 overflow-hidden sticky top-32">
+            <div className="bg-gray-50 rounded-lg border border-gray-100 overflow-hidden sticky top-32">
               <div className="h-24 bg-gradient-to-r from-[#D4AF37]/20 via-[#0F0F0F] to-[#0F0F0F] relative">
                 <div className="absolute -bottom-10 left-6">
                   <div
-                    className="w-20 h-20 rounded-full bg-[#141414] border-4 border-black flex items-center justify-center shadow-2xl relative group cursor-pointer"
+                    className="w-20 h-20 rounded-full bg-gray-100 border-4 border-white flex items-center justify-center shadow-2xl relative group cursor-pointer"
                     onClick={() => setActiveModal("editProfile")}
                   >
                     <span className="text-2xl font-serif text-[#D4AF37] tracking-widest">
@@ -464,12 +468,12 @@ const Profile = () => {
                 </div>
               </div>
               <div className="pt-12 pb-6 px-6">
-                <h2 className="text-lg font-medium text-white tracking-wide truncate">
+                <h2 className="text-lg font-medium text-gray-900 tracking-wide truncate">
                   {fullName}
                 </h2>
                 <div className="space-y-1.5 mt-2">
                   {userData.email && (
-                    <div className="flex items-center gap-2 px-2 py-1 bg-white/5 rounded border border-white/5">
+                    <div className="flex items-center gap-2 px-2 py-1 bg-gray-50 rounded border border-gray-100">
                       <FileText size={10} className="text-zinc-500" />
                       <p className="text-zinc-400 text-[9px] uppercase tracking-wider truncate flex-1">
                         {userData.email}
@@ -486,7 +490,7 @@ const Profile = () => {
                   )}
                 </div>
 
-                <div className="mt-6 p-4 bg-white/5 rounded border border-white/5 flex items-center gap-3">
+                <div className="mt-6 p-4 bg-gray-50 rounded border border-gray-100 flex items-center gap-3">
                   <Crown className="text-[#D4AF37]" size={20} />
                   <div className="w-full">
                     <div className="flex justify-between items-end mb-1">
@@ -495,21 +499,21 @@ const Profile = () => {
                       </p>
                       <p className="text-zinc-500 text-[10px]">2,500 pts</p>
                     </div>
-                    <div className="w-full h-1 bg-white/10 rounded-full overflow-hidden">
+                    <div className="w-full h-1 bg-gray-200 rounded-full overflow-hidden">
                       <div className="h-full bg-[#D4AF37] w-1/3"></div>
                     </div>
                   </div>
                 </div>
               </div>
 
-              <nav className="p-2 border-t border-white/5">
+              <nav className="p-2 border-t border-gray-100">
                 {menuItems.map((item) => (
                   <button
                     key={item.id}
                     onClick={() => setActiveTab(item.id)}
                     className={`w-full flex items-center justify-between px-5 py-4 text-sm transition-all rounded-md group mb-2 ${activeTab === item.id
                       ? "bg-[#D4AF37]/10 text-[#D4AF37] font-medium border-l-2 border-[#D4AF37]"
-                      : "text-zinc-400 hover:bg-white/5 hover:text-white border-l-2 border-transparent"
+                      : "text-zinc-400 hover:bg-gray-50 hover:text-gray-900 border-l-2 border-transparent"
                       } `}
                   >
                     <div className="flex items-center gap-6">
@@ -551,9 +555,9 @@ const Profile = () => {
                 className="min-h-[500px]"
               >
                 {/* Header */}
-                <div className="mb-8 flex items-end justify-between border-b border-white/10 pb-4">
+                <div className="mb-8 flex items-end justify-between border-b border-gray-200 pb-4">
                   <div>
-                    <h1 className="text-3xl font-light text-white mb-1 font-serif tracking-wide capitalize">
+                    <h1 className="text-3xl font-light text-gray-900 mb-1 font-serif tracking-wide capitalize">
                       {activeTab === "wishlist"
                         ? "Wishlist"
                         : activeTab.replace(/([A-Z])/g, " $1").trim()}
@@ -574,15 +578,15 @@ const Profile = () => {
                   <div className="space-y-8">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                       <div
-                        className="bg-[#0F0F0F] border border-white/5 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all cursor-pointer"
+                        className="bg-gray-50 border border-gray-100 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all cursor-pointer"
                         onClick={() => setActiveTab("orders")}
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <div className="p-2 bg-white/5 rounded-md text-[#D4AF37]">
+                          <div className="p-2 bg-gray-100 rounded-md text-[#D4AF37]">
                             <Package size={20} />
                           </div>
                         </div>
-                        <h3 className="text-2xl text-white font-medium mb-1">
+                        <h3 className="text-2xl text-gray-900 font-medium mb-1">
                           {orders.length}
                         </h3>
                         <p className="text-zinc-500 text-xs uppercase tracking-wider">
@@ -590,28 +594,28 @@ const Profile = () => {
                         </p>
                       </div>
                       <div
-                        className="bg-[#0F0F0F] border border-white/5 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all cursor-pointer"
+                        className="bg-gray-50 border border-gray-100 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all cursor-pointer"
                         onClick={() => setActiveTab("wishlist")}
                       >
                         <div className="flex justify-between items-start mb-4">
-                          <div className="p-2 bg-white/5 rounded-md text-[#D4AF37]">
+                          <div className="p-2 bg-gray-100 rounded-md text-[#D4AF37]">
                             <Heart size={20} />
                           </div>
                         </div>
-                        <h3 className="text-2xl text-white font-medium mb-1">
+                        <h3 className="text-2xl text-gray-900 font-medium mb-1">
                           {wishlistItems.length}
                         </h3>
                         <p className="text-zinc-500 text-xs uppercase tracking-wider">
                           In Wishlist
                         </p>
                       </div>
-                      <div className="bg-[#0F0F0F] border border-white/5 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all">
+                      <div className="bg-gray-50 border border-gray-100 p-6 rounded-lg group hover:border-[#D4AF37]/30 transition-all">
                         <div className="flex justify-between items-start mb-4">
-                          <div className="p-2 bg-white/5 rounded-md text-[#D4AF37]">
+                          <div className="p-2 bg-gray-100 rounded-md text-[#D4AF37]">
                             <Star size={20} />
                           </div>
                         </div>
-                        <h3 className="text-xl text-white font-medium mb-1">
+                        <h3 className="text-xl text-gray-900 font-medium mb-1">
                           Silver
                         </h3>
                         <p className="text-zinc-500 text-xs uppercase tracking-wider">
@@ -621,14 +625,14 @@ const Profile = () => {
                     </div>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="bg-[#0F0F0F] border border-white/5 rounded-lg p-6">
+                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-6">
                         <div className="flex justify-between items-center mb-6">
-                          <h3 className="text-lg text-white font-medium">
+                          <h3 className="text-lg text-gray-900 font-medium">
                             Personal Details
                           </h3>
                           <button
                             onClick={() => setActiveModal("editProfile")}
-                            className="text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:text-white transition-colors"
+                            className="text-[#D4AF37] text-xs font-bold uppercase tracking-widest hover:text-gray-700 transition-colors"
                           >
                             Edit
                           </button>
@@ -638,7 +642,7 @@ const Profile = () => {
                             <p className="text-zinc-500 text-[10px] uppercase tracking-wider mb-1">
                               Full Name
                             </p>
-                            <p className="text-white text-sm font-medium">
+                            <p className="text-gray-900 text-sm font-medium">
                               {fullName}
                             </p>
                           </div>
@@ -646,7 +650,7 @@ const Profile = () => {
                             <p className="text-zinc-500 text-[10px] uppercase tracking-wider mb-1">
                               Email Address
                             </p>
-                            <p className="text-white text-sm font-medium">
+                            <p className="text-gray-900 text-sm font-medium">
                               {userData.email || "Not Provided"}
                             </p>
                           </div>
@@ -669,58 +673,58 @@ const Profile = () => {
                         </div>
                       </div>
 
-                      <div className="bg-[#0F0F0F] border border-white/5 rounded-lg p-6">
+                      <div className="bg-gray-50 border border-gray-100 rounded-lg p-6">
                         <div className="flex justify-between items-center mb-6">
-                          <h3 className="text-lg text-white font-medium">
+                          <h3 className="text-lg text-gray-900 font-medium">
                             Quick Actions
                           </h3>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                           <button
                             onClick={() => setActiveModal("trackOrder")}
-                            className="p-4 bg-white/5 border border-white/5 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
+                            className="p-4 bg-gray-50 border border-gray-100 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
                           >
                             <Truck
                               className="mx-auto mb-2 text-[#D4AF37]"
                               size={20}
                             />
-                            <span className="text-xs text-white uppercase font-bold">
+                            <span className="text-xs text-gray-900 uppercase font-bold">
                               Track
                             </span>
                           </button>
                           <button
                             onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile" } })}
-                            className="p-4 bg-white/5 border border-white/5 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
+                            className="p-4 bg-gray-50 border border-gray-100 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
                           >
                             <MapPin
                               className="mx-auto mb-2 text-[#D4AF37]"
                               size={20}
                             />
-                            <span className="text-xs text-white uppercase font-bold">
+                            <span className="text-xs text-gray-900 uppercase font-bold">
                               Address
                             </span>
                           </button>
                           <button
                             onClick={() => setActiveModal("chat")}
-                            className="p-4 bg-white/5 border border-white/5 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
+                            className="p-4 bg-gray-50 border border-gray-100 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
                           >
                             <MessageSquare
                               className="mx-auto mb-2 text-[#D4AF37]"
                               size={20}
                             />
-                            <span className="text-xs text-white uppercase font-bold">
+                            <span className="text-xs text-gray-900 uppercase font-bold">
                               Chat
                             </span>
                           </button>
                           <button
                             onClick={() => setActiveModal("changePassword")}
-                            className="p-4 bg-white/5 border border-white/5 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
+                            className="p-4 bg-gray-50 border border-gray-100 rounded hover:border-[#D4AF37] hover:bg-[#D4AF37]/10 transition-all text-center"
                           >
                             <Lock
                               className="mx-auto mb-2 text-[#D4AF37]"
                               size={20}
                             />
-                            <span className="text-xs text-white uppercase font-bold">
+                            <span className="text-xs text-gray-900 uppercase font-bold">
                               Security
                             </span>
                           </button>
@@ -737,14 +741,14 @@ const Profile = () => {
                       orders.map((order, idx) => (
                         <div
                           key={idx}
-                          className="bg-[#0F0F0F] border border-white/5 p-6 rounded-lg flex flex-col md:flex-row justify-between items-center gap-4"
+                          className="bg-gray-50 border border-gray-100 p-6 rounded-lg flex flex-col md:flex-row justify-between items-center gap-4"
                         >
                           <div className="flex items-center gap-4 w-full md:w-auto">
-                            <div className="w-16 h-16 bg-white/5 rounded flex items-center justify-center">
+                            <div className="w-16 h-16 bg-gray-100 rounded flex items-center justify-center">
                               <Package size={24} className="text-zinc-600" />
                             </div>
                             <div>
-                              <h4 className="text-white font-serif text-lg">
+                              <h4 className="text-gray-900 font-serif text-lg">
                                 Order #
                                 {order.id ||
                                   Math.random()
@@ -762,7 +766,7 @@ const Profile = () => {
                             </div>
                           </div>
                           <div className="text-right w-full md:w-auto">
-                            <p className="text-white font-bold text-lg mb-2">
+                            <p className="text-gray-900 font-bold text-lg mb-2">
                               ₹{order.total?.toLocaleString() || "0"}
                             </p>
                             <div className="flex gap-2 justify-end">
@@ -785,12 +789,12 @@ const Profile = () => {
                         </div>
                       ))
                     ) : (
-                      <div className="text-center py-20 border border-dashed border-white/10 rounded-lg">
+                      <div className="text-center py-20 border border-dashed border-gray-200 rounded-lg">
                         <Package
                           size={48}
                           className="text-zinc-700 mx-auto mb-4"
                         />
-                        <h3 className="text-white font-serif text-xl mb-2">
+                        <h3 className="text-gray-900 font-serif text-xl mb-2">
                           No Recent Orders
                         </h3>
                         <Button
@@ -811,10 +815,10 @@ const Profile = () => {
                       {addresses.map((addr) => (
                         <div
                           key={addr.id}
-                          className={`bg-[#0F0F0F] border p-6 rounded-lg relative group transition-all ${selectedAddressId === addr.id ? "border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.1)]" : "border-white/10 hover:border-white/20"}`}
+                          className={`bg-gray-50 border p-6 rounded-lg relative group transition-all ${selectedAddressId === addr.id ? "border-[#D4AF37] shadow-[0_0_15px_rgba(212,175,55,0.1)]" : "border-gray-200 hover:border-gray-300"}`}
                         >
                           <div className="flex justify-between items-start mb-2">
-                            <span className="bg-white/10 text-zinc-300 text-[10px] font-bold px-2 py-1 rounded uppercase flex items-center gap-1">
+                            <span className="bg-gray-100 text-zinc-600 text-[10px] font-bold px-2 py-1 rounded uppercase flex items-center gap-1">
                               <MapPin size={10} /> {addr.type}
                             </span>
                             <div className="flex items-center gap-2">
@@ -844,7 +848,7 @@ const Profile = () => {
                               </button>
                             </div>
                           </div>
-                          <h4 className="text-white font-bold text-lg mb-1">
+                          <h4 className="text-gray-900 font-bold text-lg mb-1">
                             {addr.name}
                           </h4>
                           <p className="text-zinc-400 text-sm leading-relaxed mb-3">
@@ -861,10 +865,10 @@ const Profile = () => {
                         onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile" } })}
                         className="border border-dashed border-zinc-800 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-white/[0.02] transition-all min-h-[200px] group"
                       >
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
                           <Plus size={24} />
                         </div>
-                        <p className="text-zinc-400 font-medium group-hover:text-white">
+                        <p className="text-zinc-400 font-medium group-hover:text-gray-900">
                           Add New Address
                         </p>
                       </button>
@@ -880,7 +884,7 @@ const Profile = () => {
                         {wishlistItems.map((item) => (
                           <div
                             key={item.id}
-                            className="bg-[#0F0F0F] border border-white/10 rounded-lg overflow-hidden group hover:border-[#D4AF37]/50 transition-all"
+                            className="bg-gray-50 border border-gray-200 rounded-lg overflow-hidden group hover:border-[#D4AF37]/50 transition-all"
                           >
                             <div className="aspect-[4/5] relative">
                               <img
@@ -896,7 +900,7 @@ const Profile = () => {
                               </button>
                             </div>
                             <div className="p-4">
-                              <h4 className="text-white font-serif text-lg truncate">
+                              <h4 className="text-gray-900 font-serif text-lg truncate">
                                 {item.name}
                               </h4>
                               <p className="text-[#D4AF37] font-medium mb-3">
@@ -904,7 +908,7 @@ const Profile = () => {
                               </p>
                               <button
                                 onClick={() => moveToCart(item)}
-                                className="w-full py-2 bg-white/5 hover:bg-[#D4AF37] hover:text-black text-white text-xs uppercase font-bold transition-colors flex items-center justify-center gap-2"
+                                className="w-full py-2 bg-gray-100 hover:bg-[#D4AF37] hover:text-black text-gray-900 text-xs uppercase font-bold transition-colors flex items-center justify-center gap-2"
                               >
                                 <ShoppingBag size={14} /> Move to Cart
                               </button>
@@ -913,12 +917,12 @@ const Profile = () => {
                         ))}
                       </div>
                     ) : (
-                      <div className="text-center py-20 border border-dashed border-white/10 rounded-lg">
+                      <div className="text-center py-20 border border-dashed border-gray-200 rounded-lg">
                         <Heart
                           size={48}
                           className="text-zinc-700 mx-auto mb-4"
                         />
-                        <h3 className="text-white font-serif text-xl mb-2">
+                        <h3 className="text-gray-900 font-serif text-xl mb-2">
                           Your Vault is Empty
                         </h3>
                         <Button
@@ -939,10 +943,10 @@ const Profile = () => {
                       {cards.map((card) => (
                         <div
                           key={card.id}
-                          className="bg-gradient-to-br from-zinc-900 to-black border border-white/10 p-6 rounded-xl relative group hover:border-[#D4AF37]/50 transition-colors h-48 flex flex-col justify-between"
+                          className="bg-gradient-to-br from-zinc-900 to-black border border-gray-200 p-6 rounded-xl relative group hover:border-[#D4AF37]/50 transition-colors h-48 flex flex-col justify-between"
                         >
                           <div className="flex justify-between items-start">
-                            <span className="text-white font-serif italic text-lg">
+                            <span className="text-gray-900 font-serif italic text-lg">
                               {card.type}
                             </span>
                             <button
@@ -963,7 +967,7 @@ const Profile = () => {
                               <span className="text-zinc-500 text-xl tracking-widest">
                                 ••••
                               </span>
-                              <span className="text-white text-xl tracking-widest">
+                              <span className="text-gray-900 text-xl tracking-widest">
                                 {card.last4}
                               </span>
                             </div>
@@ -972,7 +976,7 @@ const Profile = () => {
                                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-1">
                                   Card Holder
                                 </p>
-                                <p className="text-white font-medium uppercase tracking-wider text-sm">
+                                <p className="text-gray-800 font-medium uppercase tracking-wider text-sm">
                                   {card.name}
                                 </p>
                               </div>
@@ -980,7 +984,7 @@ const Profile = () => {
                                 <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-1">
                                   Expires
                                 </p>
-                                <p className="text-white font-medium text-sm">
+                                <p className="text-gray-900 font-medium text-sm">
                                   {card.expiry}
                                 </p>
                               </div>
@@ -992,10 +996,10 @@ const Profile = () => {
                         onClick={() => setActiveModal("addCard")}
                         className="border border-dashed border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-white/[0.02] transition-all h-48 group"
                       >
-                        <div className="w-12 h-12 rounded-full bg-white/5 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
+                        <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
                           <Plus size={24} />
                         </div>
-                        <p className="text-zinc-400 font-medium group-hover:text-white">
+                        <p className="text-zinc-400 font-medium group-hover:text-gray-900">
                           Add New Card
                         </p>
                       </button>
@@ -1006,14 +1010,14 @@ const Profile = () => {
                 {/* TAB: SETTINGS */}
                 {activeTab === "settings" && (
                   <div className="space-y-6">
-                    <div className="bg-[#0F0F0F] border border-white/5 rounded-lg p-6">
-                      <h3 className="text-lg text-white font-medium mb-6 flex items-center gap-2">
+                    <div className="bg-gray-50 border border-gray-100 rounded-lg p-6">
+                      <h3 className="text-lg text-gray-900 font-medium mb-6 flex items-center gap-2">
                         <Lock size={18} className="text-[#D4AF37]" /> Security
                       </h3>
                       <div className="space-y-4">
-                        <div className="flex items-center justify-between p-4 bg-white/5 rounded">
+                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded">
                           <div>
-                            <p className="text-white font-medium text-sm">
+                            <p className="text-gray-900 font-medium text-sm">
                               Change Password
                             </p>
                             <p className="text-zinc-500 text-xs">
@@ -1028,9 +1032,9 @@ const Profile = () => {
                             Update
                           </Button>
                         </div>
-                        <div className="flex items-center justify-between p-4 bg-white/5 rounded">
+                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded">
                           <div>
-                            <p className="text-white font-medium text-sm">
+                            <p className="text-gray-900 font-medium text-sm">
                               Two-Factor Authentication
                             </p>
                             <p className="text-zinc-500 text-xs">
@@ -1038,7 +1042,7 @@ const Profile = () => {
                             </p>
                           </div>
                           <div
-                            className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${settings.twoFactor ? "bg-[#D4AF37]" : "bg-white/10"} `}
+                            className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${settings.twoFactor ? "bg-[#D4AF37]" : "bg-gray-300"} `}
                             onClick={() =>
                               setSettings({
                                 ...settings,
@@ -1054,15 +1058,15 @@ const Profile = () => {
                       </div>
                     </div>
 
-                    <div className="bg-[#0F0F0F] border border-white/5 rounded-lg p-6">
-                      <h3 className="text-lg text-white font-medium mb-6 flex items-center gap-2">
+                    <div className="bg-gray-50 border border-gray-100 rounded-lg p-6">
+                      <h3 className="text-lg text-gray-900 font-medium mb-6 flex items-center gap-2">
                         <Bell size={18} className="text-[#D4AF37]" />{" "}
                         Notifications
                       </h3>
                       <div className="space-y-4">
-                        <div className="flex items-center justify-between p-4 bg-white/5 rounded">
+                        <div className="flex items-center justify-between p-4 bg-gray-50 rounded">
                           <div>
-                            <p className="text-white font-medium text-sm">
+                            <p className="text-gray-900 font-medium text-sm">
                               Order Updates
                             </p>
                             <p className="text-zinc-500 text-xs">
@@ -1070,7 +1074,7 @@ const Profile = () => {
                             </p>
                           </div>
                           <div
-                            className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${settings.emailNotifs ? "bg-[#D4AF37]" : "bg-white/10"} `}
+                            className={`w-10 h-5 rounded-full relative cursor-pointer transition-colors ${settings.emailNotifs ? "bg-[#D4AF37]" : "bg-gray-300"} `}
                             onClick={() =>
                               setSettings({
                                 ...settings,
@@ -1091,11 +1095,11 @@ const Profile = () => {
                 {/* TAB: SUPPORT */}
                 {activeTab === "support" && (
                   <div className="space-y-6">
-                    <div className="bg-[#0F0F0F] border border-white/5 rounded-lg p-8 text-center">
-                      <div className="w-16 h-16 bg-white/5 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <div className="bg-gray-50 border border-gray-100 rounded-lg p-8 text-center">
+                      <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
                         <HelpCircle size={32} className="text-[#D4AF37]" />
                       </div>
-                      <h3 className="text-white font-serif text-2xl mb-2">
+                      <h3 className="text-gray-900 font-serif text-2xl mb-2">
                         How can we help?
                       </h3>
                       <p className="text-zinc-500 max-w-lg mx-auto mb-8">
@@ -1129,15 +1133,15 @@ const Profile = () => {
                       ].map((topic, i) => (
                         <div
                           key={i}
-                          className="bg-[#0F0F0F] border border-white/5 rounded overflow-hidden"
+                          className="bg-gray-50 border border-gray-100 rounded overflow-hidden"
                         >
                           <div
-                            className="p-4 flex justify-between items-center cursor-pointer hover:bg-white/5 transition-colors"
+                            className="p-4 flex justify-between items-center cursor-pointer hover:bg-gray-50 transition-colors"
                             onClick={() =>
                               setActiveFaq(activeFaq === i ? null : i)
                             }
                           >
-                            <span className="text-white font-medium text-sm">
+                            <span className="text-gray-900 font-medium text-sm">
                               {topic}
                             </span>
                             <ChevronDown
@@ -1146,7 +1150,7 @@ const Profile = () => {
                             />
                           </div>
                           {activeFaq === i && (
-                            <div className="p-4 pt-0 text-zinc-400 text-sm leading-relaxed border-t border-white/5 bg-black/20">
+                            <div className="p-4 pt-0 text-zinc-400 text-sm leading-relaxed border-t border-gray-100 bg-gray-50">
                               Detailed information regarding {topic} will be
                               provided here. We facilitate global shipping with
                               insurance, offering a seamless experience for our
@@ -1167,8 +1171,8 @@ const Profile = () => {
           {/* Edit Profile */}
           {activeModal === "editProfile" && (
             <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-              <div className="bg-[#0F0F0F] border border-white/10 p-8 rounded-lg max-w-lg w-full animate-in fade-in zoom-in duration-200">
-                <h3 className="text-xl font-serif text-white mb-6">
+              <div className="bg-gray-50 border border-gray-200 p-8 rounded-lg max-w-lg w-full animate-in fade-in zoom-in duration-200">
+                <h3 className="text-xl font-serif text-gray-900 mb-6">
                   Edit Profile
                 </h3>
                 <div className="space-y-4">
@@ -1180,7 +1184,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setEditForm({ ...editForm, firstName: e.target.value })
                       }
-                      className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                      className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                     />
                     <input
                       type="text"
@@ -1189,7 +1193,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setEditForm({ ...editForm, lastName: e.target.value })
                       }
-                      className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                      className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                     />
                   </div>
                   <input
@@ -1199,7 +1203,7 @@ const Profile = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, email: e.target.value })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <input
                     type="tel"
@@ -1208,7 +1212,7 @@ const Profile = () => {
                     onChange={(e) =>
                       setEditForm({ ...editForm, mobile: e.target.value })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <div className="flex gap-4 pt-4">
                     <Button
@@ -1219,7 +1223,7 @@ const Profile = () => {
                     </Button>
                     <button
                       onClick={() => setActiveModal(null)}
-                      className="px-6 text-zinc-400 hover:text-white"
+                      className="px-6 text-zinc-500 hover:text-gray-800"
                     >
                       Cancel
                     </button>
@@ -1234,8 +1238,8 @@ const Profile = () => {
           {/* Add Card */}
           {activeModal === "addCard" && (
             <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-              <div className="bg-[#0F0F0F] border border-white/10 p-8 rounded-lg max-w-lg w-full animate-in fade-in zoom-in duration-200">
-                <h3 className="text-xl font-serif text-white mb-6">
+              <div className="bg-gray-50 border border-gray-200 p-8 rounded-lg max-w-lg w-full animate-in fade-in zoom-in duration-200">
+                <h3 className="text-xl font-serif text-gray-900 mb-6">
                   Add New Card
                 </h3>
                 <div className="space-y-4">
@@ -1246,7 +1250,7 @@ const Profile = () => {
                     onChange={(e) =>
                       setNewCard({ ...newCard, number: e.target.value })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <input
                     type="text"
@@ -1255,7 +1259,7 @@ const Profile = () => {
                     onChange={(e) =>
                       setNewCard({ ...newCard, name: e.target.value })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <input
@@ -1265,7 +1269,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setNewCard({ ...newCard, expiry: e.target.value })
                       }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                      className="bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                     />
                     <input
                       type="password"
@@ -1274,7 +1278,7 @@ const Profile = () => {
                       onChange={(e) =>
                         setNewCard({ ...newCard, cvv: e.target.value })
                       }
-                      className="bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                      className="bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                     />
                   </div>
                   <div className="flex gap-4 pt-4">
@@ -1286,7 +1290,7 @@ const Profile = () => {
                     </Button>
                     <button
                       onClick={() => setActiveModal(null)}
-                      className="px-6 text-zinc-400 hover:text-white"
+                      className="px-6 text-zinc-500 hover:text-gray-800"
                     >
                       Cancel
                     </button>
@@ -1299,8 +1303,8 @@ const Profile = () => {
           {/* Change Password */}
           {activeModal === "changePassword" && (
             <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-              <div className="bg-[#0F0F0F] border border-white/10 p-8 rounded-lg max-w-sm w-full animate-in fade-in zoom-in duration-200">
-                <h3 className="text-xl font-serif text-white mb-6">
+              <div className="bg-gray-50 border border-gray-200 p-8 rounded-lg max-w-sm w-full animate-in fade-in zoom-in duration-200">
+                <h3 className="text-xl font-serif text-gray-900 mb-6">
                   Change Password
                 </h3>
                 <div className="space-y-4">
@@ -1314,7 +1318,7 @@ const Profile = () => {
                         current: e.target.value,
                       })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <input
                     type="password"
@@ -1323,7 +1327,7 @@ const Profile = () => {
                     onChange={(e) =>
                       setPasswordForm({ ...passwordForm, new: e.target.value })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <input
                     type="password"
@@ -1335,7 +1339,7 @@ const Profile = () => {
                         confirm: e.target.value,
                       })
                     }
-                    className="w-full bg-black border border-white/20 p-3 text-white focus:border-[#D4AF37] outline-none rounded-sm"
+                    className="w-full bg-white border border-gray-300 p-3 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm"
                   />
                   <div className="flex gap-4 pt-4">
                     <Button
@@ -1346,7 +1350,7 @@ const Profile = () => {
                     </Button>
                     <button
                       onClick={() => setActiveModal(null)}
-                      className="px-6 text-zinc-400 hover:text-white"
+                      className="px-6 text-zinc-500 hover:text-gray-800"
                     >
                       Cancel
                     </button>
@@ -1358,7 +1362,7 @@ const Profile = () => {
 
           {/* Chat Modal */}
           {activeModal === "chat" && (
-            <div className="fixed bottom-4 right-2 left-2 sm:left-auto sm:right-4 md:bottom-8 md:right-8 z-50 sm:w-[calc(100vw-2rem)] sm:max-w-sm md:w-96 bg-[#0F0F0F] border border-[#D4AF37] rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300 h-[500px]">
+            <div className="fixed bottom-4 right-2 left-2 sm:left-auto sm:right-4 md:bottom-8 md:right-8 z-50 sm:w-[calc(100vw-2rem)] sm:max-w-sm md:w-96 bg-gray-50 border border-[#D4AF37] rounded-lg shadow-2xl flex flex-col overflow-hidden animate-in slide-in-from-bottom duration-300 h-[500px]">
               <div className="bg-[#D4AF37] p-4 flex justify-between items-center text-black">
                 <div className="flex items-center gap-2">
                   <MessageSquare size={18} />
@@ -1368,12 +1372,12 @@ const Profile = () => {
                 </div>
                 <button
                   onClick={() => setActiveModal(null)}
-                  className="hover:text-white"
+                  className="hover:opacity-60 transition-opacity"
                 >
                   <X size={18} />
                 </button>
               </div>
-              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-black/50">
+              <div className="flex-1 p-4 overflow-y-auto space-y-4 bg-gray-50">
                 {chatHistory.map((msg, i) => (
                   <div
                     key={i}
@@ -1382,7 +1386,7 @@ const Profile = () => {
                     <div
                       className={`max-w-[80%] p-3 rounded text-sm ${msg.sender === "user"
                         ? "bg-[#D4AF37] text-black rounded-tr-none"
-                        : "bg-white/10 text-white rounded-tl-none"
+                        : "bg-gray-100 text-gray-900 rounded-tl-none"
                         } `}
                     >
                       {msg.text}
@@ -1390,11 +1394,11 @@ const Profile = () => {
                   </div>
                 ))}
               </div>
-              <div className="p-3 border-t border-white/10 bg-[#0F0F0F] flex gap-2">
+              <div className="p-3 border-t border-gray-200 bg-gray-50 flex gap-2">
                 <input
                   type="text"
                   placeholder="Type your message..."
-                  className="flex-1 bg-black border border-white/20 p-2 text-white focus:border-[#D4AF37] outline-none rounded-sm text-sm"
+                  className="flex-1 bg-white border border-gray-300 p-2 text-gray-900 focus:border-[#D4AF37] outline-none rounded-sm text-sm"
                   value={chatMessage}
                   onChange={(e) => setChatMessage(e.target.value)}
                   onKeyPress={(e) => e.key === "Enter" && handleChatSend()}
@@ -1412,15 +1416,15 @@ const Profile = () => {
           {/* Track Order Modal */}
           {activeModal === "trackOrder" && (
             <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 p-4">
-              <div className="bg-[#0F0F0F] border border-white/10 p-8 rounded-lg max-w-md w-full animate-in fade-in zoom-in duration-200">
-                <h3 className="text-xl font-serif text-white mb-6 flex items-center gap-2">
+              <div className="bg-gray-50 border border-gray-200 p-8 rounded-lg max-w-md w-full animate-in fade-in zoom-in duration-200">
+                <h3 className="text-xl font-serif text-gray-900 mb-6 flex items-center gap-2">
                   <Truck size={24} className="text-[#D4AF37]" /> Tracking Order
                   #{selectedOrder?.id}
                 </h3>
-                <div className="space-y-6 relative pl-4 border-l-2 border-white/10 ml-2">
+                <div className="space-y-6 relative pl-4 border-l-2 border-gray-200 ml-2">
                   <div className="relative">
                     <div className="absolute -left-[21px] top-1 w-3 h-3 bg-[#D4AF37] rounded-full border border-black"></div>
-                    <p className="text-white font-medium text-sm">
+                    <p className="text-gray-900 font-medium text-sm">
                       Order Placed
                     </p>
                     <p className="text-zinc-500 text-xs">
@@ -1428,7 +1432,7 @@ const Profile = () => {
                     </p>
                   </div>
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-3 h-3 bg-white/20 rounded-full border border-black"></div>
+                    <div className="absolute -left-[21px] top-1 w-3 h-3 bg-gray-200 rounded-full border border-gray-400"></div>
                     <p className="text-zinc-400 font-medium text-sm">
                       Processing
                     </p>
@@ -1437,7 +1441,7 @@ const Profile = () => {
                     </p>
                   </div>
                   <div className="relative">
-                    <div className="absolute -left-[21px] top-1 w-3 h-3 bg-white/20 rounded-full border border-black"></div>
+                    <div className="absolute -left-[21px] top-1 w-3 h-3 bg-gray-200 rounded-full border border-gray-400"></div>
                     <p className="text-zinc-400 font-medium text-sm">Shipped</p>
                     <p className="text-zinc-500 text-xs">Pending dispatch.</p>
                   </div>
@@ -1445,7 +1449,7 @@ const Profile = () => {
                 <div className="mt-8">
                   <Button
                     onClick={() => setActiveModal(null)}
-                    className="w-full bg-white/5 border border-white/10 text-white hover:bg-white hover:text-black"
+                    className="w-full bg-white border border-gray-200 text-gray-900 hover:bg-gray-100 hover:text-black"
                   >
                     Close
                   </Button>
@@ -1514,7 +1518,7 @@ const Profile = () => {
                   initial={{ opacity: 0, scale: 0.9, y: 20 }}
                   animate={{ opacity: 1, scale: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9, y: 20 }}
-                  className="relative bg-[#141414] border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
+                  className="relative bg-gray-100 border border-[#D4AF37]/30 p-8 rounded-lg max-w-sm w-full shadow-2xl text-center overflow-hidden"
                 >
                   <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
 
@@ -1536,7 +1540,7 @@ const Profile = () => {
                       <>
                         <button
                           onClick={closeDialog}
-                          className="flex-1 px-6 py-3 border border-white/10 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-white/5 transition-colors rounded-sm"
+                          className="flex-1 px-6 py-3 border border-gray-200 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors rounded-sm"
                         >
                           Cancel
                         </button>
@@ -1570,3 +1574,7 @@ const Profile = () => {
 };
 
 export default Profile;
+
+
+
+

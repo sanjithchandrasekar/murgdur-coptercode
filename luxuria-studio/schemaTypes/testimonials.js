@@ -3,20 +3,14 @@ export default {
     title: 'Testimonials',
     type: 'document',
     fields: [
+        { name: 'heading', title: 'Section Heading', type: 'string', initialValue: 'What Our Customers Say' },
+        { name: 'subheading', title: 'Section Subheading', type: 'string' },
         {
             name: 'reviews',
             title: 'Reviews',
             type: 'array',
-            of: [
-                {
-                    type: 'object',
-                    fields: [
-                        { name: 'text', type: 'text', title: 'Review Text' },
-                        { name: 'author', type: 'string', title: 'Author Name' },
-                        { name: 'role', type: 'string', title: 'Role / Location' }
-                    ]
-                }
-            ]
+            of: [{ type: 'testimonialItem' }]
         }
-    ]
+    ],
+    preview: { prepare() { return { title: 'Testimonials' } } }
 }

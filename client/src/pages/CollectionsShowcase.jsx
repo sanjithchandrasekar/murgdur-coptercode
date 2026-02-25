@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+﻿import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { ChevronRight, ArrowRight } from "lucide-react";
@@ -10,7 +10,7 @@ const CollectionsShowcase = () => {
   const [hoveredCategory, setHoveredCategory] = useState(null);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-white">
       {/* SEO Meta Tags */}
       <Helmet>
         <title>Our Collections | Luxuria Royal - Premium Luxury Collections</title>
@@ -30,10 +30,10 @@ const CollectionsShowcase = () => {
         />
       </Helmet>
       {/* Hero Section */}
-      <div className="relative h-96 overflow-hidden bg-gradient-to-b from-gray-900 to-black border-b border-royal-gold/20">
+      <div className="relative h-96 overflow-hidden bg-gradient-to-b from-gray-100 to-white border-b border-royal-gold/20">
         <div className="absolute inset-0 opacity-40">
           <img
-            src="/images/women dress/womendress1.png"
+            src="/images/women/dresses/womendress1.png"
             alt="Hero"
             className="w-full h-full object-cover"
           />
@@ -45,7 +45,7 @@ const CollectionsShowcase = () => {
             <h1 className="text-3xl sm:text-5xl md:text-7xl font-serif text-royal-gold mb-4">
               Our Collections
             </h1>
-            <p className="text-gray-300 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-600 text-lg max-w-2xl mx-auto">
               Discover our curated selection of luxury products crafted for the discerning taste
             </p>
           </div>
@@ -66,11 +66,11 @@ const CollectionsShowcase = () => {
           >
             <div className="relative h-96 overflow-hidden bg-gray-900">
               <img
-                src="/images/women dress/womendress1.png"
+                src="/images/women/dresses/womendress1.png"
                 alt="Women's Collection"
                 className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
 
               <div className="absolute bottom-0 left-0 right-0 p-8">
                 <h2 className="text-4xl font-serif text-white mb-2">
@@ -104,7 +104,7 @@ const CollectionsShowcase = () => {
                 className="group block relative overflow-hidden rounded-lg border border-royal-gold/20 hover:border-royal-gold/60 transition-all duration-300 h-64"
               >
                 {/* Image */}
-                <div className="relative h-full overflow-hidden bg-gray-900">
+                <div className="relative h-full overflow-hidden bg-gray-200">
                   <img
                     src={category.image}
                     alt={category.name}
@@ -140,21 +140,20 @@ const CollectionsShowcase = () => {
         >
           <div className="text-center space-y-3">
             <div className="text-4xl text-royal-gold">✓</div>
-            <h3 className="font-serif text-white text-lg">Premium Quality</h3>
-            <p className="text-gray-400 text-sm">
-              Carefully curated luxury items from the finest craftsmen
+            <h3 className="font-serif text-gray-900 text-lg">Premium Quality</h3>
+            <p className="text-gray-500 text-sm">Carefully curated luxury items from the finest craftsmen
             </p>
           </div>
           <div className="text-center space-y-3">
             <div className="text-4xl text-royal-gold">✓</div>
-            <h3 className="font-serif text-white text-lg">Authentic Products</h3>
+            <h3 className="font-serif text-gray-900 text-lg">Authentic Products</h3>
             <p className="text-gray-400 text-sm">
               100% genuine items with complete authenticity guarantee
             </p>
           </div>
           <div className="text-center space-y-3">
             <div className="text-4xl text-royal-gold">✓</div>
-            <h3 className="font-serif text-white text-lg">Exclusive Selection</h3>
+            <h3 className="font-serif text-gray-900 text-lg">Exclusive Selection</h3>
             <p className="text-gray-400 text-sm">
               Limited edition pieces available only at Luxuria Royal
             </p>
@@ -163,12 +162,12 @@ const CollectionsShowcase = () => {
       </div>
 
       {/* CTA Section */}
-      <div className="mt-16 bg-gradient-to-r from-gray-950 via-black to-gray-950 border-t border-royal-gold/20 py-12">
+      <div className="mt-16 bg-gradient-to-r from-gray-100 via-gray-50 to-gray-100 border-t border-royal-gold/20 py-12">
         <div className="max-w-4xl mx-auto px-4 text-center space-y-6">
-          <h2 className="text-3xl md:text-4xl font-serif text-white">
+          <h2 className="text-3xl md:text-4xl font-serif text-gray-900">
             Ready to Explore Luxury?
           </h2>
-          <p className="text-gray-400 max-w-2xl mx-auto">
+          <p className="text-gray-600 max-w-2xl mx-auto">
             Browse our complete collection and discover the perfect luxury items to elevate your lifestyle
           </p>
           <Link

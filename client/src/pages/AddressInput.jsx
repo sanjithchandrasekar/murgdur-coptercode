@@ -61,8 +61,8 @@ const AddressInput = () => {
                 }));
             }
         } else {
-            // If not logged in, redirect to auth (unless we want to allow guest addresses? for now stick to auth)
-            navigate("/auth");
+            // If not logged in, redirect to profile/login
+            navigate("/profile", { state: { returnUrl: location.state?.returnUrl || "/complete-profile" } });
         }
     }, [navigate, location.state]);
 
@@ -178,7 +178,7 @@ const AddressInput = () => {
     };
 
     return (
-        <div className="min-h-screen bg-[#050505] text-white flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
+        <div className="min-h-screen bg-gray-50 text-gray-900 flex flex-col items-center justify-center p-6 relative overflow-hidden font-sans">
             <SEO title="Complete Your Profile | Murgdur" description="Add your delivery address." />
 
             {/* Decorative Background */}
@@ -188,10 +188,10 @@ const AddressInput = () => {
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="w-full max-w-3xl bg-[#0F0F0F] border border-white/10 rounded-xl overflow-hidden shadow-2xl relative z-10"
+                className="w-full max-w-3xl bg-white border border-gray-200 rounded-xl overflow-hidden shadow-lg relative z-10"
             >
                 {/* Header */}
-                <div className="bg-gradient-to-r from-[#0F0F0F] via-[#1a1a1a] to-[#0F0F0F] p-8 border-b border-white/5 flex items-center justify-between">
+                <div className="bg-gray-50 p-8 border-b border-gray-200 flex items-center justify-between">
                     <div>
                         <div className="flex items-center gap-3 mb-2">
                             <div className="p-2 bg-[#D4AF37]/10 rounded border border-[#D4AF37]/20">
@@ -220,7 +220,7 @@ const AddressInput = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.name ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                                    className={`w-full bg-[#050505] border ${errors.name ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="Recipient Name"
                                 />
                                 {errors.name && <p className="text-red-500 text-[10px] ml-1">{errors.name}</p>}
@@ -236,10 +236,10 @@ const AddressInput = () => {
                                         countryCodeEditable={false}
                                         enableSearch={true}
                                         disableSearchIcon={true}
-                                        inputClass="!bg-[#050505] !text-white !w-full !h-12 !border-none !rounded focus:!ring-0"
-                                        buttonClass="!bg-[#050505] !border-r !border-zinc-800 !rounded-l hover:!bg-zinc-900"
-                                        dropdownClass="!bg-[#141414] !text-white !border !border-zinc-800 !shadow-xl"
-                                        searchClass="!bg-zinc-900 !text-white !border-zinc-700 hover:!border-[#D4AF37]"
+                                        inputClass="!bg-white !text-gray-900 !w-full !h-12 !border-none !rounded focus:!ring-0"
+                                        buttonClass="!bg-gray-100 !border-r !border-gray-300 !rounded-l hover:!bg-gray-200"
+                                        dropdownClass="!bg-white !text-gray-900 !border !border-gray-300 !shadow-xl"
+                                        searchClass="!bg-white !text-gray-900 !border-gray-300 hover:!border-[#D4AF37]"
                                     />
                                 </div>
                                 {errors.mobile && <p className="text-red-500 text-[10px] ml-1">{errors.mobile}</p>}
@@ -247,7 +247,7 @@ const AddressInput = () => {
                         </div>
                     </div>
 
-                    <div className="w-full h-[1px] bg-white/5" />
+                    <div className="w-full h-[1px] bg-gray-200" />
 
                     {/* Section 2: Address Details */}
                     <div className="space-y-4">
@@ -276,7 +276,7 @@ const AddressInput = () => {
                                     name="city"
                                     value={formData.city}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.city ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                                    className={`w-full bg-[#050505] border ${errors.city ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="City Name"
                                 />
                                 {errors.city && <p className="text-red-500 text-[10px] ml-1">{errors.city}</p>}
@@ -291,7 +291,7 @@ const AddressInput = () => {
                                     name="state"
                                     value={formData.state}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.state ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                                    className={`w-full bg-[#050505] border ${errors.state ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="State Name"
                                 />
                                 {errors.state && <p className="text-red-500 text-[10px] ml-1">{errors.state}</p>}
@@ -316,7 +316,7 @@ const AddressInput = () => {
                                 name="flatNo"
                                 value={formData.flatNo}
                                 onChange={handleChange}
-                                className={`w-full bg-[#050505] border ${errors.flatNo ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                                className={`w-full bg-[#050505] border ${errors.flatNo ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                 placeholder="e.g. Flat 402, Royal Residency"
                             />
                             {errors.flatNo && <p className="text-red-500 text-[10px] ml-1">{errors.flatNo}</p>}
@@ -329,7 +329,7 @@ const AddressInput = () => {
                                 name="area"
                                 value={formData.area}
                                 onChange={handleChange}
-                                className={`w-full bg-[#050505] border ${errors.area ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700`}
+                                className={`w-full bg-[#050505] border ${errors.area ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                 placeholder="e.g. MG Road, Indiranagar"
                             />
                             {errors.area && <p className="text-red-500 text-[10px] ml-1">{errors.area}</p>}

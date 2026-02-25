@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { ChevronDown, Filter, ArrowRight } from "lucide-react";
 import { motion } from "framer-motion";
@@ -6,15 +6,15 @@ import SEO from "../components/common/SEO";
 import BackButton from "../components/common/BackButton";
 
 // Asset Imports (Reusing available assets)
-const imgHero = "/images/royal_sherwani.png"; // Placeholder for Hero
-const imgClassic1 = "/images/men shoe/men formal shoe/men casual shoe1.png";
-const imgClassic2 = "/images/women dress/womendress1.png";
-const imgClassic3 = "/images/men watch/watch1.png";
-const imgSignature1 = "/images/royal_belt.png";
-const imgSignature2 = "/images/royal_wallet.png";
-const imgHeritage1 = "/images/royal_saree.png";
-const imgHeritage2 = "/images/royal_gown.png";
-const imgLimited1 = "/images/royal_watch.png";
+const imgHero = "/images/men/shirts/royal_sherwani.png"; // Placeholder for Hero
+const imgClassic1 = "/images/men/shoes/men formal shoe/men casual shoe1.png";
+const imgClassic2 = "/images/women/dresses/womendress1.png";
+const imgClassic3 = "/images/men/watches/watch1.png";
+const imgSignature1 = "/images/men/accessories/royal_belt.png";
+const imgSignature2 = "/images/men/wallets/royal_wallet.png";
+const imgHeritage1 = "/images/women/dresses/royal_saree.png";
+const imgHeritage2 = "/images/women/dresses/royal_gown.png";
+const imgLimited1 = "/images/men/watches/royal_watch.png";
 
 // Mock Data for Sub-collections
 const royalClassic = [
@@ -55,7 +55,7 @@ const RoyalShop = () => {
   };
 
   return (
-    <div className="bg-[#fcfbf9] text-[#19110b] font-sans selection:bg-[#D4AF37] selection:text-white min-h-screen">
+    <div className="bg-[#fcfbf9] text-[#1a1a1a] font-sans selection:bg-[#D4AF37] selection:text-white min-h-screen">
       <SEO
         title="Royal Collection | Murgdur"
         description="A celebration of timeless elegance and superior craftsmanship. Explore the Royal Collection-the pinnacle of regal style."
@@ -66,7 +66,7 @@ const RoyalShop = () => {
       <section className="pt-32 pb-12 text-center px-4 relative max-w-[1600px] mx-auto">
         {/* Back Button */}
         <div className="absolute top-32 left-4 md:left-8 z-30">
-          <BackButton className="text-[#19110b] hover:text-[#D4AF37]" />
+          <BackButton className="text-[#1a1a1a] hover:text-[#D4AF37]" />
         </div>
         <motion.h1
           initial={{ opacity: 0, y: 20 }}
@@ -300,7 +300,7 @@ const RoyalShop = () => {
       </div>
 
       {/* 6. CALL-TO-ACTION SECTION */}
-      <section className="py-24 bg-[#19110b] text-white text-center px-4">
+      <section className="py-24 bg-gray-100 text-gray-900 text-center px-4">
         <div className="max-w-3xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-serif mb-8">
             Curate Your Legacy
@@ -311,7 +311,7 @@ const RoyalShop = () => {
           </p>
           <Link
             to="/shop"
-            className="inline-block border border-white px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-white hover:text-black transition-colors"
+            className="inline-block border border-gray-900 px-10 py-4 text-xs font-bold uppercase tracking-[0.2em] hover:bg-gray-900 hover:text-white transition-colors"
           >
             Explore All Royal Pieces
           </Link>

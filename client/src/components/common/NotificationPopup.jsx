@@ -26,12 +26,12 @@ const NotificationPopup = () => {
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.9, y: 20 }}
             transition={{ type: "spring", stiffness: 300, damping: 25 }}
-            className="relative bg-[#0F0F0F] border border-royal-gold w-full max-w-md shadow-2xl p-6 md:p-8"
+            className="relative bg-white border border-royal-gold w-full max-w-md shadow-2xl p-6 md:p-8"
           >
             {/* Close Button */}
             <button
               onClick={dismissNotification}
-              className="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors"
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-900 transition-colors"
             >
               <X size={20} />
             </button>
@@ -48,7 +48,7 @@ const NotificationPopup = () => {
                 )}
               </div>
 
-              <h3 className="text-xl font-serif text-white tracking-wide mb-1">
+              <h3 className="text-xl font-serif text-gray-900 tracking-wide mb-1">
                 {notification.status === "info"
                   ? "Already in Cart"
                   : "Added to Cart"}
@@ -58,8 +58,8 @@ const NotificationPopup = () => {
               ></div>
 
               {/* Product Details */}
-              <div className="flex gap-4 w-full bg-white/5 p-4 rounded-sm border border-white/10 text-left mb-6">
-                <div className="w-20 h-24 bg-gray-900 shrink-0 border border-white/5">
+              <div className="flex gap-4 w-full bg-gray-50 p-4 rounded-sm border border-gray-200 text-left mb-6">
+                <div className="w-20 h-24 bg-gray-200 shrink-0 border border-gray-100">
                   <img
                     src={notification.image}
                     alt={notification.name}
@@ -67,7 +67,7 @@ const NotificationPopup = () => {
                   />
                 </div>
                 <div>
-                  <h4 className="text-white font-serif text-lg leading-tight mb-1">
+                  <h4 className="text-gray-900 font-serif text-lg leading-tight mb-1">
                     {notification.name}
                   </h4>
                   <p className="text-royal-gold font-bold text-sm mb-1">
@@ -90,7 +90,7 @@ const NotificationPopup = () => {
                 </Link>
                 <button
                   onClick={dismissNotification}
-                  className="w-full py-3 border border-white/30 text-white font-bold text-xs uppercase tracking-[0.2em] hover:bg-white/10 transition-colors"
+                  className="w-full py-3 border border-gray-300 text-gray-900 font-bold text-xs uppercase tracking-[0.2em] hover:bg-gray-100 transition-colors"
                 >
                   Continue Shopping
                 </button>

@@ -1,0 +1,495 @@
+[
+  {
+    "id": "169",
+    "name": "men shoe/men formal shoe",
+    "price": 6500,
+    "originalPrice": 7500,
+    "image": "/images/men shoe/men formal shoe/men casual shoe3back.png",
+    "category": "Men",
+    "type": "shoes",
+    "description": "Handcrafted luxury footwear with premium leather upper.",
+    "images": [
+      "/images/men shoe/men formal shoe/men casual shoe3back.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.1",
+    "reviews": 87
+  },
+  {
+    "id": "170",
+    "name": "men slipper",
+    "price": 3500,
+    "originalPrice": 4000,
+    "image": "/images/men slipper/mensslipper1top.png",
+    "category": "Men",
+    "type": "slippers",
+    "description": "Comfortable indoor slipper with cushioned sole.",
+    "images": [
+      "/images/men slipper/mensslipper1top.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.2",
+    "reviews": 118
+  },
+  {
+    "id": "171",
+    "name": "Charcoal Cable Knit Sweater",
+    "price": 7500,
+    "originalPrice": 9000,
+    "image": "/images/new/Charcoal Cable Knit Sweater/1person.png",
+    "category": "Men",
+    "type": "sweaters",
+    "description": "Fine-knit luxury pullover in premium materials.",
+    "images": [
+      "/images/new/Charcoal Cable Knit Sweater/1person.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.6",
+    "reviews": 66
+  },
+  {
+    "id": "172",
+    "name": "Cream Merino Turtleneck Sweater",
+    "price": 10000,
+    "originalPrice": 12000,
+    "image": "/images/new/Cream Merino Turtleneck Sweater/1person.png",
+    "category": "Men",
+    "type": "sweaters",
+    "description": "Fine-knit luxury pullover in premium materials.",
+    "images": [
+      "/images/new/Cream Merino Turtleneck Sweater/1person.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "5.0",
+    "reviews": 100
+  },
+  {
+    "id": "173",
+    "name": "Heather Grey Pullover Hoodie",
+    "price": 8500,
+    "originalPrice": 10000,
+    "image": "/images/new/Heather Grey Pullover Hoodie/1person.png",
+    "category": "Men",
+    "type": "hoodies",
+    "description": "Premium comfort wear in luxury cotton blend fabric.",
+    "images": [
+      "/images/new/Heather Grey Pullover Hoodie/1person.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.6",
+    "reviews": 108
+  },
+  {
+    "id": "174",
+    "name": "Premium Luxury Hoodie",
+    "price": 5500,
+    "originalPrice": 6500,
+    "image": "/images/new/hoody/10.png",
+    "category": "Men",
+    "type": "hoodies",
+    "description": "Premium comfort wear in luxury cotton blend fabric.",
+    "images": [
+      "/images/new/hoody/10.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.2",
+    "reviews": 80
+  },
+  {
+    "id": "175",
+    "name": "Leather Passport Cover & Holder",
+    "price": 9500,
+    "originalPrice": 11000,
+    "image": "/images/new/Leather Passport Cover & Holder/row-1-column-2.png",
+    "category": "Accessories",
+    "type": "accessories",
+    "description": "Premium luxury leather passport cover & holder. Crafted with finest materials and exquisite attention to detail.",
+    "images": [
+      "/images/new/Leather Passport Cover & Holder/row-1-column-2.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.7",
+    "reviews": 65
+  },
+  {
+    "id": "176",
+    "name": "Long Chain Wallet Clutch Wallet",
+    "price": 11000,
+    "originalPrice": 13000,
+    "image": "/images/new/Long Chain Wallet Clutch Wallet/10.png",
+    "category": "Accessories",
+    "type": "wallets",
+    "description": "Slim-profile cardholder with multiple compartments.",
+    "images": [
+      "/images/new/Long Chain Wallet Clutch Wallet/10.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.7",
+    "reviews": 133
+  },
+  {
+    "id": "177",
+    "name": "Quilted Leather Crossbody Bag",
+    "price": 17000,
+    "originalPrice": 20000,
+    "image": "/images/new/Quilted Leather Crossbody Bag (With gold chain strap)/holding.png",
+    "category": "Accessories",
+    "type": "bags",
+    "description": "Handcrafted luxury bag with intricate craftsmanship.",
+    "images": [
+      "/images/new/Quilted Leather Crossbody Bag (With gold chain strap)/holding.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.2",
+    "reviews": 60
+  },
+  {
+    "id": "178",
+    "name": "Slim Signature Cardholder Wallet",
+    "price": 9500,
+    "originalPrice": 11000,
+    "image": "/images/new/Slim Signature Cardholder Wallet/2.png",
+    "category": "Accessories",
+    "type": "wallets",
+    "description": "Slim-profile cardholder with multiple compartments.",
+    "images": [
+      "/images/new/Slim Signature Cardholder Wallet/2.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.8",
+    "reviews": 35
+  },
+  {
+    "id": "179",
+    "name": "Slouchy Calfskin Hobo Bag",
+    "price": 11500,
+    "originalPrice": 13500,
+    "image": "/images/new/Slouchy Calfskin Hobo Bag (Minimalist, soft leather)/holding.png",
+    "category": "Accessories",
+    "type": "bags",
+    "description": "Handcrafted luxury bag with intricate craftsmanship.",
+    "images": [
+      "/images/new/Slouchy Calfskin Hobo Bag (Minimalist, soft leather)/holding.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.1",
+    "reviews": 97
+  },
+  {
+    "id": "180",
+    "name": "Structured Crocodile Top-Handle Bag",
+    "price": 21500,
+    "originalPrice": 25500,
+    "image": "/images/new/Structured Crocodile Top-Handle Bag (Exotic leather, rigid shape)/Holding.png",
+    "category": "Accessories",
+    "type": "bags",
+    "description": "Handcrafted luxury bag with intricate craftsmanship.",
+    "images": [
+      "/images/new/Structured Crocodile Top-Handle Bag (Exotic leather, rigid shape)/Holding.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.7",
+    "reviews": 57
+  },
+  {
+    "id": "181",
+    "name": "Structured Vanity Case",
+    "price": 8000,
+    "originalPrice": 9500,
+    "image": "/images/new/Structured Vanity Case (Used for cosmetics, top handle)/row-1-column-2.png",
+    "category": "Accessories",
+    "type": "accessories",
+    "description": "Premium luxury structured vanity case. Crafted with finest materials and exquisite attention to detail.",
+    "images": [
+      "/images/new/Structured Vanity Case (Used for cosmetics, top handle)/row-1-column-2.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.2",
+    "reviews": 49
+  },
+  {
+    "id": "182",
+    "name": "Suede Flap Bag with Gold Logo",
+    "price": 19000,
+    "originalPrice": 22500,
+    "image": "/images/new/Suede Flap Bag with Gold Logo (Rich velvet-like texture)/row-1-column-2.png",
+    "category": "Accessories",
+    "type": "bags",
+    "description": "Handcrafted luxury bag with intricate craftsmanship.",
+    "images": [
+      "/images/new/Suede Flap Bag with Gold Logo (Rich velvet-like texture)/row-1-column-2.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.1",
+    "reviews": 94
+  },
+  {
+    "id": "183",
+    "name": "Sunglasses_cateye",
+    "price": 8000,
+    "originalPrice": 9500,
+    "image": "/images/new/Sunglasses_cateye/1person.png",
+    "category": "Accessories",
+    "type": "sunglasses",
+    "description": "UV-protected luxury eyewear with premium materials.",
+    "images": [
+      "/images/new/Sunglasses_cateye/1person.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.1",
+    "reviews": 59
+  },
+  {
+    "id": "184",
+    "name": "sunglass_round",
+    "price": 9000,
+    "originalPrice": 10500,
+    "image": "/images/new/sunglass_round/1person.png",
+    "category": "Accessories",
+    "type": "sunglasses",
+    "description": "Premium luxury sunglass_round. Crafted with finest materials and exquisite attention to detail.",
+    "images": [
+      "/images/new/sunglass_round/1person.png"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "5.0",
+    "reviews": 114
+  },
+  {
+    "id": "185",
+    "name": "women handbag",
+    "price": 32500,
+    "originalPrice": 38500,
+    "image": "/images/women handbag/woman bag white 2.jpeg",
+    "category": "Accessories",
+    "type": "bags",
+    "description": "Handcrafted luxury bag with intricate craftsmanship.",
+    "images": [
+      "/images/women handbag/woman bag white 2.jpeg"
+    ],
+    "sizes": [
+      "S",
+      "M",
+      "L",
+      "XL",
+      "XXL"
+    ],
+    "colors": [
+      "#1a1a1a",
+      "#2c3e50",
+      "#8b4513",
+      "#5d4037",
+      "#4a4a4a"
+    ],
+    "rating": "4.9",
+    "reviews": 84
+  }
+]

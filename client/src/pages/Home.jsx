@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { Heart } from "lucide-react";
 import HeroSlider from "../components/common/HeroSlider";
 import RoyalCollectionCategories from "../components/common/RoyalCollectionCategories";
@@ -12,8 +12,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { fetchHomePage } from "../utils/sanity";
 import PageSections from "../components/sections/PageSections";
 
-const spotlightImg = "/images/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
-const royalBg = "/images/royal_dress_bg.png";
+const spotlightImg = "/images/hero/Gemini_Generated_Image_hge4lhge4lhge4lh.png";
+const royalBg = "/images/women/dresses/royal_dress_bg.png";
 
 import SEO from "../components/common/SEO";
 
@@ -33,7 +33,7 @@ const Home = () => {
   // ---------------------------------------------------------
   if (homeData?.pageBuilder && homeData.pageBuilder.length > 0) {
     return (
-      <div className="bg-royal-black overflow-x-hidden">
+      <div className="bg-white overflow-x-hidden">
         <SEO
           title="Murgdur | Royal Heritage & Luxury"
           description="Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty."
@@ -61,7 +61,7 @@ const Home = () => {
       />
 
       {/* Full-Screen Cinematic Hero */}
-      <div className="relative w-full h-screen overflow-hidden bg-[#2C2C2C]">
+      <div className="relative w-full h-screen overflow-hidden bg-[#f2f0ec]">
         {/* Hero Background Image */}
         <img
           src={homeData?.promoSection?.backgroundImage || royalBg}
@@ -69,26 +69,26 @@ const Home = () => {
           className="absolute inset-0 w-full h-full object-cover"
         />
 
-        {/* Subtle Dark Overlay */}
-        <div className="absolute inset-0 bg-black/20"></div>
+        {/* Subtle Light Overlay */}
+        <div className="absolute inset-0 bg-white/5"></div>
 
         {/* Content Overlay — Bottom-anchored */}
-        <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-6 pb-12 md:pb-16 lg:pb-20 xl:pb-24">
+        <div className="relative z-10 h-full flex flex-col items-center justify-end text-center px-6 pb-14 md:pb-20 lg:pb-24 xl:pb-28" style={{background: 'linear-gradient(to top, rgba(0,0,0,0.45) 0%, rgba(0,0,0,0.15) 45%, transparent 70%)'}}>
 
           {/* Category Eyebrow */}
-          <span className="text-white/95 text-[11px] md:text-[13px] tracking-[0.4em] uppercase font-light mb-5 md:mb-6 block drop-shadow-md">
+          <span className="text-white/90 text-[11px] tracking-[0.18em] uppercase font-normal mb-4 block drop-shadow-md">
             {homeData?.promoSection?.eyebrow || "HERITAGE"}
           </span>
 
           {/* Main Collection Title */}
           <h2
-            className="text-white text-center max-w-5xl mb-8 md:mb-12 lg:mb-16 px-4"
+            className="text-white text-center max-w-4xl mb-7 md:mb-9 px-4 font-serif"
             style={{
-              fontSize: "clamp(2.25rem, 7vw, 5.5rem)",
-              fontWeight: 300,
-              letterSpacing: "-0.01em",
-              lineHeight: 1.1,
-              textShadow: "0 4px 15px rgba(0,0,0,0.5)",
+              fontSize: "clamp(1.9rem, 4.5vw, 3.75rem)",
+              fontWeight: 400,
+              letterSpacing: "0.01em",
+              lineHeight: 1.15,
+              textShadow: "0 2px 12px rgba(0,0,0,0.35)",
               WebkitFontSmoothing: "antialiased",
             }}
           >
@@ -96,16 +96,16 @@ const Home = () => {
           </h2>
 
           {/* CTA Links — side-by-side with elegant underline */}
-          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-14 lg:gap-20">
+          <div className="flex flex-row items-center gap-8 md:gap-12">
             <Link
               to="/shop"
-              className="text-white text-[14px] md:text-[17px] tracking-[0.05em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/40 hover:border-white pb-[4px] whitespace-nowrap drop-shadow-md"
+              className="text-white text-[13px] md:text-[14px] tracking-[0.04em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/60 hover:border-white pb-[3px] whitespace-nowrap drop-shadow-md"
             >
               Explore the Collection
             </Link>
             <Link
               to="/royal-collection"
-              className="text-white text-[14px] md:text-[17px] tracking-[0.05em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/40 hover:border-white pb-[4px] whitespace-nowrap drop-shadow-md"
+              className="text-white text-[13px] md:text-[14px] tracking-[0.04em] font-light hover:text-gray-200 transition-all duration-300 border-b border-white/60 hover:border-white pb-[3px] whitespace-nowrap drop-shadow-md"
             >
               Discover Heritage
             </Link>
@@ -146,12 +146,12 @@ const Home = () => {
               {[
                 {
                   name: "Handbags",
-                  img: "/images/women handbag/woman bag white 1.jpeg",
+                  img: "/images/women/handbags/woman bag white 1.jpeg",
                   link: "/shop?type=bags",
                 },
                 {
                   name: "Small Leather Goods",
-                  img: "/images/woens small bag.jpg",
+                  img: "/images/women/handbags/woens small bag.jpg",
                   link: "/shop?type=wallets",
                 },
                 {
@@ -161,7 +161,7 @@ const Home = () => {
                 },
                 {
                   name: "Perfumes",
-                  img: "/images/women perfume/womens-perfume4.png",
+                  img: "/images/women/perfume/womens-perfume4.png",
                   link: "/shop?type=perfumes",
                 },
               ].map((item, idx) => (
@@ -223,12 +223,12 @@ const Home = () => {
               {[
                 {
                   name: "Men's Bags",
-                  img: "/images/mensbags/mens-bag3.png",
+                  img: "/images/men/bags/mens-bag3.png",
                   link: "/shop?type=bags",
                 },
                 {
                   name: "Wallets & Accessories",
-                  img: "/images/mens_royal_wallet_section.png",
+                  img: "/images/men/wallets/mens_royal_wallet_section.png",
                   link: "/shop?type=wallets",
                 },
                 {
@@ -278,23 +278,21 @@ const Home = () => {
         </section>
       </div>
 
-      {/* Video Campaign Section */}
-      <section className="relative w-full h-[80vh] overflow-hidden bg-black">
-        <video
-          autoPlay
-          loop
-          muted
-          playsInline
-          className="absolute inset-0 w-full h-full object-cover opacity-60"
-          poster="https://images.unsplash.com/photo-1483985988355-763728e1935b?q=80&w=1600&auto=format&fit=crop"
-        >
-          <source
-            src={homeData?.videoCampaign?.videoUrl || "/videos/perfume1.mp4"}
-            type="video/mp4"
+      {/* Campaign Section */}
+      <section className="relative w-full h-[80vh] overflow-hidden bg-[#f5f3f0]">
+        {homeData?.videoCampaign?.videoUrl ? (
+          <video autoPlay loop muted playsInline className="absolute inset-0 w-full h-full object-cover opacity-90">
+            <source src={homeData.videoCampaign.videoUrl} type="video/mp4" />
+          </video>
+        ) : (
+          <img
+            src="/images/hero/Gemini_Generated_Image_6x7jv96x7jv96x7j.png"
+            alt="Royal Campaign"
+            className="absolute inset-0 w-full h-full object-cover opacity-90"
+            loading="lazy"
           />
-          Your browser does not support the video tag.
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/50"></div>
+        )}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/30"></div>
       </section>
 
       {/* Valentine's Day Gifts */}
@@ -321,7 +319,7 @@ const Home = () => {
               {
                 name: "Key Pouch",
                 price: "₹18,500.00",
-                img: "/images/woens small bag.jpg",
+                img: "/images/women/handbags/woens small bag.jpg",
                 link: "/shop?search=Key Pouch",
               },
               {
@@ -333,25 +331,18 @@ const Home = () => {
               {
                 name: "Multiple Wallet",
                 price: "₹48,500.00",
-                img: "/images/mens_royal_wallet_section.png",
+                img: "/images/men/wallets/royal_wallet.png",
                 link: "/shop?search=Multiple Wallet",
               },
               {
-                name: "Imagination",
-                price: "₹25,900.00",
-                img: "/images/women perfume/womens-perfume4.png",
-                link: "/shop?search=Imagination",
+                name: "Silk Scarf",
+                price: "₹12,500.00",
+                img: "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?q=80&w=800&auto=format&fit=crop",
+                link: "/shop?search=Silk Scarf",
               },
-            ].map((item, idx) => (
-              <Link to={item.link} key={idx} className="group block mb-8">
-                {/* Product Image Container-Precise 218x360 Aspect Ratio feel */}
-                <div
-                  className="relative overflow-hidden bg-[#F6F6F6] mb-4 flex items-center justify-center transition-all duration-500 ease-out group-hover:bg-[#F2F2F2]"
-                  style={{
-                    aspectRatio: "218.094 / 360.609",
-                    width: "100%",
-                  }}
-                >
+            ].map((item, index) => (
+              <Link key={index} to={item.link} className="group block cursor-pointer">
+                <div className="relative aspect-[3/4] overflow-hidden bg-[#f5f3f0] mb-3">
                   <img
                     src={item.img}
                     alt={item.name}
@@ -394,13 +385,13 @@ const Home = () => {
           <div className="flex justify-center items-center gap-4 mt-12">
             <Link
               to="/shop?cat=women"
-              className="px-8 py-3 bg-[#19110b] text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-[#19110b] border border-[#19110b] transition-all duration-300"
+              className="px-8 py-3 bg-black text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-black border border-black transition-all duration-300"
             >
               For Her
             </Link>
             <Link
               to="/shop?cat=men"
-              className="px-8 py-3 bg-[#19110b] text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-[#19110b] border border-[#19110b] transition-all duration-300"
+              className="px-8 py-3 bg-black text-white text-[11px] font-normal uppercase tracking-[0.22em] hover:bg-white hover:text-black border border-black transition-all duration-300"
             >
               For Him
             </Link>
@@ -419,7 +410,7 @@ const Home = () => {
               objectPosition: "center 20%",
             }}
           />
-          <div className="absolute inset-0 bg-black/10"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent"></div>
         </div>
 
         <div
@@ -471,25 +462,25 @@ const Home = () => {
               {
                 name: "Royal Heritage Duffle",
                 price: "₹2,59,000.00",
-                img: "/images/mensbags/mens-bag1.png",
+                img: "/images/men/bags/mens-bag1.png",
                 link: "/shop?type=bags",
               },
               {
                 name: "Brocade Embroidered Kurta",
                 price: "₹98,000.00",
-                img: "/images/royal_tshirt.png",
+                img: "/images/men/shirts/royal_tshirt.png",
                 link: "/shop?type=shirts",
               },
               {
                 name: "Royal Leather Sneaker",
                 price: "₹1,51,000.00",
-                img: "/images/men shoe/menshoe1.png",
+                img: "/images/men/shoes/menshoe1.png",
                 link: "/shop?type=shoes",
               },
               {
                 name: "Signature Bag Charm",
                 price: "₹1,18,000.00",
-                img: "/images/micro.jpg",
+                img: "/images/men/watches/micro.jpg",
                 link: "/shop?type=accessories",
               },
             ].map((item, idx) => (
@@ -589,7 +580,7 @@ const Home = () => {
           <div className="flex flex-col md:flex-row items-center gap-16">
             <div className="w-full md:w-1/2 aspect-[4/5] overflow-hidden bg-gray-50">
               <img
-                src="/images/royal_perfume.png"
+                src="/images/men/perfume/royal_perfume.png"
                 alt="Perfumery"
                 className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                 loading="lazy"
@@ -651,17 +642,17 @@ const Home = () => {
             {[
               {
                 name: "Tambour Moon",
-                img: "/images/watch 2.png",
+                img: "/images/men/watches/watch 2.png",
                 link: "/shop?search=Tambour Moon",
               },
               {
                 name: "Escale Spin Time",
-                img: "/images/watch1.png",
+                img: "/images/men/watches/watch1.png",
                 link: "/shop?search=Escale Spin Time",
               },
               {
                 name: "Voyager Skeleton",
-                img: "/images/royal_watch.png",
+                img: "/images/men/watches/royal_watch.png",
                 link: "/shop?search=Voyager Skeleton",
               },
             ].map((item, idx) => (
@@ -720,19 +711,19 @@ const Home = () => {
               {
                 title: "Personalization",
                 desc: "Make it your own with hot stamping and painting.",
-                img: "/images/per.jpg",
+                img: "/images/site/per.jpg",
                 link: "/personalisation",
               },
               {
                 title: "The Art of Gifting",
                 desc: "The perfect gift, beautifully wrapped.",
-                img: "/images/gift.jpg",
+                img: "/images/site/gift.jpg",
                 link: "/gifting",
               },
               {
                 title: "Repairs & Care",
                 desc: "Preserve the beauty of your Murgdur creation.",
-                img: "/images/cares.jpg",
+                img: "/images/site/cares.jpg",
                 link: "/repairs",
               },
             ].map((item, idx) => (
@@ -813,25 +804,25 @@ const Home = () => {
               {
                 name: "Royal Structured Handbag",
                 price: "₹4,25,000.00",
-                img: "/images/hand bag.png",
+                img: "/images/women/handbags/hand bag.png",
                 link: "/shop?type=bags",
               },
               {
                 name: "Zari Embroidered Gown",
                 price: "₹1,85,000.00",
-                img: "/images/royal_gown.png",
+                img: "/images/women/dresses/royal_gown.png",
                 link: "/shop?type=clothing",
               },
               {
                 name: "Patent Leather Heels",
                 price: "₹95,000.00",
-                img: "/images/royal_heels.png",
+                img: "/images/women/shoes/royal_heels.png",
                 link: "/shop?type=shoes",
               },
               {
                 name: "Imagination Eau de Parfum",
                 price: "₹32,000.00",
-                img: "/images/women perfume/womens-perfume4.png",
+                img: "/images/women/perfume/womens-perfume1.png",
                 link: "/shop?type=perfumes",
               },
             ].map((item, idx) => (

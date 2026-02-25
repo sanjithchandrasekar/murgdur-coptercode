@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
+﻿import React, { useState, useEffect, useMemo, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   Filter,
@@ -14,7 +14,7 @@ import {
   ShoppingBag,
 } from "lucide-react";
 import RoyalShop from "./RoyalShop";
-import { fetchProducts } from "../utils/sanity";
+import { fetchProducts, fetchShopPage } from "../utils/sanity";
 import { products as staticProducts } from "../data/products";
 import { useCart } from "../context/CartContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -27,11 +27,14 @@ const ITEMS_PER_PAGE = 1000;
 const CATEGORY_TABS = [
   { label: "All", value: "all" },
   { label: "Shoes", value: "shoes" },
+  { label: "Slippers", value: "slippers" },
   { label: "Bags", value: "bags" },
   { label: "Travel", value: "travel" },
   { label: "Watches", value: "watches" },
   { label: "Jewellery", value: "jewellery" },
   { label: "Apparel", value: "clothing" },
+  { label: "Hoodies", value: "hoodies" },
+  { label: "Sweaters", value: "sweaters" },
   { label: "Dresses", value: "dresses" },
   { label: "Shirts", value: "shirts" },
   { label: "Belts", value: "belts" },
@@ -52,122 +55,146 @@ const PRICE_RANGES = [
 /* ─── Editorial banners — keyed by activeTab ─── */
 const EDITORIAL_BANNERS_BY_TAB = {
   all: [
-    { eyebrow: "New Collection", heading: "The House\nof Murgdur", subtext: "Crafted for royalty. Worn by the elite. Discover our signature pieces that define modern luxury.", cta: "Explore Collection", ctaLink: "/royal-collection", image: "/images/royal_sherwani.png", imageAlt: "Murgdur Royal Sherwani", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Women's Edit", heading: "Draped in\nGrandeur", subtext: "From bridal couture to everyday elegance — each garment a masterpiece of Indian craftsmanship.", cta: "Shop Women", ctaLink: "/shop?type=dresses", image: "/images/royal_gown.png", imageAlt: "Murgdur Royal Gown", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "New Collection", heading: "The House\nof Murgdur", subtext: "Crafted for royalty. Worn by the elite. Discover our signature pieces that define modern luxury.", cta: "Explore Collection", ctaLink: "/royal-collection", image: "/images/men/shirts/royal_sherwani.png", imageAlt: "Murgdur Royal Sherwani", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Women's Edit", heading: "Draped in\nGrandeur", subtext: "From bridal couture to everyday elegance — each garment a masterpiece of Indian craftsmanship.", cta: "Shop Women", ctaLink: "/shop?type=dresses", image: "/images/women/dresses/royal_gown.png", imageAlt: "Murgdur Royal Gown", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   shoes: [
-    { eyebrow: "Footwear", heading: "Walk in\nRoyalty", subtext: "Premium hand-crafted leather shoes built for the modern gentleman and the elegant woman.", cta: "Shop Footwear", ctaLink: "/shop?type=shoes", image: "/images/royal_heels.png", imageAlt: "Murgdur Heels", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Craftsmanship", heading: "Sole of\nLuxury", subtext: "Every step a statement. Explore our curated collection of premium footwear for every occasion.", cta: "View All Shoes", ctaLink: "/shop?type=shoes", image: "/images/men shoe/menshoe6.jpeg", imageAlt: "Men's Shoe", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Footwear", heading: "Walk in\nRoyalty", subtext: "Premium hand-crafted leather shoes built for the modern gentleman and the elegant woman.", cta: "Shop Footwear", ctaLink: "/shop?type=shoes", image: "/images/women/shoes/royal_heels.png", imageAlt: "Murgdur Heels", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Craftsmanship", heading: "Sole of\nLuxury", subtext: "Every step a statement. Explore our curated collection of premium footwear for every occasion.", cta: "View All Shoes", ctaLink: "/shop?type=shoes", image: "/images/men/shoes/menshoe6.jpeg", imageAlt: "Men's Shoe", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   bags: [
-    { eyebrow: "Handbags", heading: "Carry the\nLegacy", subtext: "From structured totes to sleek clutches — each bag tells a story of uncompromised craftsmanship.", cta: "Shop Bags", ctaLink: "/shop?type=bags", image: "/images/women handbag/woman bag white 1.jpeg", imageAlt: "Murgdur Handbag", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "New Arrivals", heading: "The Art of\nthe Bag", subtext: "Refined silhouettes. Supple leathers. Colours that speak without words. Discover our latest arrivals.", cta: "Explore Bags", ctaLink: "/shop?type=bags", image: "/images/women handbag/women bag brown 2 front.jpeg", imageAlt: "Brown Handbag", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Handbags", heading: "Carry the\nLegacy", subtext: "From structured totes to sleek clutches — each bag tells a story of uncompromised craftsmanship.", cta: "Shop Bags", ctaLink: "/shop?type=bags", image: "/images/women/handbags/woman bag white 1.jpeg", imageAlt: "Murgdur Handbag", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "New Arrivals", heading: "The Art of\nthe Bag", subtext: "Refined silhouettes. Supple leathers. Colours that speak without words. Discover our latest arrivals.", cta: "Explore Bags", ctaLink: "/shop?type=bags", image: "/images/women/handbags/women bag brown 2 front.jpeg", imageAlt: "Brown Handbag", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   watches: [
-    { eyebrow: "Timepieces", heading: "Time is a\nLuxury", subtext: "Every second counts. Our timepieces are engineered for those who appreciate the finest horology.", cta: "Shop Watches", ctaLink: "/shop?type=watches", image: "/images/royal_watch.png", imageAlt: "Murgdur Watch", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Heritage", heading: "Precision\nRefined", subtext: "Inspired by centuries of watchmaking excellence — tested by time, worn by few.", cta: "View Collection", ctaLink: "/shop?type=watches", image: "/images/watch1.png", imageAlt: "Watch Collection", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Timepieces", heading: "Time is a\nLuxury", subtext: "Every second counts. Our timepieces are engineered for those who appreciate the finest horology.", cta: "Shop Watches", ctaLink: "/shop?type=watches", image: "/images/men/watches/royal_watch.png", imageAlt: "Murgdur Watch", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Heritage", heading: "Precision\nRefined", subtext: "Inspired by centuries of watchmaking excellence — tested by time, worn by few.", cta: "View Collection", ctaLink: "/shop?type=watches", image: "/images/men/watches/watch1.png", imageAlt: "Watch Collection", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   clothing: [
-    { eyebrow: "Apparel", heading: "The House\nof Murgdur", subtext: "Regal silhouettes meet modern tailoring. Dress like royalty for every occasion.", cta: "Shop Apparel", ctaLink: "/shop?type=clothing", image: "/images/royal_sherwani.png", imageAlt: "Royal Sherwani", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Women's Couture", heading: "Draped in\nGrandeur", subtext: "From bridal lehengas to everyday elegance — each piece a masterpiece of Indian craftsmanship.", cta: "Shop Women", ctaLink: "/shop?type=dresses", image: "/images/royal_gown.png", imageAlt: "Royal Gown", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Apparel", heading: "The House\nof Murgdur", subtext: "Regal silhouettes meet modern tailoring. Dress like royalty for every occasion.", cta: "Shop Apparel", ctaLink: "/shop?type=clothing", image: "/images/men/shirts/royal_sherwani.png", imageAlt: "Royal Sherwani", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Women's Couture", heading: "Draped in\nGrandeur", subtext: "From bridal lehengas to everyday elegance — each piece a masterpiece of Indian craftsmanship.", cta: "Shop Women", ctaLink: "/shop?type=dresses", image: "/images/women/dresses/royal_gown.png", imageAlt: "Royal Gown", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   accessories: [
-    { eyebrow: "Accessories", heading: "Every Detail\nMatters", subtext: "Complete your look with our curated selection of belts, perfumes, wallets and jewellery.", cta: "Shop Accessories", ctaLink: "/shop?type=accessories", image: "/images/royal_perfume.png", imageAlt: "Murgdur Perfume", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Signature Pieces", heading: "The Finishing\nTouch", subtext: "From the boardroom to the ballroom — our accessories elevate every ensemble.", cta: "View All", ctaLink: "/shop?type=accessories", image: "/images/royal_wallet.png", imageAlt: "Royal Wallet", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Accessories", heading: "Every Detail\nMatters", subtext: "Complete your look with our curated selection of belts, perfumes, wallets and jewellery.", cta: "Shop Accessories", ctaLink: "/shop?type=accessories", image: "/images/men/perfume/royal_perfume.png", imageAlt: "Murgdur Perfume", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Signature Pieces", heading: "The Finishing\nTouch", subtext: "From the boardroom to the ballroom — our accessories elevate every ensemble.", cta: "View All", ctaLink: "/shop?type=accessories", image: "/images/men/wallets/royal_wallet.png", imageAlt: "Royal Wallet", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   wallets: [
-    { eyebrow: "Wallets", heading: "Carry Only\nthe Finest", subtext: "Hand-stitched leather wallets crafted for the discerning gentleman who values form and function.", cta: "Shop Wallets", ctaLink: "/shop?type=wallets", image: "/images/royal_wallet.png", imageAlt: "Royal Wallet", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Craftsmanship", heading: "Slim. Refined.\nIconic.", subtext: "Premium leather, precise stitching — every fold tells a story of uncompromised quality.", cta: "View All Wallets", ctaLink: "/shop?type=wallets", image: "/images/mens_royal_wallet_section.png", imageAlt: "Wallet", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Wallets", heading: "Carry Only\nthe Finest", subtext: "Hand-stitched leather wallets crafted for the discerning gentleman who values form and function.", cta: "Shop Wallets", ctaLink: "/shop?type=wallets", image: "/images/men/wallets/royal_wallet.png", imageAlt: "Royal Wallet", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Craftsmanship", heading: "Slim. Refined.\nIconic.", subtext: "Premium leather, precise stitching — every fold tells a story of uncompromised quality.", cta: "View All Wallets", ctaLink: "/shop?type=wallets", image: "/images/men/wallets/mens_royal_wallet_section.png", imageAlt: "Wallet", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   sunglasses: [
-    { eyebrow: "Eyewear", heading: "See the World\nDifferently", subtext: "UV-protected lenses in frames crafted for the bold. Style meets protection in every pair.", cta: "Shop Eyewear", ctaLink: "/shop?type=sunglasses", image: "/images/royal_sunglasses.png", imageAlt: "Sunglasses", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "New Season", heading: "Frames of\nDistinction", subtext: "From round to rectangular — our eyewear collection is designed to complement every face.", cta: "View Collection", ctaLink: "/shop?type=sunglasses", image: "/images/royal_sunglasses.png", imageAlt: "Sunglasses", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Eyewear", heading: "See the World\nDifferently", subtext: "UV-protected lenses in frames crafted for the bold. Style meets protection in every pair.", cta: "Shop Eyewear", ctaLink: "/shop?type=sunglasses", image: "/images/men/sunglasses/royal_sunglasses.png", imageAlt: "Sunglasses", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "New Season", heading: "Frames of\nDistinction", subtext: "From round to rectangular — our eyewear collection is designed to complement every face.", cta: "View Collection", ctaLink: "/shop?type=sunglasses", image: "/images/hero/Gemini_Generated_Image_o2z9xpo2z9xpo2z9.png", imageAlt: "Luxury Eyewear", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   perfumes: [
-    { eyebrow: "Fragrance", heading: "Wear Your\nSignature", subtext: "Our perfumes are composed by master perfumers using the rarest raw materials from around the world.", cta: "Shop Fragrances", ctaLink: "/shop?type=perfumes", image: "/images/royal_perfume.png", imageAlt: "Perfume", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Exclusive", heading: "A Scent for\nEvery Story", subtext: "From fresh citrus to deep oud — find the fragrance that speaks your language.", cta: "Explore Perfumes", ctaLink: "/shop?type=perfumes", image: "/images/royal_perfume.png", imageAlt: "Perfume", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Fragrance", heading: "Wear Your\nSignature", subtext: "Our perfumes are composed by master perfumers using the rarest raw materials from around the world.", cta: "Shop Fragrances", ctaLink: "/shop?type=perfumes", image: "/images/men/perfume/royal_perfume.png", imageAlt: "Perfume", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Exclusive", heading: "A Scent for\nEvery Story", subtext: "From fresh citrus to deep oud — find the fragrance that speaks your language.", cta: "Explore Perfumes", ctaLink: "/shop?type=perfumes", image: "/images/site/per.jpg", imageAlt: "Women's Perfume", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
   dresses: [
-    { eyebrow: "Women's Couture", heading: "Draped in\nGrandeur", subtext: "From bridal lehengas to cocktail dresses — each piece is a testament to India's rich textile heritage.", cta: "Shop Dresses", ctaLink: "/shop?type=dresses", image: "/images/royal_gown.png", imageAlt: "Royal Gown", imageSide: "right", bg: "#19110b", textColor: "#fff" },
-    { eyebrow: "Bridal Edit", heading: "Made for Your\nMoment", subtext: "Exquisite bridal and occasion wear, handcrafted with zari and zardozi embroidery.", cta: "Explore Bridal", ctaLink: "/shop?type=dresses", image: "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png", imageAlt: "Lehenga", imageSide: "left", bg: "#f0efed", textColor: "#19110b" },
+    { eyebrow: "Women's Couture", heading: "Draped in\nGrandeur", subtext: "From bridal lehengas to cocktail dresses — each piece is a testament to India's rich textile heritage.", cta: "Shop Dresses", ctaLink: "/shop?type=dresses", image: "/images/women/dresses/royal_gown.png", imageAlt: "Royal Gown", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Bridal Edit", heading: "Made for Your\nMoment", subtext: "Exquisite bridal and occasion wear, handcrafted with zari and zardozi embroidery.", cta: "Explore Bridal", ctaLink: "/shop?type=dresses", image: "/images/hero/Gemini_Generated_Image_aimaqdaimaqdaima.png", imageAlt: "Lehenga", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
+  ],
+  slippers: [
+    { eyebrow: "Comfort Wear", heading: "The Art of\nComfort", subtext: "Premium slippers crafted for those who value comfort without compromising on style.", cta: "Shop Slippers", ctaLink: "/shop?type=slippers", image: "/images/men/slippers/mensslipper1.png", imageAlt: "Luxury Slippers", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Luxury at Home", heading: "Every Moment\nMatters", subtext: "Slip into luxury with our curated collection of handcrafted slippers for home and beyond.", cta: "View All", ctaLink: "/shop?type=slippers", image: "/images/women/shoes/womensslipper.jpeg", imageAlt: "Women's Slippers", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
+  ],
+  hoodies: [
+    { eyebrow: "Casual Luxury", heading: "Comfort Meets\nStyle", subtext: "Premium hoodies crafted from the finest materials for the modern, sophisticated lifestyle.", cta: "Shop Hoodies", ctaLink: "/shop?type=hoodies", image: "/images/new/Heather Grey Pullover Hoodie/1person.png", imageAlt: "Luxury Hoodie", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "New Arrivals", heading: "Luxury Hoodies\nfor Every Mood", subtext: "From classic neutrals to bold statements — find your perfect hoodie from our exclusive collection.", cta: "Explore", ctaLink: "/shop?type=hoodies", image: "/images/new/Premium Luxury Hoodie/1.png", imageAlt: "Premium Hoodie", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
+  ],
+  sweaters: [
+    { eyebrow: "Fine Knit", heading: "Texture &\nRefinement", subtext: "Hand-selected sweaters in premium yarns for those who appreciate quality craftsmanship.", cta: "Shop Sweaters", ctaLink: "/shop?type=sweaters", image: "/images/new/Charcoal Cable Knit Sweater/1person.png", imageAlt: "Premium Sweater", imageSide: "right", bg: "#1a1a1a", textColor: "#fff" },
+    { eyebrow: "Collection", heading: "Elegance in\nEvery Stitch", subtext: "Discover our curated selection of luxury sweaters perfect for any occasion.", cta: "View Collection", ctaLink: "/shop?type=sweaters", image: "/images/new/Cream Merino Turtleneck Sweater/1person.png", imageAlt: "Merino Sweater", imageSide: "left", bg: "#f0efed", textColor: "#1a1a1a" },
   ],
 };
 
 /* ─── Per-tab category icon subcategories ─── */
 const CATEGORY_ICONS_BY_TAB = {
   all: [
-    { name: "Men's Collection", image: "/images/royal_sherwani.png", path: "/shop?type=clothing" },
-    { name: "Women's Collection", image: "/images/royal_gown.png", path: "/shop?type=dresses" },
-    { name: "Handbags", image: "/images/hand bag.png", path: "/shop?type=bags" },
-    { name: "Watches", image: "/images/royal_watch.png", path: "/shop?type=watches" },
-    { name: "Accessories", image: "/images/royal_perfume.png", path: "/shop?type=accessories" },
+    { name: "Men's Collection", image: "/images/men/shirts/royal_shirt.png", path: "/shop?category=Men" },
+    { name: "Women's Collection", image: "/images/women/dresses/womendress1.png", path: "/shop?category=Women" },
+    { name: "Handbags", image: "/images/women/handbags/hand bag.png", path: "/shop?type=bags" },
+    { name: "Watches", image: "/images/men/watches/watch4.png", path: "/shop?type=watches" },
+    { name: "Accessories", image: "/images/men/accessories/mens_accessories_section.png", path: "/shop?type=accessories" },
   ],
   bags: [
-    { name: "Royal Initials", image: "/images/vanitycase.jpg", path: "/shop?type=bags&search=signature" },
-    { name: "Crossbody Bags", image: "/images/hand bag.png", path: "/shop?type=bags&search=crossbody" },
-    { name: "Shoulder Bags", image: "/images/woens small bag.jpg", path: "/shop?type=bags&search=shoulder" },
-    { name: "Totes", image: "/images/women handbag/woman bag white 1.jpeg", path: "/shop?type=bags&search=tote" },
-    { name: "Mini Bags", image: "/images/zippy wallet.jpg", path: "/shop?type=bags&search=mini" },
+    { name: "Royal Initials", image: "/images/site/vanitycase.jpg", path: "/shop?type=bags&search=signature" },
+    { name: "Crossbody Bags", image: "/images/women/handbags/hand bag.png", path: "/shop?type=bags&search=crossbody" },
+    { name: "Shoulder Bags", image: "/images/women/handbags/woens small bag.jpg", path: "/shop?type=bags&search=shoulder" },
+    { name: "Totes", image: "/images/women/handbags/woman bag white 1.jpeg", path: "/shop?type=bags&search=tote" },
+    { name: "Mini Bags", image: "/images/women/accessories/zippy wallet.jpg", path: "/shop?type=bags&search=mini" },
   ],
   shoes: [
-    { name: "Oxford Shoes", image: "/images/men shoe/menshoe1.png", path: "/shop?type=shoes&search=oxford" },
-    { name: "Monk Straps", image: "/images/men shoe/menshoe6.jpeg", path: "/shop?type=shoes&search=monk" },
-    { name: "Sneakers", image: "/images/men shoe/menshoe9.jpeg", path: "/shop?type=shoes&search=sneaker" },
-    { name: "Women's Heels", image: "/images/royal_heels.png", path: "/shop?type=shoes&search=heel" },
-    { name: "Slippers", image: "/images/womensslipper.jpeg", path: "/shop?type=shoes&search=slipper" },
+    { name: "Oxford Shoes", image: "/images/men/shoes/menshoe1.png", path: "/shop?type=shoes&search=oxford" },
+    { name: "Monk Straps", image: "/images/men/shoes/menshoe4.png", path: "/shop?type=shoes&search=monk" },
+    { name: "Sneakers", image: "/images/men/shoes/menshoe9.jpeg", path: "/shop?type=shoes&search=sneaker" },
+    { name: "Women's Heels", image: "/images/women/dresses/womendress2.png", path: "/shop?type=shoes&search=heel" },
+    { name: "Slippers", image: "/images/women/shoes/womensslipper.jpeg", path: "/shop?type=shoes&search=slipper" },
   ],
   watches: [
-    { name: "Classic", image: "/images/royal_watch.png", path: "/shop?type=watches&search=classic" },
-    { name: "Dress Watches", image: "/images/watch1.png", path: "/shop?type=watches&search=dress" },
-    { name: "Sport", image: "/images/watch 2.png", path: "/shop?type=watches&search=sport" },
+    { name: "Classic", image: "/images/men/watches/watch4.png", path: "/shop?type=watches&search=classic" },
+    { name: "Dress Watches", image: "/images/men/watches/watch 3.png", path: "/shop?type=watches&search=dress" },
+    { name: "Sport", image: "/images/men/watches/watch 2.png", path: "/shop?type=watches&search=sport" },
   ],
   clothing: [
-    { name: "Sherwani", image: "/images/royal_sherwani.png", path: "/shop?type=clothing&search=sherwani" },
-    { name: "Tuxedo", image: "/images/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png", path: "/shop?type=clothing&search=tuxedo" },
-    { name: "Velvet Suit", image: "/images/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png", path: "/shop?type=clothing&search=velvet" },
-    { name: "Jacket", image: "/images/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png", path: "/shop?type=clothing&search=jacket" },
+    { name: "Sherwani", image: "/images/new/Navy Sherwani/1.png", path: "/shop?type=clothing&search=sherwani" },
+    { name: "Tuxedo", image: "/images/hero/Gemini_Generated_Image_5pgtfq5pgtfq5pgt.png", path: "/shop?type=clothing&search=tuxedo" },
+    { name: "Velvet Suit", image: "/images/hero/Gemini_Generated_Image_iqsqcdiqsqcdiqsq.png", path: "/shop?type=clothing&search=velvet" },
+    { name: "Jacket", image: "/images/hero/Gemini_Generated_Image_j3qrpwj3qrpwj3qr.png", path: "/shop?type=clothing&search=jacket" },
   ],
   dresses: [
-    { name: "Lehenga", image: "/images/Gemini_Generated_Image_aimaqdaimaqdaima.png", path: "/shop?type=dresses&search=lehenga" },
-    { name: "Saree", image: "/images/royal_saree.png", path: "/shop?type=dresses&search=saree" },
-    { name: "Gown", image: "/images/royal_gown.png", path: "/shop?type=dresses&search=gown" },
-    { name: "Anarkali", image: "/images/Gemini_Generated_Image_2heebf2heebf2hee.png", path: "/shop?type=dresses&search=anarkali" },
+    { name: "Lehenga", image: "/images/women/dresses/womendress3.png", path: "/shop?type=dresses&search=lehenga" },
+    { name: "Saree", image: "/images/women/dresses/royal_saree.png", path: "/shop?type=dresses&search=saree" },
+    { name: "Gown", image: "/images/women/dresses/womendress1.png", path: "/shop?type=dresses&search=gown" },
+    { name: "Anarkali", image: "/images/hero/Gemini_Generated_Image_2heebf2heebf2hee.png", path: "/shop?type=dresses&search=anarkali" },
   ],
   accessories: [
-    { name: "Perfume", image: "/images/royal_perfume.png", path: "/shop?type=perfumes" },
-    { name: "Belt", image: "/images/royal_belt.png", path: "/shop?type=belts" },
-    { name: "Wallet", image: "/images/royal_wallet.png", path: "/shop?type=wallets" },
-    { name: "Sunglasses", image: "/images/royal_sunglasses.png", path: "/shop?type=sunglasses" },
+    { name: "Perfume", image: "/images/men/perfume/mens-perfume2.png", path: "/shop?type=perfumes" },
+    { name: "Belt", image: "/images/men/accessories/royal_belt.png", path: "/shop?type=belts" },
+    { name: "Wallet", image: "/images/men/wallets/wallet.png", path: "/shop?type=wallets" },
+    { name: "Sunglasses", image: "/images/men/sunglasses/sunglass3.png", path: "/shop?type=sunglasses" },
   ],
   wallets: [
-    { name: "Bifold", image: "/images/royal_wallet.png", path: "/shop?type=wallets&search=bifold" },
-    { name: "Zip-around", image: "/images/zippy wallet.jpg", path: "/shop?type=wallets&search=zip" },
-    { name: "Card Holder", image: "/images/mens_royal_wallet_section.png", path: "/shop?type=wallets&search=card" },
+    { name: "Bifold", image: "/images/new/Signature Bifold Wallet/1.png", path: "/shop?type=wallets&search=bifold" },
+    { name: "Zip-around", image: "/images/women/accessories/zippy wallet.jpg", path: "/shop?type=wallets&search=zip" },
+    { name: "Card Holder", image: "/images/new/Slim Signature Cardholder Wallet/1.png", path: "/shop?type=wallets&search=card" },
   ],
   sunglasses: [
-    { name: "Classic", image: "/images/royal_sunglasses.png", path: "/shop?type=sunglasses&search=classic" },
-    { name: "Sport", image: "/images/royal_sunglasses.png", path: "/shop?type=sunglasses&search=sport" },
+    { name: "Classic", image: "/images/men/sunglasses/sunglass1.png", path: "/shop?type=sunglasses&search=classic" },
+    { name: "Sport", image: "/images/men/sunglasses/sunglass2.png", path: "/shop?type=sunglasses&search=sport" },
   ],
   perfumes: [
-    { name: "Men's Fragrance", image: "/images/royal_perfume.png", path: "/shop?type=perfumes&search=men" },
-    { name: "Women's Fragrance", image: "/images/women perfume/womens-perfume1.png", path: "/shop?type=perfumes&search=women" },
+    { name: "Men's Fragrance", image: "/images/men/perfume/mens-perfume1.png", path: "/shop?type=perfumes&search=men" },
+    { name: "Women's Fragrance", image: "/images/women/perfume/womens-perfume1.png", path: "/shop?type=perfumes&search=women" },
   ],
   shirts: [
-    { name: "Formal Shirts", image: "/images/royal_shirt.png", path: "/shop?type=shirts&search=formal" },
-    { name: "Casual", image: "/images/royal_tshirt.png", path: "/shop?type=shirts&search=casual" },
+    { name: "Formal Shirts", image: "/images/men/shirts/royal_shirt.png", path: "/shop?type=shirts&search=formal" },
+    { name: "Casual", image: "/images/men/shirts/royal_tshirt.png", path: "/shop?type=shirts&search=casual" },
   ],
   belts: [
-    { name: "Leather Belts", image: "/images/royal_belt.png", path: "/shop?type=belts&search=leather" },
-    { name: "Signature", image: "/images/leather_belt.png", path: "/shop?type=belts&search=signature" },
+    { name: "Leather Belts", image: "/images/men/accessories/royal_belt.png", path: "/shop?type=belts&search=leather" },
+    { name: "Signature", image: "/images/men/accessories/leather_belt.png", path: "/shop?type=belts&search=signature" },
   ],
   jewellery: [
-    { name: "Necklace", image: "/images/royal_perfume.png", path: "/shop?type=jewellery&search=necklace" },
-    { name: "Rings", image: "/images/royal_perfume.png", path: "/shop?type=jewellery&search=ring" },
-    { name: "Earrings", image: "/images/royal_perfume.png", path: "/shop?type=jewellery&search=earring" },
+    { name: "Necklace", image: "/images/women/accessories/royal_jewellery.png", path: "/shop?type=jewellery&search=necklace" },
+    { name: "Rings", image: "/images/men/watches/micro.jpg", path: "/shop?type=jewellery&search=ring" },
+    { name: "Earrings", image: "/images/site/sus.jpg", path: "/shop?type=jewellery&search=earring" },
+  ],
+  slippers: [
+    { name: "Indoor Slippers", image: "/images/men/slippers/mensslipper1.png", path: "/shop?type=slippers&search=indoor" },
+    { name: "Outdoor", image: "/images/women/shoes/womensslipper.jpeg", path: "/shop?type=slippers&search=outdoor" },
+  ],
+  hoodies: [
+    { name: "Classic Hoodies", image: "/images/new/Heather Grey Pullover Hoodie/1person.png", path: "/shop?type=hoodies&search=classic" },
+    { name: "Premium Selection", image: "/images/new/Premium Luxury Hoodie/1.png", path: "/shop?type=hoodies&search=premium" },
+  ],
+  sweaters: [
+    { name: "Cable Knit", image: "/images/new/Charcoal Cable Knit Sweater/1person.png", path: "/shop?type=sweaters&search=cable" },
+    { name: "Merino Wool", image: "/images/new/Cream Merino Turtleneck Sweater/1person.png", path: "/shop?type=sweaters&search=merino" },
   ],
   travel: [
-    { name: "Luggage", image: "/images/hand bag.png", path: "/shop?type=travel&search=luggage" },
-    { name: "Duffle Bags", image: "/images/hand bag.png", path: "/shop?type=travel&search=duffle" },
+    { name: "Luggage", image: "/images/site/passport.jpg", path: "/shop?type=travel&search=luggage" },
+    { name: "Duffle Bags", image: "/images/men/bags/mens-bag1.png", path: "/shop?type=travel&search=duffle" },
   ],
 };
 
@@ -215,6 +242,7 @@ const Shop = () => {
   const [allProducts, setAllProducts] = useState(staticProducts || []);
   const [productsSource, setProductsSource] = useState(staticProducts || []);
   const [isLoading, setIsLoading] = useState(true);
+  const [shopPageData, setShopPageData] = useState(null);
 
   // --- FILTER STATE (Derived from URL) ---
   const params = new URLSearchParams(location.search);
@@ -223,11 +251,23 @@ const Shop = () => {
   const activeTab = params.get("type") || "all";
   const sortBy = params.get("sort") || "relevance";
 
+  // Support both new ?category=Women and old ?cat=women formats
+  // If cat=women/men in URL, convert to proper category format
+  let categoryFilter = params.get("category") || "";
+  const oldCatParam = params.get("cat") || "";
+
+  // Map old 'cat' parameter to proper category filter
+  if (!categoryFilter && oldCatParam) {
+    const catLower = oldCatParam.toLowerCase();
+    if (catLower === "women") categoryFilter = "Women";
+    else if (catLower === "men") categoryFilter = "Men";
+  }
+
   const selectedCategories = params.get("cat")
     ? params
       .get("cat")
       .split(",")
-      .filter((c) => c.toLowerCase() !== "all")
+      .filter((c) => c.toLowerCase() !== "all" && c.toLowerCase() !== "women" && c.toLowerCase() !== "men")
     : [];
   const selectedPriceIds = params.get("price")
     ? params.get("price").split(",")
@@ -240,6 +280,7 @@ const Shop = () => {
   const [viewMode, setViewMode] = useState("grid");
   const [visibleCount, setVisibleCount] = useState(12);
   const tabsRef = useRef(null);
+  const [isCategoryDropdownOpen, setIsCategoryDropdownOpen] = useState(false);
 
   const [openSections, setOpenSections] = useState({
     sort: true,
@@ -274,7 +315,12 @@ const Shop = () => {
     const load = async () => {
       setIsLoading(true);
       try {
-        const data = await fetchProducts();
+        const [productsData, shopData] = await Promise.all([
+          fetchProducts(),
+          fetchShopPage().catch(() => null),
+        ]);
+        if (shopData) setShopPageData(shopData);
+        const data = productsData;
         if (data && data.length > 0) {
           const uniqueData = Array.from(
             new Map(data.map((item) => [item._id || item.id, item])).values(),
@@ -379,6 +425,11 @@ const Shop = () => {
   const filteredProducts = useMemo(() => {
     let result = productsSource;
 
+    // Filter by category (Men/Women/Accessories) if specified
+    if (categoryFilter) {
+      result = result.filter((p) => (p.category || "").toLowerCase() === categoryFilter.toLowerCase());
+    }
+
     if (searchTerm) {
       const lowerTerm = searchTerm.toLowerCase();
       result = result.filter(
@@ -417,65 +468,97 @@ const Shop = () => {
               ])
             );
           case "clothing":
-            return matches([
-              "shirt",
-              "shirts",
-              "hoodie",
-              "sweater",
-              "tshirt",
-              "tee",
-              "trouser",
-              "pant",
-              "gown",
-              "lehenga",
-              "saree",
-              "sherwani",
-              "kurta",
-              "jacket",
-              "suit",
-              "blazer",
-              "tuxedo",
-              "kurtas",
-              "anarkali",
-              "top",
-              "tunic",
-              "bandi",
-              "achkan",
-              "bandhgala",
-            ]);
+            return (
+              type === "clothing" ||
+              matches([
+                "shirt",
+                "shirts",
+                "hoodie",
+                "sweater",
+                "tshirt",
+                "tee",
+                "trouser",
+                "pant",
+                "gown",
+                "lehenga",
+                "saree",
+                "sherwani",
+                "kurta",
+                "jacket",
+                "suit",
+                "blazer",
+                "tuxedo",
+                "kurtas",
+                "anarkali",
+                "top",
+                "tunic",
+                "bandi",
+                "achkan",
+                "bandhgala",
+                "pullover",
+                "knit",
+                "turtleneck",
+                "crewneck",
+              ])
+            );
           case "shoes":
-            return matches([
-              "shoe",
-              "sneaker",
-              "slipper",
-              "boot",
-              "loafer",
-              "sandal",
-              "heel",
-              "flat",
-              "pump",
-              "mule",
-              "stiletto",
-              "ballet",
-              "pump",
-              "moccasin",
-            ]);
+            return (
+              type === "shoes" ||
+              type === "slippers" ||
+              matches([
+                "shoe",
+                "sneaker",
+                "slipper",
+                "boot",
+                "loafer",
+                "sandal",
+                "heel",
+                "flat",
+                "pump",
+                "mule",
+                "stiletto",
+                "ballet",
+                "moccasin",
+                "brogue",
+                "oxford",
+                "derby",
+                "monk",
+                "jutti",
+                "mojari",
+                "slide",
+                "scuff",
+                "driver",
+                "chelsea",
+              ])
+            );
           case "bags":
-            return matches([
-              "bag",
-              "clutch",
-              "tote",
-              "backpack",
-              "travel",
-              "satchel",
-              "briefcase",
-              "purse",
-              "handbag",
-              "vanity",
-              "luggage",
-            ]);
+            return (
+              type === "bags" ||
+              matches([
+                "bag",
+                "clutch",
+                "tote",
+                "backpack",
+                "travel",
+                "satchel",
+                "briefcase",
+                "purse",
+                "handbag",
+                "vanity",
+                "luggage",
+                "duffle",
+                "keepall",
+                "crossbody",
+                "hobo",
+                "trunk",
+                "weekender",
+              ])
+            );
           case "watches":
-            return matches(["watch", "timepiece", "chronograph", "dial"]);
+            return (
+              type === "watches" ||
+              matches(["watch", "timepiece", "chronograph", "dial", "automatic", "tourbillon", "escale", "tambour"])
+            );
           case "jewellery":
             return matches([
               "jewel",
@@ -489,45 +572,70 @@ const Shop = () => {
               "stud",
             ]);
           case "sunglasses":
-            return matches([
-              "sunglass",
-              "shade",
-              "eyewear",
-              "aviator",
-              "wayfarer",
-            ]);
+            return (
+              type === "sunglasses" ||
+              matches(["sunglass", "shade", "eyewear", "aviator", "wayfarer", "frames", "lens"])
+            );
           case "perfumes":
-            return matches([
-              "perfume",
-              "fragrance",
-              "scent",
-              "parfum",
-              "eau",
-              "cologne",
-            ]);
+            return (
+              type === "perfumes" ||
+              matches(["perfume", "fragrance", "scent", "parfum", "eau", "cologne", "elixir", "essence", "mist", "reserve", "bloom", "noir", "oud", "oudh", "vetiver", "jasmine"])
+            );
           case "belts":
-            return matches(["belt", "buckle"]);
+            return type === "belts" || matches(["belt", "buckle"]);
           case "wallets":
-            return matches(["wallet", "cardholder", "billfold"]);
+            return (
+              type === "wallets" ||
+              matches(["wallet", "cardholder", "billfold", "bifold", "bi-fold", "zippy", "victorine", "compact"])
+            );
           case "dresses":
-            return matches([
-              "dress",
-              "gown",
-              "frock",
-              "anarkali",
-              "lehenga",
-              "saree",
-            ]);
+            return (
+              type === "dresses" ||
+              matches([
+                "dress",
+                "gown",
+                "frock",
+                "anarkali",
+                "lehenga",
+                "saree",
+              ])
+            );
           case "shirts":
-            return matches(["shirt", "blouse", "top", "tunic"]);
+            return (
+              type === "shirts" ||
+              matches(["shirt", "blouse", "top", "tunic", "tee", "tshirt", "crest", "graphic", "linen", "oxford", "satin", "checkered", "striped"])
+            );
           case "travel":
-            return matches([
-              "travel",
-              "luggage",
-              "duffle",
-              "suitcase",
-              "trolley",
-            ]);
+            return (
+              type === "travel" ||
+              matches([
+                "travel",
+                "luggage",
+                "duffle",
+                "suitcase",
+                "trolley",
+                "trunk",
+                "passport",
+                "garment",
+                "keepall",
+                "cabin",
+              ])
+            );
+          case "slippers":
+            return (
+              type === "slippers" ||
+              matches(["slipper", "slip", "mule", "house", "luxury"])
+            );
+          case "hoodies":
+            return (
+              type === "hoodies" ||
+              matches(["hoodie", "hoody", "sweatshirt", "pullover", "zip", "drawstring"])
+            );
+          case "sweaters":
+            return (
+              type === "sweaters" ||
+              matches(["sweater", "cardigan", "knit", "wool", "merino", "cable", "turtleneck", "crewneck"])
+            );
           default:
             return type === activeTab.toLowerCase();
         }
@@ -581,6 +689,7 @@ const Shop = () => {
     selectedCategories,
     selectedPriceIds,
     sortBy,
+    categoryFilter,
   ]);
 
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE);
@@ -590,14 +699,28 @@ const Shop = () => {
   );
 
   // Dynamic highlights — top 4 real products for active tab (by rating, then price)
+  // Deduplicated by image URL to avoid showing the same visual twice
   const highlightProducts = useMemo(() => {
     let pool = productsSource;
     if (activeTab !== 'all') {
       pool = filteredProducts.length > 0 ? filteredProducts : productsSource;
     }
-    return [...pool]
-      .sort((a, b) => (b.rating || 0) - (a.rating || 0) || b.price - a.price)
-      .slice(0, 4);
+    const sorted = [...pool].sort((a, b) => (b.rating || 0) - (a.rating || 0) || b.price - a.price);
+    // Deduplicate by primary image to avoid duplicate visuals
+    const seenImages = new Set();
+    const seenNames = new Set();
+    const unique = [];
+    for (const p of sorted) {
+      const img = p.image || "";
+      const name = (p.name || "").toLowerCase().trim();
+      if (!seenImages.has(img) && !seenNames.has(name)) {
+        seenImages.add(img);
+        seenNames.add(name);
+        unique.push(p);
+        if (unique.length === 4) break;
+      }
+    }
+    return unique;
   }, [productsSource, filteredProducts, activeTab]);
 
   if (isRoyalPage) return <RoyalShop />;
@@ -610,21 +733,57 @@ const Shop = () => {
         url={`https://murugdur1.vercel.app/shop?type=${activeTab}`}
       />
       <div className="container mx-auto px-4 md:px-8 relative">
-        {/* Fixed position Back Button */}
-        <div className="absolute top-0 left-4 md:left-8 z-30">
-          <BackButton />
-        </div>
+        {/* TOP TOOLBAR & BACK BUTTON */}
+        <div className="flex justify-between items-end pb-8 border-b border-gray-100 mb-2 mt-4 relative">
+          <div className="flex flex-col gap-4">
+            <BackButton className="relative inset-0" />
 
-        {/* TOP TOOLBAR */}
-        <div className="flex justify-between items-center py-8 border-b border-gray-100 mb-2">
-          <div className="flex items-center gap-3 cursor-pointer group">
-            <span className="text-[13px] uppercase tracking-widest font-medium text-black">
-              {selectedCategories.length === 1 && ['men','women'].includes(selectedCategories[0].toLowerCase())
-                ? `${selectedCategories[0].charAt(0).toUpperCase() + selectedCategories[0].slice(1)}'s Collection`
-                : activeTab === 'all' ? 'All Products' : `All ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`}
-            </span>
-            <ChevronDown size={14} strokeWidth={1.5} className="text-black group-hover:translate-y-0.5 transition-transform" />
+            <div
+              className="flex items-center gap-3 cursor-pointer group relative"
+              onClick={() => setIsCategoryDropdownOpen(!isCategoryDropdownOpen)}
+            >
+              <span className="text-[13px] uppercase tracking-widest font-medium text-black">
+                {categoryFilter
+                  ? `${categoryFilter}'s Collection`
+                  : activeTab === 'all' ? 'All Products' : `All ${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`}
+              </span>
+              <ChevronDown
+                size={14}
+                strokeWidth={1.5}
+                className={`text-black transition-transform duration-300 ${isCategoryDropdownOpen ? "rotate-180" : "group-hover:translate-y-0.5"}`}
+              />
+
+              <AnimatePresence>
+                {isCategoryDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    className="absolute top-10 left-0 bg-white border border-gray-100 shadow-xl z-50 py-4 min-w-[200px]"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    {[
+                      "All", "Accessories", "Bags", "Belts", "Clothing", "Dresses",
+                      "Hoodies", "Jewellery", "Perfumes", "Shirts", "Shoes",
+                      "Slippers", "Sunglasses", "Sweaters", "Travel", "Wallets", "Watches"
+                    ].map((cat) => (
+                      <div
+                        key={cat}
+                        onClick={() => {
+                          handleTabChange(cat.toLowerCase());
+                          setIsCategoryDropdownOpen(false);
+                        }}
+                        className="px-6 py-2.5 text-[12px] uppercase tracking-widest text-[#1a1a1a] hover:bg-gray-50 hover:text-royal-gold transition-colors cursor-pointer"
+                      >
+                        {cat}
+                      </div>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
           </div>
+
           <button
             onClick={() => setIsSidebarOpen(!isSidebarOpen)}
             className="flex items-center gap-2 border border-black px-6 py-1.5 text-[11px] uppercase tracking-widest font-medium hover:bg-black hover:text-white transition-all duration-300"
@@ -645,25 +804,26 @@ const Shop = () => {
                 <div className="w-[76px] h-[76px] relative flex items-end justify-center overflow-hidden bg-[#f6f5f3]">
                   <img src={cat.image} alt={cat.name} className="w-full h-full object-cover object-center transition-transform duration-500 ease-out group-hover:scale-105" />
                 </div>
-                <span className="text-[10.5px] font-sans text-center text-[#19110b] leading-tight tracking-wide max-w-[88px]">
+                <span className="text-[10.5px] font-sans text-center text-[#1a1a1a] leading-tight tracking-wide max-w-[88px]">
                   {cat.name}
                 </span>
               </Link>
             ))}
-            {/* scroll right arrow */}
-            <div className="flex items-center ml-1 shrink-0 cursor-pointer" onClick={() => scrollTabs('right')}>
-              <ChevronRight size={18} strokeWidth={1.5} className="text-[#19110b]" />
-            </div>
           </div>
         </div>
 
         {/* Single top campaign hero banner */}
         {(() => {
-          const banners = EDITORIAL_BANNERS_BY_TAB[activeTab] || EDITORIAL_BANNERS_BY_TAB.all;
+          // Prefer Sanity editorial banners filtered by category, fallback to static
+          const sanityBanners = shopPageData?.editorialBanners?.filter(
+            (b) => !b.category || b.category === "all" || b.category === activeTab
+          );
+          const staticBanners = EDITORIAL_BANNERS_BY_TAB[activeTab] || EDITORIAL_BANNERS_BY_TAB.all;
+          const banners = sanityBanners?.length ? sanityBanners : staticBanners;
           return <EditorialBanner banner={banners[0]} />;
         })()}
 
-        <h2 className="text-center text-[13px] uppercase tracking-[0.25em] font-sans mb-10 mt-2 text-[#19110b]">Highlights</h2>
+        <h2 className="text-center text-[13px] uppercase tracking-[0.25em] font-sans mb-10 mt-2 text-[#1a1a1a]">Highlights</h2>
 
         {/* Highlights grid — real product images */}
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-10 mb-10">
@@ -675,7 +835,7 @@ const Shop = () => {
             >
               <div className="relative w-full aspect-[3/4] bg-[#f6f5f3] overflow-hidden mb-3">
                 {hl.isNew && (
-                  <span className="absolute top-2.5 left-2.5 z-10 text-[9px] uppercase tracking-[0.18em] text-[#19110b] leading-none">
+                  <span className="absolute top-2.5 left-2.5 z-10 text-[9px] uppercase tracking-[0.18em] text-[#1a1a1a] leading-none">
                     New
                   </span>
                 )}
@@ -686,10 +846,10 @@ const Shop = () => {
                   loading="lazy"
                 />
               </div>
-              <h3 className="text-[12px] font-sans font-normal text-[#19110b] leading-snug uppercase tracking-wide">
+              <h3 className="text-[12px] font-sans font-normal text-[#1a1a1a] leading-snug uppercase tracking-wide">
                 {hl.name}
               </h3>
-              <p className="text-[12px] font-sans text-[#19110b] mt-0.5">
+              <p className="text-[12px] font-sans text-[#1a1a1a] mt-0.5">
                 ₹ {(hl.price || 0).toLocaleString()}
               </p>
             </div>
@@ -877,7 +1037,7 @@ const Shop = () => {
                                       className="w-full aspect-square border border-gray-200 overflow-hidden hover:border-black transition-colors duration-200"
                                       style={{ background: mat.texture }}
                                     />
-                                    <span className="text-[10px] tracking-wide text-[#19110b] uppercase">{mat.name}</span>
+                                    <span className="text-[10px] tracking-wide text-[#1a1a1a] uppercase">{mat.name}</span>
                                   </label>
                                 ))}
                               </div>
@@ -902,7 +1062,7 @@ const Shop = () => {
                                       className="w-full aspect-square border border-gray-200 overflow-hidden hover:border-black transition-colors duration-200"
                                       style={{ background: mat.texture }}
                                     />
-                                    <span className="text-[10px] tracking-wide text-[#19110b] uppercase">{mat.name}</span>
+                                    <span className="text-[10px] tracking-wide text-[#1a1a1a] uppercase">{mat.name}</span>
                                   </label>
                                 ))}
                               </div>
@@ -923,7 +1083,7 @@ const Shop = () => {
                                       className="w-full aspect-square border border-gray-200 overflow-hidden hover:border-black transition-colors duration-200"
                                       style={{ background: mat.texture }}
                                     />
-                                    <span className="text-[10px] tracking-wide text-[#19110b] uppercase">{mat.name}</span>
+                                    <span className="text-[10px] tracking-wide text-[#1a1a1a] uppercase">{mat.name}</span>
                                   </label>
                                 ))}
                               </div>
@@ -983,7 +1143,7 @@ const Shop = () => {
                   <div className="max-w-7xl mx-auto flex justify-center">
                     <button
                       onClick={() => setIsSidebarOpen(false)}
-                      className="w-full max-w-2xl bg-black text-white text-[11px] font-bold uppercase tracking-[0.15em] py-4 hover:bg-[#19110b] transition-colors"
+                      className="w-full max-w-2xl bg-black text-white text-[11px] font-bold uppercase tracking-[0.15em] py-4 hover:bg-[#1a1a1a] transition-colors"
                     >
                       Show products
                     </button>
@@ -1115,7 +1275,7 @@ const Shop = () => {
                   </p>
                   <button
                     onClick={clearAllFilters}
-                    className="bg-black text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#19110b] transition-colors"
+                    className="bg-black text-white px-8 py-3 text-xs font-bold uppercase tracking-widest hover:bg-[#1a1a1a] transition-colors"
                   >
                     Clear All Filters
                   </button>
@@ -1155,20 +1315,21 @@ const Shop = () => {
                     >
                       {/* Optional subcategory section label */}
                       {paginatedProducts.length > 0 && (
-                        <h3 className="text-[12px] uppercase tracking-[0.22em] font-sans text-[#19110b] mb-6 mt-2">
+                        <h3 className="text-[12px] uppercase tracking-[0.22em] font-sans text-[#1a1a1a] mb-6 mt-2">
                           {activeTab === 'all' ? 'All Products' : `${activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}`}
                           <span className="ml-3 text-[#999] normal-case tracking-normal text-[11px]">{filteredProducts.length} item{filteredProducts.length !== 1 ? 's' : ''}</span>
                         </h3>
                       )}
 
                       {/* Product grid */}
-                      <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-x-3 gap-y-10">
+                      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-x-4 gap-y-12 w-full">
                         {paginatedProducts.slice(0, visibleCount).map((product, idx) => (
                           <motion.div
                             key={product.id || product._id}
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: Math.min(idx, 7) * 0.05 }}
+                            className="w-full flex flex-col"
                           >
                             <ProductCard
                               product={product}
@@ -1185,7 +1346,7 @@ const Shop = () => {
                         <div className="flex justify-center mt-16 mb-4">
                           <button
                             onClick={() => setVisibleCount(v => v + 12)}
-                            className="border border-[#19110b] text-[#19110b] text-[11px] uppercase tracking-[0.25em] font-sans px-12 py-3.5 hover:bg-[#19110b] hover:text-white transition-all duration-300"
+                            className="border border-[#1a1a1a] text-[#1a1a1a] text-[11px] uppercase tracking-[0.25em] font-sans px-12 py-3.5 hover:bg-[#1a1a1a] hover:text-white transition-all duration-300"
                           >
                             View More
                           </button>
@@ -1220,18 +1381,17 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
 
   return (
     <div
-      className="group relative cursor-pointer"
+      className="group relative cursor-pointer h-full flex flex-col"
       onClick={() => navigate(`/product/${product.id || product._id}`)}
     >
       {/* Image Container — portrait ratio with neutral bg */}
-      <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f5f3] mb-3">
+      <div className="relative aspect-[3/4] overflow-hidden bg-[#f6f5f3] mb-4 flex-shrink-0">
         {/* Primary image */}
         <img
           src={product.image}
           alt={product.name}
-          className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out ${
-            hasSecondImage ? "group-hover:opacity-0" : "group-hover:scale-[1.04]"
-          }`}
+          className={`absolute inset-0 w-full h-full object-cover object-center transition-all duration-700 ease-out ${hasSecondImage ? "group-hover:opacity-0" : "group-hover:scale-[1.04]"
+            }`}
           loading="lazy"
         />
 
@@ -1247,14 +1407,14 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
 
         {/* NEW badge — top left */}
         {isNew && (
-          <span className="absolute top-2.5 left-2.5 z-10 text-[#19110b] text-[9px] uppercase tracking-[0.18em] leading-none">
+          <span className="absolute top-2.5 left-2.5 z-10 text-[#1a1a1a] text-[9px] uppercase tracking-[0.18em] leading-none">
             New
           </span>
         )}
 
         {/* Sale badge — top left */}
         {product.onSale && !isNew && (
-          <span className="absolute top-2.5 left-2.5 z-10 text-[#19110b] text-[9px] uppercase tracking-[0.18em] leading-none">
+          <span className="absolute top-2.5 left-2.5 z-10 text-[#1a1a1a] text-[9px] uppercase tracking-[0.18em] leading-none">
             Sale
           </span>
         )}
@@ -1262,16 +1422,15 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
         {/* Wishlist — top right */}
         <button
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToWishlist(product); }}
-          className={`absolute top-2.5 right-2.5 z-20 transition-all duration-300 ${
-            isInWishlist ? "opacity-100" : "opacity-0 group-hover:opacity-100"
-          }`}
+          className={`absolute top-2.5 right-2.5 z-20 transition-all duration-300 ${isInWishlist ? "opacity-100" : "opacity-0 group-hover:opacity-100"
+            }`}
           title="Add to Wishlist"
         >
           <Heart
             size={15}
             strokeWidth={1.5}
-            fill={isInWishlist ? "#19110b" : "none"}
-            className="text-[#19110b]"
+            fill={isInWishlist ? "#1a1a1a" : "none"}
+            className="text-[#1a1a1a]"
           />
         </button>
 
@@ -1279,7 +1438,7 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
         {totalImages > 1 && (
           <div className="absolute bottom-2.5 left-0 right-0 flex justify-center gap-1 z-10">
             {Array.from({ length: Math.min(totalImages, 4) }).map((_, di) => (
-              <span key={di} className={`w-1 h-1 rounded-full ${ di === 0 ? 'bg-[#19110b]' : 'bg-[#19110b]/30'}`} />
+              <span key={di} className={`w-1 h-1 rounded-full ${di === 0 ? 'bg-[#1a1a1a]' : 'bg-[#1a1a1a]/30'}`} />
             ))}
           </div>
         )}
@@ -1288,7 +1447,7 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
         <div className="absolute bottom-0 left-0 right-0 z-20 translate-y-full group-hover:translate-y-0 transition-transform duration-300 ease-out bg-white/96">
           <button
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); addToCart(product); }}
-            className="w-full py-2.5 text-[10px] uppercase tracking-[0.2em] font-sans text-[#19110b] hover:bg-[#19110b] hover:text-white transition-colors duration-300"
+            className="w-full py-2.5 text-[10px] uppercase tracking-[0.2em] font-sans text-[#1a1a1a] hover:bg-[#1a1a1a] hover:text-white transition-colors duration-300"
           >
             Quick Add
           </button>
@@ -1296,19 +1455,19 @@ const ProductCard = ({ product, addToCart, addToWishlist, isInWishlist }) => {
       </div>
 
       {/* Product Info — luxury typography */}
-      <div className="px-0">
+      <div className="flex-1 flex flex-col justify-start">
         {/* Product name */}
-        <h3 className="text-[12px] font-sans font-normal text-[#19110b] leading-snug line-clamp-2 mb-0.5">
+        <h3 className="text-[12px] font-sans font-normal text-[#1a1a1a] leading-tight line-clamp-2 mb-2">
           {product.name}
         </h3>
 
         {/* Price row */}
-        <div className="flex items-center gap-2">
-          <span className="text-[12px] font-sans text-[#19110b]">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-[12px] font-sans font-medium text-[#1a1a1a]">
             ₹ {(product.price || 0).toLocaleString()}
           </span>
           {product.originalPrice && product.originalPrice > product.price && (
-            <span className="text-[11px] font-sans text-[#999] line-through">
+            <span className="text-[10px] font-sans text-[#999] line-through">
               ₹ {product.originalPrice.toLocaleString()}
             </span>
           )}

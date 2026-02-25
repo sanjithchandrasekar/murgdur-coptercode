@@ -14,8 +14,10 @@ export default {
                     type: 'object',
                     fields: [
                         { name: 'name', type: 'string', title: 'Name' },
-                        { name: 'image', type: 'image', title: 'Image' }
-                    ]
+                        { name: 'image', type: 'image', title: 'Image', options: { hotspot: true } },
+                        { name: 'link', type: 'string', title: 'Link URL (e.g. /shop?category=wedding)', description: 'Sets where clicking the card goes. Defaults to /shop.' }
+                    ],
+                    preview: { select: { title: 'name' } }
                 }
             ]
         }
