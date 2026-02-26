@@ -10,7 +10,7 @@ import { fetchSiteSettings } from "../utils/sanity";
 // Images handled by context now, or fallback
 
 const DEFAULT_WHATSAPP = "919003337582";
-const DEFAULT_MSG = "Hello Murgdur! I would like to place an order for: {{items}}. Total: ₹{{total}}. Please assist me.";
+const DEFAULT_MSG = "Hello Murgdur, I would love to place an order for the following items. Could you connect me to your Royal Concierge?\n\n{{items}}\n\nKindly assist me with the order confirmation and delivery details.";
 
 const Cart = () => {
   const navigate = useNavigate();
@@ -270,19 +270,22 @@ const Cart = () => {
 
               <Button
                 onClick={() => {
-                  const itemNames = cartItems
-                    .map(item => `${item.name} (Qty: ${item.quantity})`)
-                    .join(", ");
+                  const itemLines = cartItems
+                    .map(item => {
+                      const pid = item.productId || `MURG-${String(item.id).padStart(4, "0")}`;
+                      const sizeLine = item.size ? ` | Size: ${item.size}` : "";
+                      return `• ${pid} — ${item.name}${sizeLine} | Qty: ${item.quantity}`;
+                    })
+                    .join("\n");
                   const text = whatsappMessage
-                    .replace("{{items}}", itemNames)
-                    .replace("{{total}}", totalAmount.toLocaleString("en-IN"));
+                    .replace("{{items}}", itemLines);
                   const url = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${encodeURIComponent(text)}`;
                   window.open(url, "_blank");
                 }}
                 variant="gold"
                 className="w-full py-4 shadow-[0_0_15px_rgba(212,175,55,0.3)]"
               >
-                PLACE ORDER
+                CONNECT WITH ROYAL CONCIERGE
               </Button>
             </div>
           </div>
