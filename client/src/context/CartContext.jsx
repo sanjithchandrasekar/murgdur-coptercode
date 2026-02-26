@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Check, X } from "lucide-react";
+import { fetchProducts } from "../utils/sanity";
 
 const CartContext = createContext();
 
@@ -33,6 +34,23 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem("wishlistItems", JSON.stringify(wishlistItems));
   }, [wishlistItems]);
 
+  // Back-fill productId for stale cart items that were saved without it
+  useEffect(() => {
+    const stale = cartItems.some((item) => !item.productId);
+    if (!stale) return;
+    fetchProducts()
+      .then((products) => {
+        setCartItems((prev) =>
+          prev.map((item) => {
+            if (item.productId) return item;
+            const match = products.find((p) => p.id === item.id || p._id === item.id);
+            return match?.productId ? { ...item, productId: match.productId } : item;
+          })
+        );
+      })
+      .catch(() => {});
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
   // --- Cart Functions ---
 
   const addToCart = (product, quantity = 1) => {
@@ -58,6 +76,7 @@ export const CartProvider = ({ children }) => {
     setCartItems((prev) => {
       const newItem = {
         id: product.id,
+        productId: product.productId || null,
         name: product.name,
         price: product.price,
         originalPrice: product.originalPrice || product.price * 1.2,

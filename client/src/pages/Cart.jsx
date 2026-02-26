@@ -10,19 +10,16 @@ import { fetchSiteSettings } from "../utils/sanity";
 // Images handled by context now, or fallback
 
 const DEFAULT_WHATSAPP = "919003337582";
-const DEFAULT_MSG = "Hello Murgdur, I would love to place an order for the following items. Could you connect me to your Royal Concierge?\n\n{{items}}\n\nKindly assist me with the order confirmation and delivery details.";
 
 const Cart = () => {
   const navigate = useNavigate();
   const [selectedAddress, setSelectedAddress] = useState(null);
   const [whatsappNumber, setWhatsappNumber] = useState(DEFAULT_WHATSAPP);
-  const [whatsappMessage, setWhatsappMessage] = useState(DEFAULT_MSG);
 
   // Fetch WhatsApp config from Sanity
   useEffect(() => {
     fetchSiteSettings().then((settings) => {
       if (settings?.whatsapp) setWhatsappNumber(settings.whatsapp);
-      if (settings?.whatsappOrderMessage) setWhatsappMessage(settings.whatsappOrderMessage);
     }).catch(() => {});
   }, []);
 
@@ -270,15 +267,14 @@ const Cart = () => {
 
               <Button
                 onClick={() => {
-                  const itemLines = cartItems
-                    .map(item => {
-                      const pid = item.productId || `MURG-${String(item.id).padStart(4, "0")}`;
-                      const sizeLine = item.size ? ` | Size: ${item.size}` : "";
-                      return `• ${pid} — ${item.name}${sizeLine} | Qty: ${item.quantity}`;
-                    })
-                    .join("\n");
-                  const text = whatsappMessage
-                    .replace("{{items}}", itemLines);
+                  const itemParts = cartItems.map(item => {
+                    const pid = item.productId || `MURG-${String(item.id).padStart(4, "0")}`;
+                    return `${pid} ${item.name} (Qty: ${item.quantity})`;
+                  });
+                  const itemText = itemParts.length === 1
+                    ? itemParts[0]
+                    : itemParts.slice(0, -1).join(", ") + " and " + itemParts[itemParts.length - 1];
+                  const text = `Hello Murgdur, I would love to know about the ${itemText}. Could you connect me to your Royal Concierge?`;
                   const url = `https://api.whatsapp.com/send/?phone=${whatsappNumber}&text=${encodeURIComponent(text)}`;
                   window.open(url, "_blank");
                 }}
