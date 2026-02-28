@@ -17,35 +17,35 @@ const Footer = () => {
   const aboutLinks = data?.aboutLinks?.length
     ? data.aboutLinks
     : [
-        { title: "Contact Us", url: "/contact" },
-        { title: "About Us", url: "/about" },
-        { title: "Careers", url: "/careers" },
-        { title: "Murgdur Stories", url: "/stories" },
-        { title: "Press", url: "/press" },
-        { title: "Corporate Information", url: "/corporate" },
-      ];
+      { title: "Contact Us", url: "/contact" },
+      { title: "About Us", url: "/about" },
+      { title: "Careers", url: "/careers" },
+      { title: "Murgdur Stories", url: "/stories" },
+      { title: "Press", url: "/press" },
+      { title: "Corporate Information", url: "/corporate" },
+    ];
 
   const helpLinks = data?.helpLinks?.length
     ? data.helpLinks
     : [
-        { title: "Payments", url: "/payments" },
-        { title: "Shipping", url: "/shipping" },
-        { title: "Cancellation & Returns", url: "/cancellation" },
-        { title: "FAQ", url: "/faq" },
-        { title: "Report Infringement", url: "/report" },
-      ];
+      { title: "Payments", url: "/payments" },
+      { title: "Shipping", url: "/shipping" },
+      { title: "Cancellation & Returns", url: "/cancellation" },
+      { title: "FAQ", url: "/faq" },
+      { title: "Report Infringement", url: "/report" },
+    ];
 
   const policyLinks = data?.policyLinks?.length
     ? data.policyLinks
     : [
-        { title: "Cancellation & Returns", url: "/cancellation" },
-        { title: "Terms Of Use", url: "/terms" },
-        { title: "Security", url: "/security" },
-        { title: "Privacy", url: "/privacy" },
-        { title: "Sitemap", url: "/sitemap" },
-        { title: "Grievance Redressal", url: "/grievance" },
-        { title: "EPR Compliance", url: "/epr" },
-      ];
+      { title: "Cancellation & Returns", url: "/cancellation" },
+      { title: "Terms Of Use", url: "/terms" },
+      { title: "Security", url: "/security" },
+      { title: "Privacy", url: "/privacy" },
+      { title: "Sitemap", url: "/sitemap" },
+      { title: "Grievance Redressal", url: "/grievance" },
+      { title: "EPR Compliance", url: "/epr" },
+    ];
 
   const defaultMailAddress = `Murgdur Private Limited,
 Buildings Alyssa, Begonia &
@@ -77,10 +77,10 @@ Telephone: 044-45614700 / 044-67415800`;
               <p className="mb-2 text-gray-600">
                 A Client Advisor is available at{" "}
                 <a
-                  href="tel:+914445614700"
+                  href="tel:+9118001039988"
                   className="underline hover:text-royal-gold decoration-1 underline-offset-4 decoration-current"
                 >
-                  +91 44 4561 4700
+                  +91 1800 103 9988
                 </a>
                 . You can also{" "}
                 <Link
