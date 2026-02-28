@@ -698,14 +698,37 @@ const Navbar = () => {
                 {/* Footer Section */}
                 <div className="px-8 py-8 mt-auto border-t border-gray-100 shrink-0 bg-gray-50/50">
                   <div className="mb-6">
-                    <p className="text-[11px] text-gray-500 font-sans tracking-[0.1em] uppercase mb-2">Can we help you?</p>
-                    <a href="tel:+9118001039988" className="text-sm tracking-wider text-black font-sans hover:underline block">+91 1800 103 9988</a>
+                    <p className="text-[11px] text-gray-500 font-sans tracking-[0.1em] uppercase mb-2">
+                      {siteSettings?.navHelpLabel || "Can we help you?"}
+                    </p>
+                    <a
+                      href={`tel:${(siteSettings?.contactPhone || "+9118001039988").replace(/\s/g, "")}`}
+                      className="text-sm tracking-wider text-black font-sans hover:underline block"
+                    >
+                      {siteSettings?.contactPhone || "+91 1800 103 9988"}
+                    </a>
                   </div>
                   <div className="space-y-4">
-                    <Link to="/sustainability" className="block text-xs uppercase tracking-widest font-sans text-gray-600 hover:text-black transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Sustainability</Link>
-                    <Link to="/stores" className="block text-xs uppercase tracking-widest font-sans text-gray-600 hover:text-black transition-colors" onClick={() => setIsMobileMenuOpen(false)}>Find a Store</Link>
+                    {(siteSettings?.navFooterLinks?.length > 0
+                      ? siteSettings.navFooterLinks
+                      : [
+                          { name: "Sustainability", path: "/sustainability" },
+                          { name: "Find a Store", path: "/stores" },
+                        ]
+                    ).map((link) => (
+                      <Link
+                        key={link.name}
+                        to={link.path}
+                        className="block text-xs uppercase tracking-widest font-sans text-gray-600 hover:text-black transition-colors"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        {link.name}
+                      </Link>
+                    ))}
                     <div className="pt-2 flex items-center gap-2 text-black">
-                      <span className="text-xs uppercase tracking-widest font-medium font-sans">Country: India</span>
+                      <span className="text-xs uppercase tracking-widest font-medium font-sans">
+                        {siteSettings?.navCountryLabel || "COUNTRY: INDIA"}
+                      </span>
                     </div>
                   </div>
                 </div>

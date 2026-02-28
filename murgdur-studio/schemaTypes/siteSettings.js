@@ -118,6 +118,40 @@ export default {
             }]
         },
 
+        // DRAWER FOOTER — "CAN WE HELP YOU?" section
+        {
+            name: 'navHelpLabel',
+            title: 'Help Section Label',
+            type: 'string',
+            group: 'nav',
+            description: 'Label shown above the help phone number in the navigation drawer (e.g. "Can we help you?")',
+            initialValue: 'Can we help you?',
+        },
+        {
+            name: 'navFooterLinks',
+            title: 'Drawer Footer Quick Links',
+            type: 'array',
+            group: 'nav',
+            description: 'Small links at the very bottom of navigation drawer — e.g. Sustainability, Find a Store',
+            of: [{
+                type: 'object',
+                name: 'navFooterLink',
+                fields: [
+                    { name: 'name', title: 'Label', type: 'string' },
+                    { name: 'path', title: 'URL Path', type: 'string' },
+                ],
+                preview: { select: { title: 'name', subtitle: 'path' } }
+            }]
+        },
+        {
+            name: 'navCountryLabel',
+            title: 'Country Label (shown in drawer footer)',
+            type: 'string',
+            group: 'nav',
+            description: 'Displayed as "COUNTRY: INDIA" at the bottom of navigation. Change if launching in another region.',
+            initialValue: 'COUNTRY: INDIA',
+        },
+
         // CONTACT
         { name: 'contactEmail', title: 'Main Contact Email', type: 'string', group: 'contact' },
         { name: 'contactPhone', title: 'Main Phone Number', type: 'string', group: 'contact' },

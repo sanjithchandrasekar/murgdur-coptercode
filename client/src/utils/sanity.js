@@ -1,4 +1,4 @@
-﻿import { createClient } from "@sanity/client";
+import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
 import { products as staticProducts } from "../data/products";
 
@@ -12,11 +12,33 @@ const HARDCODED_TOKEN =
 export const client = createClient({
   projectId: PROJECT_ID,
   dataset: "production",
-  useCdn: false, // disabled to avoid stale cache after publish/unpublish
+  useCdn: true,           // ? Enable Sanity's global CDN for fastest reads
   apiVersion: "2024-01-22",
+  perspective: "published", // Only fetch published content � faster + safer
   token: HARDCODED_TOKEN || import.meta.env.VITE_SANITY_TOKEN || "",
   ignoreBrowserTokenWarning: true,
 });
+
+// ------------------------------------------------------------------
+// IN-MEMORY CACHE � prevents re-fetching the same data on navigation
+// Data stays fresh for 3 minutes then re-fetches automatically
+// ------------------------------------------------------------------
+const _cache = new Map();
+const CACHE_TTL = 3 * 60 * 1000; // 3 minutes
+
+const sanityFetch = (query, params = {}) => {
+  const key = query + JSON.stringify(params);
+  const now = Date.now();
+  const hit = _cache.get(key);
+  if (hit && now - hit.ts < CACHE_TTL) return Promise.resolve(hit.data);
+  return client.fetch(query, params).then((data) => {
+    _cache.set(key, { data, ts: now });
+    return data;
+  });
+};
+
+/** Call this after publishing / editing in Studio to clear stale cache */
+export const clearSanityCache = () => _cache.clear();
 
 // ------------------------------------------------------------------
 // HELPERS
@@ -54,9 +76,12 @@ export const fetchSiteSettings = async () => {
         subcategories[]{ name, path },
         highlights[]{ name, "image": image.asset->url + "?auto=format&q=80&w=400", path }
       },
-      navSimpleLinks[]{ name, path }
+      navSimpleLinks[]{ name, path },
+      navHelpLabel,
+      navFooterLinks[]{ name, path },
+      navCountryLabel
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchSiteSettings error:", error);
     return null;
@@ -75,7 +100,7 @@ export const fetchFooter = async () => {
       newsletterHeading, newsletterSubtext, newsletterPlaceholder, newsletterButtonText,
       copyrightText, gstNumber, cinNumber
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchFooter error:", error);
     return null;
@@ -91,7 +116,7 @@ export const fetchTestimonials = async () => {
         "avatar": avatar.asset->url + "?auto=format&q=80&w=150"
       }
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchTestimonials error:", error);
     return null;
@@ -104,7 +129,7 @@ export const fetchNewsletter = async () => {
       heading, subHeading, placeholder, buttonText, features, privacyText,
       "bgImage": bgImage.asset->url + "?auto=format&q=80"
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchNewsletter error:", error);
     return null;
@@ -119,7 +144,7 @@ export const fetchLegacySection = async () => {
       stats[]{ number, label },
       founderQuoteBody, founderQuoteCite
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchLegacySection error:", error);
     return null;
@@ -132,7 +157,7 @@ export const fetchShopByOccasion = async () => {
       heading, eyebrow,
       occasions[]{ name, link, "image": image.asset->url + "?auto=format&q=80&w=600" }
     }`;  
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchShopByOccasion error:", error);
     return null;
@@ -161,7 +186,7 @@ const PAGE_BUILDER_PROJECTION = `pageBuilder[]{
 export const fetchPage = async (slug) => {
   try {
     const query = `*[_type == "page" && slug.current == $slug][0]{ title, ${PAGE_BUILDER_PROJECTION} }`;
-    return await client.fetch(query, { slug });
+    return await sanityFetch(query, { slug });
   } catch (error) {
     console.error("fetchPage error:", error);
     return null;
@@ -181,7 +206,7 @@ export const fetchHomePage = async () => {
       videoCampaign,
       treasures[]->{ _id, name, "slug": slug.current, "image": mainImage.asset->url + "?auto=format&q=80&w=600", price }
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchHomePage error:", error);
     return null;
@@ -200,7 +225,7 @@ export const fetchShopPage = async () => {
       categoryConfig[]{ label, value, isActive },
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchShopPage error:", error);
     return null;
@@ -255,7 +280,7 @@ export const fetchProducts = async () => {
         return true;
       });
   } catch (error) {
-    console.error("fetchProducts error â†’ fallback:", error);
+    console.error("fetchProducts error → fallback:", error);
     return staticProducts;
   }
 };
@@ -273,7 +298,7 @@ export const fetchProductBySlugOrId = async (slugOrId) => {
       isNew, onSale, fabric, care, details,
       relatedProducts[]->{ _id, name, "slug": slug.current, "image": mainImage.asset->url + "?auto=format&q=80&w=400", price, category }
     }`;
-    return await client.fetch(query, { id: slugOrId });
+    return await sanityFetch(query, { id: slugOrId });
   } catch (error) {
     console.error("fetchProductBySlugOrId error:", error);
     return null;
@@ -291,7 +316,7 @@ export const fetchCollections = async () => {
       "coverImage": coverImage.asset->url + "?auto=format&q=80&w=800",
       "productCount": count(products)
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchCollections error:", error);
     return [];
@@ -305,7 +330,7 @@ export const fetchCollectionBySlug = async (slug) => {
       "coverImage": coverImage.asset->url + "?auto=format&q=80",
       products[]->{ _id, name, "slug": slug.current, "image": mainImage.asset->url + "?auto=format&q=80&w=600", price, originalPrice, category, type, rating }
     }`;
-    return await client.fetch(query, { slug });
+    return await sanityFetch(query, { slug });
   } catch (error) {
     console.error("fetchCollectionBySlug error:", error);
     return null;
@@ -333,7 +358,7 @@ export const fetchHeritagePage = async () => {
       "galleryImages": galleryImages[].asset->url,
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchHeritagePage error:", error);
     return null;
@@ -356,7 +381,7 @@ export const fetchRoyalCollectionPage = async () => {
       conciergeSection{ ..., "image": image.asset->url + "?auto=format&q=80" },
       occasions[]{ ..., "image": image.asset->url + "?auto=format&q=80&w=600" }
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchRoyalCollectionPage error:", error);
     return null;
@@ -409,7 +434,7 @@ export const fetchAboutPage = async () => {
 
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchAboutPage error:", error);
     return null;
@@ -433,7 +458,7 @@ export const fetchVisionPage = async () => {
       bottomCaption,
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchVisionPage error:", error);
     return null;
@@ -456,7 +481,7 @@ export const fetchCareersPage = async () => {
       perksHeading, perks[],
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchCareersPage error:", error);
     return null;
@@ -478,7 +503,7 @@ export const fetchPressPage = async () => {
       downloadableAssets[]{ label, fileUrl },
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchPressPage error:", error);
     return null;
@@ -496,7 +521,7 @@ export const fetchStoriesPage = async () => {
       stories[]{ category, title, description, readMoreLink, "image": image.asset->url + "?auto=format&q=80&w=800" },
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchStoriesPage error:", error);
     return null;
@@ -517,7 +542,7 @@ export const fetchContactPage = async () => {
       stores[]{ name, address, phone, hours, mapUrl },
       seoTitle, seoDescription
     }`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchContactPage error:", error);
     return null;
@@ -530,7 +555,7 @@ export const fetchContactPage = async () => {
 export const fetchCorporatePage = async () => {
   try {
     const query = `*[_type == "corporatePage"][0]`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchCorporatePage error:", error);
     return null;
@@ -543,7 +568,7 @@ export const fetchCorporatePage = async () => {
 export const fetchVaultPage = async () => {
   try {
     const query = `*[_type == "vaultPage"][0]`;
-    return await client.fetch(query);
+    return await sanityFetch(query);
   } catch (error) {
     console.error("fetchVaultPage error:", error);
     return null;
@@ -556,7 +581,7 @@ export const fetchVaultPage = async () => {
 export const fetchPolicyPage = async (slug) => {
   try {
     const query = `*[_type == "policyPage" && slug.current == $slug][0]`;
-    return await client.fetch(query, { slug });
+    return await sanityFetch(query, { slug });
   } catch (error) {
     console.error("fetchPolicyPage error:", error);
     return null;
@@ -580,6 +605,7 @@ export const fetchCustomerOrders = async (customerEmail) => {
     const query = `*[_type == "order" && customer->email == $email] | order(createdAt desc){
       _id, orderNumber, items[], totalAmount, status, shippingAddress, paymentMethod, createdAt
     }`;
+    // No cache for orders — they change in real time
     return await client.fetch(query, { email: customerEmail });
   } catch (error) {
     console.error("fetchCustomerOrders error:", error);
