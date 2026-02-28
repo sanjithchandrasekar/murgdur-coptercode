@@ -328,9 +328,26 @@ const Navbar = () => {
     { name: "Vault", path: "/vault" },
   ];
 
-  // ── Sanity-driven mega menu (falls back to static menuData) ──
+  // ── Sanity-driven mega menu (merges Sanity data with static image fallbacks) ──
+  const staticById = Object.fromEntries(menuData.map((m) => [m.id, m]));
   const activeMenuData =
-    siteSettings?.navMenu?.length > 0 ? siteSettings.navMenu : menuData;
+    siteSettings?.navMenu?.length > 0
+      ? siteSettings.navMenu.map((item) => {
+          const staticItem = staticById[item.id] || {};
+          return {
+            ...item,
+            // Use Sanity image URL; fall back to static path if null
+            image: item.image || staticItem.image || null,
+            highlights: (item.highlights || []).map((hl, i) => ({
+              ...hl,
+              image:
+                hl.image ||
+                (staticItem.highlights && staticItem.highlights[i]?.image) ||
+                null,
+            })),
+          };
+        })
+      : menuData;
 
   // ── Sanity-driven bottom drawer links ──
   const defaultSimpleLinks = [
