@@ -13,23 +13,51 @@ const Stories = () => {
   const defaultStories = [
     {
       image: "https://images.unsplash.com/photo-1558769132-cb1aea458c5e?q=80&w=2274&auto=format&fit=crop",
-      category: "Heritage", title: "The Lost Art of Zardosi",
-      description: "Tracing the origins of gold thread embroidery back to the Mughal courts.",
+      category: "Heritage",
+      title: "The Lost Art of Zardosi",
+      description: "Tracing the origins of gold thread embroidery back to the Mughal courts — and the master craftsmen in Lucknow keeping this 500-year-old tradition alive today.",
     },
     {
       image: "https://images.unsplash.com/photo-1445205170230-053b83016050?q=80&w=2071&auto=format&fit=crop",
-      category: "Campaign", title: "Winter in the Palace",
-      description: "Behind the scenes of our latest campaign shot at Udaipur City Palace.",
+      category: "Campaign",
+      title: "Winter in the Palace",
+      description: "Behind the scenes of our winter campaign shot at Udaipur's City Palace — the architecture, the light, and the stories behind every frame.",
     },
     {
       image: "https://images.unsplash.com/photo-1540221652346-e5dd6b50f3e7?q=80&w=2069&auto=format&fit=crop",
-      category: "Sustainability", title: "Silk Without Suffering",
-      description: "Introducing Ahimsa Silk, created without harming a single silkworm.",
+      category: "Sustainability",
+      title: "Silk Without Suffering",
+      description: "Introducing Ahimsa Silk — created without harming a single silkworm. How Murgdur blends ethical sourcing with uncompromising luxury.",
     },
     {
       image: "/images/men/wallets/royal_wallet.png",
-      category: "Craftsmanship", title: "The Making of a Monarch Bag",
-      description: "It takes 40 hours and 3 master artisans to create one Murgdur Monarch Bag.",
+      category: "Craftsmanship",
+      title: "The Making of a Monarch Bag",
+      description: "It takes 40 hours, 3 master artisans, and 200+ individual steps to complete one Murgdur Monarch Bag. Here is every stitch of that journey.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1583391733956-3750e0ff4e8b?q=80&w=2070&auto=format&fit=crop",
+      category: "Artisan",
+      title: "The Weavers of Varanasi",
+      description: "Meet the families who have kept the Banarasi silk tradition alive for over 400 years — weaving gold into every thread, generation after generation.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?q=80&w=800&auto=format&fit=crop",
+      category: "Culture",
+      title: "Royal Jewelry: A Living Tradition",
+      description: "From Rajputana courts to modern runways — how Murgdur's jewelry line celebrates the unbroken chain of Indian goldsmithing across five centuries.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1617606002779-51d866bdd1d1?q=80&w=800&auto=format&fit=crop",
+      category: "Lifestyle",
+      title: "The Modern Maharaj: Dressing with Authority",
+      description: "Style notes for the contemporary gentleman who demands tradition and modernity in equal measure — a guide to wearing power with grace.",
+    },
+    {
+      image: "https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=2070&auto=format&fit=crop",
+      category: "Behind the Scenes",
+      title: "Inside the Atelier",
+      description: "A rare glimpse into our private workshop where each Murgdur piece is born — from raw fabric selection, dyeing, and embroidery to the final hand-finished garment.",
     },
   ];
 
@@ -51,9 +79,9 @@ const Stories = () => {
         <h1 className="text-4xl md:text-6xl font-serif text-gray-900 mb-4 text-center">
           {data?.heading || "Murgdur Stories"}
         </h1>
-        {data?.subheading && (
-          <p className="text-gray-500 text-lg text-center max-w-2xl mx-auto mb-8">{data.subheading}</p>
-        )}
+        <p className="text-gray-500 text-lg text-center max-w-2xl mx-auto mb-8">
+          {data?.subheading || "Craft, culture, and the people behind every Murgdur creation. Dive into the narratives that define our heritage."}
+        </p>
       </div>
 
       {/* Featured Story Hero */}

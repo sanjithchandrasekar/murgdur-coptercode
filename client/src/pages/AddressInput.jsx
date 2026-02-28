@@ -162,7 +162,9 @@ const AddressInput = () => {
             // Success Animation & Redirect
             setTimeout(() => {
                 if (location.state?.returnUrl) {
-                    navigate(location.state.returnUrl);
+                    navigate(location.state.returnUrl, {
+                        state: { activeTab: "addresses" }
+                    });
                 } else {
                     navigate("/");
                 }
@@ -220,7 +222,7 @@ const AddressInput = () => {
                                     name="name"
                                     value={formData.name}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.name ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                                    className={`w-full bg-white border ${errors.name ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="Recipient Name"
                                 />
                                 {errors.name && <p className="text-red-500 text-[10px] ml-1">{errors.name}</p>}
@@ -228,7 +230,7 @@ const AddressInput = () => {
 
                             <div className="space-y-1">
                                 <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Mobile Number</label>
-                                <div className={`relative rounded transition-all duration-300 ${errors.mobile ? 'border border-red-500' : 'border border-zinc-800 focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]'}`}>
+                                <div className={`relative rounded transition-all duration-300 ${errors.mobile ? 'border border-red-500' : 'border border-gray-300 focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]'}`}>
                                     <PhoneInput
                                         country={"in"}
                                         value={formData.mobile}
@@ -264,7 +266,7 @@ const AddressInput = () => {
                                     value={formData.pincode}
                                     onChange={handleChange}
                                     maxLength={6}
-                                    className={`w-full bg-[#050505] border ${errors.pincode ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700 tracking-widest`}
+                                    className={`w-full bg-white border ${errors.pincode ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400 tracking-widest`}
                                     placeholder="000000"
                                 />
                                 {errors.pincode && <p className="text-red-500 text-[10px] ml-1">{errors.pincode}</p>}
@@ -276,7 +278,7 @@ const AddressInput = () => {
                                     name="city"
                                     value={formData.city}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.city ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                                    className={`w-full bg-white border ${errors.city ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="City Name"
                                 />
                                 {errors.city && <p className="text-red-500 text-[10px] ml-1">{errors.city}</p>}
@@ -291,7 +293,7 @@ const AddressInput = () => {
                                     name="state"
                                     value={formData.state}
                                     onChange={handleChange}
-                                    className={`w-full bg-[#050505] border ${errors.state ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                                    className={`w-full bg-white border ${errors.state ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                     placeholder="State Name"
                                 />
                                 {errors.state && <p className="text-red-500 text-[10px] ml-1">{errors.state}</p>}
@@ -303,7 +305,7 @@ const AddressInput = () => {
                                     name="landmark"
                                     value={formData.landmark}
                                     onChange={handleChange}
-                                    className="w-full bg-[#050505] border border-zinc-800 text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-zinc-700"
+                                    className="w-full bg-white border border-gray-300 text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400"
                                     placeholder="e.g. Near Central Park"
                                 />
                             </div>
@@ -316,7 +318,7 @@ const AddressInput = () => {
                                 name="flatNo"
                                 value={formData.flatNo}
                                 onChange={handleChange}
-                                className={`w-full bg-[#050505] border ${errors.flatNo ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                                className={`w-full bg-white border ${errors.flatNo ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                 placeholder="e.g. Flat 402, Royal Residency"
                             />
                             {errors.flatNo && <p className="text-red-500 text-[10px] ml-1">{errors.flatNo}</p>}
@@ -329,7 +331,7 @@ const AddressInput = () => {
                                 name="area"
                                 value={formData.area}
                                 onChange={handleChange}
-                                className={`w-full bg-[#050505] border ${errors.area ? 'border-red-500' : 'border-zinc-800'} text-white px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                                className={`w-full bg-white border ${errors.area ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
                                 placeholder="e.g. MG Road, Indiranagar"
                             />
                             {errors.area && <p className="text-red-500 text-[10px] ml-1">{errors.area}</p>}
@@ -343,14 +345,14 @@ const AddressInput = () => {
                             <button
                                 type="button"
                                 onClick={() => setFormData(prev => ({ ...prev, addressType: "Home" }))}
-                                className={`flex-1 py-3 border rounded flex items-center justify-center gap-2 transition-all ${formData.addressType === "Home" ? "bg-[#D4AF37] border-[#D4AF37] text-black" : "bg-transparent border-zinc-800 text-zinc-400 hover:border-zinc-600"}`}
+                                className={`flex-1 py-3 border rounded flex items-center justify-center gap-2 transition-all ${formData.addressType === "Home" ? "bg-[#D4AF37] border-[#D4AF37] text-black" : "bg-transparent border-gray-300 text-gray-600 hover:border-gray-500"}`}
                             >
                                 <Home size={16} /> <span className="text-xs font-bold uppercase tracking-widest">Home</span>
                             </button>
                             <button
                                 type="button"
                                 onClick={() => setFormData(prev => ({ ...prev, addressType: "Work" }))}
-                                className={`flex-1 py-3 border rounded flex items-center justify-center gap-2 transition-all ${formData.addressType === "Work" ? "bg-[#D4AF37] border-[#D4AF37] text-black" : "bg-transparent border-zinc-800 text-zinc-400 hover:border-zinc-600"}`}
+                                className={`flex-1 py-3 border rounded flex items-center justify-center gap-2 transition-all ${formData.addressType === "Work" ? "bg-[#D4AF37] border-[#D4AF37] text-black" : "bg-transparent border-gray-300 text-gray-600 hover:border-gray-500"}`}
                             >
                                 <Briefcase size={16} /> <span className="text-xs font-bold uppercase tracking-widest">Work</span>
                             </button>
@@ -362,7 +364,7 @@ const AddressInput = () => {
                             type="button"
                             variant="outline"
                             onClick={() => navigate("/")}
-                            className="flex-1 py-4 border-zinc-800 text-zinc-400 hover:text-white"
+                            className="flex-1 py-4 border-gray-300 text-gray-500 hover:text-gray-900"
                         >
                             Skip for Now
                         </Button>

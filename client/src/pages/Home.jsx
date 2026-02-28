@@ -128,10 +128,11 @@ const Home = () => {
           <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
             {/* Section Header-Women */}
             <div className="text-center mb-12">
+              <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-3 block">Women</span>
               <h2
-                className="text-black"
+                className="text-black mb-4"
                 style={{
-                  fontSize: "1rem",
+                  fontSize: "1.5rem",
                   fontWeight: 400,
                   letterSpacing: "0.025rem",
                   lineHeight: "1.5rem",
@@ -139,6 +140,9 @@ const Home = () => {
               >
                 Explore a Selection of the Women's Royal Creations
               </h2>
+              <p className="text-gray-500 font-light text-sm max-w-xl mx-auto">
+                From hand-beaded ceremonial gowns to artisan leather handbags, every piece is a declaration of grace and heritage crafted for the modern queen.
+              </p>
             </div>
 
             {/* Women's Product Grid */}
@@ -205,10 +209,11 @@ const Home = () => {
           <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
             {/* Section Header-Men */}
             <div className="text-center mb-12">
+              <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-3 block">Men</span>
               <h2
-                className="text-black"
+                className="text-black mb-4"
                 style={{
-                  fontSize: "1rem",
+                  fontSize: "1.5rem",
                   fontWeight: 400,
                   letterSpacing: "0.025rem",
                   lineHeight: "1.5rem",
@@ -216,6 +221,9 @@ const Home = () => {
               >
                 Explore a Selection of the Men's Royal Creations
               </h2>
+              <p className="text-gray-500 font-light text-sm max-w-xl mx-auto">
+                From bespoke sherwanis and Banarasi kurtas to hand-stitched leather bags and precision timepieces — appointments for modern royalty.
+              </p>
             </div>
 
             {/* Men's Product Grid */}
@@ -300,10 +308,11 @@ const Home = () => {
         <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
           {/* Section Header */}
           <div className="text-center mb-16">
+            <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-3 block">Gifts</span>
             <h2
-              className="text-black"
+              className="text-black mb-4"
               style={{
-                fontSize: "1rem",
+                fontSize: "1.5rem",
                 fontWeight: 400,
                 letterSpacing: "0.025rem",
                 lineHeight: "1.5rem",
@@ -311,6 +320,9 @@ const Home = () => {
             >
               Royal Gift Selections
             </h2>
+            <p className="text-gray-500 font-light text-sm max-w-lg mx-auto">
+              Curated for moments that deserve to be remembered. Each gift arrives in signature Murgdur packaging with a handwritten card and silk ribbon seal.
+            </p>
           </div>
 
           {/* Product Grid-4 Column */}
@@ -607,10 +619,11 @@ const Home = () => {
               >
                 Royal Olfactory
               </h2>
-              <p className="text-gray-600 mb-10 font-light leading-relaxed max-w-md text-lg">
-                A sensory journey through the finest ingredients. Our fragrances
-                are crafted to evoke memories, status, and the essence of
-                royalty.
+              <p className="text-gray-600 mb-4 font-light leading-relaxed max-w-md text-lg">
+                A sensory journey through the finest raw materials from across the globe. Our fragrances are composed by master perfumers using rare oud, sandalwood, saffron, and precious florals in concentrations found only in haute perfumery.
+              </p>
+              <p className="text-gray-500 mb-10 font-light leading-relaxed max-w-md text-sm">
+                Each bottle is hand-blown, hand-filled, and sealed with a 24-karat gold cap. More than a fragrance — an artefact of royalty.
               </p>
               <Link
                 to="/shop?type=perfumes"
@@ -627,16 +640,22 @@ const Home = () => {
       <section className="py-24 bg-white border-t border-gray-100">
         <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
           <div className="text-center mb-16">
+            <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-3 block">
+              Timepieces
+            </span>
             <h2
-              className="text-black uppercase"
+              className="text-black mb-4 uppercase"
               style={{
-                fontSize: "1rem",
+                fontSize: "1.5rem",
                 fontWeight: 400,
                 letterSpacing: "0.025rem",
               }}
             >
               Guardians of Time
             </h2>
+            <p className="text-gray-500 font-light text-sm max-w-lg mx-auto">
+              Each timepiece in the Murgdur collection is a mechanical poem — hand-assembled complications that honour the ancient relationship between kingship and precision.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
@@ -695,34 +714,40 @@ const Home = () => {
       <section className="py-24 bg-white border-t border-gray-100">
         <div className="mx-auto px-6 md:px-12" style={{ maxWidth: "1440px" }}>
           <div className="text-center mb-16">
+            <span className="text-gray-400 uppercase tracking-[0.2em] text-[10px] font-bold mb-3 block">
+              Services
+            </span>
             <h2
-              className="text-black uppercase"
+              className="text-black mb-4 uppercase"
               style={{
-                fontSize: "1rem",
+                fontSize: "1.5rem",
                 fontWeight: 400,
                 letterSpacing: "0.025rem",
               }}
             >
               Privileges of Court
             </h2>
+            <p className="text-gray-500 font-light text-sm max-w-lg mx-auto">
+              Because true luxury extends far beyond the garment itself. Every Murgdur service is designed to deepen your connection to the craft.
+            </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
             {[
               {
                 title: "Personalization",
-                desc: "Make it your own with hot stamping and painting.",
+                desc: "Make it uniquely yours. From hand-engraved monograms to bespoke painted motifs, our artisans breathe life into your vision with meticulous hot stamping, calligraphy, and hand-painting.",
                 img: "/images/site/per.jpg",
                 link: "/personalisation",
               },
               {
                 title: "The Art of Gifting",
-                desc: "The perfect gift, beautifully wrapped.",
+                desc: "Every moment deserves a memory. Our curated gift sets arrive in signature keepsake boxes with hand-tied silk ribbons and a personal message inscribed by our in-house calligraphers.",
                 img: "/images/site/gift.jpg",
                 link: "/gifting",
               },
               {
                 title: "Repairs & Care",
-                desc: "Preserve the beauty of your Murgdur creation.",
+                desc: "Crafted to endure generations. Our restoration atelier uses only original materials and techniques to revive, repair, and preserve your Murgdur creations — keeping your legacy intact.",
                 img: "/images/site/cares.jpg",
                 link: "/repairs",
               },

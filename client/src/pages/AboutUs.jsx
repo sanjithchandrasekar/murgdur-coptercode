@@ -22,16 +22,18 @@ const AboutUs = () => {
     { number: "2019", label: "Founded", description: "Legacy since" },
   ];
   const coreValues = data?.coreValues?.length ? data.coreValues : [
-    { icon: "👑", title: "Royal Heritage", description: "Rooted in centuries of Indian craftsmanship tradition." },
-    { icon: "✨", title: "Uncompromising Quality", description: "Every stitch tells a story of perfection." },
-    { icon: "🌍", title: "Global Elegance", description: "Bringing Indian luxury to the world stage." },
-    { icon: "💎", title: "Timeless Design", description: "Pieces crafted to transcend fashion seasons." },
+    { icon: "👑", title: "Royal Heritage", description: "Rooted in centuries of Indian craftsmanship tradition, we draw from the artistic vocabulary of Mughal courts, Rajputana palaces, and Dravidian temples to create pieces that honour their origins." },
+    { icon: "✨", title: "Uncompromising Quality", description: "Every stitch tells a story of perfection. We refuse shortcuts — each garment passes through 18 quality checkpoints before it reaches a single Murgdur customer." },
+    { icon: "🌍", title: "Global Elegance", description: "Bringing Indian luxury to the world stage on its own terms. We do not imitate Western luxury — we define a standard that is entirely, proudly our own." },
+    { icon: "💎", title: "Timeless Design", description: "Pieces crafted to transcend fashion seasons and trend cycles. A Murgdur garment is not a purchase — it is an heirloom acquired in your lifetime." },
   ];
   const journeyMilestones = data?.journeyMilestones?.length ? data.journeyMilestones : [
-    { year: "2019", title: "Founded", description: "Murgdur was born from a vision of luxury and heritage." },
-    { year: "2021", title: "First Collection", description: "Launched our signature Royal Heritage Collection." },
-    { year: "2023", title: "Online Expansion", description: "Reached customers across all of India online." },
-    { year: "2025", title: "Global Ambition", description: "Entering international luxury markets." },
+    { year: "2019", title: "Founded", description: "Murgdur was born from a deeply personal vision of luxury rooted in Indian heritage. It opened with a single atelier, three artisans, and an uncompromising commitment to craft." },
+    { year: "2021", title: "Royal Heritage Collection", description: "The debut bridal collection launched with 24 bespoke pieces and sold out within two weeks. It established Murgdur's signature aesthetic — the intersection of Mughal grandeur and contemporary refinement." },
+    { year: "2022", title: "Accessories & Fragrance Launch", description: "Expanded into leather goods, jewelry, and a debut fragrance line crafted with master perfumers from Grasse and Kannauj. Each product reflected the same obsessive quality standards as the apparel." },
+    { year: "2023", title: "Online Expansion", description: "Reached customers across all 28 states of India with a fully redesigned digital experience, personal styling service, and same-day delivery in 10 major cities." },
+    { year: "2024", title: "International Recognition", description: "Featured in Vogue India, Harper's Bazaar Arabia, and GQ India. First wholesale orders received from luxury multi-brand boutiques in Dubai and Singapore." },
+    { year: "2025", title: "Global Ambition", description: "Entering international luxury markets with a flagship boutique planned in London's Mayfair district and plans for a debut runway presentation at Paris Fashion Week." },
   ];
 
   return (

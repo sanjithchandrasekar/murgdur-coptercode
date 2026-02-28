@@ -121,6 +121,25 @@ const Profile = () => {
     confirm: "",
   });
 
+  // Re-read addresses from localStorage every time this page is visited/focused
+  // (covers returning from AddressInput page)
+  useEffect(() => {
+    const latest = JSON.parse(localStorage.getItem("savedAddresses") || "[]");
+    if (latest.length > 0) {
+      setAddresses(latest);
+      const currentSel = JSON.parse(localStorage.getItem("selectedAddress") || "null");
+      if (currentSel) {
+        setSelectedAddressId(currentSel.id);
+      } else {
+        const defaultAddr = latest.find(a => a.isDefault) || latest[0];
+        setSelectedAddressId(defaultAddr.id);
+        localStorage.setItem("selectedAddress", JSON.stringify(defaultAddr));
+      }
+    }
+    setOrders(JSON.parse(localStorage.getItem("orderHistory") || "[]"));
+    setCards(JSON.parse(localStorage.getItem("savedCards") || "[]"));
+  }, [location.key]);
+
   useEffect(() => {
     // Load User
     const storedUser = localStorage.getItem("userProfile");
@@ -144,11 +163,6 @@ const Profile = () => {
     }
 
     setAddresses(JSON.parse(localStorage.getItem("savedAddresses") || "[]"));
-    setOrders(JSON.parse(localStorage.getItem("orderHistory") || "[]"));
-    setCards(JSON.parse(localStorage.getItem("savedCards") || "[]"));
-
-    const sel = JSON.parse(localStorage.getItem("selectedAddress") || "null");
-    if (sel) setSelectedAddressId(sel.id);
 
     // Handle redirected actions
     if (location.state?.action === "addAddress") {
@@ -186,10 +200,29 @@ const Profile = () => {
           mobile: mergedUser.mobile || "",
         });
 
-        // Sync Addresses
+        // Sync Addresses — merge Sanity + local, deduplicate by id
         if (data.addresses && data.addresses.length > 0) {
-          setAddresses(data.addresses);
-          localStorage.setItem("savedAddresses", JSON.stringify(data.addresses));
+          const localAddrs = JSON.parse(localStorage.getItem("savedAddresses") || "[]");
+          // Merge: Sanity is source of truth but keep any local-only entries
+          const sanityIds = new Set(data.addresses.map(a => a.id));
+          const localOnly = localAddrs.filter(a => !sanityIds.has(a.id));
+          const merged = [...data.addresses, ...localOnly];
+          setAddresses(merged);
+          localStorage.setItem("savedAddresses", JSON.stringify(merged));
+          // Auto-select default if not already set
+          const sel = JSON.parse(localStorage.getItem("selectedAddress") || "null");
+          if (!sel && merged.length > 0) {
+            const defaultAddr = merged.find(a => a.isDefault) || merged[0];
+            setSelectedAddressId(defaultAddr.id);
+            localStorage.setItem("selectedAddress", JSON.stringify(defaultAddr));
+          }
+        } else {
+          // Sanity has no addresses — keep local ones and push them to Sanity
+          const localAddrs = JSON.parse(localStorage.getItem("savedAddresses") || "[]");
+          if (localAddrs.length > 0 && data._id) {
+            setAddresses(localAddrs);
+            try { updateCustomerData(data._id, { addresses: localAddrs }); } catch (_) {}
+          }
         }
 
         // Sync Cards
@@ -452,7 +485,7 @@ const Profile = () => {
           {/* Sidebar — desktop only */}
           <div className="hidden lg:block lg:col-span-3 space-y-8">
             <div className="bg-gray-50 rounded-lg border border-gray-100 overflow-hidden sticky top-32">
-              <div className="h-24 bg-gradient-to-r from-[#D4AF37]/20 via-[#0F0F0F] to-[#0F0F0F] relative">
+              <div className="h-24 bg-gradient-to-r from-[#D4AF37]/30 via-[#D4AF37]/10 to-[#f9fafb] relative">
                 <div className="absolute -bottom-10 left-6">
                   <div
                     className="w-20 h-20 rounded-full bg-gray-100 border-4 border-white flex items-center justify-center shadow-2xl relative group cursor-pointer"
@@ -522,7 +555,7 @@ const Profile = () => {
                         className={
                           activeTab === item.id
                             ? "text-[#D4AF37]"
-                            : "text-zinc-500 group-hover:text-zinc-300"
+                            : "text-zinc-500 group-hover:text-gray-800"
                         }
                       />
                       <span className="tracking-wide">{item.label}</span>
@@ -856,14 +889,14 @@ const Profile = () => {
                           </p>
                           <p className="text-zinc-500 text-xs">
                             Mobile:{" "}
-                            <span className="text-zinc-300">{addr.mobile}</span>
+                            <span className="text-zinc-700">{addr.mobile}</span>
                           </p>
                         </div>
                       ))}
 
                       <button
                         onClick={() => navigate("/complete-profile", { state: { returnUrl: "/profile" } })}
-                        className="border border-dashed border-zinc-800 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-white/[0.02] transition-all min-h-[200px] group"
+                        className="border border-dashed border-gray-300 rounded-lg p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-gray-50 transition-all min-h-[200px] group"
                       >
                         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
                           <Plus size={24} />
@@ -946,12 +979,12 @@ const Profile = () => {
                           className="bg-gradient-to-br from-zinc-900 to-black border border-gray-200 p-6 rounded-xl relative group hover:border-[#D4AF37]/50 transition-colors h-48 flex flex-col justify-between"
                         >
                           <div className="flex justify-between items-start">
-                            <span className="text-gray-900 font-serif italic text-lg">
+                            <span className="text-white font-serif italic text-lg">
                               {card.type}
                             </span>
                             <button
                               onClick={() => handleDeleteCard(card.id)}
-                              className="text-zinc-600 hover:text-red-500 transition-colors opacity-0 group-hover:opacity-100"
+                              className="text-zinc-300 hover:text-red-400 transition-colors opacity-0 group-hover:opacity-100"
                             >
                               <Trash2 size={16} />
                             </button>
@@ -967,24 +1000,24 @@ const Profile = () => {
                               <span className="text-zinc-500 text-xl tracking-widest">
                                 ••••
                               </span>
-                              <span className="text-gray-900 text-xl tracking-widest">
+                              <span className="text-white text-xl tracking-widest">
                                 {card.last4}
                               </span>
                             </div>
                             <div className="flex justify-between items-end">
                               <div>
-                                <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-1">
+                                <p className="text-zinc-300 text-[10px] uppercase tracking-widest mb-1">
                                   Card Holder
                                 </p>
-                                <p className="text-gray-800 font-medium uppercase tracking-wider text-sm">
+                                <p className="text-white font-medium uppercase tracking-wider text-sm">
                                   {card.name}
                                 </p>
                               </div>
                               <div>
-                                <p className="text-zinc-600 text-[10px] uppercase tracking-widest mb-1">
+                                <p className="text-zinc-300 text-[10px] uppercase tracking-widest mb-1">
                                   Expires
                                 </p>
-                                <p className="text-gray-900 font-medium text-sm">
+                                <p className="text-white font-medium text-sm">
                                   {card.expiry}
                                 </p>
                               </div>
@@ -994,7 +1027,7 @@ const Profile = () => {
                       ))}
                       <button
                         onClick={() => setActiveModal("addCard")}
-                        className="border border-dashed border-zinc-800 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-white/[0.02] transition-all h-48 group"
+                        className="border border-dashed border-gray-300 rounded-xl p-6 flex flex-col items-center justify-center text-center hover:border-[#D4AF37]/50 hover:bg-gray-50 transition-all h-48 group"
                       >
                         <div className="w-12 h-12 rounded-full bg-gray-100 flex items-center justify-center mb-4 text-[#D4AF37] group-hover:bg-[#D4AF37] group-hover:text-black transition-colors">
                           <Plus size={24} />
@@ -1531,7 +1564,7 @@ const Profile = () => {
                   <h3 className="text-[#D4AF37] font-serif text-xl mb-3 tracking-widest uppercase">
                     {dialog.title}
                   </h3>
-                  <p className="text-zinc-400 text-sm leading-relaxed mb-8">
+                  <p className="text-gray-500 text-sm leading-relaxed mb-8">
                     {dialog.message}
                   </p>
 
@@ -1540,7 +1573,7 @@ const Profile = () => {
                       <>
                         <button
                           onClick={closeDialog}
-                          className="flex-1 px-6 py-3 border border-gray-200 text-zinc-400 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors rounded-sm"
+                          className="flex-1 px-6 py-3 border border-gray-200 text-gray-500 text-xs font-bold uppercase tracking-widest hover:bg-gray-50 transition-colors rounded-sm"
                         >
                           Cancel
                         </button>

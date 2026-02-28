@@ -15,16 +15,23 @@ const Heritage = () => {
   }, []);
 
   const defaultTimeline = [
-    { year: "2019", title: "Founded", description: "Murgdur was born from a vision of luxury and Indian heritage." },
-    { year: "2021", title: "First Collection", description: "Launched the signature Royal Heritage bridal collection." },
-    { year: "2023", title: "National Reach", description: "Expanded to serve customers across all of India." },
-    { year: "2025", title: "Global Vision", description: "Taking Indian luxury to international markets." },
+    { year: "2018", title: "The Founding Vision", description: "Sri Sundershan Duraisamy establishes Murgdur in Chennai, driven by a single conviction: Indian craftsmanship deserves a luxury platform worthy of its legacy." },
+    { year: "2019", title: "First Atelier Opens", description: "The first Murgdur atelier opens its doors, offering bespoke sherwani and lehenga consultations to an exclusive list of patrons from across South India." },
+    { year: "2020", title: "Digital Debut", description: "Murgdur launches its first online presence, bringing royal couture to discerning customers nationwide during a pivotal moment in the world's retail landscape." },
+    { year: "2021", title: "Royal Heritage Collection", description: "The debut Royal Heritage bridal collection debuts to wide acclaim, blending Mughal-era zardosi with contemporary silhouettes — selling out within weeks." },
+    { year: "2022", title: "Accessories Launch", description: "Expansion into leather goods, jewelry, and fragrance — each line crafted with the same obsessive attention to material and making as the core apparel range." },
+    { year: "2023", title: "National Reach", description: "Murgdur expands to serve customers across all 28 states of India, with dedicated style consultants available for personal styling appointments in major cities." },
+    { year: "2024", title: "International Recognition", description: "Featured in Vogue India and Harpers Bazaar Arabia; first international wholesale orders from luxury boutiques in Dubai and Singapore." },
+    { year: "2025", title: "Global Vision", description: "With eyes set on London and Paris, Murgdur begins its international chapter — carrying the torch of Indian royal heritage to the world's most demanding luxury markets." },
   ];
 
   const defaultCraft = [
-    { icon: "🪡", title: "Hand Embroidery", description: "Every thread is placed with purpose, carrying centuries of technique." },
-    { icon: "🌿", title: "Natural Fabrics", description: "Pure silks, linens, and organic cottons only." },
-    { icon: "🏺", title: "Traditional Dyeing", description: "Natural dyes and hand-block prints echo our ancestral roots." },
+    { icon: "🪡", title: "Hand Embroidery", description: "Every thread is placed with purpose by master karigars trained in zardosi, resham, and aari techniques. A single Murgdur garment can take over 200 hours of hand-embroidering alone." },
+    { icon: "🌿", title: "Natural Fabrics", description: "We use only pure Banarasi silks, Chanderi cottons, Kanjeevaram weaves, and hand-spun linens. Every fabric is sourced directly from weaver cooperatives, ensuring quality and fair trade." },
+    { icon: "🏺", title: "Traditional Dyeing", description: "Natural dyes derived from indigo, turmeric, pomegranate rind, and mineral ochres give our textiles their unmistakable depth of colour — tones no synthetic dye can replicate." },
+    { icon: "✂️", title: "Bespoke Tailoring", description: "Each garment begins with a thorough measurement session and a hand-drafted pattern unique to the wearer. Our master tailors spend up to three fittings refining the silhouette to perfection." },
+    { icon: "💎", title: "Precious Embellishments", description: "From hand-set semi-precious stones to beaten gold leaf accents, our embellishment artisans source only certified materials — each approved for quality, provenance, and ethical origin." },
+    { icon: "📦", title: "Signature Packaging", description: "Presentation is part of the luxury. Every Murgdur creation is delivered in a hand-assembled keepsake box with tissue paper, a silk drawstring bag, and a personal authenticity card." },
   ];
 
   const timeline = data?.timeline?.length ? data.timeline : defaultTimeline;
@@ -77,9 +84,15 @@ const Heritage = () => {
                 className="text-3xl md:text-5xl font-serif text-gray-800 mb-8">
                 {data?.founderName || "In Memory of Sri Sundershan Duraisamy"}
               </motion.h2>
-              <p className="text-gray-600 font-light text-lg leading-loose">
+              <p className="text-gray-600 font-light text-lg leading-loose mb-6">
                 {data?.founderBio ||
-                  "Murgdur was founded by a visionary who believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship. His legacy lives on in every piece we create."}
+                  "Murgdur was founded in 2018 by the late Sri Sundershan Duraisamy, a textile connoisseur and heritage advocate who spent decades studying the craft traditions of Varanasi, Kanchipuram, and Lucknow. He believed that true luxury lies not in ostentation, but in the quiet confidence of impeccable craftsmanship."}
+              </p>
+              <p className="text-gray-500 font-light text-base leading-loose mb-6">
+                {data?.founderBio2 || "His philosophy was simple yet profound: create pieces that transcend trends and become treasured heirlooms. He handpicked every artisan in the founding team and personally approved every fabric, dye lot, and pattern before it entered production. That rigour remains the foundation of everything Murgdur produces."}
+              </p>
+              <p className="text-gray-500 font-light text-base leading-loose">
+                {data?.founderBio3 || "Today, his family continues his work — guided by his belief that the finest things are made slowly, by hand, and with love. Every Murgdur piece carries his initials on the inside lining as a tribute to his enduring vision."}
               </p>
             </div>
           </div>
@@ -87,11 +100,11 @@ const Heritage = () => {
       </section>
 
       {/* ── STORY SECTION ───────────────────────────────────────────── */}
-      {data?.storyHeading && (
+      {data?.contentHeading && (
         <section className="py-24 px-6 bg-[#f8f6f2]">
           <div className="container mx-auto max-w-4xl text-center">
-            <h2 className="text-4xl font-serif text-gray-800 mb-8">{data.storyHeading}</h2>
-            {data.storyBody && <p className="text-gray-600 font-light text-lg leading-loose">{data.storyBody}</p>}
+            <h2 className="text-4xl font-serif text-gray-800 mb-8">{data.contentHeading}</h2>
+            {data.contentBody && <p className="text-gray-600 font-light text-lg leading-loose">{data.contentBody}</p>}
           </div>
         </section>
       )}
@@ -128,8 +141,9 @@ const Heritage = () => {
           <h2 className="text-3xl md:text-4xl font-serif text-gray-900 mb-4">
             {data?.craftHeading || "The Art of Craftsmanship"}
           </h2>
-          {data?.craftSubheading && <p className="text-gray-500 text-lg mb-14">{data.craftSubheading}</p>}
-          {!data?.craftSubheading && <div className="mb-14" />}
+          <p className="text-gray-500 text-lg mb-14 max-w-2xl mx-auto">
+            {data?.craftSubtext || "Six pillars that define every Murgdur creation — from the first sketch to the final flourish."}
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {craftFeatures.map((c, i) => (
               <div key={i} className="bg-white p-8 rounded-lg border border-gray-100 hover:border-royal-gold/30 transition">
@@ -143,11 +157,11 @@ const Heritage = () => {
       </section>
 
       {/* ── GALLERY ────────────────────────────────────────────────── */}
-      {data?.gallery?.length > 0 && (
+      {data?.galleryImages?.length > 0 && (
         <section className="py-16 bg-white">
           <div className="container mx-auto px-6">
             <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
-              {data.gallery.map((img, i) => (
+              {data.galleryImages.map((img, i) => (
                 <div key={i} className="aspect-square overflow-hidden">
                   <img src={`${img}?auto=format&q=80&w=400`} alt="" className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
                 </div>

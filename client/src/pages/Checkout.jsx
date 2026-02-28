@@ -203,7 +203,7 @@ const Checkout = () => {
               <div className="p-4 md:p-6 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
                 <h2 className="text-xl font-bold flex items-center gap-3">
                   <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 1 ? "bg-royal-gold text-black" : "bg-gray-700 text-gray-400"}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 1 ? "bg-royal-gold text-black" : "bg-gray-200 text-gray-500"}`}
                   >
                     1
                   </span>
@@ -327,7 +327,7 @@ const Checkout = () => {
               <div className="p-4 md:p-6 bg-gray-50 border-b border-gray-100">
                 <h2 className="text-xl font-bold flex items-center gap-3">
                   <span
-                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 2 ? "bg-royal-gold text-black" : "bg-gray-700 text-gray-400"}`}
+                    className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-bold ${step === 2 ? "bg-royal-gold text-black" : "bg-gray-200 text-gray-500"}`}
                   >
                     2
                   </span>
@@ -365,7 +365,7 @@ const Checkout = () => {
                   </Button>
 
                   <div className="flex gap-2 mt-4 text-xs text-gray-400 justify-center">
-                    <ShieldCheck size={16} className="text-green-400" />
+                    <ShieldCheck size={16} className="text-green-600" />
                     <p>100% Safe & Secure Payment</p>
                   </div>
                 </div>
@@ -402,7 +402,7 @@ const Checkout = () => {
                       <div className="flex justify-between text-sm text-gray-900">
                         <span>Delivery Charges</span>
                         {deliveryFee === 0 ? (
-                          <span className="text-green-400">Free</span>
+                          <span className="text-green-600">Free</span>
                         ) : (
                           <span>₹{deliveryFee}</span>
                         )}
@@ -414,7 +414,7 @@ const Checkout = () => {
                         </div>
                       </div>
                       {totalDiscount > 0 && (
-                        <div className="bg-green-900/20 border border-green-500/20 p-3 rounded text-xs text-green-400 font-medium text-center">
+                        <div className="bg-green-50 border border-green-200 p-3 rounded text-xs text-green-700 font-medium text-center">
                           You will save ₹{totalDiscount.toLocaleString()} on this order
                         </div>
                       )}

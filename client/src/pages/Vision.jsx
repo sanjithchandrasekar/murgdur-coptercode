@@ -19,19 +19,37 @@ const Vision = () => {
       icon: "🌍",
       title: "Global Reach",
       description:
-        "We envision a world where the exquisite craftsmanship of Indian royalty is celebrated in every fashion capital, from Paris to Milan, New York to Tokyo.",
+        "We envision a world where the exquisite craftsmanship of Indian royalty is celebrated in every fashion capital — from Paris to Milan, New York to Tokyo. Murgdur is India's luxury offering to the world.",
     },
     {
       icon: "⏳",
       title: "Timeless Modernity",
       description:
-        "Our vision is not just to repeat history, but to evolve it. We create pieces that are rooted in tradition yet perfectly adapted for the contemporary lifestyle.",
+        "Our vision is not to merely repeat history, but to evolve it. We create pieces rooted in tradition yet perfectly adapted for the contemporary lifestyle — where ancient technique meets modern silhouette.",
     },
     {
       icon: "✨",
       title: "Uncompromising Luxury",
       description:
-        "We aspire to set a new benchmark for quality, where every stitch tells a story of perfection and every garment is a masterpiece of art.",
+        "We aspire to set a new benchmark for quality, where every stitch tells a story of perfection and every garment is a masterpiece of art. No shortcuts. No compromises. Only excellence.",
+    },
+    {
+      icon: "🤝",
+      title: "Artisan Empowerment",
+      description:
+        "Behind every Murgdur piece is a master craftsperson whose skill deserves recognition and fair reward. We are committed to sustaining and celebrating India's artisan communities for generations to come.",
+    },
+    {
+      icon: "🌿",
+      title: "Sustainable Luxury",
+      description:
+        "True royalty respects its kingdom. We source only natural, ethically harvested materials — silks, linens, and organic cottons — and continually reduce our environmental footprint without sacrificing quality.",
+    },
+    {
+      icon: "👑",
+      title: "Cultural Sovereignty",
+      description:
+        "India's royal heritage is a treasure that belongs to the world. Murgdur is our declaration that Indian craftsmanship needs no imitation of Western luxury — it defines a standard all its own.",
     },
   ];
 
@@ -93,12 +111,26 @@ const Vision = () => {
           </div>
 
           {/* Future Section */}
-          {(data?.futureHeading || data?.futureBody) && (
-            <div className="text-center max-w-3xl mx-auto mt-8 p-12 bg-gray-50 border border-gray-100 rounded-lg">
-              {data.futureHeading && <h2 className="text-3xl font-serif text-gray-900 mb-6">{data.futureHeading}</h2>}
-              {data.futureBody && <p className="text-gray-500 font-light text-lg leading-relaxed">{data.futureBody}</p>}
+          <div className="text-center max-w-3xl mx-auto mt-8 p-12 bg-gray-50 border border-gray-100 rounded-lg">
+            <h2 className="text-3xl font-serif text-gray-900 mb-6">
+              {data?.futureHeading || "Where We Are Headed"}
+            </h2>
+            <p className="text-gray-500 font-light text-lg leading-relaxed mb-8">
+              {data?.futureBody || "By 2027, Murgdur aims to establish its first flagship atelier in London, host its debut runway show in Paris, and partner with artisan collectives across Rajasthan, Tamil Nadu, and Uttar Pradesh to employ over 500 craftspersons full-time."}
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 text-left">
+              {(data?.futureRoadmap?.length > 0 ? data.futureRoadmap : [
+                { year: "2025", milestone: "Launch bespoke consultation service across India's top 10 cities." },
+                { year: "2026", milestone: "Debut Murgdur fragrance line featuring 12 signature oud compositions." },
+                { year: "2027", milestone: "Open first international flagship in London's Mayfair district." },
+              ]).map((item, i) => (
+                <div key={i} className="bg-white border border-gray-200 p-6 rounded-md">
+                  <div className="text-[#C9A96E] font-serif text-2xl font-bold mb-2">{item.year}</div>
+                  <p className="text-gray-600 text-sm font-light leading-relaxed">{item.milestone}</p>
+                </div>
+              ))}
             </div>
-          )}
+          </div>
 
           {/* Image Section */}
           <div className="relative h-[400px] overflow-hidden rounded-lg">

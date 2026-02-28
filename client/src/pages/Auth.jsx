@@ -1,10 +1,9 @@
 ﻿import React, { useState, useEffect } from "react";
-
 import { motion, AnimatePresence } from "framer-motion";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import "../styles/PhoneInput.css"; // Royal Theme Overrides
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import {
   Mail,
   Lock,
@@ -50,9 +49,22 @@ const TESTIMONIALS = [
 
 const Auth = ({ returnUrl }) => {
   const navigate = useNavigate();
-  const [view, setView] = useState("login"); // 'login', 'signup', 'forgot'
+  const location = useLocation();
+  const [view, setView] = useState("login"); // 'login', 'signup', 'forgot', 'reset'
+  const [resetToken, setResetToken] = useState("");
   const [loading, setLoading] = useState(false);
   const [bgIndex, setBgIndex] = useState(0);
+
+  // Check for reset token in URL on mount
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const mode = params.get("mode");
+    const token = params.get("token");
+    if (mode === "reset" && token) {
+      setResetToken(token);
+      setView("reset");
+    }
+  }, [location.search]);
 
   // Dialog State
   const [dialog, setDialog] = useState({
@@ -116,6 +128,14 @@ const Auth = ({ returnUrl }) => {
 
   const validateForm = () => {
     const newErrors = {};
+    if (view === "reset") {
+      if (!formData.password || formData.password.length < 6)
+        newErrors.password = "Password must be at least 6 characters";
+      if (formData.password !== formData.confirmPassword)
+        newErrors.confirmPassword = "Passwords do not match";
+      setErrors(newErrors);
+      return Object.keys(newErrors).length === 0;
+    }
     if (!formData.email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/))
       newErrors.email = "Invalid email format";
     if (view === "signup") {
@@ -215,7 +235,42 @@ const Auth = ({ returnUrl }) => {
           });
         }
       } else if (view === "forgot") {
-        showRoyalNotice("Royal Decree", "Pray, check your inbox. We have dispatched instructions to restore your access to " + formData.email);
+        const apiUrl = import.meta.env.VITE_API_URL || "/api";
+        const response = await fetch(`${apiUrl}/auth/forgot-password`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: formData.email }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.message || "Something went wrong");
+        }
+        showRoyalNotice(
+          "Reset Link Sent",
+          `A password reset link has been sent to ${formData.email}. Please check your inbox (and spam folder). The link expires in 30 minutes.`,
+          "success",
+          () => setView("login")
+        );
+        setView("login");
+      } else if (view === "reset") {
+        const apiUrl = import.meta.env.VITE_API_URL || "/api";
+        const response = await fetch(`${apiUrl}/auth/reset-password/${resetToken}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ password: formData.password }),
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          setErrors({ auth: data.message || "Reset failed. The link may have expired." });
+          return;
+        }
+        showRoyalNotice(
+          "Password Updated",
+          "Your password has been reset successfully. You can now sign in with your new password.",
+          "success",
+          () => { navigate("/auth"); setView("login"); }
+        );
+        navigate("/auth");
         setView("login");
       }
     } catch (error) {
@@ -243,6 +298,11 @@ const Auth = ({ returnUrl }) => {
           title: "Reset Password | Murgdur",
           description:
             "Reset your password to regain access to your Murgdur account.",
+        };
+      case "reset":
+        return {
+          title: "Set New Password | Murgdur",
+          description: "Set a new password for your Murgdur account.",
         };
       default:
         return {
@@ -387,6 +447,7 @@ const Auth = ({ returnUrl }) => {
                     {view === "login" && "Welcome Back"}
                     {view === "signup" && "Create Account"}
                     {view === "forgot" && "Reset Password"}
+                    {view === "reset" && "New Password"}
                   </h2>
                   <div className="mt-4 h-1 w-12 bg-[#D4AF37]" />
                   <p className="mt-6 text-sm leading-relaxed text-zinc-500">
@@ -396,6 +457,8 @@ const Auth = ({ returnUrl }) => {
                       "Sign up to start your journey with us."}
                     {view === "forgot" &&
                       "Enter your email to receive a password reset link."}
+                    {view === "reset" &&
+                      "Choose a new password for your account. Must be at least 6 characters."}
                   </p>
                 </motion.div>
               </AnimatePresence>
@@ -530,7 +593,7 @@ const Auth = ({ returnUrl }) => {
                     {/* Mobile - International */}
                     <div className="space-y-1">
                       <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Mobile Number</label>
-                      <div className={`relative rounded transition-all duration-300 ${errors.mobile ? 'border border-red-500' : 'border border-zinc-800 focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]'}`}>
+                      <div className={`relative rounded transition-all duration-300 ${errors.mobile ? 'border border-red-500' : 'border border-gray-300 focus-within:border-[#D4AF37] focus-within:ring-1 focus-within:ring-[#D4AF37]'}`}>
                         <PhoneInput
                           country={"in"}
                           value={formData.mobile}
@@ -584,7 +647,7 @@ const Auth = ({ returnUrl }) => {
                     </div>
 
                     {/* Terms */}
-                    <div className="p-4 bg-zinc-900/50 rounded border border-zinc-800 mt-4">
+                    <div className="p-4 bg-gray-50 rounded border border-gray-200 mt-4">
                       <div className="flex items-start gap-3">
                         <input
                           type="checkbox"
@@ -593,7 +656,7 @@ const Auth = ({ returnUrl }) => {
                           onChange={handleChange}
                           className="mt-1 w-4 h-4 accent-[#D4AF37] cursor-pointer"
                         />
-                        <p className="text-xs text-zinc-400 leading-relaxed">
+                        <p className="text-xs text-gray-600 leading-relaxed">
                           By continuing, you agree to Murgdur's <a href="/conditions-of-use" className="text-[#D4AF37] cursor-pointer hover:underline" target="_blank" rel="noopener noreferrer">Conditions of Use</a> and <a href="/privacy-notice" className="text-[#D4AF37] cursor-pointer hover:underline" target="_blank" rel="noopener noreferrer">Privacy Notice</a>.
                         </p>
                       </div>
@@ -628,6 +691,56 @@ const Auth = ({ returnUrl }) => {
                           placeholder="name@example.com"
                         />
                       </div>
+                      {errors.email && <p className="text-red-500 text-[10px] ml-1">{errors.email}</p>}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* RESET PASSWORD FIELDS */}
+                {view === "reset" && (
+                  <motion.div
+                    key="reset"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="space-y-5"
+                  >
+                    <div className="p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/20 rounded mb-2 text-[#D4AF37] text-xs flex gap-2 items-center">
+                      <CheckCircle2 size={16} />
+                      <span>Reset link verified. Enter your new password below.</span>
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">New Password</label>
+                      <div className="relative">
+                        <input
+                          type="password"
+                          name="password"
+                          value={formData.password}
+                          onChange={handleChange}
+                          className={`w-full bg-white border ${errors.password ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                          placeholder="At least 6 characters"
+                        />
+                      </div>
+                      {errors.password && <p className="text-red-500 text-[10px] ml-1">{errors.password}</p>}
+                    </div>
+
+                    <div className="space-y-1">
+                      <label className="text-[10px] uppercase text-zinc-400 font-bold tracking-wider ml-1">Confirm New Password</label>
+                      <div className="relative">
+                        <input
+                          type="password"
+                          name="confirmPassword"
+                          value={formData.confirmPassword}
+                          onChange={handleChange}
+                          className={`w-full bg-white border ${errors.confirmPassword ? 'border-red-500' : 'border-gray-300'} text-gray-900 px-4 py-3 rounded focus:border-[#D4AF37] focus:ring-1 focus:ring-[#D4AF37] focus:outline-none transition-all placeholder:text-gray-400`}
+                          placeholder="Re-enter new password"
+                        />
+                        {formData.confirmPassword && formData.password === formData.confirmPassword && (
+                          <CheckCircle2 size={16} className="absolute right-4 top-3.5 text-green-500" />
+                        )}
+                      </div>
+                      {errors.confirmPassword && <p className="text-red-500 text-[10px] ml-1">{errors.confirmPassword}</p>}
                     </div>
                   </motion.div>
                 )}
@@ -644,7 +757,9 @@ const Auth = ({ returnUrl }) => {
                   ? "SIGN IN"
                   : view === "signup"
                     ? "SIGN UP"
-                    : "SEND RESET LINK"}
+                    : view === "reset"
+                      ? "SET NEW PASSWORD"
+                      : "SEND RESET LINK"}
               </Button>
             </form>
 
@@ -680,6 +795,16 @@ const Auth = ({ returnUrl }) => {
               <div className="mt-10 text-center">
                 <button
                   onClick={() => setView("login")}
+                  className="text-zinc-500 text-[10px] hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold"
+                >
+                  Return to Vault Login
+                </button>
+              </div>
+            )}
+            {view === "reset" && (
+              <div className="mt-10 text-center">
+                <button
+                  onClick={() => { navigate("/auth"); setView("login"); }}
                   className="text-zinc-500 text-[10px] hover:text-[#D4AF37] uppercase tracking-widest transition-colors font-bold"
                 >
                   Return to Vault Login
@@ -814,14 +939,14 @@ const Input = ({
             : isFocused
               ? "border-[#D4AF37]"
               : "border-white/10"
-            } text-white ${Icon ? "pl-8" : "pl-1"} pr-10 py-3 focus:outline-none transition-all placeholder:text-zinc-800 text-sm`}
+            } text-white ${Icon ? "pl-8" : "pl-1"} pr-10 py-3 focus:outline-none transition-all placeholder:text-white/40 text-sm`}
           placeholder={placeholder}
         />
         {isPassword && (
           <button
             type="button"
             onClick={() => setShowPass(!showPass)}
-            className="absolute right-0 top-1/2 -translate-y-1/2 text-zinc-700 hover:text-white transition-colors"
+            className="absolute right-0 top-1/2 -translate-y-1/2 text-white/40 hover:text-white transition-colors"
             aria-label={showPass ? "Hide password" : "Show password"}
           >
             {showPass ? <EyeOff size={16} /> : <Eye size={16} />}

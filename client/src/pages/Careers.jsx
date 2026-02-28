@@ -14,16 +14,18 @@ const Careers = () => {
   }, []);
 
   const defaultPositions = [
-    { role: "Senior Fashion Designer", location: "Mumbai, India", type: "Full-time", description: "Lead design direction for our signature collections.", isActive: true },
-    { role: "Luxury Retail Manager", location: "London, UK", type: "Full-time", description: "Manage flagship store operations and client experience.", isActive: true },
-    { role: "Textile Artisan (Hand Embroidery)", location: "Jaipur, India", type: "Part-time", description: "Craft intricate embroidery pieces for our couture line.", isActive: true },
+    { role: "Senior Fashion Designer", location: "Mumbai, India", type: "Full-time", description: "Lead design direction for our signature collections, translating heritage motifs and royal aesthetics into contemporary silhouettes. You will oversee a team of junior designers and collaborate directly with master artisans to develop seasonal concepts.", isActive: true },
+    { role: "Luxury Retail Manager", location: "London, UK", type: "Full-time", description: "Own the flagship store experience from end to end — client acquisition, VIP relationship management, team development, and visual merchandising. You will set the benchmark for what extraordinary service looks like.", isActive: true },
+    { role: "Textile Artisan (Hand Embroidery)", location: "Jaipur, India", type: "Part-time", description: "Execute intricate zardosi, resham, and aari embroidery across our couture line. Your work will appear on garments destined for brides, dignitaries, and discerning collectors worldwide — precision and passion are non-negotiable.", isActive: true },
+    { role: "E-Commerce & Digital Marketing Lead", location: "Bangalore, India", type: "Full-time", description: "Drive Murgdur's digital presence across platforms, managing paid performance, email marketing, content calendars, and collaborations with luxury lifestyle influencers. You will bridge tradition and digital innovation.", isActive: true },
+    { role: "Supply Chain & Sourcing Manager", location: "Chennai, India", type: "Full-time", description: "Build and maintain our network of artisan cooperatives, fabric mills, and ethical suppliers across India. You will ensure every raw material meets Murgdur's exacting standards for provenance, quality, and sustainability.", isActive: true },
   ];
 
   const defaultCultureValues = [
-    { icon: "🎨", title: "Creative Freedom", description: "We encourage bold ideas and unconventional thinking." },
-    { icon: "🤝", title: "Collaborative Spirit", description: "Every voice matters; we build together." },
-    { icon: "🏅", title: "Excellence Always", description: "We hold our work to the highest standards." },
-    { icon: "🌱", title: "Continuous Growth", description: "Invest in learning, evolve every day." },
+    { icon: "🎨", title: "Creative Freedom", description: "We encourage bold, unconventional ideas and reward courageous thinking. Your perspective is an asset — never a liability." },
+    { icon: "🤝", title: "Collaborative Spirit", description: "No department works in isolation here. Designers talk to artisans, marketing talks to customers, and every voice shapes the final result." },
+    { icon: "🏅", title: "Excellence Always", description: "We hold our work to the highest standards because our customers hold us to theirs. Good enough is never good enough at Murgdur." },
+    { icon: "🌱", title: "Continuous Growth", description: "We invest in masterclasses, cross-training, and an annual learning fund for every team member. You are expected to evolve — and we will fund it." },
   ];
 
   const allPositions = data?.positions?.length ? data.positions : defaultPositions;
@@ -44,7 +46,7 @@ const Careers = () => {
         <div className="absolute top-8 left-6"><BackButton className="text-gray-500 hover:text-royal-gold" /></div>
         <div className="container mx-auto text-center max-w-3xl">
           <span className="text-royal-gold text-xs tracking-[0.3em] uppercase font-bold mb-4 block">
-            {data?.eyebrow || "Work With Us"}
+            {data?.heroEyebrow || "Work With Us"}
           </span>
           <h1 className="text-4xl md:text-6xl font-serif text-gray-900 mb-6">{data?.heading || "Careers at Murgdur"}</h1>
           <p className="text-gray-600 font-light text-lg leading-relaxed">
@@ -75,21 +77,30 @@ const Careers = () => {
       </section>
 
       {/* Perks / Benefits */}
-      {data?.perksHeading && data?.perks?.length > 0 && (
-        <section className="py-16 px-6 bg-[#f8f6f2]">
-          <div className="container mx-auto max-w-5xl">
-            <h2 className="text-center text-3xl font-serif text-gray-900 mb-10">{data.perksHeading}</h2>
-            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-              {data.perks.map((p, i) => (
-                <div key={i} className="flex items-center gap-3 bg-white p-4 rounded-lg border border-gray-100">
-                  <div className="text-royal-gold text-xl">✓</div>
-                  <span className="text-sm text-gray-700 font-light">{p}</span>
-                </div>
-              ))}
-            </div>
+      {/* Perks & Benefits — always visible */}
+      <section className="py-16 px-6 bg-[#f8f6f2]">
+        <div className="container mx-auto max-w-5xl">
+          <h2 className="text-center text-3xl font-serif text-gray-900 mb-10">{data?.perksHeading || "Why Work at Murgdur"}</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {(data?.perks?.length > 0 ? data.perks : [
+              "Competitive luxury-market compensation",
+              "Annual learning & development fund",
+              "Access to signature Murgdur wardrobe allowance",
+              "Flexible & hybrid working arrangements",
+              "Mentorship by master artisans and industry veterans",
+              "Health & wellness coverage for you and your family",
+              "Annual heritage retreat across artisan centres of India",
+              "Profit-sharing scheme for senior team members",
+              "Private atelier access and bespoke tailoring privileges",
+            ]).map((p, i) => (
+              <div key={i} className="flex items-start gap-3 bg-white p-4 rounded-lg border border-gray-100 hover:border-royal-gold/30 transition">
+                <div className="text-[#C9A96E] text-xl mt-0.5">✓</div>
+                <span className="text-sm text-gray-700 font-light leading-relaxed">{p}</span>
+              </div>
+            ))}
           </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* Job Openings */}
       <section className="py-20 px-6 bg-white">

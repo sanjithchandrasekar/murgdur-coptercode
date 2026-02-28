@@ -204,9 +204,9 @@ const ProductDetails = () => {
         {/* ── BREADCRUMBS ── */}
         <nav className="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-gray-400 mb-8">
           <Link to="/" className="hover:text-black transition-colors">Murgdur</Link>
-          <span className="text-gray-300">›</span>
+          <span className="text-gray-400">›</span>
           <Link to="/shop" className="hover:text-black transition-colors">Shop</Link>
-          <span className="text-gray-300">›</span>
+          <span className="text-gray-400">›</span>
           <Link
             to={`/shop?category=${encodeURIComponent(product.category || "")}`}
             className="hover:text-black transition-colors"
@@ -215,7 +215,7 @@ const ProductDetails = () => {
           </Link>
           {product.type && (
             <>
-              <span className="text-gray-300">›</span>
+              <span className="text-gray-400">›</span>
               <span className="text-black capitalize">{product.type}</span>
             </>
           )}

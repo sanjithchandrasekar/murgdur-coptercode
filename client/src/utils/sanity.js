@@ -46,7 +46,15 @@ export const fetchSiteSettings = async () => {
       "ogImage": ogImage.asset->url,
       announcementEnabled, announcementText, announcementLink,
       announcementBgColor, announcementTextColor,
-      navLinks[]{ label, href, isExternal, dropdown[]{ label, href } }
+      navLinks[]{ label, href, isExternal, dropdown[]{ label, href } },
+      navMenu[]{
+        id, name, path,
+        "image": image.asset->url + "?auto=format&q=80&w=600",
+        imageSubtitle,
+        subcategories[]{ name, path },
+        highlights[]{ name, "image": image.asset->url + "?auto=format&q=80&w=400", path }
+      },
+      navSimpleLinks[]{ name, path }
     }`;
     return await client.fetch(query);
   } catch (error) {
@@ -77,7 +85,7 @@ export const fetchFooter = async () => {
 export const fetchTestimonials = async () => {
   try {
     const query = `*[_type == "testimonials"][0]{
-      heading, subheading,
+      sectionLabel, heading, subheading,
       reviews[]{
         quote, author, role, location, rating,
         "avatar": avatar.asset->url + "?auto=format&q=80&w=150"
@@ -105,7 +113,12 @@ export const fetchNewsletter = async () => {
 
 export const fetchLegacySection = async () => {
   try {
-    const query = `*[_type == "legacySection"][0]`;
+    const query = `*[_type == "legacySection"][0]{
+      heading, subHeading, body, additionalBody,
+      memoryTitle, memoryBody,
+      stats[]{ number, label },
+      founderQuoteBody, founderQuoteCite
+    }`;
     return await client.fetch(query);
   } catch (error) {
     console.error("fetchLegacySection error:", error);
@@ -310,7 +323,7 @@ export const fetchHeritagePage = async () => {
       contentHeading,
       contentBody,
       "contentImage": contentImage.asset->url + "?auto=format&q=80",
-      founderHeading, founderName, founderTitle, founderBio, founderQuote,
+      founderHeading, founderName, founderTitle, founderBio, founderBio2, founderBio3, founderQuote,
       "founderImage": founderImage.asset->url + "?auto=format&q=80&w=600",
       timelineHeading,
       timeline[]{ year, title, description, "image": image.asset->url + "?auto=format&q=80&w=600" },
@@ -415,6 +428,7 @@ export const fetchVisionPage = async () => {
       pillarsHeading,
       pillars[]{ icon, title, description },
       futureHeading, futureBody,
+      futureRoadmap[]{ year, milestone },
       "bottomImage": bottomImage.asset->url + "?auto=format&q=80",
       bottomCaption,
       seoTitle, seoDescription
@@ -439,6 +453,7 @@ export const fetchCareersPage = async () => {
       openingsHeading,
       positions[]{ role, location, type, description, applyLink, isActive },
       contactText, contactEmail,
+      perksHeading, perks[],
       seoTitle, seoDescription
     }`;
     return await client.fetch(query);
@@ -456,6 +471,7 @@ export const fetchPressPage = async () => {
     const query = `*[_type == "pressPage"][0]{
       heading, eyebrow, intro,
       "heroBgImage": heroBgImage.asset->url + "?auto=format&q=80",
+      featuredInHeading, featuredInOutlets[],
       releasesHeading,
       releases[]{ date, title, summary, pdfUrl, "image": image.asset->url + "?auto=format&q=80&w=400" },
       mediaKitHeading, mediaKitText, mediaContactEmail, mediaContactPhone,
@@ -475,7 +491,7 @@ export const fetchPressPage = async () => {
 export const fetchStoriesPage = async () => {
   try {
     const query = `*[_type == "storiesPage"][0]{
-      heading, eyebrow, intro,
+      heading, eyebrow, intro, subheading,
       featuredStory{ category, title, description, readMoreLink, "image": image.asset->url + "?auto=format&q=80" },
       stories[]{ category, title, description, readMoreLink, "image": image.asset->url + "?auto=format&q=80&w=800" },
       seoTitle, seoDescription

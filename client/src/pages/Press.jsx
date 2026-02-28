@@ -21,22 +21,39 @@ const Press = () => {
       : [
           {
             date: "October 15, 2025",
-            title:
-              "Murgdur Unveils ' The Sovereign Winter' Collection in Paris",
+            title: "Murgdur Unveils 'The Sovereign Winter' Collection in Paris",
             summary:
-              "The luxury house marks its debut at Paris Fashion Week with a collection inspired by the royal durbars of 19th century India.",
+              "The luxury house marks its debut at Paris Fashion Week with a breathtaking 42-piece collection inspired by the royal durbars of 19th century India. Critics called it 'the most anticipated Indian luxury debut in years'.",
           },
           {
             date: "August 02, 2025",
             title: "House of Murgdur Appoints New Creative Director",
             summary:
-              "Visionary designer Aarav Mehta takes the helm, promising to blend traditional craftsmanship with futuristic silhouettes.",
+              "Visionary designer Aarav Mehta takes the helm, promising to blend traditional craftsmanship with futuristic silhouettes. His 15-year tenure at European maisons brings global perspective to Murgdur's distinctly Indian vision.",
           },
           {
             date: "June 10, 2025",
             title: "Murgdur Sustainability Report 2024-25",
             summary:
-              "Achieving 100% ethical sourcing for all leather goods and launching the 'Green Gold' initiative.",
+              "Achieving 100% ethical sourcing for all leather goods and launching the 'Green Gold' initiative. The report outlines a 2027 target of carbon-neutral production across all manufacturing units.",
+          },
+          {
+            date: "April 22, 2025",
+            title: "Murgdur Opens First Standalone Boutique in New Delhi",
+            summary:
+              "The flagship Khan Market boutique spans three floors of curated luxury, featuring a private bespoke atelier, fragrance chamber, and a dedicated jewellery vault. Designed by award-winning architect Priya Rao.",
+          },
+          {
+            date: "February 14, 2025",
+            title: "Limited Edition Valentine's Capsule Sells Out in 72 Hours",
+            summary:
+              "Murgdur's Love Sovereignty capsule — 50 hand-embroidered couples' pieces — sold out globally within three days, signalling surging demand for luxury Indian occasion wear.",
+          },
+          {
+            date: "December 01, 2024",
+            title: "Murgdur Wins 'Best Emerging Luxury Brand' at India Fashion Awards",
+            summary:
+              "Recognising five years of extraordinary growth, uncompromising craftsmanship, and contribution to the global positioning of Indian luxury, the India Fashion Council honoured Murgdur at its annual ceremony in Mumbai.",
           },
         ];
 
@@ -62,6 +79,21 @@ const Press = () => {
           {data?.intro ||
             "Latest news, press releases, and media resources from the House of Murgdur."}
         </p>
+
+        {/* Featured In */}
+        <div className="max-w-5xl mx-auto mb-16 text-center">
+          <p className="text-xs uppercase tracking-[0.25em] text-gray-400 font-bold mb-8">{data?.featuredInHeading || "As Featured In"}</p>
+          <div className="flex flex-wrap justify-center items-center gap-8 md:gap-14">
+            {(data?.featuredInOutlets?.length > 0
+              ? data.featuredInOutlets
+              : ["Vogue India", "Harper's Bazaar", "GQ India", "The Hindu", "Forbes India", "Elle Decor"]
+            ).map((outlet, i) => (
+              <span key={i} className="text-gray-300 font-serif text-lg md:text-xl tracking-wide hover:text-gray-600 transition-colors cursor-default">
+                {outlet}
+              </span>
+            ))}
+          </div>
+        </div>
 
         <div className="max-w-5xl mx-auto space-y-8">
           {releases.map((release, idx) => (

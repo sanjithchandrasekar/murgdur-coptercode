@@ -272,10 +272,137 @@ const updateUserAddresses = async (req, res) => {
   }
 };
 
+// @desc    Forgot Password - Send reset email
+// @route   POST /api/auth/forgot-password
+// @access  Public
+const forgotPassword = async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      // Don't reveal if user exists - still return success
+      return res.json({ message: "If that email is registered, a reset link has been sent." });
+    }
+
+    // Generate token
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const tokenHash = crypto.createHash("sha256").update(resetToken).digest("hex");
+
+    user.resetPasswordToken = tokenHash;
+    user.resetPasswordExpire = Date.now() + 30 * 60 * 1000; // 30 minutes
+    await user.save();
+
+    const resetUrl = `${process.env.CLIENT_URL || "https://murugdur1.vercel.app"}/auth?mode=reset&token=${resetToken}`;
+
+    const htmlEmail = `
+      <div style="font-family: 'Georgia', serif; background: #0a0a0a; color: #fff; padding: 0; margin: 0;">
+        <div style="max-width: 520px; margin: auto; background: #111; border: 1px solid #D4AF37;">
+          <div style="background: #D4AF37; padding: 20px 32px; text-align: center;">
+            <h1 style="margin: 0; color: #000; font-size: 22px; letter-spacing: 6px; text-transform: uppercase; font-weight: 700;">MURGDUR</h1>
+            <p style="margin: 4px 0 0; color: #000; font-size: 10px; letter-spacing: 4px; text-transform: uppercase;">The Royal Heritage</p>
+          </div>
+          <div style="padding: 40px 32px;">
+            <h2 style="color: #D4AF37; letter-spacing: 3px; text-transform: uppercase; font-size: 16px; margin-top: 0;">Password Reset Request</h2>
+            <p style="color: #ccc; line-height: 1.7; font-size: 15px;">We received a request to reset the password for your Murgdur account associated with <strong style="color:#fff">${email}</strong>.</p>
+            <p style="color: #ccc; line-height: 1.7; font-size: 15px;">Click the button below to set a new password. This link expires in <strong style="color:#D4AF37">30 minutes</strong>.</p>
+            <div style="text-align: center; margin: 36px 0;">
+              <a href="${resetUrl}" style="background: #D4AF37; color: #000; text-decoration: none; padding: 14px 36px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; font-size: 13px; display: inline-block;">Reset My Password</a>
+            </div>
+            <p style="color: #888; font-size: 12px; line-height: 1.6;">If you did not request this, please ignore this email. Your password will remain unchanged.</p>
+            <hr style="border: none; border-top: 1px solid #333; margin: 28px 0;" />
+            <p style="color: #555; font-size: 11px;">Or copy this link: <span style="color: #D4AF37; word-break: break-all;">${resetUrl}</span></p>
+          </div>
+          <div style="background: #0a0a0a; padding: 16px 32px; text-align: center;">
+            <p style="color: #555; font-size: 11px; margin: 0; letter-spacing: 2px; text-transform: uppercase;">© 2025 Murgdur. All Rights Reserved.</p>
+          </div>
+        </div>
+      </div>
+    `;
+
+    try {
+      const transporter = nodemailer.createTransport({
+        host: process.env.SMTP_HOST || "smtp.gmail.com",
+        port: process.env.SMTP_PORT || 587,
+        secure: false,
+        auth: {
+          user: process.env.SMTP_USER,
+          pass: process.env.SMTP_PASS,
+        },
+      });
+
+      await transporter.sendMail({
+        from: `"Murgdur Royal Concierge" <${process.env.SMTP_USER}>`,
+        to: email,
+        subject: "Reset Your Murgdur Password",
+        html: htmlEmail,
+      });
+
+      console.log(`[RESET] Email sent to ${email}`);
+    } catch (emailErr) {
+      console.error("Reset email sending failed:", emailErr);
+      // Clear token on failure
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
+      return res.status(500).json({ message: "Failed to send reset email. Please try again." });
+    }
+
+    res.json({ message: "If that email is registered, a reset link has been sent." });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+// @desc    Reset Password using token
+// @route   POST /api/auth/reset-password/:token
+// @access  Public
+const resetPassword = async (req, res) => {
+  try {
+    const { token } = req.params;
+    const { password } = req.body;
+
+    if (!password || password.length < 6) {
+      return res.status(400).json({ message: "Password must be at least 6 characters" });
+    }
+
+    const tokenHash = crypto.createHash("sha256").update(token).digest("hex");
+
+    const user = await User.findOne({
+      resetPasswordToken: tokenHash,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return res.status(400).json({ message: "Invalid or expired reset token. Please request a new one." });
+    }
+
+    user.password = password; // In production use bcrypt
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
+
+    res.json({
+      message: "Password reset successfully. You can now log in.",
+      token: generateToken(user._id),
+      _id: user._id,
+      name: user.name,
+      email: user.email,
+    });
+  } catch (error) {
+    console.error("Reset password error:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
 module.exports = {
   registerUser,
   loginUser,
   googleLogin,
   sendOTP,
   updateUserAddresses,
+  forgotPassword,
+  resetPassword,
 };

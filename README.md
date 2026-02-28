@@ -21,7 +21,7 @@ The application uses **Sanity** as its backend database for user profiles. This 
 ## 🛠 Project Structure
 
 *   `client/`: The React Frontend (Vite).
-*   `luxuria-studio/`: The Sanity CMS configurations and schemas.
+*   `murgdur-studio/`: The Sanity CMS configurations and schemas.
 *   `server/`: (Legacy) Express server code, largely replaced by Sanity backend.
 
 ## 📦 Deployment Instructions (Vercel)
@@ -38,7 +38,7 @@ To run this application on Vercel with full database functionality:
 ### Verification of Sanity Database
 *   Open your deployed URL.
 *   Create a new account.
-*   **Check Sanity Studio**: Go to your local studio (`cd luxuria-studio && npm run dev`) or deployed studio.
+*   **Check Sanity Studio**: Go to your local studio (`cd murgdur-studio && npm run dev`) or deployed studio.
 *   Look for the `Customer` document type. You should see the new user entry there.
 *   **Test Cross-Device**: Open an Incognito window and try to log in with the same credentials. It should work!
 

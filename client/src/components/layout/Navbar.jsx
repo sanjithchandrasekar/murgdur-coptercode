@@ -328,6 +328,21 @@ const Navbar = () => {
     { name: "Vault", path: "/vault" },
   ];
 
+  // ── Sanity-driven mega menu (falls back to static menuData) ──
+  const activeMenuData =
+    siteSettings?.navMenu?.length > 0 ? siteSettings.navMenu : menuData;
+
+  // ── Sanity-driven bottom drawer links ──
+  const defaultSimpleLinks = [
+    { name: "Trunks, Travel and Home", path: "/shop?type=travel" },
+    { name: "Services", path: "/services" },
+    { name: "The Maison Murgdur", path: "/heritage" },
+  ];
+  const activeSimpleLinks =
+    siteSettings?.navSimpleLinks?.length > 0
+      ? siteSettings.navSimpleLinks
+      : defaultSimpleLinks;
+
   // Transparent on home hero; white once scrolled or on any other page
   const isTransparent = isHome && !isScrolled && !isMobileMenuOpen;
   const textColor = isTransparent ? "text-white" : "text-black";
@@ -576,7 +591,7 @@ const Navbar = () => {
 
                 {/* Main Links */}
                 <div className="flex-1 overflow-y-auto custom-scrollbar px-8 py-4 flex flex-col gap-6">
-                  {menuData.map((item) => (
+                  {activeMenuData.map((item) => (
                     <div key={item.id} className="group">
                       <div
                         className="flex items-center justify-between cursor-pointer"
@@ -642,23 +657,16 @@ const Navbar = () => {
                   <div className="border-t border-gray-100 my-2" />
 
                   {/* Standard Links */}
-                  {["Trunks, Travel and Home", "Services", "The Maison Murgdur"].map((name) => {
-                    const linkMap = {
-                      "Trunks, Travel and Home": "/shop?type=travel",
-                      "Services": "/services",
-                      "The Maison Murgdur": "/heritage",
-                    };
-                    return (
-                      <Link
-                        key={name}
-                        to={linkMap[name]}
-                        className="text-base font-sans text-gray-600 tracking-wide hover:text-black transition-colors block"
-                        onClick={() => setIsMobileMenuOpen(false)}
-                      >
-                        {name}
-                      </Link>
-                    );
-                  })}
+                  {activeSimpleLinks.map((link) => (
+                    <Link
+                      key={link.name}
+                      to={link.path}
+                      className="text-base font-sans text-gray-600 tracking-wide hover:text-black transition-colors block"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ))}
 
                   <div className="pt-8 mt-2 md:hidden">
                     <Link to="/profile" className="text-sm text-gray-600 font-sans tracking-wide hover:text-black transition-colors flex items-center mb-4" onClick={() => setIsMobileMenuOpen(false)}>
@@ -689,7 +697,7 @@ const Navbar = () => {
               {/* --- DESKTOP REMAINDER: Subcategories & Highlights --- */}
               <div className="hidden md:flex flex-1 h-full bg-[#f8f8f8] relative">
                 <AnimatePresence mode="wait">
-                  {menuData.map((item) => (
+                  {activeMenuData.map((item) => (
                     activeMenuId === item.id && (
                       <motion.div
                         key={item.id}

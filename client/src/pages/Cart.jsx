@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { Trash2, Plus, Minus, ShieldCheck, Truck, Gift, ShoppingBag } from "lucide-react";
 import Button from "../components/common/Button";
 import { motion } from "framer-motion";
@@ -112,26 +112,31 @@ const Cart = () => {
                 className="bg-gray-50 border border-gray-200 p-4 md:p-6 rounded-sm flex flex-col md:flex-row gap-6 relative"
               >
                 {/* Image */}
-                <div className="w-24 h-24 md:w-32 md:h-32 shrink-0 bg-gray-200 rounded-sm overflow-hidden">
+                <Link
+                  to={`/product/${item.id}`}
+                  className="w-24 h-24 md:w-32 md:h-32 shrink-0 bg-gray-200 rounded-sm overflow-hidden block"
+                >
                   <img
                     src={item.image || (item.images && item.images[0])}
                     alt={item.name}
-                    className="w-full h-full object-cover"
+                    className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                   />
-                </div>
+                </Link>
                 {/* Content */}
                 <div className="flex-1">
                   <div className="flex justify-between items-start">
                     <div>
-                      <h3 className="text-lg font-medium text-gray-900 mb-1">
-                        {item.name}
-                      </h3>
+                      <Link to={`/product/${item.id}`}>
+                        <h3 className="text-lg font-medium text-gray-900 mb-1 hover:text-royal-gold transition-colors cursor-pointer">
+                          {item.name}
+                        </h3>
+                      </Link>
                       <p className="text-sm text-gray-400 mb-1">
                         Size: {item.size}
                       </p>
                       <p className="text-xs text-gray-500 mb-3">
                         Seller: {item.seller}{" "}
-                        <span className="bg-royal-blue/20 text-blue-400 px-1 rounded ml-1 text-[10px]">
+                        <span className="bg-blue-50 text-blue-600 px-1 rounded ml-1 text-[10px]">
                           Assured
                         </span>
                       </p>
@@ -146,7 +151,7 @@ const Cart = () => {
                           ₹{item.price.toLocaleString()}
                         </span>
                         {item.originalPrice && item.originalPrice > item.price && (
-                          <span className="text-sm text-green-400 font-bold">
+                          <span className="text-sm text-green-600 font-bold">
                             {Math.round(((item.originalPrice - item.price) / item.originalPrice) * 100)}% Off
                           </span>
                         )}
@@ -160,7 +165,7 @@ const Cart = () => {
                     <div className="text-sm text-gray-700 hidden md:block">
                       Delivery by {item.deliveryDate || "Mon, Mar 2"}
                       {deliveryCharges === 0 && (
-                        <> | <span className="text-green-400">Free</span></>
+                        <> | <span className="text-green-600">Free</span></>
                       )}
                     </div>
                   </div>
@@ -235,7 +240,7 @@ const Cart = () => {
                     {deliveryCharges === 0 ? (
                       <>
                         <span className="line-through text-gray-500 mr-2">₹500</span>
-                        <span className="text-green-400">Free</span>
+                        <span className="text-green-600">Free</span>
                       </>
                     ) : (
                       <span>₹{deliveryCharges}</span>
@@ -251,8 +256,8 @@ const Cart = () => {
                 </div>
               </div>
 
-              <div className="bg-green-900/20 border border-green-900/50 p-3 rounded mb-6">
-                <p className="text-green-400 text-xs font-medium">
+              <div className="bg-green-50 border border-green-200 p-3 rounded mb-6">
+                <p className="text-green-700 text-xs font-medium">
                   You will save ₹{totalSavings.toLocaleString()} on this order
                 </p>
               </div>
