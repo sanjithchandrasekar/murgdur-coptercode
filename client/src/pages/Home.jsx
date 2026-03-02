@@ -35,8 +35,8 @@ const Home = () => {
     return (
       <div className="bg-white overflow-x-hidden">
         <SEO
-          title="Murgdur | Royal Heritage & Luxury"
-          description="Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty."
+          title="Murgdur | Luxury Royal Fashion & Heritage Clothing"
+          description="Shop Murgdur — luxury royal fashion, heritage clothing & bespoke accessories for modern royalty in India. Designer menswear, womenswear & more."
         />
         <PageSections sections={homeData.pageBuilder} />
 
@@ -56,8 +56,8 @@ const Home = () => {
   return (
     <div className="bg-white overflow-x-hidden">
       <SEO
-        title="Murgdur | Royal Heritage & Luxury"
-        description="Experience the legacy of kings. Shop our exclusive collection of royal attire, bespoke accessories, and timeless artifacts."
+        title="Murgdur | Luxury Royal Fashion & Heritage Clothing"
+        description="Shop Murgdur \u2014 luxury royal fashion, heritage clothing & bespoke accessories for modern royalty in India. Designer menswear, womenswear & more."
       />
 
       {/* Full-Screen Cinematic Hero */}
@@ -81,7 +81,7 @@ const Home = () => {
           </span>
 
           {/* Main Collection Title */}
-          <h2
+          <h1
             className="text-white text-center max-w-4xl mb-7 md:mb-9 px-4 font-serif"
             style={{
               fontSize: "clamp(1.9rem, 4.5vw, 3.75rem)",
@@ -92,8 +92,8 @@ const Home = () => {
               WebkitFontSmoothing: "antialiased",
             }}
           >
-            {homeData?.promoSection?.heading || "Royal Heritage Collection"}
-          </h2>
+            {homeData?.promoSection?.heading || "Royal Heritage Collection — Luxury Fashion for Modern Royalty"}
+          </h1>
 
           {/* CTA Links — side-by-side with elegant underline */}
           <div className="flex flex-row items-center gap-8 md:gap-12">

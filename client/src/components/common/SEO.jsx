@@ -9,17 +9,17 @@ const SEO = ({
   type = "website",
   keywords,
 }) => {
-  const siteTitle = "Murgdur | Royal Heritage & Luxury";
+  const siteTitle = "Murgdur | Luxury Royal Fashion & Heritage Clothing";
   const siteName = "Murgdur";
   const metaTitle = title || siteTitle;
   const metaDescription =
     description ||
-    "Discover the epitome of luxury tailored for the elite. Timeless fashion, royal aesthetics, and signature collections crafted for modern royalty. Shop premium royal attire, luxury accessories, and bespoke heritage items.";
-  const metaImage = image || "https://murugdur1.vercel.app/images/branding/logo.jpeg";
+    "Shop Murgdur \u2014 luxury royal fashion, heritage clothing & bespoke accessories for modern royalty in India. Designer menswear, womenswear & more.";
+  const metaImage = image || "https://murgdur2.vercel.app/images/branding/logo.jpeg";
   const metaUrl = url || window.location.href;
   const metaKeywords =
     keywords ||
-    "luxury fashion, royal heritage, premium clothing, bespoke accessories, royal attire, murgdur, heritage fashion, luxury lifestyle, royal collection, premium fashion india";
+    "luxury fashion, royal heritage, premium clothing, bespoke accessories, royal attire, murgdur, heritage fashion, luxury lifestyle, royal collection, premium fashion india, sherwani, lehenga, kurta";
 
   // Enhanced Schema.org data
   const organizationSchema = {
@@ -27,10 +27,10 @@ const SEO = ({
     "@type": "Organization",
     name: "Murgdur",
     alternateName: "Murgdur Royal Heritage",
-    url: "https://murugdur1.vercel.app/",
+    url: "https://murgdur2.vercel.app/",
     logo: {
       "@type": "ImageObject",
-      url: "https://murugdur1.vercel.app/images/branding/logo.jpeg",
+      url: "https://murgdur2.vercel.app/images/branding/logo.jpeg",
     },
     description: metaDescription,
     sameAs: [
@@ -44,13 +44,13 @@ const SEO = ({
     "@context": "https://schema.org",
     "@type": "WebSite",
     name: "Murgdur",
-    url: "https://murugdur1.vercel.app/",
+    url: "https://murgdur2.vercel.app/",
     potentialAction: {
       "@type": "SearchAction",
       target: {
         "@type": "EntryPoint",
         urlTemplate:
-          "https://murugdur1.vercel.app/shop?search={search_term_string}",
+          "https://murgdur2.vercel.app/shop?search={search_term_string}",
       },
       "query-input": "required name=search_term_string",
     },
